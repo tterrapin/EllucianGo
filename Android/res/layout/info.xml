@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aboutDialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/versionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/versionLabel" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/versionLabel"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/versionLabel"
+            android:paddingBottom="1sp"
+            android:paddingLeft="2sp"
+            android:paddingRight="2sp"
+            android:paddingTop="2sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/schoolName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/versionLabel"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/schoolAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/schoolName"
+            android:autoLink="all"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/helpLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/schoolAddress"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/aboutQuestionLabel"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/websiteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/helpLabel"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/helpWebsite" />
+
+        <Button
+            android:id="@+id/emailButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/websiteButton"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/helpEmail" />
+
+        <Button
+            android:id="@+id/callButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/emailButton"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/helpCall" />
+
+        <Button
+            android:id="@+id/tellFriendButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/callButton"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/tellFriendButton" />
+
+        <TextView
+            android:id="@+id/aboutPoweredBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tellFriendButton"
+            android:gravity="center_horizontal"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/aboutPoweredBy" />
+
+        <TextView
+            android:id="@+id/copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/aboutPoweredBy"
+            android:gravity="center"
+            android:paddingBottom="1sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:paddingTop="2sp"
+            android:text="@string/copyright" />
+    </RelativeLayout>
+
+</ScrollView>

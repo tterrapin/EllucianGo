@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/sessionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6sp"
+        android:paddingRight="6sp"
+        android:text="@string/sessionLabel"
+        android:textStyle="bold" >
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/sessionInformationLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/sessionType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/sessionColon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="6sp"
+                android:text="@string/colon" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/sessionDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="6sp" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/sessionPattern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TextView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sessionTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/sessionLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

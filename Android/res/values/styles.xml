@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Ellucian" parent="@android:Theme.Light.NoTitleBar"></style>
+
+    <style name="Theme.Ellucian.Basic" parent="@android:Theme.Light.NoTitleBar"></style>
+    <!--
+	<style name="WindowTitleBackground">
+		<item name="android:background">@null</item>
+	</style>
+    -->
+
+    <style name="Theme.Ellucian.WindowTitle">
+        <item name="android:singleLine">true</item>
+        <item name="android:textAppearance">@style/Theme.Ellucian.TextAppearance.WindowTitle</item>
+        <!-- <item name="android:shadowColor">#BB000000</item> <item name="android:shadowRadius">2.75</item> -->
+    </style>
+
+    <style name="Theme.Ellucian.TextAppearance"></style>
+
+    <style name="Theme.Ellucian.TextAppearance.WindowTitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Theme.Ellucian.Separator">
+        <item name="android:layout_height">1sp</item>
+        <item name="android:paddingTop">2sp</item>
+        <item name="android:paddingBottom">2sp</item>
+    </style>
+
+</resources>

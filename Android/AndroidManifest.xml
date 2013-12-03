@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ellucian.mobile.android"
+    android:versionCode="9999"
+    android:versionName="VERSION_1" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.ACCESS_MOCK_LOCATION"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:required="false" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <application
+        android:name=".EllucianApplication"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Ellucian" >
+        <activity
+            android:name=".home.HomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".home.InfoActivity"
+            android:label="@string/info"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".configuration.DashboardImagesDownloaderActivity"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
+        <activity
+            android:name=".map.MapPinActivity"
+            android:process=":pinMapProcess" />
+        <activity
+            android:name=".schoolselector.InstitutionSelectorActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:label="@string/schoolSelection"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_institutions" />
+        </activity>
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="false" />
+
+        <activity
+            android:name=".news.NewsActivity"
+            android:label="@string/news" />
+        <activity android:name=".news.NewsDetailActivity" />
+        <activity
+            android:name=".news.NewsContentActivity"
+            android:label="@string/newsDetail" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:label="@string/login"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".directory.DirectoryActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_directory" />
+        </activity>
+        <activity android:name=".directory.ProfileActivity" />
+        <activity
+            android:name=".events.EventsActivity"
+            android:label="@string/events" />
+        <activity android:name=".events.EventsDetailActivity" />
+        <activity
+            android:name=".events.EventContentActivity"
+            android:label="@string/eventDetail" />
+        <activity android:name=".grades.GradesActivity" />
+        <activity android:name=".grades.GradesTermActivity" />
+        <activity android:name=".grades.GradesListActivity" />
+        <activity
+            android:name=".directory.phone.ImportantNumbersActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_phone_directory" />
+        </activity>
+        <activity
+            android:name=".directory.phone.ImportantNumbersUncategorizedActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_phone_directory" />
+        </activity>
+        <activity
+            android:name=".directory.phone.ImportantNumbersDetailActivity"
+            android:label="@string/impnumDetail" />
+        <activity
+            android:name=".notifications.NotificationsActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".notifications.NotificationsDetailActivity" />
+        <activity android:name=".webapp.WebAppActivity" />
+
+        <service android:name=".CacheMonitor" />
+
+        <activity
+            android:name=".map.BuildingListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_buildings" />
+        </activity>
+        <activity
+            android:name=".map.BuildingExpandableListActivity"
+            android:configChanges="orientation|keyboardHidden" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".map.BuildingListActivity" />
+        </activity>
+        <activity
+            android:name=".map.MapsActivity"
+            android:configChanges="orientation|keyboardHidden" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".map.BuildingListActivity" />
+        </activity>
+        <activity android:name=".map.BuildingDetailActivity" />
+
+        <service android:name=".notifications.NotificationsService" />
+        <service android:name=".grades.GradesService" />
+
+        <provider
+            android:name=".directory.DirectorySearchSuggestionProvider"
+            android:authorities="com.ellucian.mobile.android.directory.DirectorySearchSuggestionProvider"
+            android:exported="false" />
+
+        <activity android:name=".courses.CoursesActivity" />
+        <activity android:name=".courses.CoursesTermActivity" />
+        <activity android:name=".courses.CourseOverviewActivity" />
+        <activity android:name=".courses.CourseInformationActivity" />
+        <activity android:name=".courses.AssignmentsActivity" />
+        <activity android:name=".courses.AssignmentDetailActivity" />
+        <activity android:name=".courses.GradesActivity" />
+        <activity android:name=".courses.CourseEventsActivity" />
+        <activity android:name=".courses.CourseAnnouncementsActivity" />
+        <activity
+            android:name=".courses.RosterActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_roster" />
+        </activity>
+        <activity
+            android:name=".map.CampusSelectionActivity"
+            android:label="@string/chooseCampus"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".courses.CourseAnnouncementContentActivity"
+            android:label="@string/announcementDetail" />
+    </application>
+
+</manifest>

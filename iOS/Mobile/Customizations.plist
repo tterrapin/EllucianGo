@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Live Configurations URL</key>
+	<string>https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations</string>
+	<key>Use Default Configuration</key>
+	<false/>
+	<key>Enable Version Checking</key>
+	<true/>
+	<key>Default Configuration URL</key>
+	<string>https://mobile.elluciancloud.com/mobilecloud/api/applicationConfigurationByName</string>
+	<key>Allow Switch School</key>
+	<true/>
+	<key>Custom Modules</key>
+	<dict/>
+</dict>
+</plist>
