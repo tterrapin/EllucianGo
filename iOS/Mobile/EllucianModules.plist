@@ -1,96 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>notifications</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Notifications</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Notifications</string>
-		<key>Needs Authentication</key>
-		<true/>
-	</dict>
-	<key>grades</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Grades</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Grades</string>
-		<key>Needs Authentication</key>
-		<true/>
-	</dict>
-	<key>feed</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Feed</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Feed</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-	<key>events</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Events</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Events</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-	<key>maps</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Map</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Map</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-	<key>courses</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Courses</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Courses</string>
-		<key>Needs Authentication</key>
-		<true/>
-	</dict>
-	<key>numbers</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Important Numbers</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Important Numbers</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-	<key>directory</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Directory</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Directory</string>
-		<key>Needs Authentication</key>
-		<true/>
-	</dict>
-	<key>audio</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Audio</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Audio</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-	<key>video</key>
-	<dict>
-		<key>iPad Storyboard Identifier</key>
-		<string>Video</string>
-		<key>iPhone Storyboard Identifier</key>
-		<string>Video</string>
-		<key>Needs Authentication</key>
-		<false/>
-	</dict>
-</dict>
+    <dict>
+        <key>notifications</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Notifications</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Notifications</string>
+            <key>Needs Authentication</key>
+            <true/>
+        </dict>
+        <key>grades</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Grades</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Grades</string>
+            <key>Needs Authentication</key>
+            <true/>
+        </dict>
+        <key>feed</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Feed</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Feed</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>events</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Events</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Events</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>maps</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Map</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Map</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>courses</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Courses</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Courses</string>
+            <key>Needs Authentication</key>
+            <true/>
+        </dict>
+        <key>numbers</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Important Numbers</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Important Numbers</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>directory</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Directory</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Directory</string>
+            <key>Needs Authentication</key>
+            <true/>
+        </dict>
+        <key>audio</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Audio</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Audio</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>video</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Video</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Video</string>
+            <key>Needs Authentication</key>
+            <false/>
+        </dict>
+        <key>registration</key>
+        <dict>
+            <key>iPad Storyboard Identifier</key>
+            <string>Registration</string>
+            <key>iPhone Storyboard Identifier</key>
+            <string>Registration</string>
+            <key>Needs Authentication</key>
+            <true/>
+        </dict>
+    </dict>
 </plist>

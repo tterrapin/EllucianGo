@@ -9,6 +9,7 @@
 #import "LoginExecutor.h"
 #import "AppDelegate.h"
 #import "NSData+AuthenticatedRequest.h"
+#import "NotificationManager.h"
 
 @implementation LoginExecutor
 
@@ -43,6 +44,9 @@
         for(NSHTTPCookie *cookie in cookies) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
+        
+        // register the device if needed
+        [NotificationManager registerDeviceIfNeeded];
     }
 
     return responseStatusCode;

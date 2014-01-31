@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- solid background fallback -->
+	<item
+	    android:right="1dp">
+		<shape android:shape="rectangle" >
+		    <solid
+		        android:color="#e4e4e4" />
+		</shape> 
+	</item>
+
+	<!-- gradient -->	
+	<item 
+	    android:right="1dp">
+	    <shape android:shape="rectangle">
+	        <gradient 
+	            android:startColor="#e9e9e9"
+	            android:endColor="#e2e2e2"
+	            android:angle="-90"/>
+	    </shape>
+	</item>
+	
+	<!-- bitmap image for the arrow -->
+	<item
+	    android:right="4dp">
+	    <bitmap android:src="@drawable/list_selected_arrow" android:gravity="right" />
+	</item>
+    
+</layer-list>
+
+

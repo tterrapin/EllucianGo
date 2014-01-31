@@ -248,7 +248,7 @@
         if(self.entry.email)
         {
             ABMutableMultiValueRef emailMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-            ABMultiValueAddValueAndLabel(emailMultiValue, (__bridge CFTypeRef)self.entry.email, (__bridge CFStringRef)NSLocalizedString(@"Email", nil), NULL);
+            ABMultiValueAddValueAndLabel(emailMultiValue, (__bridge CFTypeRef)self.entry.email, (__bridge CFStringRef)NSLocalizedString(@"Email", @"Email label for address book property"), NULL);
             ABRecordSetValue(person, kABPersonEmailProperty, emailMultiValue, nil);
             CFRelease(emailMultiValue);
         }

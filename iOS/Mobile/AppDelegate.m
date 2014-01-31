@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 #import "GAI.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "NotificationManager.h"
 
 static BOOL openURL = NO;
 
@@ -480,6 +481,17 @@ void onUncaughtException(NSException* exception)
     } else {
         return nil;
     }
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"My token is: %@", deviceToken);
+    [NotificationManager registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 
 @end

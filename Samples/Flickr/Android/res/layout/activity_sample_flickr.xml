@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- In order to have the Navigation Menu in your module you must have the android.support.v4.widget.DrawerLayou
+ tags containing the rest of your layout. You must also have the <include> tag to the @layout/drawer_list -->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- Basic LinearLayout using layout_weight to make sure everything fits on the screen -->
+	<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
+	    
+	    <!-- Because layout_weight is used the image might be sized different in each orientation mode -->
+	    <ImageView 
+	        android:id="@+id/imageView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="5"
+	        android:contentDescription="flickr image"
+	        tools:ignore="ContentDescription"
+	        android:layout_gravity="center"
+	        android:padding="4dp"  />
+
+	    <TextView 
+	        android:id="@+id/descriptionView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="2"
+	        android:layout_gravity="center"
+	        android:maxLines="5"
+	        android:padding="4dp" />
+	    
+	    <TextView 
+	        android:id="@+id/dateView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:layout_gravity="center"
+	        android:padding="4dp" />
+    
+    </LinearLayout>
+	
+	<!-- Add this to include Menu layout -->
+    <include layout="@layout/drawer_list" />
+
+</android.support.v4.widget.DrawerLayout>

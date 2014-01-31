@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Ellucian" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <!--  
+        <item name="actionBarItemBackground">@android:color/transparent</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_divider</item>
+        <item name="actionBarStyle">@style/Widget.Ellucian.ActionBar</item>
+        <item name="spinnerDropDownItemStyle">@style/DropDownItem</item>
+        <item name="spinnerItemStyle">@style/SpinnerItem</item>
+        -->
+        <item name="android:selectableItemBackground">@android:color/transparent</item>
+    </style>
+    	
+    <style name="Widget.Ellucian.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <!--  
+        <item name="backgroundStacked">@drawable/ab_stacked_divider</item>
+        
+        -->
+    </style>
+
+	<style name="DropDownItem" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    	<item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
+	</style>
+ 
+	<style name="SpinnerItem" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+	    <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
+	</style>
+    
+    <!-- LISTS -->
+    <style name="listContainer">
+        <!-- <item name="android:scrollbarStyle">outsideInset</item> -->
+        
+    </style>
+    <style name="listRow">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingBottom">@dimen/list_row_padding_bottom</item>
+        <item name="android:paddingTop">@dimen/list_row_padding_top</item>
+        <!-- <item name="android:background">?android:attr/activatedBackgroundIndicator</item> -->
+        <item name="android:background">@drawable/dual_pane_list_selector</item>
+        <item name="android:padding">10dp</item>
+        
+        
+    </style>
+    <style name="listTitle">
+        <item name="android:textSize">@dimen/list_title_text_size</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="listDescription">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textSize">@dimen/list_description_text_size</item>
+        <item name="android:textColor">@color/list_description_text_color</item>
+    </style>
+    <style name="listCategoryLabel">
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:textColor">@color/list_category_text_color</item>
+        <item name="android:textSize">@dimen/list_category_text_size</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="listCategory">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/list_category_text_color</item>
+        <item name="android:textSize">@dimen/list_category_text_size</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="listImage">
+        <item name="android:background">@drawable/image_border_1dp</item>
+        <item name="android:contentDescription">@string/default_image</item>
+        <item name="android:layout_marginLeft">@dimen/list_image_margin_left</item>
+        <item name="android:layout_marginTop">@dimen/list_image_margin_top</item>
+        <item name="android:contentDescription">@string/default_image</item>
+    </style>
+    
+    
+    <style name="listFrame">
+        <item name="android:background">@drawable/dual_pane_list_pressed</item>
+        
+    </style>
+    
+    <!-- DETAILS -->
+    <style name="detailImage">
+        <item name="android:background">@drawable/image_border_1dp</item>
+    </style>
+    <style name="detailTitle">
+        <item name="android:textSize">@dimen/list_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="detailContent">
+        <item name="android:textSize">@dimen/detail_content_text_size</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    <style name="detailContentLabel" parent="@style/detailContent">
+        <item name="android:textStyle">italic</item>
+        <item name="android:paddingRight">4dp</item>
+    </style>
+    <style name="detailDate">
+        <item name="android:textColor">@color/detail_date_text_color</item>
+        <item name="android:textSize">@dimen/detail_content_text_size</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:typeface">serif</item>
+    </style>
+    
+    <!-- CONTENT BODY AREA -->
+    <style name="contentBody">
+        <item name="android:paddingBottom">@dimen/content_padding_bottom</item>
+        <item name="android:paddingLeft">@dimen/content_padding_left</item>
+        <item name="android:paddingRight">@dimen/content_padding_right</item>
+        <item name="android:paddingTop">@dimen/content_padding_top</item>
+    </style>
+    <style name="contentBody.PaddingRight" parent="@style/contentBody">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+    <style name="contentMsg">
+        <item name="android:padding">@dimen/content_msg_padding</item>
+        <item name="android:textColor">@color/content_msg_color</item>
+        <item name="android:textSize">@dimen/content_msg_text_size</item>
+    </style>
+    
+    <style name="tableIconRight">
+        <item name="android:background">@drawable/left_border_1dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
+    
+    <!-- DIALOG -->
+    
+    <style name="dialogBody">
+        <item name="android:background">#ffffff</item>
+    </style>
+    
+    <style name="dialogTitle">
+        <item name="android:background">@drawable/bottom_border_2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+    
+    <style name="dialogTextInputRow">
+         <item name="android:layout_marginBottom">4dp</item>
+	     <item name="android:layout_marginLeft">8dp</item>
+	     <item name="android:layout_marginRight">8dp</item>
+	     <item name="android:layout_marginTop">16dp</item>
+    </style>
+    
+    <style name="dialogPasswordHintStyle">
+        <item name="android:typeface">sans</item>
+    </style>
+    
+    <style name="dialogButtonRight">
+        <item name="android:background">@drawable/top_border_1dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    <style name="dialogButtonLeft">
+        <item name="android:background">@drawable/top_right_border_1dp</item>
+		<item name="android:layout_height">48dp</item>
+    </style>
+    
+    <!-- ABOUT/INFO SCREEN -->
+    
+    
+    <style name="aboutSchoolLogo">
+        <item name="android:contentDescription">@string/about_logo_description</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>        
+    </style>
+    <style name="tableLabel">
+        <item name="android:textSize">@dimen/table_label_text</item>
+    </style>
+    <style name="tableData">
+        <item name="android:textColor">#666666</item>
+        <item name="android:textSize">@dimen/table_data_text_size</item>
+    </style>
+    <style name="aboutExtraInfo">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+    <style name="aboutTable">
+        <item name="android:background">#11000000</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:shrinkColumns">1</item>
+        <item name="android:stretchColumns">1</item>
+    </style>
+    
+    <!-- BULDING LIST & DIRECTORY TABLES -->
+    <!-- for use when a layout within the table row needs to draw a vertical rule/divider -->
+    <style name="tableLayoutVerticalSeparator">
+	    <item name="android:paddingRight">16dp</item>
+	    <item name="android:paddingLeft">8dp</item>
+	    <item name="android:layout_marginTop">8dp</item>
+	    <item name="android:layout_marginBottom">8dp</item>
+	    <item name="android:background">@drawable/right_border_1dp</item>
+    </style>
+    
+</resources>

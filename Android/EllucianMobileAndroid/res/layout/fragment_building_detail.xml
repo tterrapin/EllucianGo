@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical" >
+			
+            <!-- The sizing of the this image is handled by the Aquery in BuildingDetailFragment.setViews() -->
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:contentDescription="@string/maps_building_image_label"
+                android:padding="16dp"
+                android:visibility="gone" >            
+            </ImageView> 
+            <!-- android:scaleType="centerCrop" -->
+            
+	        <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"       
+                style="@style/aboutTable" >
+            
+	            <!-- 1. NAME -->
+	        	<!-- ********************************************************************* -->
+                <TableRow
+                    android:id="@+id/nameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:minHeight="?android:attr/listPreferredItemHeight"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		
+		                <TextView
+		                    android:id="@+id/nameLabel"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/label_name"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/name"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                	android:textIsSelectable="true"
+		                	style="@style/tableData" >
+		                </TextView>
+		            </LinearLayout>
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_building" />
+				</TableRow>
+				
+	            <!-- 2. TYPE -->
+	           	<!-- ********************************************************************* -->
+	           	
+                <TableRow
+                    android:id="@+id/typeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:minHeight="?android:attr/listPreferredItemHeight"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		
+		                <TextView
+		                    android:id="@+id/typeLabel"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/label_type"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/type"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    style="@style/tableData" >
+		                </TextView>
+		            </LinearLayout>		
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_building" />         
+                </TableRow>
+                
+                <!-- 3. CAMPUS -->
+	        	<!-- ********************************************************************* -->
+                <TableRow
+                    android:id="@+id/campusLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:minHeight="?android:attr/listPreferredItemHeight"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		
+		                <TextView
+		                    android:id="@+id/campusLabel"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/label_campus"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/campus"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                	android:textIsSelectable="true"
+		                	style="@style/tableData" >
+		                </TextView>
+		            </LinearLayout>
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_building" />
+				</TableRow>
+
+                <!-- 4. ADDRESS -->
+        		<!-- ********************************************************************* -->
+                <TableRow
+                    android:id="@+id/addressLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:gravity="center_vertical"
+		                android:minHeight="?android:attr/listPreferredItemHeight"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		
+		                <TextView
+		                    android:id="@+id/addresLabel"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/label_address"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/address"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    style="@style/tableData" >
+		
+		                </TextView>
+		            </LinearLayout>
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_location_web_site" />
+		            <!-- style="@style/tableIconRight" -->
+               </TableRow>
+
+	            <!-- 5. DESCRIPTION -->
+	        	<!-- ********************************************************************* -->
+                <TableRow
+                    android:id="@+id/descriptionLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		                
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/label_description"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/description"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:paddingTop="2dp"
+		                    style="@style/tableData" >
+		                </TextView>
+		            </LinearLayout>
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_action_about" />
+		            
+		            <!-- style="@style/tableIconRight" -->
+                </TableRow>
+
+	            <!-- 6. ADDITIONAL SERVICES -->
+	        	<!-- ********************************************************************* -->
+                <TableRow
+                    android:id="@+id/additionalServicesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" >
+		            <LinearLayout
+		                android:layout_width="0dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical"
+		                android:layout_weight="8"
+		                style="@style/tableLayoutVerticalSeparator" >
+		
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="@string/maps_building_additional_services_label"
+		                    style="@style/tableLabel" >
+		                </TextView>
+		
+		                <TextView
+		                    android:id="@+id/additionalServices"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    style="@style/tableData" >
+		                </TextView>
+		            </LinearLayout>
+		            <ImageView
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_weight="1"
+	                    android:contentDescription="@string/directory_icon_description"
+	                    android:src="@drawable/ic_additional_services" />
+		            
+		            <!-- style="@style/tableIconRight" -->
+                </TableRow>
+			</TableLayout>
+            
+            <LinearLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/showMap"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12sp"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:text="@string/maps_show_map"
+                    android:visibility="gone" >
+                </Button>
+
+                <Button
+                    android:id="@+id/showDirections"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12sp"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:text="@string/maps_get_directions_label"
+                    android:visibility="gone" >
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+

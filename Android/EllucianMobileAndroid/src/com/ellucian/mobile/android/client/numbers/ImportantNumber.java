@@ -1,0 +1,19 @@
+package com.ellucian.mobile.android.client.numbers;
+
+public class ImportantNumber {
+	public String name;
+	public String category;
+	public String phone;
+	public String extension;
+	public String email;
+	public String buildingId;
+	public String address;
+	public String city;
+	public String state;
+	public String country;
+	public String postalCode;
+	public float latitude;
+	public float longitude;
+	public String campusId;
+	
+}

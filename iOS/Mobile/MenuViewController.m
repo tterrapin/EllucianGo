@@ -334,41 +334,24 @@
                 storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:storyboardIdentifier];
                                 requiresAuthenticatedUser = [[moduleDefinition objectForKey:@"Needs Authentication"] boolValue];
             }
+            
+            //Set top view controller
             if ([storyboardViewController isKindOfClass:[UITabBarController class]]) {
-                if([storyboardViewController respondsToSelector:@selector(setModule:)]) {
-                    [storyboardViewController setValue:module forKey:@"module"];
-                }
-                UITabBarController *tabController = (UITabBarController *) storyboardViewController;
-                
-                for(UIViewController *v in tabController.viewControllers) {
-                    UIViewController *vc = v;
-                    
-                    if ([v isKindOfClass:[UINavigationController class]]) {
-                        UINavigationController *navVC = (UINavigationController *)v;
-                        
-                        vc = [navVC.viewControllers objectAtIndex:0];
-                    }
-                    if([vc respondsToSelector:@selector(setModule:)]) {
-                        [vc setValue:module forKey:@"module"];
-                    }
-                }
+                newTopViewController = storyboardViewController;
+            }
+            else if([storyboardViewController isKindOfClass:[UISplitViewController class]]) {
                 newTopViewController = storyboardViewController;
             }
             else if([storyboardViewController isKindOfClass:[UINavigationController class]]) {
-                UINavigationController *navigationController = (UINavigationController *) storyboardViewController;
-                id childViewController = navigationController.childViewControllers[0];
-                if([childViewController respondsToSelector:@selector(setModule:)]) {
-                    [childViewController setValue:module forKey:@"module"];
-                }
                 newTopViewController = storyboardViewController;
-                
-            } else {
+            }
+            else {
                 UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:storyboardViewController];
                 newTopViewController = navigationViewController;
-                if([storyboardViewController respondsToSelector:@selector(setModule:)]) {
-                    [storyboardViewController setValue:module forKey:@"module"];
-                }
             }
+            
+            //set Module object, if wanted
+            [self setModule:module onViewController:newTopViewController];
         }
         
         if(requiresAuthenticatedUser) {
@@ -467,13 +450,39 @@
                 tab.tabBar.translucent = NO;
             }
             for(UIViewController *tabbedController in tab.viewControllers) {
-                if ([tabbedController isKindOfClass:[UINavigationController class]]) {
+                
+                if ([tabbedController isKindOfClass:[UISplitViewController class]]) {
+                    UISplitViewController *split = (UISplitViewController *) tabbedController;
+                    UINavigationController *controller = split.viewControllers[0];
+                    UIViewController *masterController = controller.topViewController;
+                    
+                    if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+                        split.delegate = (id)masterController;
+                    }
+                    if([masterController respondsToSelector:@selector(revealMenu:)]) {
+                        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+                        masterController.navigationItem.leftBarButtonItem = menuButton;
+                        
+                    }
+                }
+                else if ([tabbedController isKindOfClass:[UINavigationController class]]) {
                     UINavigationController *nav = (UINavigationController *) tabbedController;
                     if([nav.topViewController respondsToSelector:@selector(revealMenu:)]) {
                         UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
                         nav.topViewController.navigationItem.leftBarButtonItem = menuButton;
                     }
                 }
+            }
+        } else if ([newTopViewController isKindOfClass:[UISplitViewController class]]) {
+            UISplitViewController *split = (UISplitViewController *) newTopViewController;
+            UINavigationController *controller = split.viewControllers[0];
+            UIViewController *masterController = controller.topViewController;
+            if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+                split.delegate = (id)masterController;
+            }
+            if([controller respondsToSelector:@selector(revealMenu:)]) {
+                UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+                controller.navigationItem.leftBarButtonItem = menuButton;
             }
         }
     
@@ -687,5 +696,30 @@
     
     self.moduleDefinitions = plistDictionary;
 }
+
+-(void) setModule:(Module *)module onViewController:(UIViewController *) viewController
+{
+    if([viewController respondsToSelector:@selector(setModule:)]) {
+        [viewController setValue:module forKey:@"module"];
+    }
+    
+    if ([viewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tabController = (UITabBarController *) viewController;
+        for(UIViewController *tabbedViewController in tabController.viewControllers) {
+            [self setModule:module onViewController:tabbedViewController];
+        }
+    }
+    else if([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navigationController = (UINavigationController *) viewController;
+        [self setModule:module onViewController:navigationController.topViewController];
+    }
+    else if([viewController isKindOfClass:[UISplitViewController class]]) {
+        UISplitViewController *splitViewController = (UISplitViewController *) viewController;
+        for(UIViewController *viewController in splitViewController.viewControllers) {
+            [self setModule:module onViewController:viewController];
+        }
+    }
+}
+
 
 @end

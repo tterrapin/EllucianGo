@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/content_padding" >
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/detail_title_text_size"
+                    android:textIsSelectable="true" />
+                
+                <LinearLayout 
+                    android:id="@+id/date_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >                    
+                    
+                    <!-- optional -->
+                    <TextView
+	                    android:id="@+id/date_label"
+	                    style="@style/listCategoryLabel"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content" />
+                    
+                    <TextView
+	                    android:id="@+id/date"
+	                    style="@style/listCategory"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content" />
+                </LinearLayout>
+                
+                <!-- optional -->
+                <TextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/body_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                style="@style/contentBody.PaddingRight" >
+
+                <TextView
+                    android:id="@+id/content"
+                    style="@style/detailContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true" />
+       
+            </LinearLayout>
+        </LinearLayout>
+
+</ScrollView>

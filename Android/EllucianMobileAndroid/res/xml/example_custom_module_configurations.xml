@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- EXAMPLE OF CUSTOM MODULE CONFIGURATION -->
+
+<!-- If using your own xml file all module configurations need to be set inside the <module-configurations> tags -->
+<module-configurations>
+    
+	<!-- This tag must match the supplied Type set on the Cloud Configuration for the custom module --> 	
+	<exampleOneModule>
+	    
+	    <!-- The package where your activity is located -->
+	    <package>com.ellucian.mobile.android.example</package>
+	    
+	    <!-- The name of the target activity that starts your module -->
+	    <activity>ExampleOneActivity</activity>
+	    
+	    <!-- For intent extras you must set a key attribute along with the value text. These extras will be 
+	     stored as a String, you must parse them as needed in the activity after recieving them in the intent -->
+	    <intent-extra key="extra" >This is a extra</intent-extra>
+	    <intent-extra key="anotherExtra">Another extra</intent-extra>
+	    
+	    <!-- Hexdecimal value of flags to be set, Example is the value for FLAG_ACTIVITY_CLEAR_TASK -->
+	    <!-- Hexdecimal values must start with 0x so it gets parsed correctly -->
+	    <intent-flag>0x00008000</intent-flag>
+	    
+	    <!-- For each additional flag that you want set, create another <intent-flags> element -->
+	    <!-- Example is the value for FLAG_ACTIVITY_NEW_TASK -->
+	    <intent-flag>0x10000000</intent-flag>
+	      
+	</exampleOneModule>
+	
+	<!-- This tag must match the supplied Type set on the Cloud Configuration for the custom module --> 
+	<exampleTwoModule>
+	    
+	    <!-- The package where your activity is located -->
+	    <package>com.ellucian.mobile.android.example</package>
+	    
+	    <!-- The name of the target activity that starts your module -->
+	    <activity>ExampleTwoActivity</activity>
+	    
+	    <!-- For intent extras you must set a key attribute along with the value text. These extras will be 
+	     stored as a String, you must parse them as needed in the activity after recieving them in the intent -->
+	    <intent-extra key="extraTwo" >2</intent-extra>
+	    
+	    <!-- Integer value of flags to be set, Example is the value for FLAG_ACTIVITY_SINGLE_TOP -->
+	    <intent-flag>536870912</intent-flag> 
+	      
+	</exampleTwoModule>   
+	     
+    
+</module-configurations>

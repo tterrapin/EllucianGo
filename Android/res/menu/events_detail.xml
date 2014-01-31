@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/addToMyCalendar" android:id="@+id/eventsCalendar" android:icon="@drawable/ic_menu_add_to_calendar"></item><item android:title="@string/shareWithFriends" android:id="@+id/eventsShare" android:icon="@drawable/ic_menu_share"></item>
-    
-    
-</menu>

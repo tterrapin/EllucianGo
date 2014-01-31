@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"  >
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+    
+	    <TextView
+	        android:id="@+id/meeting"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	    
+	    <TextView
+		        android:id="@+id/meetings_type_separator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/line_speparator"
+		        android:textStyle="bold"
+		        android:paddingLeft="4dp"
+	            android:paddingStart="4dp" 		       
+	            android:paddingRight="4dp"
+	            android:paddingEnd="4dp" />
+	    
+	    <TextView 
+	        android:id="@+id/type"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+    	 
+    </LinearLayout>
+    
+    
+</LinearLayout>

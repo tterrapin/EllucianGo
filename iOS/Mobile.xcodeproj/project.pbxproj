@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DDD89E31886545900D1EE3A /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD89E21886545900D1EE3A /* NotificationManager.m */; };
 		5414988617BAAABD00FDF31E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5491340B17B16A7A0001CE29 /* Images.xcassets */; };
 		5414988717BAABB800FDF31E /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54E3301B16C2DFCE0074BD3A /* MainStoryboard_iPhone.storyboard */; };
 		5414988817BAAC0D00FDF31E /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54E3301B16C2DFCE0074BD3A /* MainStoryboard_iPhone.storyboard */; };
+		54283871188443A800768CFC /* RegistrationSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54283870188443A800768CFC /* RegistrationSearchResultsViewController.m */; };
+		54283872188443A800768CFC /* RegistrationSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54283870188443A800768CFC /* RegistrationSearchResultsViewController.m */; };
 		5428553416B1EB3B001320A7 /* NotificationsFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5428553316B1EB3B001320A7 /* NotificationsFetcher.m */; };
 		5428553716B1F310001320A7 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5428553616B1F310001320A7 /* Notification.m */; };
 		543051F51782025C0008FA6E /* UIViewController+GoogleAnalyticsTrackerSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 543051F41782025C0008FA6E /* UIViewController+GoogleAnalyticsTrackerSupport.m */; };
@@ -38,10 +41,30 @@
 		546B0E4C1734617D00C62730 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B0E4A1734617D00C62730 /* Configuration.m */; };
 		546D01C817D61D06001FF4C9 /* GradesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6729815CA3DEC00D89522 /* GradesTableViewCell.xib */; };
 		546D01C917D61D06001FF4C9 /* GradesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6729815CA3DEC00D89522 /* GradesTableViewCell.xib */; };
+		54711CAF187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */; };
+		54711CB0187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */; };
+		54711CB7187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CB6187DD5DC000DC9DC /* RegistrationTabBarController.m */; };
+		54711CB8187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CB6187DD5DC000DC9DC /* RegistrationTabBarController.m */; };
 		54779E6517737B3F00ABD9F5 /* LoginExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54779E6417737B3F00ABD9F5 /* LoginExecutor.m */; };
 		54779E6617737B3F00ABD9F5 /* LoginExecutor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54779E6417737B3F00ABD9F5 /* LoginExecutor.m */; };
 		547B0DD916F95E5E0039669E /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 547B0DD816F95E5E0039669E /* VersionChecker.m */; };
+		547CED53187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */; };
+		547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */; };
 		5491340C17B16A7A0001CE29 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5491340B17B16A7A0001CE29 /* Images.xcassets */; };
+		5493138D185BBD270068084F /* RegistrationCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931382185BBD270068084F /* RegistrationCartViewController.m */; };
+		5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931382185BBD270068084F /* RegistrationCartViewController.m */; };
+		5493138F185BBD270068084F /* RegistrationPlannedSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931384185BBD270068084F /* RegistrationPlannedSection.m */; };
+		54931390185BBD270068084F /* RegistrationPlannedSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931384185BBD270068084F /* RegistrationPlannedSection.m */; };
+		54931391185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931386185BBD270068084F /* RegistrationPlannedSectionInstructor.m */; };
+		54931392185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931386185BBD270068084F /* RegistrationPlannedSectionInstructor.m */; };
+		54931393185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931388185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m */; };
+		54931394185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931388185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m */; };
+		54931395185BBD270068084F /* RegistrationResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493138A185BBD270068084F /* RegistrationResultsViewController.m */; };
+		54931396185BBD270068084F /* RegistrationResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493138A185BBD270068084F /* RegistrationResultsViewController.m */; };
+		54931397185BBD270068084F /* RegistrationTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493138C185BBD270068084F /* RegistrationTerm.m */; };
+		54931398185BBD270068084F /* RegistrationTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493138C185BBD270068084F /* RegistrationTerm.m */; };
+		5493139B185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493139A185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m */; };
+		5493139C185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 5493139A185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m */; };
 		5493363A18102F0F00B6FDEF /* CustomizationStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5493363818102F0F00B6FDEF /* CustomizationStoryboard_iPhone.storyboard */; };
 		5493363B18102F0F00B6FDEF /* CustomizationStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5493363818102F0F00B6FDEF /* CustomizationStoryboard_iPhone.storyboard */; };
 		5493364818102F9900B6FDEF /* CustomizationStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5493364618102F9900B6FDEF /* CustomizationStoryboard_iPad.storyboard */; };
@@ -225,6 +248,9 @@
 		54E40BCC1728552E00F661A5 /* CalendarViewDayEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841CEE3F160BA79D00D978EC /* CalendarViewDayEventView.xib */; };
 		54E40BCE1728552E00F661A5 /* ScheduleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 844040D7161229E900E938FF /* ScheduleTableViewCell.xib */; };
 		54E40C081728552E00F661A5 /* EmptyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54C5F91C16AD950D00BE8500 /* EmptyTableViewCell.xib */; };
+		54EA96291893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA96281893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m */; };
+		54EA962A1893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA96281893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m */; };
+		54EA962B1893012100BCCF24 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD89E21886545900D1EE3A /* NotificationManager.m */; };
 		54EB393E1811A5C5002008C8 /* EllucianModules.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54EB393D1811A5C5002008C8 /* EllucianModules.plist */; };
 		54EB393F1811A5C5002008C8 /* EllucianModules.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54EB393D1811A5C5002008C8 /* EllucianModules.plist */; };
 		54EE6E9016CEF69C0060613C /* CourseRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EE6E8F16CEF69C0060613C /* CourseRoster.m */; };
@@ -324,11 +350,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0DDD89E11886545900D1EE3A /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		0DDD89E21886545900D1EE3A /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		541660A017B294BD00C1B3D1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		541660A117B294CE00C1B3D1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		541660A217B294E200C1B3D1 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		541660A317B294F500C1B3D1 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		541660A417B2950200C1B3D1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		5428386F188443A800768CFC /* RegistrationSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationSearchResultsViewController.h; sourceTree = "<group>"; };
+		54283870188443A800768CFC /* RegistrationSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationSearchResultsViewController.m; sourceTree = "<group>"; };
 		5428553216B1EB3B001320A7 /* NotificationsFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsFetcher.h; sourceTree = "<group>"; };
 		5428553316B1EB3B001320A7 /* NotificationsFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsFetcher.m; sourceTree = "<group>"; };
 		5428553516B1F310001320A7 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
@@ -359,11 +389,31 @@
 		546B0E491734617D00C62730 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configuration.h; sourceTree = "<group>"; };
 		546B0E4A1734617D00C62730 /* Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configuration.m; sourceTree = "<group>"; };
 		54704BE517B53E4E002D7C1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		54711CAD187CAA5B000DC9DC /* RegistrationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationSearchViewController.h; sourceTree = "<group>"; };
+		54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationSearchViewController.m; sourceTree = "<group>"; };
+		54711CB5187DD5DC000DC9DC /* RegistrationTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationTabBarController.h; sourceTree = "<group>"; };
+		54711CB6187DD5DC000DC9DC /* RegistrationTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationTabBarController.m; sourceTree = "<group>"; };
 		54779E6317737B3F00ABD9F5 /* LoginExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginExecutor.h; path = Mobile/LoginExecutor.h; sourceTree = "<group>"; };
 		54779E6417737B3F00ABD9F5 /* LoginExecutor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginExecutor.m; path = Mobile/LoginExecutor.m; sourceTree = "<group>"; };
 		547B0DD716F95E5E0039669E /* VersionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionChecker.h; sourceTree = "<group>"; };
 		547B0DD816F95E5E0039669E /* VersionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionChecker.m; sourceTree = "<group>"; };
+		547CED51187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSectionDetailViewController.h; sourceTree = "<group>"; };
+		547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSectionDetailViewController.m; sourceTree = "<group>"; };
 		5491340B17B16A7A0001CE29 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Ellucian Mobile/Images.xcassets"; sourceTree = "<group>"; };
+		54931381185BBD270068084F /* RegistrationCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationCartViewController.h; sourceTree = "<group>"; };
+		54931382185BBD270068084F /* RegistrationCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationCartViewController.m; sourceTree = "<group>"; };
+		54931383185BBD270068084F /* RegistrationPlannedSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSection.h; sourceTree = "<group>"; };
+		54931384185BBD270068084F /* RegistrationPlannedSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSection.m; sourceTree = "<group>"; };
+		54931385185BBD270068084F /* RegistrationPlannedSectionInstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSectionInstructor.h; sourceTree = "<group>"; };
+		54931386185BBD270068084F /* RegistrationPlannedSectionInstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSectionInstructor.m; sourceTree = "<group>"; };
+		54931387185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSectionMeetingPattern.h; sourceTree = "<group>"; };
+		54931388185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSectionMeetingPattern.m; sourceTree = "<group>"; };
+		54931389185BBD270068084F /* RegistrationResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationResultsViewController.h; sourceTree = "<group>"; };
+		5493138A185BBD270068084F /* RegistrationResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationResultsViewController.m; sourceTree = "<group>"; };
+		5493138B185BBD270068084F /* RegistrationTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationTerm.h; sourceTree = "<group>"; };
+		5493138C185BBD270068084F /* RegistrationTerm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationTerm.m; sourceTree = "<group>"; };
+		54931399185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+BasicAuthentication.h"; sourceTree = "<group>"; };
+		5493139A185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+BasicAuthentication.m"; sourceTree = "<group>"; };
 		5493363918102F0F00B6FDEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/CustomizationStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		5493363D18102F4B00B6FDEF /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/CustomizationStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		5493363F18102F5C00B6FDEF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/CustomizationStoryboard_iPhone.strings; sourceTree = "<group>"; };
@@ -473,6 +523,8 @@
 		54E88A2B17B16C18003A47A7 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MainStoryboard_iPad.strings; sourceTree = "<group>"; };
 		54E88A2D17B16C1B003A47A7 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/MainStoryboard_iPad.strings"; sourceTree = "<group>"; };
 		54E88A2F17B16C1D003A47A7 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/MainStoryboard_iPad.strings; sourceTree = "<group>"; };
+		54EA96271893011100BCCF24 /* RegistrationRegisteredSectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationRegisteredSectionsViewController.h; sourceTree = "<group>"; };
+		54EA96281893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationRegisteredSectionsViewController.m; sourceTree = "<group>"; };
 		54EB393D1811A5C5002008C8 /* EllucianModules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EllucianModules.plist; sourceTree = "<group>"; };
 		54EE6E8E16CEF69C0060613C /* CourseRoster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseRoster.h; sourceTree = "<group>"; };
 		54EE6E8F16CEF69C0060613C /* CourseRoster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseRoster.m; sourceTree = "<group>"; };
@@ -704,6 +756,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DDD89E01886531D00D1EE3A /* Notification Center */ = {
+			isa = PBXGroup;
+			children = (
+				0DDD89E11886545900D1EE3A /* NotificationManager.h */,
+				0DDD89E21886545900D1EE3A /* NotificationManager.m */,
+			);
+			name = "Notification Center";
+			sourceTree = "<group>";
+		};
 		543051F2178202340008FA6E /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -711,6 +772,35 @@
 				543051F41782025C0008FA6E /* UIViewController+GoogleAnalyticsTrackerSupport.m */,
 			);
 			name = Analytics;
+			sourceTree = "<group>";
+		};
+		54931380185BBD050068084F /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				54931381185BBD270068084F /* RegistrationCartViewController.h */,
+				54931382185BBD270068084F /* RegistrationCartViewController.m */,
+				54931383185BBD270068084F /* RegistrationPlannedSection.h */,
+				54931384185BBD270068084F /* RegistrationPlannedSection.m */,
+				547CED51187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.h */,
+				547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */,
+				54931385185BBD270068084F /* RegistrationPlannedSectionInstructor.h */,
+				54931386185BBD270068084F /* RegistrationPlannedSectionInstructor.m */,
+				54931387185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.h */,
+				54931388185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m */,
+				54EA96271893011100BCCF24 /* RegistrationRegisteredSectionsViewController.h */,
+				54EA96281893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m */,
+				54931389185BBD270068084F /* RegistrationResultsViewController.h */,
+				5493138A185BBD270068084F /* RegistrationResultsViewController.m */,
+				5428386F188443A800768CFC /* RegistrationSearchResultsViewController.h */,
+				54283870188443A800768CFC /* RegistrationSearchResultsViewController.m */,
+				54711CAD187CAA5B000DC9DC /* RegistrationSearchViewController.h */,
+				54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */,
+				54711CB5187DD5DC000DC9DC /* RegistrationTabBarController.h */,
+				54711CB6187DD5DC000DC9DC /* RegistrationTabBarController.m */,
+				5493138B185BBD270068084F /* RegistrationTerm.h */,
+				5493138C185BBD270068084F /* RegistrationTerm.m */,
+			);
+			name = Registration;
 			sourceTree = "<group>";
 		};
 		54A8DBE116CD617500E20871 /* RNCryptor */ = {
@@ -880,6 +970,8 @@
 				841D880315D4579500FB5896 /* NoAnimationSegue.m */,
 				545AA9E2169DCC2E0013FBEE /* NSData+AuthenticatedRequest.h */,
 				545AA9E3169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m */,
+				54931399185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.h */,
+				5493139A185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m */,
 				A960E47D1664148E00BA5B0B /* NSString+Hash.h */,
 				A960E47E1664148E00BA5B0B /* NSString+Hash.m */,
 				84EAC1E615DE285B00B6307A /* NSString+HTML.h */,
@@ -980,6 +1072,8 @@
 				84D1192B165AB1FD009B85B8 /* MobileUIApplication.m */,
 				54C1472B177DDC3600C6CCBD /* Multimedia */,
 				84F391F61614D2CC003B3EE4 /* Notifications */,
+				0DDD89E01886531D00D1EE3A /* Notification Center */,
+				54931380185BBD050068084F /* Registration */,
 				54A8DBE116CD617500E20871 /* RNCryptor */,
 				842602B615AF12D900FE7360 /* Supporting Files */,
 				841AB02A15E01EF0003FAFAF /* Views and Support */,
@@ -1325,7 +1419,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = Ellucian;
+				ORGANIZATIONNAME = "Ellucian Company L.P. and its affiliates.";
 				TargetAttributes = {
 					54E40B3A1728552E00F661A5 = {
 						DevelopmentTeam = CU629ZRRW3;
@@ -1422,6 +1516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5443181317F63B5400E9304E /* CourseAssignment.m in Sources */,
+				54931394185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m in Sources */,
 				5443181417F63B5400E9304E /* CourseEvent.m in Sources */,
 				54E40B3C1728552E00F661A5 /* Base64.m in Sources */,
 				54E40B3D1728552E00F661A5 /* main.m in Sources */,
@@ -1430,6 +1525,7 @@
 				54E40B401728552E00F661A5 /* EventsViewController.m in Sources */,
 				54E40B411728552E00F661A5 /* Module+Attributes.m in Sources */,
 				5447CC8017D669580077FA3F /* DirectoryNavigationController.m in Sources */,
+				547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */,
 				54E40B421728552E00F661A5 /* GradesViewController.m in Sources */,
 				54E40B431728552E00F661A5 /* GradesCell.m in Sources */,
 				54B3AC3717BEB828000CEDBB /* ConfigurationSelectionNavigationController.m in Sources */,
@@ -1446,6 +1542,7 @@
 				54E40B4D1728552E00F661A5 /* NSString+HTML.m in Sources */,
 				54E40B4E1728552E00F661A5 /* AsynchronousImageView.m in Sources */,
 				54E40B4F1728552E00F661A5 /* SlidingViewController.m in Sources */,
+				54931396185BBD270068084F /* RegistrationResultsViewController.m in Sources */,
 				54E40B501728552E00F661A5 /* UIImage+ImageWithUIView.m in Sources */,
 				54E40B511728552E00F661A5 /* MenuViewController.m in Sources */,
 				54E40B521728552E00F661A5 /* UIViewController+SlidingViewExtension.m in Sources */,
@@ -1453,7 +1550,9 @@
 				54E40B541728552E00F661A5 /* MapPinAnnotation.m in Sources */,
 				54E40B551728552E00F661A5 /* POIListViewController.m in Sources */,
 				54E40B561728552E00F661A5 /* POIDetailViewController.m in Sources */,
+				5493139C185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m in Sources */,
 				54E40B571728552E00F661A5 /* CurrentUser.m in Sources */,
+				54283872188443A800768CFC /* RegistrationSearchResultsViewController.m in Sources */,
 				54E40B581728552E00F661A5 /* HomeViewController.m in Sources */,
 				54E40B591728552E00F661A5 /* UIColor+HexString.m in Sources */,
 				54E40B5A1728552E00F661A5 /* ConfigurationFetcher.m in Sources */,
@@ -1465,6 +1564,8 @@
 				54E40B601728552E00F661A5 /* GradeTerm.m in Sources */,
 				54E40B611728552E00F661A5 /* Grade.m in Sources */,
 				54E40B621728552E00F661A5 /* ScheduleViewController.m in Sources */,
+				54711CB8187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */,
+				54711CB0187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */,
 				54E40B631728552E00F661A5 /* ScheduleCourseNameCell.m in Sources */,
 				54E40B641728552E00F661A5 /* ScheduleCell.m in Sources */,
 				54E40B651728552E00F661A5 /* CourseDetailViewController.m in Sources */,
@@ -1475,6 +1576,7 @@
 				54E40B6A1728552E00F661A5 /* SegmentsController.m in Sources */,
 				54E40B6B1728552E00F661A5 /* CoursesPageSelectionViewController.m in Sources */,
 				54E40B6C1728552E00F661A5 /* RosterViewController.m in Sources */,
+				54931390185BBD270068084F /* RegistrationPlannedSection.m in Sources */,
 				54E40B6D1728552E00F661A5 /* CoursesTabBarViewController.m in Sources */,
 				54E40B6E1728552E00F661A5 /* DirectoryViewController.m in Sources */,
 				54E40B6F1728552E00F661A5 /* DirectoryEntry.m in Sources */,
@@ -1494,10 +1596,12 @@
 				54E40B7C1728552E00F661A5 /* SafariActivity.m in Sources */,
 				54E40B7D1728552E00F661A5 /* URLParser.m in Sources */,
 				54E40B7E1728552E00F661A5 /* NSData+AuthenticatedRequest.m in Sources */,
+				54931398185BBD270068084F /* RegistrationTerm.m in Sources */,
 				54E40B7F1728552E00F661A5 /* NotificationsFetcher.m in Sources */,
 				54E40B801728552E00F661A5 /* Notification.m in Sources */,
 				54E40B821728552E00F661A5 /* GradeCourse.m in Sources */,
 				54E40B831728552E00F661A5 /* CourseTerm.m in Sources */,
+				54931392185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */,
 				54E40B841728552E00F661A5 /* ModuleRole.m in Sources */,
 				54E40B851728552E00F661A5 /* Map.m in Sources */,
 				54E40B861728552E00F661A5 /* CourseDetailTabBarController.m in Sources */,
@@ -1506,6 +1610,7 @@
 				54E40B891728552E00F661A5 /* CourseSection.m in Sources */,
 				54E40B8A1728552E00F661A5 /* RNCryptor.m in Sources */,
 				54E40B8B1728552E00F661A5 /* RNDecryptor.m in Sources */,
+				5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */,
 				54E40B8C1728552E00F661A5 /* RNCryptorEngine.m in Sources */,
 				54E40B8D1728552E00F661A5 /* RNEncryptor.m in Sources */,
 				54E40B8E1728552E00F661A5 /* CourseRoster.m in Sources */,
@@ -1527,12 +1632,14 @@
 				54E40B9F1728552E00F661A5 /* VersionChecker.m in Sources */,
 				54E40BA01728552E00F661A5 /* FeedCategory.m in Sources */,
 				54E40BA11728552E00F661A5 /* FeedModule.m in Sources */,
+				54EA962A1893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m in Sources */,
 				54E40BA21728552E00F661A5 /* Feed.m in Sources */,
 				546B0E4C1734617D00C62730 /* Configuration.m in Sources */,
 				54945081175E6160008F488C /* CourseAssignmentsViewController.m in Sources */,
 				54945085175E6170008F488C /* CourseEventsViewController.m in Sources */,
 				54945089175E6182008F488C /* CourseAnnouncementsViewController.m in Sources */,
 				54945091175E7C01008F488C /* CourseAnnouncement.m in Sources */,
+				54EA962B1893012100BCCF24 /* NotificationManager.m in Sources */,
 				54F3DD4C176112D000CEDE57 /* CourseEventsDetailViewController.m in Sources */,
 				54F3DD501761746900CEDE57 /* CourseAnnouncementDetailViewController.m in Sources */,
 				54F3DD5617618BE600CEDE57 /* CourseAssignmentDetailViewController.m in Sources */,
@@ -1549,14 +1656,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				54F0327D16D5A01900318C7A /* Base64.m in Sources */,
+				54931393185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m in Sources */,
 				842602BC15AF12D900FE7360 /* main.m in Sources */,
 				842602C015AF12D900FE7360 /* AppDelegate.m in Sources */,
 				54B3AC3617BEB828000CEDBB /* ConfigurationSelectionNavigationController.m in Sources */,
 				84279DCD15C81B2D00DCBC7E /* Module+Create.m in Sources */,
 				84A11F1415C87518002FC14A /* EventsViewController.m in Sources */,
+				0DDD89E31886545900D1EE3A /* NotificationManager.m in Sources */,
 				84A11F2115C88DB8002FC14A /* Module+Attributes.m in Sources */,
 				84D6728C15CA1F7300D89522 /* GradesViewController.m in Sources */,
 				84D6729715CA3DB200D89522 /* GradesCell.m in Sources */,
+				547CED53187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */,
 				84D672A915CAB9E400D89522 /* GradesCourseNameCell.m in Sources */,
 				8448F7FA15CB7096001D6347 /* WebViewController.m in Sources */,
 				84DECE2C15D1954800203B4C /* EventsFilterViewController.m in Sources */,
@@ -1573,14 +1683,18 @@
 				8448902E15EC242C008B2D40 /* MenuViewController.m in Sources */,
 				84D151A515EFEB9D00FE1A0B /* UIViewController+SlidingViewExtension.m in Sources */,
 				843ED5EE15F9284500033085 /* MapsViewController.m in Sources */,
+				54931395185BBD270068084F /* RegistrationResultsViewController.m in Sources */,
 				84CA040E15F9BB040086EEA1 /* MapPinAnnotation.m in Sources */,
 				84CA041D15FA668E0086EEA1 /* POIListViewController.m in Sources */,
 				84EB200B15FBD1E400539341 /* POIDetailViewController.m in Sources */,
 				A9A4B8CC160262CF009E8B46 /* CurrentUser.m in Sources */,
 				A95DFD501603C4E100564EE1 /* HomeViewController.m in Sources */,
+				54EA96291893011100BCCF24 /* RegistrationRegisteredSectionsViewController.m in Sources */,
 				84843BF216068EAC002E277E /* UIColor+HexString.m in Sources */,
 				84843BF91606A58E002E277E /* ConfigurationFetcher.m in Sources */,
+				5493139B185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m in Sources */,
 				84843BFC1606B009002E277E /* AppearanceChanger.m in Sources */,
+				54283871188443A800768CFC /* RegistrationSearchResultsViewController.m in Sources */,
 				844112D01608B72D00F10579 /* CoursesCalendarViewController.m in Sources */,
 				8400A74B1608F6D700EFD0BE /* CalendarViewEvent.m in Sources */,
 				8400A74C1608F6D700EFD0BE /* CalendarViewDayView.m in Sources */,
@@ -1592,6 +1706,8 @@
 				844040E116123F7E00E938FF /* ScheduleCell.m in Sources */,
 				841F3EBD161370E30044D277 /* CourseDetailViewController.m in Sources */,
 				84F391FA1614D2E1003B3EE4 /* NotificationsViewController.m in Sources */,
+				54711CB7187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */,
+				54711CAF187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */,
 				84F391FD1614D4CA003B3EE4 /* NotificationDetailViewController.m in Sources */,
 				84F3920B1614F2E1003B3EE4 /* GradesPageSelectionViewController.m in Sources */,
 				8439064F161559AF00FF331E /* ImportantNumbersViewController.m in Sources */,
@@ -1602,6 +1718,7 @@
 				84B574C1161D474400B66AA2 /* DirectoryViewController.m in Sources */,
 				84B574CB161D54B900B66AA2 /* DirectoryEntry.m in Sources */,
 				84AB1410162C8E0000926901 /* UIColor+SchoolCustomization.m in Sources */,
+				5493138F185BBD270068084F /* RegistrationPlannedSection.m in Sources */,
 				84C37376162F2EFD0017AAB5 /* CourseGradesViewController.m in Sources */,
 				A956DA31165C288100E20972 /* ImageCache.m in Sources */,
 				A960E47F1664148F00BA5B0B /* NSString+Hash.m in Sources */,
@@ -1621,10 +1738,12 @@
 				5428553716B1F310001320A7 /* Notification.m in Sources */,
 				54AC962616C06187009C1B25 /* GradeCourse.m in Sources */,
 				54AC962F16C074FA009C1B25 /* CourseTerm.m in Sources */,
+				54931397185BBD270068084F /* RegistrationTerm.m in Sources */,
 				54ABAA3D16C1896E00141DD5 /* ModuleRole.m in Sources */,
 				5447CC7F17D669580077FA3F /* DirectoryNavigationController.m in Sources */,
 				54ABAA4616C18B9900141DD5 /* Map.m in Sources */,
 				54B8611816C97CA300F56B52 /* CourseDetailTabBarController.m in Sources */,
+				54931391185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */,
 				54B8611E16CAC93100F56B52 /* EmptyTableViewCell.m in Sources */,
 				54B8612116CAFBC100F56B52 /* EllucianSectionedUITableViewController.m in Sources */,
 				54ACCAAF16CC17CB00E06947 /* CourseSection.m in Sources */,
@@ -1633,6 +1752,7 @@
 				54A8DBEB16CD625800E20871 /* RNCryptorEngine.m in Sources */,
 				54A8DBEE16CD62C300E20871 /* RNEncryptor.m in Sources */,
 				54EE6E9016CEF69C0060613C /* CourseRoster.m in Sources */,
+				5493138D185BBD270068084F /* RegistrationCartViewController.m in Sources */,
 				54B96B6716D2CCB30055EDCE /* CourseDetailInstructor.m in Sources */,
 				54D1BCF616D41F21005E0DEC /* CourseDetail.m in Sources */,
 				54D1BCF916D433EF005E0DEC /* CourseMeetingPattern.m in Sources */,
@@ -1872,7 +1992,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "Ellucian Mobile";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E199163A-AFA4-4928-AC53-C6A21A7D1BCD";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -1896,7 +2016,7 @@
 				);
 				PRODUCT_NAME = "Ellucian Mobile";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C42C446E-63C7-4751-A078-10488FB855E2";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD1FAF5-9446-4EF0-9D0B-5E415B9E3F80";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

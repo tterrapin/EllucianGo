@@ -361,7 +361,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
     [self.datePicker setDate:self.day animated:NO];
     [masterView addSubview:self.datePicker];
     
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil];
+    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:nil];
     [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
     [self.actionSheet addSubview:masterView];
     UITabBarController *tabBarController;

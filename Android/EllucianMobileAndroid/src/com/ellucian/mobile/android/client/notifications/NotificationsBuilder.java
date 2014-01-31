@@ -1,0 +1,50 @@
+package com.ellucian.mobile.android.client.notifications;
+
+import java.util.ArrayList;
+
+import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
+import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
+
+public class NotificationsBuilder extends ContentProviderOperationBuilder<NotificationsResponse> {
+
+	public NotificationsBuilder(Context context) {
+		super(context);
+	}
+	
+	@Override
+	public ArrayList<ContentProviderOperation> buildOperations(NotificationsResponse model) {
+		final ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+		
+		// delete current contents in database
+		batch.add(ContentProviderOperation.newDelete(Notifications.CONTENT_URI).build());
+		
+		//String uniquePrefix = System.currentTimeMillis() + "_";
+		//long uid = 0;
+		
+		for (Notification notification : model.notifications) {
+			
+			String id = null;
+			if (!TextUtils.isEmpty(notification.id)) {
+				id = notification.id;
+			} else {
+				id = notification.title;
+			}
+			
+			batch.add(ContentProviderOperation
+					.newInsert(Notifications.CONTENT_URI)
+					.withValue(Notifications.NOTIFICATIONS_ID, id)
+					.withValue(Notifications.NOTIFICATIONS_TITLE, notification.title)
+					.withValue(Notifications.NOTIFICATIONS_DETAILS, notification.description)
+					.withValue(Notifications.NOTIFICATIONS_HYPERLINK, notification.hyperlink)
+					.withValue(Notifications.NOTIFICATIONS_LINK_LABEL, notification.linkLabel)
+					.withValue(Notifications.NOTIFICATIONS_DATE, notification.noticeDate)
+					.build());
+		}
+			
+		return batch;
+	}
+}

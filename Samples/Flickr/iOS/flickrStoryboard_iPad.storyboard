@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="TxI-Tf-9lF">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3746"/>
+    </dependencies>
+    <scenes>
+        <!--Flickr View Controller-->
+        <scene sceneID="J9U-XK-teh">
+            <objects>
+                <viewController storyboardIdentifier="flickr" id="TxI-Tf-9lF" customClass="flickrViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tqH-EG-qsw"/>
+                        <viewControllerLayoutGuide type="bottom" id="VlQ-KS-0vw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="R09-xA-Lvz">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0yU-cu-Lae" customClass="AsynchronousImageView">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="881"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="728" translatesAutoresizingMaskIntoConstraints="NO" id="SeB-w1-Te1">
+                                <rect key="frame" x="20" y="891" width="728" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Uploaded" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLe-5X-pFz">
+                                <rect key="frame" x="20" y="922" width="104" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SeB-w1-Te1" firstAttribute="leading" secondItem="R09-xA-Lvz" secondAttribute="leading" constant="20" id="7yQ-fd-h7M"/>
+                            <constraint firstItem="OLe-5X-pFz" firstAttribute="leading" secondItem="R09-xA-Lvz" secondAttribute="leading" constant="20" id="Cv0-gU-1Ub"/>
+                            <constraint firstItem="VlQ-KS-0vw" firstAttribute="top" secondItem="OLe-5X-pFz" secondAttribute="bottom" constant="20" id="JVL-Ib-l7Y"/>
+                            <constraint firstAttribute="trailing" secondItem="SeB-w1-Te1" secondAttribute="trailing" constant="20" id="P2X-PK-YqT"/>
+                            <constraint firstItem="0yU-cu-Lae" firstAttribute="leading" secondItem="R09-xA-Lvz" secondAttribute="leading" id="UKK-On-UvT"/>
+                            <constraint firstAttribute="trailing" secondItem="0yU-cu-Lae" secondAttribute="trailing" id="ZX4-WS-vRN"/>
+                            <constraint firstItem="OLe-5X-pFz" firstAttribute="top" secondItem="SeB-w1-Te1" secondAttribute="bottom" constant="10" id="ZaV-WI-D2W"/>
+                            <constraint firstItem="0yU-cu-Lae" firstAttribute="top" secondItem="tqH-EG-qsw" secondAttribute="bottom" id="rEM-P4-OXx"/>
+                            <constraint firstItem="SeB-w1-Te1" firstAttribute="top" secondItem="0yU-cu-Lae" secondAttribute="bottom" constant="10" id="tyt-8B-NpR"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="dateUploadedLabel" destination="OLe-5X-pFz" id="pOu-cm-hFT"/>
+                        <outlet property="descriptionLabel" destination="SeB-w1-Te1" id="YIT-Sn-7j7"/>
+                        <outlet property="imageView" destination="0yU-cu-Lae" id="ReB-0f-qiL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pjD-FQ-2rm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="66" y="-2"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="lightContent"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>

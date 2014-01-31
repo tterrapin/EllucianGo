@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/listRow" >
+    
+    <TextView
+        android:id="@+id/events_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        style="@style/listTitle"
+        android:textIsSelectable="false" />
+    
+    <TextView 
+        android:id="@+id/events_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/listDescription"
+        android:textIsSelectable="false" />
+    
+    <TextView 
+        android:id="@+id/events_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:singleLine="false"
+        style="@style/listDescription"
+        android:textIsSelectable="false" />
+      
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        
+        <TextView
+            android:id="@+id/events_category_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/row_category_label"
+            style="@style/listCategoryLabel" />
+        
+        <TextView 
+	        android:id="@+id/events_category"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:maxLines="1"
+	        style="@style/listCategory"
+	        android:textIsSelectable="false" />  
+        
+    </LinearLayout>
+       
+</LinearLayout>

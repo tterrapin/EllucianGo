@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <!-- IMPORTANT MESSAGES -->
+	    <LinearLayout
+	        android:id="@+id/general_layout"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical">
+	        
+	        <TextView 
+		        android:id="@+id/general_header"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:padding="8dp"
+		        android:text="@string/registration_results_important"
+		        android:textAppearance="@android:style/TextAppearance.Large"
+		        android:textStyle="bold"
+		        android:textColor="@color/status_important_text_color"
+		        android:background="@drawable/bottom_border_1dp"
+		        android:drawableStart="@drawable/ic_status_important"
+		        android:drawablePadding="8dp"
+		        />
+	
+	    </LinearLayout>
+	    
+	    <!-- SUCCESS MESSAGES -->
+	    <LinearLayout
+	        android:id="@+id/success_layout"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical">
+	        
+	        <TextView 
+		        android:id="@+id/success_header"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:padding="8dp"
+		        android:text="@string/registration_results_registered"
+		        android:textAppearance="@android:style/TextAppearance.Large"
+		        android:textStyle="bold"
+		        android:textColor="@color/status_success_text_color"
+		        android:background="@drawable/bottom_border_1dp"
+		        android:drawableStart="@drawable/ic_status_success"
+		        android:drawablePadding="8dp" />
+	        
+	        
+	    </LinearLayout>
+	    
+	    <!-- FAILURES/ERROR MESSAGES -->
+	    <LinearLayout
+	        android:id="@+id/failure_layout"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical">
+	        
+	        <TextView 
+		        android:id="@+id/failure_header"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:padding="8dp"
+		        android:text="@string/registration_results_warning"
+		        android:textAppearance="@android:style/TextAppearance.Large"
+		        android:textStyle="bold"
+		        android:textColor="@color/status_error_text_color"
+		        android:background="@drawable/bottom_border_1dp"
+		        android:drawableStart="@drawable/ic_status_error"
+		        android:drawablePadding="8dp"
+		         />		              
+	    </LinearLayout>       
+	
+	</LinearLayout>
+</ScrollView>

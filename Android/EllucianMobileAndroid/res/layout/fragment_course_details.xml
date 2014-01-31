@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	
+    <!-- Full page layout - ScrollView only can have one child -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    
+        <!-- Top Layout minus the course description view at bottom -->
+	    <LinearLayout
+	        android:id="@+id/course_details_colored_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="8dp" >
+	        
+	        <!-- TITLE -->
+	        <TextView 
+	            android:id="@+id/course_details_title" 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	        	style="@style/detailTitle"
+	        	android:paddingLeft="4dp"
+	        	android:paddingStart="4dp" />
+	        
+	        <!-- FROM AND TO DATES -->
+	        <TextView 
+	            android:id="@+id/course_details_dates" 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="4dp"
+	            android:paddingStart="4dp" />
+	        
+	        <!-- MEETING TIMES & LOCATIONS -->
+	        <LinearLayout
+	            android:id="@+id/course_details_meetings_layout"
+	            android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical" >
+	        </LinearLayout>
+	        
+	        <!-- FACULTY HEADER LABEL -->
+	        <TextView 
+	            android:id="@+id/course_details_faculty_title"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            style="@style/detailTitle"
+	        	android:text="@string/course_details_faculty"
+	        	android:paddingLeft="4dp"
+	        	android:paddingStart="4dp" />
+	        
+	        <!-- FACULTY LIST -->
+	        <LinearLayout
+	            android:id="@+id/course_details_faculty_layout"
+	            android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical"
+	        	android:paddingLeft="4dp"
+	        	android:paddingStart="4dp" >
+	        </LinearLayout>
+	        
+	    </LinearLayout>
+	    
+	    <!-- DETAIL TEXT -->
+	    <TextView 
+	        android:id="@+id/course_details_course_description"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="8dp"
+	        style="@style/detailContent" />
+    
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main -->
+
+    <string name="app_name">Ellucian GO</string>
+    <string name="title_activity_main">Ellucian GO</string>
+    <string name="title_home_page">Inicio</string>
+    <string name="main_sign_in">Acceder</string>
+    <string name="main_sign_out">Salir</string>
+    <string name="main_switch_school">Cambiar escuela</string>
+
+    <!-- Menu -->
+
+    <string name="menu">Menú</string>
+    <string name="menu_item_maps_title">Mapas</string>
+    <string name="menu_item_grades_title">Calificaciones</string>
+    <string name="menu_item_about_title">Acerca de</string>
+    <string name="menu_item_notifications_title">Notificaciones</string>
+    <string name="menu_filter">Filtrar</string>
+    <string name="menu_search">Buscar</string>
+    <string name="menu_add_to_contacts">Agregar a contactos</string>
+    <string name="menu_add_to_calendar">Agregar a calendario</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="menu_sign_in">Acceder</string>
+    <string name="menu_sign_out">Salir</string>
+    <string name="menu_switch_school">Cambiar escuela</string>
+    <string name="menu_search_school_hint">Buscar escuelas</string>
+    <string name="menu_header_applications">Aplicaciones</string>
+    <string name="menu_header_actions">Acciones</string>
+
+    <!-- Configuration and Institutions -->
+
+    <string name="title_activity_school_selection">Elegir escuela</string>
+    <string name="no_institutions">No hay instituciones a desplegar en este momento.</string>
+    <string name="school_selection_confirmation">Ha seleccionado \'%1$s\'. ¿Esto es correcto?</string>
+    <string name="title_activity_configuration_loading">Carga de configuración</string>
+    <string name="configuration_loading_failed">Falló en la carga de configuración</string>
+    <string name="configuration_loading_message">Carga de configuración. Por favor espere&#8230;</string>
+    <string name="configuration_loading_missing_config">"No puede descargar la configuración de ese enlace."</string>
+
+    <!-- General Defaults, Dialogs, and Rows -->
+
+    <string name="label_name">Nombre</string>
+    <string name="label_title">Título</string>
+    <string name="label_phone">Teléfono</string>
+    <string name="label_mobile">Tel. móvil</string>
+    <string name="label_email">Correo-e</string>
+    <string name="label_address">Dirección</string>
+    <string name="label_website">Sitio Web</string>
+    <string name="label_type">Tipo</string>
+    <string name="label_description">Descripción</string>
+    <string name="label_department">Departamento</string>
+    <string name="label_office">Oficina</string>
+    <string name="label_room">Salón</string>
+    <string name="label_campus">Campus</string>
+
+    <string name="dialog_cancel">Anular</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_sign_in">Acceder</string>
+    <string name="dialog_sign_in_title">Acceder</string>
+    <string name="dialog_stay_signed_in">Mantenerse conectado</string>
+    <string name="dialog_username">Nombre de usuario</string>
+    <string name="dialog_password">Contraseña</string>
+    <string name="dialog_sign_in_empty">Nombre de usuario o contraseña no puede estar vacío.</string>
+    <string name="dialog_sign_in_failed">No pudo acceder. Por favor, verifique la conexión de red y/o el nombre de usuario y contraseña. Favor de comunicarse con el personal de TI de su institución para apoyo con el acceso.</string>
+    <string name="dialog_signed_in">Ya está conectado.</string>
+    <string name="dialog_signed_out">Se ha cerrado la sesión.</string>
+    <string name="dialog_idle_sign_out">Ha estado inactivo demasiado tiempo y se ha cerrado la sesión.</string>
+    <string name="dialog_select_categories">Seleccionar categorías</string>
+    <string name="dialog_re_authenticate">Autenticando nuevamente, por favor espere&#8230;</string>
+	<string name="dialog_continue">Continuar</string>
+	<string name="dialog_go_back">Regresar</string>
+	<string name="dialog_security_warning">Alerta de seguridad</string>
+	<string name="dialog_cert_warning_statement">"Hay problemas con el certificado de seguridad para este sitio."</string>
+
+    <string name="row_category_label">Categoría:</string>
+    <string name="row_contact_label">Contacto:</string>
+    <string name="row_email_label">Correo-e:</string>
+    <string name="row_date_label">Fecha:</string>
+    <string name="row_due_label">Vencimiento:</string>
+    <string name="row_location_label">Ubicación:</string>
+
+    <string name="default_image">Imagen</string>
+    <string name="no_data">Sin datos</string>
+    <string name="share">Compartir</string>
+    <string name="terms">Periodos</string>
+    <string name="layers">Capas</string>
+    <string name="unavailable">No disponible</string>
+    <string name="dash_separator">"-"</string>
+    <string name="detail_page_title_format">Detalle de %s</string>
+    <string name="nothing_to_display">Nada a desplegar</string>
+    <string name="not_applicable">N/A</string>
+    <string name="all_day_event">Evento de todo el día</string>
+    <string name="title_activity_default_detail">Detalles</string>
+    <string name="loading_message">Cargando&#8230;</string>										<!-- NEW -->
+
+    <!-- About -->
+
+    <string name="title_activity_about">Acerca de</string>
+    <string name="about">Acerca de</string>
+    <string name="about_logo_description">Logo de la escuela</string>
+    <string name="about_app_version">Versión de la aplicación</string>
+    <string name="about_server_version">Versión del servidor</string>
+    <string name="about_phone_description">Enlace a teléfono</string>
+    <string name="about_email_description">Enlace a correo-e</string>
+    <string name="about_website_description">Enlace a sitio Web</string>
+    <string name="about_privacy_label">Política de privacidad de la universidad</string>
+    <string name="about_privacy_policy_description">Enlace a política de privacidad</string>
+    <string name="about_ellucian_privacy_policy">Política de privacidad de Ellucian</string>
+    <string name="about_powered_by">Desarrollado por</string>
+    <string name="about_powered_by_ellucian">Desarrollado por Ellucian</string>
+
+    <!-- Courses -->
+
+    <string name="title_activity_courses">Cursos</string>
+    <string name="title_activity_courses_schedule">Cursos</string>
+    <string name="title_activity_course_overview">Resumen de curso</string>
+    <string name="title_activity_course_assignments">Asignaciones de curso</string>
+    <string name="title_activity_course_assignments_detail">Detalle de asignación</string>
+    <string name="title_activity_course_announcements">Anuncios de curso</string>
+    <string name="title_activity_course_announcements_detail">Detalle de anuncio</string>
+    <string name="title_activity_course_events">Eventos de curso</string>
+    <string name="title_activity_course_events_detail">Detalle de evento</string>
+    <string name="title_activity_course_activity">Actividad de curso</string>
+    <string name="course_details_faculty">Docente</string>
+    <string name="courses_section_details">Detalles</string>
+    <string name="courses_section_events">Eventos</string>
+    <string name="courses_section_activity">Actividad</string>
+    <string name="courses_section_grades">Calificaciones</string>
+    <string name="courses_section_assignments">Asignaciones</string>
+    <string name="courses_section_roster">Lista de clases</string>
+    <string name="full_schedule">Horario completo</string>
+    <string name="daily_schedule">Horario diario</string>
+    <string name="courses_no_courses_message">No hay cursos</string>
+    <string name="title_activity_courses_daily_schedule">Horario diario</string>
+    <string name="title_activity_courses_full_schedule">Horario completo</string>
+    <string name="courses_menu_daily_schedule">Horario diario</string>
+    <string name="courses_menu_full_schedule">Horario completo</string>
+    <string name="courses_menu_view_target">Ver</string>
+    <string name="course_details">Detalles</string>
+    <string name="course_grades">Calificaciones</string>
+    <string name="course_roster">Lista de clases</string>
+    <string name="course_more">Más&#8230;</string>
+    <string name="course_assignments">Asignaciones</string>
+    <string name="course_announcements">Anuncios</string>
+    <string name="course_events">Eventos</string>
+    <string name="course_details_no_directory">No hay módulo de directorio instalado</string>
+    <string name="course_details_no_maps">No hay módulo de mapas instalado</string>
+    <string name="course_assignments_no_assignments">Sin asignaciones</string>
+    <string name="course_assignments_due">Vencimiento:</string>
+    <string name="course_assignments_none_assigned">Ninguno asignado</string>
+
+    <!-- Directory -->
+
+    <string name="title_activity_directory">Categorías de directorio</string>
+    <string name="title_activity_directory_detail">Detalle de directorio</string>
+    <string name="title_activity_directory_list_all">Directorio</string>
+    <string name="title_activity_directory_list_student">Directorio de alumnos</string>
+    <string name="title_activity_directory_list_faculty">Directorio de docentes</string>
+    <string name="directory">Directorio</string>
+    <string name="directory_search">Para emplear el directorio, buscar arriba.</string>
+    <string name="directory_no_results">No encontró resultados.</string>
+    <string name="directory_no_phone">No puede agregar el contacto sin número de teléfono.</string>
+    <string name="searchable_directory_hint">Buscar directorio</string>
+    <string name="searchable_directory_label">Buscar directorio</string>
+    <string name="directory_icon_description">Ícono</string>
+    <string name="directory_type_all">Todos</string>
+    <string name="directory_type_student">Alumno</string>
+    <string name="directory_type_faculty">Docente</string>
+
+    <!-- Events -->
+
+    <string name="title_activity_events">Eventos</string>
+    <string name="title_activity_events_detail">Detalle de eventos</string>
+    <string name="events_no_events">No hay eventos a desplegar</string>
+    <string name="searchable_events_hint">Buscar eventos</string>
+    <string name="searchable_events_label">Buscar eventos</string>
+
+    <!-- Grades -->
+
+    <string name="title_activity_grades">Calificaciones</string>
+    <string name="grades_last_updated">Última actualización:</string>
+    <string name="no_grades_in_term">No hay calificaciones para este periodo</string>
+    <string name="grades_no_grades">No hay calificaciones registradas</string>
+
+    <!-- Maps -->
+
+    <string name="title_activity_maps">Mapas</string>
+    <string name="maps_campus_selection_title">Elegir campus</string>
+    <string name="maps_get_directions_label">Instrucciones</string>
+    <string name="maps_show_details_label">Mostrar detalles</string>
+    <string name="maps_map_view_label">Vista de mapa</string>
+    <string name="maps_satellite_view_label">Vista satelital</string>
+    <string name="maps_my_location_label">Mi ubicación</string>
+    <string name="maps_restore_location_label">Restaurar ubicación</string>
+    <string name="maps_building_list_label">Lista de edificios</string>
+    <string name="maps_no_locations">No hay ubicaciones a mostrar</string>
+    <string name="maps_show_map">Mapa</string>
+    <string name="maps_building_image_label">Imagen de edificio</string>
+    <string name="maps_no_buildings_message">No hay edificios a desplegar.</string>
+    <string name="maps_blank"></string>
+    <string name="search_results_label">Buscar resultados</string>
+    <string name="searchable_buildings_hint">Buscar edificios</string>
+    <string name="searchable_buildings_label">Buscar edificios</string>
+    <string name="maps_type_hybrid">Híbrido</string>
+    <string name="maps_type_none">Ninguno</string>
+    <string name="maps_type_normal">Normal</string>
+    <string name="maps_type_satellite">Satélite</string>
+    <string name="maps_type_terrain">Relieve</string>
+    <string name="legal">Legal</string>
+    <string name="maps_feature_not_supported">Característica no soportada por este dispositivo.</string>
+    <string name="maps_building_additional_services_label">Servicios adicionales:</string>
+
+    <!-- Multimedia -->
+
+    <string name="title_activity_video">Video</string>
+
+    <!-- News -->
+
+    <string name="title_activity_news">Noticias</string>
+    <string name="title_activity_news_detail">Detalle de noticias</string>
+    <string name="news_no_news">No hay noticias a desplegar</string>
+    <string name="searchable_news_hint">Buscar noticias</string>
+    <string name="searchable_news_label">Buscar noticias</string>
+
+    <!-- Notifications -->
+
+    <string name="title_activity_notifications">Notificaciones</string>
+    <string name="notifications_detail_date_posted">Fecha de publicación:</string>
+    <string name="notifications_detail_link_action">Actuar</string>
+    <string name="notifications_device_title">Ellucian GO</string>
+    <string name="notifications_device_content">¡Tiene nuevas notificaciones!</string>
+    <string name="notifications_no_notifications">No hay notificaciones a desplegar</string>
+
+    <!-- Numbers -->
+
+    <string name="title_number_list">Números</string>
+    <string name="title_number_detail">Detalle de número</string>
+    <string name="numbers_no_entries">No hay números importantes</string>
+    <string name="searchable_numbers_hint">Buscar números</string>
+    <string name="searchable_numbers_label">Buscar números</string>
+
+	<!-- Versioning -->
+	<string name="version_upgrade">Actualización</string>
+	<string name="version_outdated">Obsoleto</string>
+	<string name="version_outdated_message">Una nueva versión está disponible.</string>
+	<string name="version_force_upgrade_message">Debe actualizar la aplicación a la versión más reciente.</string>
+
+
+
+</resources>

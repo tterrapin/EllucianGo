@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <!-- Main -->
+    
+    <string name="app_name">Ellucian GO</string>
+    <string name="title_activity_main">Ellucian GO</string>
+    <string name="title_home_page">الرئيسية</string>
+    <string name="main_sign_in">تسجيل الدخول</string> 
+    <string name="main_sign_out">تسجيل الخروج</string> 
+    <string name="main_switch_school">تغيير الجامعة</string>     
+    
+    <!-- Menu -->
+    
+    <string name="menu">القائمة</string>
+    <string name="menu_item_maps_title">الخرائط</string>
+    <string name="menu_item_grades_title">الدرجات</string>
+    <string name="menu_item_about_title">عن التطبيق</string>
+    <string name="menu_item_notifications_title">التنبيهات</string>
+    <string name="menu_filter">الفرز</string>
+    <string name="menu_search">البحث</string>
+    <string name="menu_add_to_contacts">الإضافة إلى جهات الإتصال</string>	
+    <string name="menu_add_to_calendar">الإضافة إلى التقويم</string>
+    <string name="menu_settings">الإعدادات</string>
+    <string name="menu_home">الرئيسية</string>
+    <string name="menu_about">عن التطبيق</string>
+    <string name="menu_sign_in">تسجيل الدخول</string>
+    <string name="menu_sign_out">تسجيل الخروج</string>
+    <string name="menu_switch_school">تغيير الجامعة</string>
+    <string name="menu_search_school_hint">البحث في الجامعات</string>
+    <string name="menu_header_applications">الطلبات</string>
+    <string name="menu_header_actions">الإجراءات</string>
+    
+    <!-- Configuration and Institutions -->
+    
+    <string name="title_activity_school_selection">قم باختيار الجامعة</string>
+    <string name="no_institutions">لا توجد جامعات للعرض حاليا.</string>
+    <string name="school_selection_confirmation">لقد قمت باختيار \'%1$s\'. هل هذا صحيح؟</string>    
+    <string name="title_activity_configuration_loading">يتم تحميل التهيئة الآن</string>
+    <string name="configuration_loading_failed">فشل تحميل التهيئة</string>
+    <string name="configuration_loading_message">يتم تحميل التهيئة الآن. يرجى الانتظار...</string>
+    <string name="configuration_loading_missing_config">"تعذر تحميل التهيئة من ذلك الرابط."</string> 
+    
+    <!-- General Defaults, Dialogs, and Rows -->
+    
+    <string name="label_name">الاسم</string>						
+    <string name="label_title">اللقب</string>					
+    <string name="label_phone">رقم الهاتف</string>					
+    <string name="label_mobile">رقم الجوال</string>					
+    <string name="label_email">البريد الإلكتروني</string>					
+    <string name="label_address">العنوان</string>				
+    <string name="label_website">الموقع</string>				
+    <string name="label_type">النوع</string>						
+    <string name="label_description">الوصف</string>		
+    <string name="label_department">القسم</string>			
+    <string name="label_office">المكتب</string>					
+    <string name="label_room">غرفة رقم</string>
+    <string name="label_campus">الفرع</string> 						
+    
+    <string name="dialog_cancel">إلغاء</string>
+    <string name="dialog_ok">موافق</string>
+    <string name="dialog_sign_in">تسجيل الدخول</string>
+    <string name="dialog_sign_in_title">تسجيل الدخول</string>
+    <string name="dialog_stay_signed_in">الإبقاء متصلا</string>
+    <string name="dialog_username">اسم المستخدم</string>
+    <string name="dialog_password">كلمة المرور</string>
+    <string name="dialog_sign_in_empty">لا يمكن أن يكون اسم المستخدم أو كلمة المرور فارغا.</string>
+    <string name="dialog_sign_in_failed">تعذر تسجيل الدخول. يرجى التأكد من الاتصال بالشبكة و/أو اسم المستخدم وكلمة المرور. يرجى التواصل مع قسم تقنية المعلومات للمساعدة في تسجيل الدخول.</string>
+    <string name="dialog_signed_in">لقد تم تسجيل دخولك.</string>
+    <string name="dialog_signed_out">لقد قمت بتسجيل الخروج.</string>
+    <string name="dialog_idle_sign_out">لقد تم تسجيل خروجك بسبب خمول النشاط لفترة طويلة.</string>
+    <string name="dialog_select_categories">اختيار الفئات</string>
+    <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار...</string> 		
+	<string name="dialog_continue">المتابعة</string>											
+	<string name="dialog_go_back">العودة</string>												
+	<string name="dialog_security_warning">تحذير أمان</string>							
+	<string name="dialog_cert_warning_statement">"هناك مشاكل متعلقة بشهادة الأمان لهذا الموقع."</string>
+	
+    <string name="row_category_label">الفئة:</string>
+    <string name="row_contact_label">التواصل مع:</string>
+    <string name="row_email_label">البريد الإلكتروني:</string>
+    <string name="row_date_label">التاريخ:</string>												
+    <string name="row_due_label">المستحق:</string>													
+    <string name="row_location_label">المكان:</string>										
+    
+    <string name="default_image">الصورة</string>
+    <string name="no_data">لا توجد بيانات</string>
+    <string name="share">مشاركة</string>
+    <string name="terms">الفصول الدراسية</string>
+    <string name="layers">الطبقات</string>
+    <string name="unavailable">غير متوفر</string>
+    <string name="dash_separator">"-"</string>
+    <string name="detail_page_title_format">تفاصيل %s</string>
+    <string name="nothing_to_display">لا يوجد شيء للعرض</string>								
+    <string name="not_applicable">غير متوفر</string>													
+    <string name="all_day_event">الفعالية طوال اليوم</string>											
+    <string name="title_activity_default_detail">التفاصيل</string>								
+    <string name="loading_message">يتم التحميل...</string>										<!-- NEW -->
+	
+    <!-- About -->
+    
+    <string name="title_activity_about">عن التطبيق</string>
+    <string name="about">عن التطبيق</string>
+    <string name="about_logo_description">شعار الجامعة</string>
+    <string name="about_app_version">إصدار التطبيق</string>
+    <string name="about_server_version">إصدار الخادم</string>
+    <string name="about_phone_description">رابط رقم الهاتف</string>
+    <string name="about_email_description">رابط البريد الإلكتروني</string>
+    <string name="about_website_description">رابط الموقع</string>
+    <string name="about_privacy_label">سياسة خصوصية الجامعة</string>
+    <string name="about_privacy_policy_description">رابط سياسة الخصوصية</string>
+    <string name="about_ellucian_privacy_policy">سياسة خصوصية Ellucian</string>
+    <string name="about_powered_by">مشغل بواسطة</string>
+    <string name="about_powered_by_ellucian">مشغل بواسطة Ellucian</string>
+    
+    <!-- Courses -->
+    
+    <string name="title_activity_courses">المقررات</string>
+    <string name="title_activity_courses_schedule">المقررات</string>
+    <string name="title_activity_course_overview">نظرة عامة عن المقرر</string>
+    <string name="title_activity_course_assignments">واجبات المقرر</string>				
+    <string name="title_activity_course_assignments_detail">تفاصيل الواجبات</string>			
+    <string name="title_activity_course_announcements">إعلانات المقرر</string>			
+    <string name="title_activity_course_announcements_detail">تفاصيل الإعلانات</string>		
+    <string name="title_activity_course_events">فعاليات المقرر</string>							
+    <string name="title_activity_course_events_detail">تفاصيل الفعالية</string>					
+    <string name="title_activity_course_activity">نشاط المقرر</string>												
+    <string name="course_details_faculty">أعضاء هيئة التدريس</string>
+    <string name="courses_section_details">التفاصيل</string>
+    <string name="courses_section_events">الفعاليات</string>
+    <string name="courses_section_activity">النشاط</string>
+    <string name="courses_section_grades">الدرجات</string>
+    <string name="courses_section_assignments">الواجبات</string>
+    <string name="courses_section_roster">القائمة</string>
+    <string name="full_schedule">الجدول الكامل</string>
+    <string name="daily_schedule">الجدول اليومي</string>
+    <string name="courses_no_courses_message">لا توجد مقررات</string>
+    <string name="title_activity_courses_daily_schedule">الجدول اليومي</string>
+    <string name="title_activity_courses_full_schedule">الجدول الكامل</string>
+    <string name="courses_menu_daily_schedule">الجدول اليومي</string>
+    <string name="courses_menu_full_schedule">الجدول الكامل</string>
+    <string name="courses_menu_view_target">عرض</string>										
+    <string name="course_details">التفاصيل</string>
+    <string name="course_grades">الدرجات</string>
+    <string name="course_roster">القائمة</string>
+    <string name="course_more">المزيد...</string>													
+    <string name="course_assignments">الواجبات</string>										
+    <string name="course_announcements">الإعلانات</string>									
+    <string name="course_events">الفعاليات</string>												
+    <string name="course_details_no_directory">لا توجد وحدة دليل نمطية مثبتة</string>
+    <string name="course_details_no_maps">لا توجد وحدة خرائط نمطية مثبتة</string>	 
+    <string name="course_assignments_no_assignments">لا توجد واجبات</string>					
+    <string name="course_assignments_due">المستحق:</string>											
+    <string name="course_assignments_none_assigned">لم يتم أي تخصيص</string>						
+
+    <!-- Directory -->
+    
+    <string name="title_activity_directory">فئات الدليل</string> 				
+    <string name="title_activity_directory_detail">تفاصيل الدليل</string>			
+    <string name="title_activity_directory_list_all">الدليل</string>					
+    <string name="title_activity_directory_list_student">دليل الطلاب</string>		
+    <string name="title_activity_directory_list_faculty">دليل أعضاء هيئة التدريس</string>		
+    <string name="directory">الدليل</string>											
+    <string name="directory_search">لاستخدام الدليل، ابحث أعلاه.</string> 			
+    <string name="directory_no_results">لم يتم العثور على نتائج.</string> 						
+    <string name="directory_no_phone">لا يمكن إضافة جهة اتصال دون رقم الهاتف.</string> 	
+    <string name="searchable_directory_hint">دليل البحث</string> 					
+    <string name="searchable_directory_label">دليل البحث</string> 				
+    <string name="directory_icon_description">الأيقونة</string>
+    <string name="directory_type_all">الجميع</string>
+    <string name="directory_type_student">الطالب</string>
+    <string name="directory_type_faculty">أعضاء هيئة التدريس</string>
+    
+    <!-- Events -->
+    
+    <string name="title_activity_events">الفعاليات</string>
+    <string name="title_activity_events_detail">تفاصيل الفعاليات</string>
+    <string name="events_no_events">لا توجد فعاليات للعرض</string>
+    <string name="searchable_events_hint">البحث في الفعاليات</string>
+    <string name="searchable_events_label">البحث في الفعاليات</string>
+    
+    <!-- Grades -->
+    
+    <string name="title_activity_grades">الدرجات</string>
+    <string name="grades_last_updated">آخر تحديث:</string>
+    <string name="no_grades_in_term">لا توجد درجات لهذا الفصل الدراسي</string>
+    <string name="grades_no_grades">لا توجد درجات مسجلة</string>
+    
+    <!-- Maps -->
+    
+    <string name="title_activity_maps">الخرائط</string>    
+    <string name="maps_campus_selection_title">اختيار الفرع</string>
+    <string name="maps_get_directions_label">اتجاهات الطريق</string>
+    <string name="maps_show_details_label">عرض التفاصيل</string>
+    <string name="maps_map_view_label">الخريطة</string>
+    <string name="maps_satellite_view_label">القمر الصناعي</string>
+    <string name="maps_my_location_label">مكاني</string>
+    <string name="maps_restore_location_label">إعادة تحديد المكان</string>
+    <string name="maps_building_list_label">قائمة المباني</string>
+    <string name="maps_no_locations">لا توجد أماكن للعرض</string>
+    <string name="maps_show_map">الخريطة</string>
+    <string name="maps_building_image_label">صورة المبنى</string>
+    <string name="maps_no_buildings_message">لا توجد مبانٍ للعرض.</string>
+    <string name="maps_blank"></string>    
+    <string name="search_results_label">نتائج البحث</string>
+    <string name="searchable_buildings_hint">البحث في المباني</string>
+    <string name="searchable_buildings_label">البحث في المباني</string>
+    <string name="maps_type_hybrid">الهجينة</string>
+    <string name="maps_type_none">بدون</string>
+    <string name="maps_type_normal">العادي</string>
+    <string name="maps_type_satellite">القمر الصناعي</string>
+    <string name="maps_type_terrain">التضاريس</string>
+    <string name="legal">الشؤون القانونية</string>
+    <string name="maps_feature_not_supported">هذه الخاصية غير مدعمة بهذا الجهاز.</string>
+    <string name="maps_building_additional_services_label">خدمات إضافية:</string>
+    
+    <!-- Multimedia -->
+    
+    <string name="title_activity_video">فيديو</string>
+    
+    <!-- News -->
+    
+    <string name="title_activity_news">الأخبار</string>
+    <string name="title_activity_news_detail">تفاصيل الأخبار</string>
+    <string name="news_no_news">لا توجد أخبار للعرض</string>
+    <string name="searchable_news_hint">البحث في الأخبار</string>
+    <string name="searchable_news_label">البحث في الأخبار</string>
+       
+    <!-- Notifications -->
+    
+    <string name="title_activity_notifications">التنبيهات</string>    
+    <string name="notifications_detail_date_posted">تاريخ المشاركة:</string>
+    <string name="notifications_detail_link_action">اتخاذ إجراء</string>
+    <string name="notifications_device_title">Ellucian GO</string>
+    <string name="notifications_device_content">لديك تنبيهات جديدة!</string>
+    <string name="notifications_no_notifications">لا توجد تنبيهات للعرض</string>
+    
+    <!-- Numbers --> 
+    
+    <string name="title_number_list">الأرقام</string>
+    <string name="title_number_detail">تفاصيل الأرقام</string>
+    <string name="numbers_no_entries">لا توجد أرقام مهمة</string>
+    <string name="searchable_numbers_hint">البحث في الأرقام</string> 				
+    <string name="searchable_numbers_label">البحث في الأرقام</string> 			
+
+	<!-- Versioning -->
+	<string name="version_upgrade">ترقية</string>
+	<string name="version_outdated">قديم</string>
+	<string name="version_outdated_message">يوجد إصدار جديد لهذا التطبيق.</string>
+	<string name="version_force_upgrade_message">يجب تحديث التطبيق إلى آخر إصدار.</string>
+    
+    
+
+</resources>

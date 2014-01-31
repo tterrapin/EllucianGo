@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSSet* roles;
 @property (nonatomic, assign) BOOL remember;
 @property (nonatomic, strong) NSDate* lastLoggedInDate;
+@property (nonatomic, strong) NSString* email;
 
 -(void)logoutWithoutUpdatingUI;
 -(void)logout;

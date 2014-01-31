@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- pressed state -->
+    <item 
+        android:state_enabled="true" 
+     	android:state_pressed="true" 
+     	android:drawable="@drawable/dual_pane_list_pressed"
+		 />
+    
+    <!-- for d-pad type navigation or arrow keys -->
+    <item
+        android:state_enabled="true"
+     	android:state_selected="true" 
+     	android:drawable="@drawable/dual_pane_list_selected" />
+    
+    <!-- create permanent highlight of Row -->
+    <item
+        android:state_enabled="true"
+        android:state_activated="true"
+        android:drawable="@drawable/dual_pane_list_selected" />
+
+    <!-- <item
+     android:drawable="@color/android:transparent" /> -->
+</selector>

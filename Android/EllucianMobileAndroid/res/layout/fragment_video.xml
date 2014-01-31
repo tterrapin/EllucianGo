@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+       	
+        <VideoView 
+	        android:id="@+id/video"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true" />
+        
+        <TextView 
+	        android:id="@+id/description"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/video"
+	        android:lineSpacingExtra="@dimen/multimedia_text_line_spacing_size"
+        	android:paddingBottom="@dimen/multimedia_text_padding_bottom"
+        	android:paddingLeft="@dimen/multimedia_text_padding_left"
+        	android:paddingRight="@dimen/multimedia_text_padding_right"
+        	android:paddingTop="@dimen/multimedia_text_padding_top" />
+
+</RelativeLayout>

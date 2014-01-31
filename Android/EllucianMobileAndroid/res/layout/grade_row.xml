@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grade_row_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal" >
+	
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textDirection="firstStrong"
+        android:orientation="vertical" 
+        android:paddingLeft="6sp"
+        android:paddingStart="6sp" >
+        
+	    <TextView
+	        android:id="@+id/grade_row_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="6sp"
+	        android:paddingStart="6sp"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textIsSelectable="true" >
+	    </TextView>
+	
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" 
+	        android:paddingLeft="6sp" 
+	        android:paddingStart="6sp" >
+	
+	        <TextView
+	            android:id="@+id/grade_row_date_label"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_vertical"
+	            android:paddingRight="2sp"
+	            android:paddingEnd="2sp"
+	            android:text="@string/grades_last_updated" >
+	        </TextView>
+	
+	        <TextView
+	            android:id="@+id/grade_row_date"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textIsSelectable="true" >
+	        </TextView>
+	        
+	    </LinearLayout>
+	</LinearLayout>
+	
+    <TextView
+        android:id="@+id/grade_row_value"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+        android:padding="6sp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:textIsSelectable="true" >
+    </TextView>
+
+</LinearLayout>

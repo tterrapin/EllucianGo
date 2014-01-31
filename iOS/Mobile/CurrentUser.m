@@ -17,6 +17,8 @@
 
 @implementation CurrentUser
 
+@synthesize email;
+
 - (id)init
 {
     self = [super init];

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item 
+	    android:showAsAction="ifRoom|withText"
+	    android:id="@+id/view_target" 
+	 	android:title="@string/courses_menu_view_target" />   
+
+</menu>

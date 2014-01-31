@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/course_title"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:textStyle="bold"  />  
+    	
+    <TextView 
+        android:id="@+id/section_title"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"  />
+    
+    <TextView 
+        android:id="@+id/section_id"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"  />
+    
+    <TextView 
+        android:id="@+id/credits"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"  />
+    
+    <LinearLayout 
+        android:id="@+id/meeting_layout"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <TextView 
+	        android:id="@+id/meeting_header"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content" 
+	    	android:text="@string/label_meeting_information"
+	    	android:textStyle="bold"  />
+        
+        <!-- A meeting row will be added here for each meeting pattern, using already made registration_meeting_row -->
+
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:id="@+id/faculty_layout"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+        <TextView 
+	        android:id="@+id/faculty_header"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/label_faculty"
+	    	android:textStyle="bold"  />
+        
+        <!-- A faculty row will be added here for each instructor, using already made registration_faculty_row -->
+
+    </LinearLayout>
+    
+    
+    <LinearLayout 
+        android:id="@+id/description_layout"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:orientation="vertical">
+        
+	    <TextView 
+	        android:id="@+id/description_header"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/label_description"
+	    	android:textStyle="bold" />
+	    
+	    <TextView 
+	        android:id="@+id/description"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"  />
+    
+	</LinearLayout>
+</LinearLayout>

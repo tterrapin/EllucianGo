@@ -114,6 +114,12 @@
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"facultySearch"]  forKey:@"urls-directory-facultySearch"];
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"studentSearch"]  forKey:@"urls-directory-studentSearch"];
         
+        if ([json objectForKey:@"notification"]) {
+            [defaults setObject:[[json objectForKey:@"notification"] objectForKey:@"url"] forKey:@"notification-url"];
+        }
+        // remove notifications enabled flag for this configuration until it is determined that notifications are enabled
+        [defaults removeObjectForKey:@"notification-enabled"];
+        
         //Google Analytics
         if([[json objectForKey:@"analytics"] objectForKey:@"ellucian"] != [NSNull null]) {
             [defaults setObject:[[json objectForKey:@"analytics"] objectForKey:@"ellucian"] forKey:@"gaTracker1"];

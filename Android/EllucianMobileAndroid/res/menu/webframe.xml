@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/share"
+        android:title="@string/share"
+        android:showAsAction="ifRoom"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+    />
+    <item
+        android:id="@+id/view_target"
+        android:showAsAction="ifRoom"
+    />
+</menu>
