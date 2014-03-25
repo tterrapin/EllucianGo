@@ -47,6 +47,17 @@
         self.typeLabel.text = nil;
     }
     self.addressLabel.text = nil;
+    
+    // Setting the address to nil if the address is set to " ". Mobile server
+    // contains a bug during save of importantant numbers where the address field can
+    // sometimes inject a space if it's supposed to be nil.
+    if (self.address) {
+        self.address = [self.address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if([self.address length] == 0) {
+            self.address = nil;
+        }
+    }
+    
     if(self.buildingId) {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"MapPOI"];
         request.predicate = [NSPredicate predicateWithFormat:@"buildingId = %@", self.buildingId];
@@ -234,7 +245,6 @@
                               JSONObjectWithData:responseData
                               options:kNilOptions
                               error:&error];
-        
         
         for ( NSDictionary *building in [json objectForKey:@"buildings"]) {
             if(!self.address && [building objectForKey:@"address"] != [NSNull null]) {

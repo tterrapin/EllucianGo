@@ -222,11 +222,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     switch(section) {
         case 0:
-            if(self.registrationTabController.ineligibleMessage) {
-                return [super tableView:tableView heightForHeaderInSection:section];
-            } else {
-                return 0.0f;
-            }
+            return 0.0f;
         default:
             return [super tableView:tableView heightForHeaderInSection:section];
     }
@@ -239,7 +235,7 @@
         {
             UITableViewCell *cell = [self tableView:tableView configureCell:indexPath];
             CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-            return height + 14;
+            return height;
             break;
         }
         default:
@@ -327,7 +323,7 @@
         }
     }
     [self.navigationController setToolbarHidden:!(count>0) animated:YES];
-    self.registerButton.enabled = self.registrationAllowed;
+    //self.registerButton.enabled = self.registrationAllowed;
     self.registerButton.title = [NSString stringWithFormat:NSLocalizedString(@"Register (%d)", @"label for register button in cart"), count];
 }
 
@@ -390,8 +386,8 @@
         NSData *responseData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
         
         NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-        int code = [httpResponse statusCode];
-        NSLog(@"put code: %d", code);
+        NSInteger code = [httpResponse statusCode];
+        NSLog(@"put code: %ld", (long)code);
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
         BOOL success = YES;
         [MBProgressHUD hideHUDForView:self.view animated:YES];

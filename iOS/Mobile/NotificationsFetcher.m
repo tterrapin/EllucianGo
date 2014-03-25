@@ -167,4 +167,12 @@ static BOOL lock;
     }
 }
 
++(void) deleteNotification:(Notification *)notification
+{
+    NSError *error;
+    NSManagedObjectContext *context = notification.managedObjectContext;
+    [context deleteObject:notification];
+    [context save:&error];
+}
+
 @end

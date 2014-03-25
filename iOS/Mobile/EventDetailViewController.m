@@ -61,7 +61,11 @@
     }
   
     self.locationLabel.text = self.location;
-    self.descriptionTextView.text = self.eventDescription;
+    if (self.eventDescription) {
+        self.descriptionTextView.text = self.eventDescription;
+    } else {
+        self.descriptionTextView.text = @" ";
+    }
     
     self.titleBackgroundView.backgroundColor = [UIColor accentColor];
     self.titleLabel.textColor = [UIColor subheaderTextColor];
@@ -94,7 +98,9 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setToolbarHidden:YES animated:NO];
+    }
     [super viewWillDisappear:animated];
 }
 
@@ -223,6 +229,111 @@
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+}
+
+- (void)dismissMasterPopover
+{
+    if (_masterPopover != nil) {
+        [_masterPopover dismissPopoverAnimated:YES];
+    }
+}
+
+-(void)selectedDetail:(id)newEvent
+          withModule:(Module*)myModule
+{
+    if ( [newEvent isKindOfClass:[Event class]] )
+    {
+        [self setEvent:(Event *)newEvent];
+        [self setModule:myModule];
+    
+        if (_masterPopover != nil) {
+            [_masterPopover dismissPopoverAnimated:YES];
+        }
+    }
+}
+
+-(void)setEvent:(Event *)event
+{
+    if (_event != event) {
+        _event = event;
+        
+        [self refreshUI];
+    }
+}
+
+-(void)refreshUI
+{
+    self.eventTitle = _event.summary;
+    self.endDate = _event.endDate;
+    self.startDate = _event.startDate;
+    self.eventTitle = _event.summary;
+    self.startDate = _event.startDate;
+    self.endDate = _event.endDate;
+    self.location = _event.location;
+    self.eventDescription = _event.description_;
+    self.allDay = [_event.allDay boolValue];
+    self.titleLabel.text = self.eventTitle;
+    
+    
+    NSDateFormatter *datetimeFormatter = [[NSDateFormatter alloc] init];
+    [datetimeFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [datetimeFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    if(self.allDay) {
+        
+        self.startDateLabel.text = [NSString stringWithFormat:@"%@, %@", [dateFormatter stringFromDate:self.startDate], NSLocalizedString(@"All Day", @"label for all day event")];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        // now build a NSDate object for the next day
+        NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+        [offsetComponents setDay:-1];
+        NSDate *nextDate = [calendar dateByAddingComponents:offsetComponents toDate:self.endDate options:0];
+        
+        self.endDateLabel.text = [NSString stringWithFormat:@"%@, %@", [dateFormatter stringFromDate:nextDate], NSLocalizedString(@"All Day", @"label for all day event")];
+    } else {
+        self.startDateLabel.text = [datetimeFormatter stringFromDate:self.startDate];
+        self.endDateLabel.text = [datetimeFormatter stringFromDate:self.endDate];
+    }
+    
+    
+    self.locationLabel.text = self.location;
+    if (self.eventDescription) {
+        self.descriptionTextView.text = self.eventDescription;
+    } else {
+        self.descriptionTextView.text = @" ";
+    }
+    
+    [self.view setNeedsDisplay];
+    
+}
+
+#pragma mark - UISplitViewDelegate methods
+-(void)splitViewController:(UISplitViewController *)svc
+    willHideViewController:(UIViewController *)aViewController
+         withBarButtonItem:(UIBarButtonItem *)barButtonItem
+      forPopoverController:(UIPopoverController *)pc
+{
+    //Grab a reference to the popover
+    self.masterPopover = pc;
+    
+    //Set the title of the bar button item
+    barButtonItem.title = self.module.name;
+    
+    //Set the bar button item as the Nav Bar's leftBarButtonItem
+    [_navBarItem setLeftBarButtonItem:barButtonItem animated:YES];
+}
+
+-(void)splitViewController:(UISplitViewController *)svc
+    willShowViewController:(UIViewController *)aViewController
+    invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    //Remove the barButtonItem.
+    [_navBarItem setLeftBarButtonItem:nil animated:YES];
+    
+    //Nil out the pointer to the popover.
+    _masterPopover = nil;
 }
 
 @end

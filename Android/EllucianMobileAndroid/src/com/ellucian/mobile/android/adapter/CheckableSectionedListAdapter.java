@@ -46,7 +46,7 @@ public class CheckableSectionedListAdapter extends SectionedListAdapter {
 		for (Adapter adapter : this.sections) {
 			CheckableCursorAdapter cursorAdapter =  (CheckableCursorAdapter)adapter;
 
-			cursorAdapter.resetCheckedState();	
+			cursorAdapter.resetCheckedStates();	
 		}
 	}
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item> 
+        <color 
+            android:color="@color/details_sub_header_border" /> 
+    </item> 
+    <item
+        android:bottom="2dp"> 
+        <color 
+            android:color="#ffffff" /> 
+    </item>
+
+</layer-list>

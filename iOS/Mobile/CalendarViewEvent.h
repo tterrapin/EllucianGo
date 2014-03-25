@@ -13,7 +13,7 @@
 @property (readwrite,assign) BOOL allDay;
 @property (nonatomic, strong) NSDictionary *userInfo;
 
-- (unsigned int)durationInMinutes;
-- (unsigned int)minutesSinceMidnight;
+- (NSUInteger)durationInMinutes;
+- (NSUInteger)minutesSinceMidnight;
 
 @end

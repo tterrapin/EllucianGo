@@ -22,6 +22,11 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "DirectoryNavigationController.h"
 #import "Module+Attributes.h"
+#import "FeedViewController.h"
+#import "FeedDetailViewController.h"
+#import "EventsViewController.h"
+#import "EventDetailViewController.h"
+
 
 @interface MenuViewController()
 
@@ -171,7 +176,7 @@
                 //Handle error
             }
             
-            countLabel.text = [NSString stringWithFormat:@"%d", count];
+            countLabel.text = [NSString stringWithFormat:@"%@", @(count)];
             [countLabel setHidden:(count == 0)];
         }
         
@@ -474,15 +479,32 @@
                 }
             }
         } else if ([newTopViewController isKindOfClass:[UISplitViewController class]]) {
+            
             UISplitViewController *split = (UISplitViewController *) newTopViewController;
+            split.presentsWithGesture = YES;
+            
             UINavigationController *controller = split.viewControllers[0];
+            UINavigationController *detailNavController = split.viewControllers[1];
+            
             UIViewController *masterController = controller.topViewController;
+            UIViewController *detailController = detailNavController.topViewController;
+            
             if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
                 split.delegate = (id)masterController;
             }
-            if([controller respondsToSelector:@selector(revealMenu:)]) {
+            if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+                split.delegate = (id)detailController;
+            }
+            if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
+                if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
+                {
+                    [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
+                }
+            }
+            
+            if([masterController respondsToSelector:@selector(revealMenu:)]) {
                 UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
-                controller.navigationItem.leftBarButtonItem = menuButton;
+                masterController.navigationItem.leftBarButtonItem = menuButton;
             }
         }
     

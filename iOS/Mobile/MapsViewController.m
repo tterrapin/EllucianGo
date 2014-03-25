@@ -16,6 +16,7 @@
 #import "POIDetailViewController.h"
 #import "MapPOIType.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "SlidingViewController.h"
 
 @interface MapsViewController ()
 
@@ -47,6 +48,9 @@
     } else {
         [self fetchMapsInBackground];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuOpened:) name:kSlidingViewOpenMenuAppearsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuClosed:) name:kSlidingViewTopResetNotification object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -538,4 +542,15 @@
 {
     [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionSearch withLabel:@"Search" withValue:nil forModuleNamed:nil];
 }
+
+-(void) menuOpened:(id)sender
+{
+    self.mapView.scrollEnabled = NO;
+}
+
+-(void) menuClosed:(id)sender
+{
+    self.mapView.scrollEnabled = YES;
+}
+
 @end

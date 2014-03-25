@@ -138,7 +138,7 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	int rowCount = [self tableView:tableView numberOfRowsInSection:section];
+	NSInteger rowCount = [self tableView:tableView numberOfRowsInSection:section];
     if(rowCount > 0) {
         switch(section) {
             case 0:

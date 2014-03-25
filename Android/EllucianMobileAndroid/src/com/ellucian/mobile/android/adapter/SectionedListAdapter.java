@@ -55,7 +55,14 @@ public class SectionedListAdapter extends BaseAdapter {
 			total += adapter.getCount() + 1;
 		return total;
 	}
-
+	
+	public int getCountWithoutHeaders() {
+		int total = 0;
+		for (Adapter adapter : this.sections)
+			total += adapter.getCount();
+		return total;
+	}
+ 
 	@Override
 	public int getViewTypeCount() {
 		// assume that headers count as one, then total all sections

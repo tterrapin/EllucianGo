@@ -11,11 +11,19 @@
 #import <EventKitUI/EventKitUI.h>
 #import <MessageUI/MessageUI.h>
 #import <Accounts/Accounts.h>
-#import "Event.h"
 #import "UIColor+SchoolCustomization.h"
 #import "Module.h"
+#import "Event.h"
+#import "DetailSelectionDelegate.h"
+#import "EventsViewController.h"
 
-@interface EventDetailViewController : UIViewController<EKEventEditViewDelegate,UIPopoverControllerDelegate>
+@interface EventDetailViewController : UIViewController<EKEventEditViewDelegate,
+        UIPopoverControllerDelegate,
+        DetailSelectionDelegate,
+        UISplitViewControllerDelegate>
+
+@property (nonatomic, strong) Event *event;
+@property (nonatomic, strong) EventsViewController *masterController;
 
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) NSDate *startDate;
@@ -33,11 +41,15 @@
 @property (weak, nonatomic) IBOutlet UIView *titleBackgroundView;
 
 @property (strong, nonatomic) Module *module;
-    @property (weak, nonatomic) IBOutlet NSLayoutConstraint *descriptionHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UILabel *startDateLabelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endDateLabelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabelLabel;
 
+
+@property (nonatomic, weak) IBOutlet UINavigationItem *navBarItem;
+@property (nonatomic, strong) UIPopoverController *masterPopover;
+
+- (void)dismissMasterPopover;
 
 @end

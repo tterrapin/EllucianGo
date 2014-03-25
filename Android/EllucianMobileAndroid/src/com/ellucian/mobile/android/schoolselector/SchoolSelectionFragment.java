@@ -31,9 +31,12 @@ import com.ellucian.mobile.android.client.configurationlist.ConfigurationListRes
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Utils;
 
+import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.analytics.tracking.android.Logger.LogLevel;
 
 public class SchoolSelectionFragment extends EllucianFragment {
 
@@ -97,12 +100,13 @@ public class SchoolSelectionFragment extends EllucianFragment {
 				public void onItemClick(AdapterView<?> list, View v, int position, long id) {
 					
 					GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(SchoolSelectionFragment.this.activity);
-			        gaInstance.setDebug(true);
+			        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
 			        String trackerId1 = Utils.getStringFromPreferences(SchoolSelectionFragment.this.activity, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
 			        Tracker gaTracker1;
 					if(trackerId1 != null) {
 			        	gaTracker1 = gaInstance.getTracker(trackerId1);
-			        	gaTracker1.sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Choose Institution", null);
+			        	gaTracker1.send(MapBuilder
+							    .createEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Choose Institution", null).build());
 			        }
 					
 					final Configuration configuration = (Configuration) listView.getAdapter().getItem(position);
@@ -195,12 +199,13 @@ public class SchoolSelectionFragment extends EllucianFragment {
 			
 			//Google Analytics - need to wait for the tracker id to use before logging, which is why its here and not onStart
 			GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(activity);
-	        gaInstance.setDebug(true);
+	        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
 	        String trackerId1 = Utils.getStringFromPreferences(activity, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
 	        Tracker gaTracker1;
 			if(trackerId1 != null) {
 	        	gaTracker1 = gaInstance.getTracker(trackerId1);
-	        	gaTracker1.sendView("Show Institution List");
+	        	String appScreen = "Show Institution List";
+				gaTracker1.send(MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen).build());
 	        }
 
 			if (configurationList != null && !configurationList.isEmpty()) {

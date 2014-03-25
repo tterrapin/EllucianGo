@@ -15,8 +15,7 @@
         android:paddingRight="6dp"
         android:paddingBottom="10dp"
         android:focusable="false"
-		android:focusableInTouchMode="false"
-		android:onClick="onCheckboxClicked" />
+		android:focusableInTouchMode="false" />
 	
     <LinearLayout
         android:id="@+id/info_container"

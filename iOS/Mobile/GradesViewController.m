@@ -167,7 +167,7 @@
         default: {
             GradeTerm *term = [self.terms objectAtIndex:tableView.tag];
             GradeCourse *course = [term.courses objectAtIndex:section - 1];
-            int count = [course.grades count];
+            NSUInteger count = [course.grades count];
             if(count == 0) return 1;
             else return count;
         }

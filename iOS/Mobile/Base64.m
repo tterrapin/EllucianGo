@@ -13,13 +13,13 @@ static char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
 @implementation Base64
 
 +(NSString *)encode:(NSData *)plainText {
-    int encodedLength = (4 * (([plainText length] / 3) + (1 - (3 - ([plainText length] % 3)) / 3))) + 1;
+    NSInteger encodedLength = (4 * (([plainText length] / 3) + (1 - (3 - ([plainText length] % 3)) / 3))) + 1;
     unsigned char *outputBuffer = malloc(encodedLength);
     unsigned char *inputBuffer = (unsigned char *)[plainText bytes];
     
     NSInteger i;
     NSInteger j = 0;
-    int remain;
+    NSInteger remain;
     
     for(i = 0; i < [plainText length]; i += 3) {
         remain = [plainText length] - i;

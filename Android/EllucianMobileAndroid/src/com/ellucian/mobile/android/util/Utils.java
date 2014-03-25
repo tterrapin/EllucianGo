@@ -37,7 +37,9 @@ public class Utils {
 	public static final String SECURITY = "security";
 	public static final String SECURITY_URL = "securityUrl";
 	public static final String NOTIFICATION = "notification";
-	public static final String NOTIFICATION_URL = "notificationUrl";
+	public static final String NOTIFICATION_NOTIFICATIONS_URL = "notificationNotificationsUrl";
+	public static final String NOTIFICATION_REGISTRATION_URL = "notificationRegistrationUrl";
+	public static final String NOTIFICATION_DELIVERED_URL = "notificationDeliveredUrl";
 	public static final String NOTIFICATION_ENABLED = "notificationEnabled";
 	public static final String CONFIGURATION = "configuration";
 	public static final String CONFIGURATION_NAME = "configurationName";

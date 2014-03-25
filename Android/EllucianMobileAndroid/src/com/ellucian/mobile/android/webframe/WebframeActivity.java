@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.widget.ShareActionProvider;
@@ -52,12 +53,20 @@ public class WebframeActivity extends EllucianActivity {
 	}
 	
 	// This is to ensure no problems with multiple Webframe modules
+	// Remove from parent to prevent "Error: WebView.destroy() called while still attached "
+	// http://stackoverflow.com/questions/11995270/error-webview-destroy-called-while-still-attached
 	@Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (webView != null)
-            webView.destroy();
-    }
+	public void onDestroy() {
+		if (webView != null) {
+			ViewGroup parent = (ViewGroup) webView.getParent();
+			if (parent != null) {
+				parent.removeView(webView);
+			}
+			webView.removeAllViews();
+			webView.destroy();
+		}
+		super.onDestroy();
+	}
 	
 	protected void handleError(SslErrorHandler handler) {
 		this.handler = handler;

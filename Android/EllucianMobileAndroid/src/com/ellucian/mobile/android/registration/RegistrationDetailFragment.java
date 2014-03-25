@@ -172,6 +172,12 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 		return rootView;
 	}
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		sendView("Registration Section Detail", getEllucianActivity().moduleName);
+	}
+	
 }
 
 

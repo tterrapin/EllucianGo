@@ -15,6 +15,8 @@
 #import "VersionChecker.h"
 #import "GAI.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #define LIVE_CONFIGURATIONS_URL @"https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations"
 
@@ -104,7 +106,7 @@
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     if(trackingId1) {
         id tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
-        [tracker1 sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionList_Select withLabel:@"Choose Institution" withValue:nil];
+        [tracker1 send:[[GAIDictionaryBuilder createEventWithCategory:kAnalyticsCategoryUI_Action action:kAnalyticsActionList_Select label:@"Choose Institution" value:nil] build]];
     }
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -190,7 +192,10 @@
                         NSString *trackingId1 = [[json objectForKey:@"analytics"] objectForKey:@"ellucian"];
                         if(trackingId1) {
                             id tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
-                            [tracker1 sendView:@"Show Institution List"];
+                            GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createAppView];
+                            [builder set:@"Show Institution List" forKey:kGAIScreenName];
+                            NSMutableDictionary *buildDictionary = [builder build];
+                            [tracker1 send:buildDictionary];
                         }
                     }
                     

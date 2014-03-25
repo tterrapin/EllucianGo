@@ -65,7 +65,18 @@
     
     self.title = self.module.name;
     [self fetchEvents];
+
     
+    if ([self.fetchedResultsController.fetchedObjects count] > 0 ) {
+        
+        NSIndexPath * head = [NSIndexPath indexPathForRow:0 inSection:0];
+        Event *selectedEvent = [self.fetchedResultsController objectAtIndexPath:head];
+        
+        if (_detailSelectionDelegate && selectedEvent) {
+            [_detailSelectionDelegate selectedDetail:selectedEvent withModule:self.module];
+        }
+    }
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -170,7 +181,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"Show Event Detail" sender:tableView];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        Event *selectedEvent = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+        if (_detailSelectionDelegate) {
+            [_detailSelectionDelegate selectedDetail:selectedEvent withModule:self.module];
+        }
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self performSegueWithIdentifier:@"Show Event Detail" sender:tableView];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -322,7 +341,6 @@
 
     [importContext performBlock: ^{
         
-        
         //download data
         NSError *error;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -330,7 +348,6 @@
         
         if(responseData)
         {
-
 
             NSDictionary* json = [NSJSONSerialization
                                   JSONObjectWithData:responseData
@@ -556,7 +573,6 @@
     }
 
 }
-
 
 - (void)reloadData
 {

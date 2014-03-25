@@ -551,9 +551,16 @@ public class ConfigurationUpdateService extends IntentService {
 		JSONObject notification = null;
 		try {
 		    notification = jsonConfiguration.getJSONObject("notification");
-		    if (notification != null && notification.has("url")) {
-			    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
-			        Utils.NOTIFICATION_URL, notification.getString("url"));
+		    if (notification != null && notification.has("urls")) {
+			    JSONObject urls = notification.getJSONObject("urls");
+			    if (urls != null) {
+				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
+					        Utils.NOTIFICATION_NOTIFICATIONS_URL, notification.getString("notifications"));
+				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
+					        Utils.NOTIFICATION_REGISTRATION_URL, notification.getString("registration"));
+				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
+					        Utils.NOTIFICATION_DELIVERED_URL, notification.getString("delivered"));
+			    }
 		    }
 		} catch(JSONException e) {
 			// ignore this for now

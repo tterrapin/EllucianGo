@@ -42,6 +42,7 @@ import com.ellucian.mobile.android.client.news.NewsResponse;
 import com.ellucian.mobile.android.client.notifications.NotificationsResponse;
 import com.ellucian.mobile.android.client.numbers.NumbersResponse;
 import com.ellucian.mobile.android.client.registration.CartResponse;
+import com.ellucian.mobile.android.client.registration.EligibilityResponse;
 import com.ellucian.mobile.android.client.registration.SearchResponse;
 import com.ellucian.mobile.android.client.registration.TermsResponse;
 import com.google.gson.Gson;
@@ -532,6 +533,11 @@ public class MobileClient {
 	public SearchResponse findSections(String requestUrl) {
 		Log.d(TAG, "Searching for sections");
 		return getResponseObject(SearchResponse.class, requestUrl,  true);
+	}
+	
+	public EligibilityResponse getEligibility(String requestUrl) {
+		Log.d(TAG, "Retrieveing Eligibility");
+		return getResponseObject(EligibilityResponse.class, requestUrl,  true);
 	}
 	
 	/** Url Utility Methods  */

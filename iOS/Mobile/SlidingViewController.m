@@ -15,6 +15,11 @@
 #import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 
+#define kSlidingViewMenuOpenTargetWidth 44.0f
+#define kSlidingViewMenuVelocityX 100.0f
+#define kSlidingViewMenuPadWitdh 320.0f
+#define kSlidingViewMenuPhoneWitdh 280.0f
+
 @interface SlidingViewController()
 
 @property (nonatomic, strong) UIView *topViewSnapshot;
@@ -160,7 +165,14 @@
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         self.initialTouchPositionX = currentTouchPositionX;
         self.initialHoizontalCenter = self.topView.center.x;
-    } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+    }
+    
+    //if the menu isn't showing, only respond to left edge gestures, to not interfere with panning gestures of each view controller
+    if(![self menuShowing] && self.initialTouchPositionX > kSlidingViewMenuOpenTargetWidth) {
+        return;
+    }
+    
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
         CGFloat panAmount = self.initialTouchPositionX - currentTouchPositionX;
         CGFloat newCenterPosition = self.initialHoizontalCenter - panAmount;
         
@@ -173,9 +185,9 @@
         [self topViewHorizontalCenterDidChange:newCenterPosition];
     } else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
         CGPoint currentVelocityPoint = [recognizer velocityInView:self.view];
-        CGFloat currentVelocityX     = currentVelocityPoint.x;
+        CGFloat currentVelocityX = currentVelocityPoint.x;
         
-        if ([self menuShowing] && currentVelocityX > 100) {
+        if ([self menuShowing] && currentVelocityX > kSlidingViewMenuVelocityX) {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setBool:YES forKey:@"menu-discovered"];
             [defaults synchronize];
@@ -212,7 +224,7 @@
         self.topViewIsOffScreen = NO;
         [self addTopViewSnapshot];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SlideOpenTopController" object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSlidingViewOpenTopControllerNotification object:self userInfo:nil];
         });
     }];
 }
@@ -240,7 +252,7 @@
         self.topViewIsOffScreen = YES;
         [self addTopViewSnapshot];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"SlideChangeTopController" object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSlidingViewChangeTopControllerNotification object:self userInfo:nil];
         });
     }];
 }
@@ -328,9 +340,9 @@
 - (CGFloat)anchorRightTopViewCenter
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return self.resettedCenter + 320.0;
+        return self.resettedCenter + kSlidingViewMenuPadWitdh;
     } else {
-        return self.resettedCenter + 280.0;
+        return self.resettedCenter + kSlidingViewMenuPhoneWitdh;
     }
 }
 
@@ -362,7 +374,7 @@
 - (void)menuWillAppear
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SlideOpenMenuAppears" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSlidingViewOpenMenuAppearsNotification object:self userInfo:nil];
     });
     [self.menuViewController viewWillAppear:NO];
     self.menuView.hidden = NO;
@@ -374,7 +386,7 @@
 - (void)topDidReset
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SlideTopReset" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSlidingViewTopResetNotification object:self userInfo:nil];
     });
     [self.topView removeGestureRecognizer:self.resetTapGesture];
     [self removeTopViewSnapshot];
@@ -507,6 +519,10 @@
         // prevent recognizing touches on the slider
         return NO;
     }
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
 

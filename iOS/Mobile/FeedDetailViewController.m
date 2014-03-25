@@ -9,9 +9,10 @@
 #import "FeedDetailViewController.h"
 #import "SafariActivity.h"
 #import "AppearanceChanger.h"
+#import "FeedCategory.h"
 
 @interface FeedDetailViewController ()
-@property (nonatomic, strong) UIPopoverController *popover;
+
 @end
 
 @implementation FeedDetailViewController
@@ -32,6 +33,7 @@
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.dateLabel.textAlignment = NSTextAlignmentRight;
         self.descriptionTextView.textAlignment = NSTextAlignmentRight;
+        self.categoryValue.textAlignment = NSTextAlignmentRight;
     }
     
     UIBarButtonItem *shareButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share:)];
@@ -42,6 +44,17 @@
      self.navigationController.toolbar.translucent = NO;
     
     self.titleLabel.text = self.itemTitle;
+    
+    NSMutableArray *categoryValues = [[NSMutableArray alloc] init];
+    for(FeedCategory* value in self.itemCategory) {
+        [categoryValues addObject:value.name];
+    }
+    if ( [self.itemCategory count] > 0 ) {
+        self.categoryValue.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+    } else {
+        self.categoryValue.text = @"";
+    }
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -54,12 +67,13 @@
         self.imageHeightConstraint.constant = 0;
         self.imageWidthConstraint.constant = 0;
         self.horizontalSpaceConstraint.constant = 0;
+        
     }
-    //self.feedNameLabel.text = self.feedName;
     
     self.backgroundView.backgroundColor = [UIColor accentColor];
     self.titleLabel.textColor = [UIColor subheaderTextColor];
     self.dateLabel.textColor = [UIColor subheaderTextColor];
+    self.categoryValue.textColor = [UIColor subheaderTextColor];
     
     //hack to set description to be correct size
 //    CGRect frame = self.descriptionTextView.frame;
@@ -71,7 +85,9 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setToolbarHidden:YES animated:NO];
+    }
     [super viewWillDisappear:animated];
 }
 
@@ -124,8 +140,6 @@
                                  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
         }
 
-    
-    
  }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
@@ -140,6 +154,115 @@
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+}
+
+- (void)dismissMasterPopover
+{
+    if (_masterPopover != nil) {
+        [_masterPopover dismissPopoverAnimated:YES];
+    }
+}
+
+-(void)selectedDetail:(id)newFeed withModule:(Module*)myModule
+{
+    if ( [newFeed isKindOfClass:[Feed class]] )
+    {
+        [self setFeed:(Feed *)newFeed];
+        [self setModule:myModule];
+        
+        if (_masterPopover != nil) {
+            [_masterPopover dismissPopoverAnimated:YES];
+        }
+    }
+}
+
+-(void)setFeed:(Feed *)feed
+{
+    if (_feed != feed) {
+        _feed = feed;
+        
+        [self refreshUI];
+    }
+}
+
+-(void)refreshUI
+{
+    _titleLabel.text = _feed.title;
+    _dateLabel.text = _feed.dateLabel;
+    _descriptionTextView.text = _feed.description;
+    _itemTitle = _feed.title;
+    _itemContent = _feed.content;
+    _itemLink = [_feed.link stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    _itemPostDateTime = _feed.postDateTime;
+    _itemCategory = _feed.category;
+    
+    if ( _feed.logo ) {
+        _itemImageUrl = _feed.logo;
+    }
+    else {
+        _itemImageUrl = nil;
+    }
+    
+    self.titleLabel.text = self.itemTitle;
+    
+    NSMutableArray *categoryValues = [[NSMutableArray alloc] init];
+    for(FeedCategory* value in _itemCategory) {
+        [categoryValues addObject:value.name];
+    }
+    if ( [_itemCategory count] > 0 ) {
+        self.categoryValue.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+    } else {
+        self.categoryValue.text = @"";
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    self.dateLabel.text = [dateFormatter stringFromDate:self.itemPostDateTime];
+    self.descriptionTextView.text = self.itemContent;
+    if(self.itemImageUrl) {
+        self.imageHeightConstraint.constant = 120;
+        self.imageWidthConstraint.constant = 120;
+        self.horizontalSpaceConstraint.constant = 8;
+        [self.imageView loadImageFromURLString: self.itemImageUrl];
+        
+    } else {
+        self.imageHeightConstraint.constant = 0;
+        self.imageWidthConstraint.constant = 0;
+        self.horizontalSpaceConstraint.constant = 0;
+    }
+    
+    [self.view setNeedsDisplay];
+    
+}
+
+#pragma mark - UISplitViewDelegate methods
+-(void)splitViewController:(UISplitViewController *)svc
+    willHideViewController:(UIViewController *)aViewController
+         withBarButtonItem:(UIBarButtonItem *)barButtonItem
+      forPopoverController:(UIPopoverController *)pc
+{
+    //Grab a reference to the popover
+    self.masterPopover = pc;
+    
+    //Set the title of the bar button item
+    //barButtonItem.title = @"University News";
+    barButtonItem.title = self.module.name;
+    
+    //Set the bar button item as the Nav Bar's leftBarButtonItem
+    [_navBarItem setLeftBarButtonItem:barButtonItem animated:YES];
+}
+
+-(void)splitViewController:(UISplitViewController *)svc
+    willShowViewController:(UIViewController *)aViewController
+ invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    //Remove the barButtonItem.
+    [_navBarItem setLeftBarButtonItem:nil animated:YES];
+    
+    
+    //Nil out the pointer to the popover.
+    _masterPopover = nil;
 }
 
 @end

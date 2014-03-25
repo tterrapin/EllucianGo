@@ -109,7 +109,7 @@
 {
     NSInteger localizedIndex = [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
     NSArray *localizedIndexTitles = [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
-    for(int currentLocalizedIndex = localizedIndex; currentLocalizedIndex > 0; currentLocalizedIndex--) {
+    for(NSInteger currentLocalizedIndex = localizedIndex; currentLocalizedIndex > 0; currentLocalizedIndex--) {
         for(int frcIndex = 0; frcIndex < [[_fetchedResultsController sections] count]; frcIndex++) {
             id<NSFetchedResultsSectionInfo> sectionInfo = [[_fetchedResultsController sections] objectAtIndex:frcIndex];
             NSString *indexTitle = sectionInfo.indexTitle;

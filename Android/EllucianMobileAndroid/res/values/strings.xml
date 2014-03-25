@@ -95,6 +95,7 @@
     
     <string name="default_image">Image</string>
     <string name="no_data">No data</string>
+    <string name="no_results_found">No results found.</string>
     <string name="share">Share</string>
     <string name="terms">Terms</string>
     <string name="layers">Layers</string>
@@ -267,18 +268,27 @@
     <string name="registration_tab_registered">Registered</string>
     <string name="registration_register">Register</string>
     <string name="registration_credits">Credits</string>
-    <string name="registration_results_important">Important!</string>
+    <string name="registration_results_important">Critical</string>
+    <string name="registration_results_important_sub">These issues may have prevented registration.</string>
     <string name="registration_results_registered">Registered!</string>
-    <string name="registration_results_warning">Warning!</string>
+    <string name="registration_results_success_sub">You registered for these courses.</string>
+    <string name="registration_results_warning">We\'re Sorry.</string>
+    <string name="registration_results_failure_sub">We couldn\'t register these courses.</string>
     <string name="registration_dialog_title">Title</string>
     <string name="registration_dialog_register_message">Are you sure you want to register these sections?</string>
-    <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart?</string>
-    <string name="registration_search_header">Select a Term and enter Section ID or CRN</string>
-    <string name="registration_search_field_hint">Section ID, CRN</string>
+    <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart? Any items added to your cart are only for the current session.</string>
+    <string name="registration_dialog_variable_credits_message">Please set the number of credits.</string>
+    <string name="registration_search_header">Select a Term and enter Course Keywords.</string>
+    <string name="registration_search_field_hint">Course Keywords</string>
     <string name="registration_add_to_cart">Add To Cart</string>
+    <string name="registration_added_to_cart_success">added to cart.</string>
+    <string name="registration_added_to_cart_failed">failed to add to cart. Missing data or section already exists in cart.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
-    
+    <string name="registration_default_eligibility_message">Can not register at this time.</string>
+    <string name="registration_were_sorry">We\'re sorry</string>
+    <string name="registration_ineligible_to_register">Ineligible for Registration</string>
+        
 	<!-- Versioning -->
 	<string name="version_upgrade">Upgrade</string>
 	<string name="version_outdated">Outdated</string>

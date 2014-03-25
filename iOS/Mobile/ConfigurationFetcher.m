@@ -23,7 +23,7 @@
     NSHTTPURLResponse *response = nil;
     NSError *error = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:postRequest returningResponse:&response error:&error];
-    NSLog(@"Status code from downloading configuration: %d", [response statusCode]);
+    NSLog(@"Status code from downloading configuration: %ld", (long)[response statusCode]);
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     if([response statusCode] == 404 || [response statusCode] == 401 || [response statusCode] == 403) {
         NSLog(@"Unable to download data from %@", configurationUrl);
@@ -115,7 +115,9 @@
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"studentSearch"]  forKey:@"urls-directory-studentSearch"];
         
         if ([json objectForKey:@"notification"]) {
-            [defaults setObject:[[json objectForKey:@"notification"] objectForKey:@"url"] forKey:@"notification-url"];
+            [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"notifications"] forKey:@"notification-notifications-url"];
+            [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"registration"] forKey:@"notification-registration-url"];
+            [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"delivered"] forKey:@"notification-delivered-url"];
         }
         // remove notifications enabled flag for this configuration until it is determined that notifications are enabled
         [defaults removeObjectForKey:@"notification-enabled"];

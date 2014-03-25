@@ -15,7 +15,8 @@
 #import "CoursesTabBarViewController.h"
 #import "HomeViewController.h"
 
-@interface MenuViewController : UIViewController<UIAlertViewDelegate, UITableViewDelegate,UITableViewDataSource>
+
+@interface MenuViewController : UIViewController<UIAlertViewDelegate, UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

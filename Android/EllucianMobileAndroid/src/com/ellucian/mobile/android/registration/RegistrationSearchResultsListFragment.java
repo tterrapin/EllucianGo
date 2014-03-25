@@ -18,10 +18,8 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.client.registration.Section;
-import com.ellucian.mobile.android.util.Extra;
 
 public class RegistrationSearchResultsListFragment extends EllucianDefaultListFragment {
-	private static final String TAG = RegistrationSearchResultsListFragment.class.getSimpleName();
 	
 	protected RegistrationActivity activity;
 	protected Button addToCartButton;
@@ -34,15 +32,10 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_search_results_list, container, false);
 		addToCartButton = (Button) rootView.findViewById(R.id.add_to_cart);
-		Bundle bundle = getArguments();
-		if (bundle != null) {
-			int emptyTextResId = bundle.getInt("emptyTextResId");
-			if (emptyTextResId != 0) {
-				TextView emptyView = (TextView) rootView.findViewById(android.R.id.empty);
-				emptyView.setText(emptyTextResId);
-			}
-		}
 
+		TextView emptyView = (TextView) rootView.findViewById(android.R.id.empty);
+		emptyView.setText(R.string.no_results_found);
+		
 		return rootView;
 	}
 	
@@ -82,17 +75,21 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (getListAdapter() != null && !((CheckableSectionedListAdapter)getListAdapter()).getCheckedPositions().isEmpty()) {
-			showAddToCartButton(true);
+		CheckableSectionedListAdapter adapter = (CheckableSectionedListAdapter) getListAdapter();
+		if (adapter != null && !adapter.getCheckedPositions().isEmpty()) {
+			showAddToCartButton(true, adapter.getCheckedPositions().size());
 		} else {
-			showAddToCartButton(false);
+			showAddToCartButton(false, 0);
 		}
 		
 	}
 		
-	public void showAddToCartButton(boolean show) {
+	public void showAddToCartButton(boolean show, int numberShown) {
 		
 		if (show) {
+			if (numberShown > 0) {
+				addToCartButton.setText(getString(R.string.registration_add_to_cart)  + " (" + numberShown + ")");
+			}
 			if (!addToCartButton.isShown()) {
 				addToCartButton.setVisibility(View.VISIBLE);
 			}

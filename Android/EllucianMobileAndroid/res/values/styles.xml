@@ -92,11 +92,24 @@
     </style>
     <style name="detailContent">
         <item name="android:textSize">@dimen/detail_content_text_size</item>
-        <item name="android:typeface">serif</item>
+        <!-- <item name="android:typeface">serif</item> -->
     </style>
     <style name="detailContentLabel" parent="@style/detailContent">
         <item name="android:textStyle">italic</item>
         <item name="android:paddingRight">4dp</item>
+    </style>
+    <style name="detailContentArea">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/content_padding</item>
+        <item name="android:paddingRight">@dimen/content_padding</item>
+        <item name="android:paddingBottom">@dimen/content_padding</item>
+    </style>
+    <style name="detailContentHeader">
+        <item name="android:background">@drawable/detail_sub_header_bottom_border_2dp</item>
+        <item name="android:paddingBottom">@dimen/content_padding</item>
+        <item name="android:paddingTop">@dimen/content_padding</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="detailDate">
         <item name="android:textColor">@color/detail_date_text_color</item>
@@ -207,5 +220,5 @@
 	    <item name="android:layout_marginBottom">8dp</item>
 	    <item name="android:background">@drawable/right_border_1dp</item>
     </style>
-    
+
 </resources>

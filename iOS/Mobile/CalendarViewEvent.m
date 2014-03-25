@@ -3,15 +3,15 @@
 #define DATE_COMPONENTS (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit)
 #define CURRENT_CALENDAR [NSCalendar currentCalendar]
 
-static const unsigned int MINUTES_IN_HOUR = 60;
-static const unsigned int DAY_IN_MINUTES = 1440;
+static const NSUInteger MINUTES_IN_HOUR = 60;
+static const NSUInteger DAY_IN_MINUTES = 1440;
 
 @implementation CalendarViewEvent
 
 #define DATE_CMP(X, Y) ([X year] == [Y year] && [X month] == [Y month] && [X day] == [Y day])
 
-- (unsigned int)minutesSinceMidnight {
-	unsigned int fromMidnight = 0;
+- (NSUInteger)minutesSinceMidnight {
+	NSUInteger fromMidnight = 0;
 	
 	NSDateComponents *displayComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_displayDate];
 	NSDateComponents *startComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_start];
@@ -23,8 +23,8 @@ static const unsigned int DAY_IN_MINUTES = 1440;
 	return fromMidnight;
 }
 
-- (unsigned int)durationInMinutes {
-	unsigned int duration = 0;
+- (NSUInteger)durationInMinutes {
+	NSUInteger duration = 0;
 	
 	NSDateComponents *displayComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_displayDate];
 	NSDateComponents *startComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_start];

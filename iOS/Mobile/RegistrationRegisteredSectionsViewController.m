@@ -32,7 +32,7 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self sendView:@"Registration Cart list" forModuleNamed:self.module.name];
+    [self sendView:@"Registration Registered Sections list" forModuleNamed:self.module.name];
 }
 
 - (void)viewDidLoad

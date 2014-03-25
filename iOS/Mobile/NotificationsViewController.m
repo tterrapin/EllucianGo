@@ -34,12 +34,14 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
+    [self fetchNotifications];
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];    
-    [self fetchNotifications];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -128,8 +130,9 @@
 
 }
 
+#pragma mark fetched results controller delegate methods
+
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
     [self.tableView beginUpdates];
 }
 
@@ -187,7 +190,6 @@
     NSString *userid = [CurrentUser userid];
     if(userid) {
         NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"notifications"], [[CurrentUser userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-
         [NotificationsFetcher fetchNotificationsFromURL:urlString withManagedObjectContext:self.module.managedObjectContext showLocalNotification:NO];
     }
     
@@ -212,6 +214,40 @@
 //        detailController.notification = notification;
 //        detailController.module = self.module;
 //    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    Notification *notification = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    return ![notification.sticky boolValue];
+}
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        Notification* notification = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [NotificationsFetcher deleteNotification:notification];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                target:self
+                                                                                action:@selector(dismissRow:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+-(void) dismissRow:(id) sender
+{
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+    [cell setEditing:NO animated:YES];
+    [self.tableView reloadData];
 }
 
 

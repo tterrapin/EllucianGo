@@ -10,6 +10,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+ImageWithUIView.h"
 
+#define kSlidingViewOpenMenuAppearsNotification @"SlidingViewOpenMenuAppearsNotification"
+#define kSlidingViewTopResetNotification @"SlidingViewTopResetNotification"
+#define kSlidingViewOpenTopControllerNotification @"SlidingViewOpenTopControllerNotification"
+#define kSlidingViewChangeTopControllerNotification @"SlidingViewChangeTopControllerNotification"
+
 @class MenuViewController;
 
 @interface SlidingViewController : UIViewController <UIGestureRecognizerDelegate> {

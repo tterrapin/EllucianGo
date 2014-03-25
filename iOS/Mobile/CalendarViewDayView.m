@@ -237,8 +237,8 @@ static const unsigned int ARROW_RIGHT                    = 1;
                     CalendarViewEvent *event1 = (CalendarViewEvent *)ev1;
                     CalendarViewEvent *event2 = (CalendarViewEvent *)ev2;
                     
-                    int v1 = [event1 minutesSinceMidnight];
-                    int v2 = [event2 minutesSinceMidnight];
+                    NSUInteger v1 = [event1 minutesSinceMidnight];
+                    NSUInteger v2 = [event2 minutesSinceMidnight];
                     
                     if (v1 < v2) {
                         return NSOrderedAscending;
@@ -247,8 +247,8 @@ static const unsigned int ARROW_RIGHT                    = 1;
                     } else {
                         /* Event start time is the same, compare by duration.
                          */
-                        int d1 = [event1 durationInMinutes];
-                        int d2 = [event2 durationInMinutes];
+                        NSUInteger d1 = [event1 durationInMinutes];
+                        NSUInteger d2 = [event2 durationInMinutes];
                         
                         if (d1 < d2) {
                             /*
@@ -604,7 +604,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	_lineX = maxTextWidth + (maxTextWidth * 0.3);
 	
 	NSArray *subviews = self.subviews;
-	int max = [subviews count];
+	NSUInteger max = [subviews count];
 	CalendarViewDayEventView *curEv = nil, *prevEv = nil, *firstEvent = nil;
 	const CGFloat spacePerMinute = (_lineY[1] - _lineY[0]) / 60.f;
 	

@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSMutableDictionary *thumbImageCache;
 @property (nonatomic, strong) FeedFilterViewController *filterPicker;
 @property (nonatomic, strong) UIPopoverController *filterPickerPopover;
+//@property (nonatomic, strong) UIPopoverController *masterPopoverController;
 
 @end
 
@@ -48,8 +49,8 @@
         detailController.itemContent = feed.content;
         detailController.itemLink = [feed.link stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         detailController.itemPostDateTime = feed.postDateTime;
+        detailController.itemCategory = feed.category;
         detailController.itemImageUrl = feed.logo;
-//        detailController.feedName = self.feedModule.name;
         detailController.module = self.module;
     }
 }
@@ -63,6 +64,16 @@
     
     self.title = self.module.name;
     [self fetchFeeds];
+    
+    if ([self.fetchedResultsController.fetchedObjects count] > 0 ) {
+    
+        NSIndexPath * head = [NSIndexPath indexPathForRow:0 inSection:0];
+        Feed *selectedFeed = [self.fetchedResultsController objectAtIndexPath:head];
+    
+        if (_detailSelectionDelegate && selectedFeed) {
+            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+        }
+    }
     
 }
 
@@ -231,7 +242,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"Show Feed Detail" sender:tableView];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        Feed *selectedFeed = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+        if (_detailSelectionDelegate) {
+            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+        }
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self performSegueWithIdentifier:@"Show Feed Detail" sender:tableView];
+    }
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -360,6 +378,20 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     UITableView *tableView = [self tableViewForFetchedResultsController:controller];
     [tableView endUpdates];
+    
+    if ([controller.fetchedObjects count] > 0 ) {
+        
+        NSIndexPath * head = [NSIndexPath indexPathForRow:0 inSection:0];
+        Feed *selectedFeed = [controller objectAtIndexPath:head];
+        
+        if (_detailSelectionDelegate && selectedFeed) {
+            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+        }
+    } else if (_detailSelectionDelegate) {
+        [_detailSelectionDelegate selectedDetail:nil withModule:self.module];
+    }
+    
+    
 }
 #pragma mark - fetch configuration
 

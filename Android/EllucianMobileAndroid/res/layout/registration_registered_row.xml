@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/registration_row_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    style="@style/listRow" >
+	
+    <LinearLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textDirection="firstStrong"
+        android:orientation="vertical" 
+        android:paddingLeft="6sp"
+        android:paddingStart="6sp" >
+        
+        <TextView
+	        android:id="@+id/course_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:id="@+id/section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"  >
+	        
+	        <TextView
+	            android:id="@+id/instructor"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        
+	        <TextView
+		        android:id="@+id/instructor_credits_separator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/line_speparator"
+		        android:textStyle="bold"
+		        android:paddingLeft="4dp"
+	            android:paddingStart="4dp" 
+		        android:paddingRight="4dp"
+	            android:paddingEnd="4dp" />
+	          
+	        <TextView
+		        android:id="@+id/credits"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+				
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"  >
+	        
+	        <TextView
+	            android:id="@+id/meetings"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        
+	        <TextView
+		        android:id="@+id/meetings_type_separator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/line_speparator"
+		        android:textStyle="bold"
+		        android:paddingLeft="4dp"
+	            android:paddingStart="4dp" 		       
+	            android:paddingRight="4dp"
+	            android:paddingEnd="4dp" />
+	         
+	        <TextView
+		        android:id="@+id/type"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+			
+	    </LinearLayout>
+
+	</LinearLayout>
+	
+</LinearLayout>

@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -52,6 +52,8 @@
         <meta-data
     		android:name="com.google.android.maps.v2.API_KEY"
     		android:value="AIzaSyAYa_aPD3dNq7p3-HYE59-BXhaoPBlLfiA"/>
+        
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         
         <provider
             android:name="com.ellucian.mobile.android.provider.EllucianProvider"

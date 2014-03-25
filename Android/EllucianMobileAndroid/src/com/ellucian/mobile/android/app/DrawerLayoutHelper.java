@@ -22,7 +22,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +42,8 @@ import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Logger.LogLevel;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
 public class DrawerLayoutHelper {
@@ -248,13 +249,14 @@ public class DrawerLayoutHelper {
 	private void sendEventGoogleAnalytics(final Activity activity,
 			String category, String action, String label, Long value) {
 		GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(activity);
-		gaInstance.setDebug(true);
+		gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
 		String trackerId1 = Utils.getStringFromPreferences(activity,
 				Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
 		Tracker gaTracker1;
 		if (trackerId1 != null) {
 			gaTracker1 = gaInstance.getTracker(trackerId1);
-			gaTracker1.sendEvent(category, action, label, value);
+			gaTracker1.send(MapBuilder
+				    .createEvent(category, action, label, value).build());
 		}
 	}
 

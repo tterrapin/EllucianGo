@@ -2,24 +2,16 @@
 
 package com.ellucian.mobile.android.registration;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
@@ -28,16 +20,16 @@ import com.ellucian.mobile.android.adapter.SectionedListAdapter;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
-import com.ellucian.mobile.android.client.courses.Instructor;
-import com.ellucian.mobile.android.client.courses.MeetingPattern;
 import com.ellucian.mobile.android.client.registration.Section;
-import com.ellucian.mobile.android.util.CalendarUtils;
 
 public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	public static final String TAG = RegistrationCartListFragment.class.getSimpleName();
 	
-	View registerButton;
-	RegistrationActivity activity;
+	private RegistrationActivity activity;
+	private Button registerButton;
+	private View eligibilityErrorView;
+	protected boolean showEligibilityError;
+	private String errorMessages;
 	
 	public RegistrationCartListFragment () {	
 	}
@@ -48,11 +40,17 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		this.activity = (RegistrationActivity) activity;
 	}
 	
+	public void setShowEligibilityError(boolean showError, String message) {
+		showEligibilityError = showError;
+		this.errorMessages = message;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_cart_list, container, false);
-		registerButton = rootView.findViewById(R.id.register);
+		registerButton = (Button) rootView.findViewById(R.id.register);
+		eligibilityErrorView = rootView.findViewById(R.id.eligibility_error_messsage_view);
 		Bundle bundle = getArguments();
 		if (bundle != null) {
 			int emptyTextResId = bundle.getInt("emptyTextResId");
@@ -88,6 +86,14 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 				}
 			}		
 		});
+		
+		if (savedInstanceState != null) {
+			showEligibilityError = savedInstanceState.getBoolean("showEligibilityError");
+			errorMessages = savedInstanceState.getString("errorMessages");
+		}
+
+		showEligibilityErrorView(showEligibilityError);
+		
 	}
 	
 	@Override
@@ -100,24 +106,50 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!((CheckableSectionedListAdapter)getListAdapter()).getCheckedPositions().isEmpty()) {
-			showRegisterButton(true);
+		CheckableSectionedListAdapter adapter = (CheckableSectionedListAdapter) getListAdapter();
+		if (!adapter.getCheckedPositions().isEmpty()) {
+			showRegisterButton(true, adapter.getCheckedPositions().size());
 		} else {
-			showRegisterButton(false);
+			showRegisterButton(false, 0);
 		}
 		
 	}
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("showEligibilityError", showEligibilityError);
+		outState.putString("errorMessages", errorMessages);
+	}
 	
-	public void showRegisterButton(boolean show) {
+	
+	public void showRegisterButton(boolean show, int numberShown) {
 		if (show) {
-			if (!registerButton.isShown()) {
+		
+			if (numberShown > 0) {
+				registerButton.setText(getString(R.string.registration_register) + " (" + numberShown + ")");
+			}
+			if (!registerButton.isShown()) {				
 				registerButton.setVisibility(View.VISIBLE);
 			}
 		} else {		
 			registerButton.setVisibility(View.GONE);
 		}	
 		
+	}
+	
+	protected void showEligibilityErrorView(boolean show) {
+		if (show) {
+			if (!TextUtils.isEmpty(errorMessages)) {
+				TextView messagesView = (TextView) rootView.findViewById(R.id.messages);
+				messagesView.setMovementMethod(ScrollingMovementMethod.getInstance());
+				messagesView.setText(errorMessages);
+			}
+			
+			eligibilityErrorView.setVisibility(View.VISIBLE);
+		} else {
+			eligibilityErrorView.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

@@ -23,7 +23,7 @@
 {
     [super viewDidAppear:animated];
     
-    if(self.courses == 0){
+    if([self.courses count] == 0){
         [self showNoDataView:NSLocalizedString(@"Search Results Empty", @"empty Search Results message")];
     } else {
         [self hideNoDataView];
@@ -149,12 +149,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-    plannedSection.selectedForRegistration = !plannedSection.selectedForRegistration;
-    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self updateStatusBar];
-    
-    if(plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"title of variable credits input alert") message:NSLocalizedString(@"Enter the number of Credits you want for this course", @"text for variable credits input alert") delegate:self cancelButtonTitle:nil otherButtonTitles:@"Submit",nil];
+    if(!plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"title of variable credits input alert") message:NSLocalizedString(@"Enter the number of Credits you want for this course", @"text for variable credits input alert") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
         alert.tag = indexPath.row;
         alert.delegate = self;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -162,15 +158,30 @@
         alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
         alertTextField.placeholder = NSLocalizedString(@"credits", @"variable credits input alert placeholder");
         [alert show];
+    } else {
+        [self tableView:tableView addSectionToCart:indexPath];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(alertView.tag == -1) return;
-    NSString *text = [[alertView textFieldAtIndex:0] text];
-    RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:alertView.tag];
-    plannedSection.credits = @([text floatValue]);
+    NSInteger row = alertView.tag;
+    if(buttonIndex == 1) {
+        NSString *text = [[alertView textFieldAtIndex:0] text];
+        RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:row];
+        plannedSection.credits = @([text floatValue]);
+        [self tableView:self.tableView addSectionToCart:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+
+}
+
+-(void)tableView:(UITableView *)tableView addSectionToCart:(NSIndexPath *)indexPath
+{
+    RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
+    plannedSection.selectedForRegistration = !plannedSection.selectedForRegistration;
+    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self updateStatusBar];
     
 }
 

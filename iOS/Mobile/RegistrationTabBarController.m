@@ -40,6 +40,8 @@
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         UITabBarItem *tabBarItem0 = self.tabBar.items[0];
         tabBarItem0.selectedImage = [UIImage imageNamed:@"Registration Cart Selected"];
+        UITabBarItem *tabBarItem2 = self.tabBar.items[2];
+        tabBarItem2.selectedImage = [UIImage imageNamed:@"Registration Registered Tab Image Selected"];
     }
     
     self.searchedSections = [NSMutableArray new];
@@ -56,7 +58,7 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         MBProgressHUD *hud2 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud2.labelText = NSLocalizedString(@"Checking Registration Eligibility", @"checking registration eligibility message");
+        hud2.labelText = NSLocalizedString(@"Checking Eligibility", @"checking registration eligibility message");
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
             self.registrationAllowed = [self checkRegistrationEligibility];
@@ -68,7 +70,15 @@
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [self fetchRegistrationPlans];
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
-                if([self itemsInCartCount] == 0 && !self.ineligibleMessage) self.selectedIndex = 1;
+                if([self itemsInCartCount] == 0 && !self.ineligibleMessage) {
+                    self.selectedIndex = 1;
+                }
+                
+                if(self.ineligibleMessage) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+                    [alert show];
+                }
+
             });
         });
     });
@@ -117,8 +127,6 @@
                 [messagesArray addObject:[dict objectForKey:@"message"]];
             }
             self.ineligibleMessage = [messagesArray componentsJoinedByString:@"\n"];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-            [alert show];
         }
         return eligible;
         

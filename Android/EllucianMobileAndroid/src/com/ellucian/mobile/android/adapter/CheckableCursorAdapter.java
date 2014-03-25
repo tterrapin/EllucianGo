@@ -123,7 +123,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		checkedStates.set(position, value);
 	}
 
-	public void resetCheckedState() {
+	public void resetCheckedStates() {
 		for (int i = 0; i < checkedStates.size(); i++) {
 			checkedStates.set(i, false);
 		}

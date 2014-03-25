@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 	
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -19,16 +20,26 @@
 		        android:id="@+id/general_header"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:padding="8dp"
+		        android:paddingTop="8dp"
+		        android:paddingLeft="8dp"
+		        android:paddingRight="8dp"
+		        android:paddingBottom="0dp"
 		        android:text="@string/registration_results_important"
 		        android:textAppearance="@android:style/TextAppearance.Large"
 		        android:textStyle="bold"
 		        android:textColor="@color/status_important_text_color"
-		        android:background="@drawable/bottom_border_1dp"
 		        android:drawableStart="@drawable/ic_status_important"
 		        android:drawablePadding="8dp"
 		        />
-	
+	        <TextView
+	            android:id="@+id/general_sub_header"
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/registration_results_important_sub"
+	            android:paddingLeft="46dp"
+	            android:paddingBottom="4dp"
+	            android:background="@drawable/bottom_line_1dp" />
+	        
 	    </LinearLayout>
 	    
 	    <!-- SUCCESS MESSAGES -->
@@ -42,14 +53,25 @@
 		        android:id="@+id/success_header"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:padding="8dp"
+		        android:paddingTop="8dp"
+		        android:paddingLeft="8dp"
+		        android:paddingRight="8dp"
+		        android:paddingBottom="0dp"
 		        android:text="@string/registration_results_registered"
 		        android:textAppearance="@android:style/TextAppearance.Large"
 		        android:textStyle="bold"
 		        android:textColor="@color/status_success_text_color"
-		        android:background="@drawable/bottom_border_1dp"
 		        android:drawableStart="@drawable/ic_status_success"
 		        android:drawablePadding="8dp" />
+	        
+	        <TextView
+	            android:id="@+id/success_sub_header"
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/registration_results_success_sub"
+	            android:paddingLeft="46dp"
+	            android:paddingBottom="4dp"
+	            android:background="@drawable/bottom_line_1dp" />
 	        
 	        
 	    </LinearLayout>
@@ -65,15 +87,27 @@
 		        android:id="@+id/failure_header"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:padding="8dp"
+		        android:paddingTop="8dp"
+		        android:paddingLeft="8dp"
+		        android:paddingRight="8dp"
+		        android:paddingBottom="0dp"
 		        android:text="@string/registration_results_warning"
 		        android:textAppearance="@android:style/TextAppearance.Large"
 		        android:textStyle="bold"
 		        android:textColor="@color/status_error_text_color"
-		        android:background="@drawable/bottom_border_1dp"
 		        android:drawableStart="@drawable/ic_status_error"
 		        android:drawablePadding="8dp"
-		         />		              
+		         />
+	        
+	        <TextView
+	            android:id="@+id/failure_sub_header"
+	            android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/registration_results_failure_sub"
+	            android:paddingLeft="46dp"
+	            android:paddingBottom="4dp"
+	            android:background="@drawable/bottom_line_1dp" />
+	        
 	    </LinearLayout>       
 	
 	</LinearLayout>

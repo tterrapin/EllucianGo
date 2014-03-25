@@ -8,7 +8,10 @@ import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.MainActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Utils;
+import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Logger.LogLevel;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
 public class IdleTimer extends Thread {
@@ -74,7 +77,7 @@ public class IdleTimer extends Thread {
      */
 	private void configureGoogleAnalytics() {
 		gaInstance = GoogleAnalytics.getInstance(context);
-        gaInstance.setDebug(true);
+        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
         String trackerId1 = Utils.getStringFromPreferences(context, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
         String trackerId2 = Utils.getStringFromPreferences(context, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2, null);
         if(trackerId1 != null) {
@@ -109,9 +112,10 @@ public class IdleTimer extends Thread {
      */
     public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker1 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker1.setCustomDimension(1, configurationName);
-    		gaTracker1.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		gaTracker1.send(mb.build());
     	}
     }
     
@@ -126,9 +130,10 @@ public class IdleTimer extends Thread {
      */
     public void sendEventToTracker2(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker2 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker2.setCustomDimension(1, configurationName);
-    		gaTracker2.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		gaTracker2.send(mb.build());
     	}
     }
     	

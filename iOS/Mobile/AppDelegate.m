@@ -15,6 +15,8 @@
 #import "GAI.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "NotificationManager.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 static BOOL openURL = NO;
 
@@ -43,7 +45,8 @@ BOOL logoutOnStartup = YES;
     
     //Google Analytics
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [GAI sharedInstance].debug = NO;
+    [GAI sharedInstance].dispatchInterval = 20;
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelError];
     
     SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
     slidingViewController.managedObjectContext = self.managedObjectContext;
@@ -435,7 +438,7 @@ void onUncaughtException(NSException* exception)
     NSLog(@"uncaught exception: %@", exception.description);
 }
 
-- (BOOL)sendEventWithCategory:(NSString *)category
+- (void)sendEventWithCategory:(NSString *)category
                    withAction:(NSString *)action
                     withLabel:(NSString *)label
                     withValue:(NSNumber *)value
@@ -445,19 +448,20 @@ void onUncaughtException(NSException* exception)
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
     
-    BOOL returnValue = YES;
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
+    [builder set:configurationName forKey:[GAIFields customMetricForIndex:1]];
+    NSMutableDictionary *buildDictionary = [builder build];
+    
     if(trackingId1) {
-        id tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
-        [tracker1 setCustom:1 dimension:configurationName];
-        returnValue &= [tracker1 sendEventWithCategory:category withAction:action withLabel:label withValue:value];
+        id<GAITracker> tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
+        [tracker1 send:buildDictionary];
     }
     if(trackingId2) {
-        id tracker2 = [[GAI sharedInstance] trackerWithTrackingId:trackingId2];
-        [tracker2 setCustom:1 dimension:configurationName];
-        returnValue &= [tracker2 sendEventWithCategory:category withAction:action withLabel:label withValue:value];
+        id<GAITracker> tracker2 = [[GAI sharedInstance] trackerWithTrackingId:trackingId2];
+        [tracker2 send:buildDictionary];
     }
-    return returnValue;
 }
+
 
 -(BOOL) useDefaultConfiguration
 {
@@ -485,7 +489,7 @@ void onUncaughtException(NSException* exception)
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"My token is: %@", deviceToken);
+	NSLog(@"Application deviceToken: %@", deviceToken);
     [NotificationManager registerDeviceToken:deviceToken];
 }
 

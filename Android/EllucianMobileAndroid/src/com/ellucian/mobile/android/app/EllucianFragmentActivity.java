@@ -3,6 +3,7 @@ package com.ellucian.mobile.android.app;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
@@ -11,9 +12,12 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ellucian.mobile.android.EllucianApplication;
@@ -21,11 +25,14 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 import com.google.analytics.tracking.android.ExceptionReporter;
+import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.analytics.tracking.android.Logger.LogLevel;
 
-public class EllucianFragmentActivity extends FragmentActivity {
+public abstract class EllucianFragmentActivity extends FragmentActivity {
 	public String moduleId;
 	public String moduleName;
 	public String requestUrl;
@@ -126,7 +133,7 @@ public class EllucianFragmentActivity extends FragmentActivity {
      */
 	private void configureGoogleAnalytics() {
 		gaInstance = GoogleAnalytics.getInstance(this);
-        gaInstance.setDebug(true);
+        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
         String trackerId1 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
         String trackerId2 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2, null);
         if(trackerId1 != null) {
@@ -164,10 +171,11 @@ public class EllucianFragmentActivity extends FragmentActivity {
      */
     public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker1 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker1.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker1.setCustomDimension(2, moduleName);
-    		gaTracker1.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+    		gaTracker1.send(mb.build());
     	}
     }
     
@@ -182,10 +190,11 @@ public class EllucianFragmentActivity extends FragmentActivity {
      */
     public void sendEventToTracker2(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker2 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker2.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker2.setCustomDimension(2, moduleName);
-    		gaTracker2.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+    		gaTracker2.send(mb.build());
     	}
     }
     
@@ -204,10 +213,11 @@ public class EllucianFragmentActivity extends FragmentActivity {
      */
     public void sendViewToTracker1(String appScreen, String moduleName) {
     	if(gaTracker1 != null) {
+    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker1.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker1.setCustomDimension(2, moduleName);
-    		gaTracker1.sendView(appScreen);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+			gaTracker1.send(mb.set(Fields.SCREEN_NAME, appScreen).build());
     	}
     }
     
@@ -217,11 +227,52 @@ public class EllucianFragmentActivity extends FragmentActivity {
      */
     public void sendViewToTracker2(String appScreen, String moduleName) {
     	if(gaTracker2 != null) {
+    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker2.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker2.setCustomDimension(2, moduleName);
-    		gaTracker2.sendView(appScreen);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+			gaTracker2.send(mb.build());
     	}
     }
+    
+	/**
+	 * Called to process touch screen events. At the very least your
+	 * implementation must call superDispatchTouchEvent(MotionEvent) to do the
+	 * standard touch screen processing. Overriding to capture EditText
+	 * objects. If the user touches outside the EditText, dismiss the keyboard
+	 * 
+	 * @param event	The touch screen event.
+	 * @return boolean Return true if this event was consumed.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+
+		View v = getCurrentFocus();
+		boolean ret = super.dispatchTouchEvent(event);
+
+		if (v instanceof EditText) {
+			View w = getCurrentFocus();
+			int scrcoords[] = new int[2];
+			w.getLocationOnScreen(scrcoords);
+			float x = event.getRawX() + w.getLeft() - scrcoords[0];
+			float y = event.getRawY() + w.getTop() - scrcoords[1];
+
+			Log.d("Activity",
+					"Touch event " + event.getRawX() + "," + event.getRawY()
+							+ " " + x + "," + y + " rect " + w.getLeft() + ","
+							+ w.getTop() + "," + w.getRight() + ","
+							+ w.getBottom() + " coords " + scrcoords[0] + ","
+							+ scrcoords[1]);
+			if (event.getAction() == MotionEvent.ACTION_UP
+					&& (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w
+							.getBottom())) {
+
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getWindow().getCurrentFocus()
+						.getWindowToken(), 0);
+			}
+		}
+		return ret;
+	}
 }
 

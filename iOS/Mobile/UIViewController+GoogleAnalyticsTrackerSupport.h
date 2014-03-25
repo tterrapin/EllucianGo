@@ -21,6 +21,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 #define kAnalyticsCategoryAuthentication @"Authentication"
 #define kAnalyticsCategoryCourses @"Courses"
@@ -41,12 +44,12 @@
 
 @interface UIViewController (GoogleAnalyticsTrackerSupport)
 
-- (BOOL)sendView:(NSString *)screen forModuleNamed:(NSString *)moduleName;
-- (BOOL)sendViewToTracker1:(NSString *)screen forModuleNamed:(NSString *)moduleName;
-- (BOOL)sendViewToTracker2:(NSString *)screen forModuleNamed:(NSString *)moduleName;
+- (void)sendView:(NSString *)screen forModuleNamed:(NSString *)moduleName;
+- (void)sendViewToTracker1:(NSString *)screen forModuleNamed:(NSString *)moduleName;
+- (void)sendViewToTracker2:(NSString *)screen forModuleNamed:(NSString *)moduleName;
 
-- (BOOL)sendEventWithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
-- (BOOL)sendEventToTracker1WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
-- (BOOL)sendEventToTracker2WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
+- (void)sendEventWithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
+- (void)sendEventToTracker1WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
+- (void)sendEventToTracker2WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
 
 @end

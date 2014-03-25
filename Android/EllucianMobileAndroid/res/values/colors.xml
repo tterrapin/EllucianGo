@@ -14,4 +14,7 @@
     <color name="status_error_text_color">#ED1C24</color>
     <color name="status_success_text_color">#39B54A</color>
     <color name="status_important_text_color">#FBAE17</color>
+    <color name="details_header_bg">#E8D6A2</color>
+    <color name="details_header_border">#D1AD45</color>
+    <color name="details_sub_header_border">#D9C696</color>
 </resources>

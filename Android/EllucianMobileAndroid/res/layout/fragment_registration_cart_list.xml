@@ -3,12 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"   
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    
+    <!-- Extra FrameLayout is needed to avoid problems with display not being fully gone -->
+    <FrameLayout
+        android:id="@+id/eligibility_error_message_layout"  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+    
+	    <LinearLayout
+	        android:id="@+id/eligibility_error_messsage_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="4dp"
+	        android:background="@drawable/bottom_border_1dp" 
+	        android:visibility="gone" >
+	    
+		    <LinearLayout       
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"        
+		        android:orientation="horizontal" >
+		        
+		        <ImageView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:padding="8dp"
+		            android:contentDescription="@string/registration_results_warning"
+		            android:src="@drawable/ic_status_error" />
+		        
+		        <LinearLayout 
+		            android:layout_width="wrap_content"
+		            android:layout_height="match_parent"
+		            android:orientation="vertical">
+		            
+		            <TextView
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:textAppearance="@android:style/TextAppearance.Large"
+				        android:textStyle="bold"
+				        android:text="@string/registration_were_sorry"
+				        android:textColor="@color/status_error_text_color" />
+		            
+		            <TextView
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:textStyle="bold"   
+				        android:text="@string/registration_ineligible_to_register" />
+	                
+		        </LinearLayout>
+		    </LinearLayout>
+		    
+		    <TextView 
+	        	android:id="@+id/messages"
+		    	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:paddingLeft="8dp"
+		    	android:paddingStart="8dp"
+		    	android:paddingTop="4dp"
+		    	android:singleLine="false"
+		    	android:maxLines="4"
+		    	android:scrollbars="vertical" />
+		    
+		</LinearLayout>
+	
+    </FrameLayout>
 
     <TextView
         android:id="@android:id/empty"
         style="@style/contentMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/eligibility_error_message_layout"
         android:layout_centerHorizontal="true"
         android:text="@string/nothing_to_display" />
 
@@ -17,7 +83,7 @@
         style="@style/listContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/eligibility_error_message_layout"
         android:layout_above="@+id/register" />
     
     <Button 

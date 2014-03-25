@@ -20,9 +20,12 @@ import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 import com.google.analytics.tracking.android.ExceptionReporter;
+import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
+import com.google.analytics.tracking.android.Logger.LogLevel;
 
 public abstract class EllucianExpandableListActivity extends ExpandableListActivity {
 	public String moduleId;
@@ -118,7 +121,7 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
      */
 	private void configureGoogleAnalytics() {
 		gaInstance = GoogleAnalytics.getInstance(this);
-        gaInstance.setDebug(true);
+        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
         String trackerId1 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
         String trackerId2 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2, null);
         if(trackerId1 != null) {
@@ -156,10 +159,11 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
      */
     public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker1 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker1.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker1.setCustomDimension(2, moduleName);
-    		gaTracker1.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+    		gaTracker1.send(mb.build());
     	}
     }
     
@@ -174,10 +178,11 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
      */
     public void sendEventToTracker2(String category, String action, String label, Long value, String moduleName) {
     	if(gaTracker2 != null) {
+    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker2.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker2.setCustomDimension(2, moduleName);
-    		gaTracker2.sendEvent(category, action, label, value);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+    		gaTracker2.send(mb.build());
     	}
     }
     
@@ -196,10 +201,11 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
      */
     public void sendViewToTracker1(String appScreen, String moduleName) {
     	if(gaTracker1 != null) {
+    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker1.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker1.setCustomDimension(2, moduleName);
-    		gaTracker1.sendView(appScreen);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+			gaTracker1.send(mb.build());
     	}
     }
     
@@ -209,10 +215,11 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
      */
     public void sendViewToTracker2(String appScreen, String moduleName) {
     	if(gaTracker2 != null) {
+    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
     		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	gaTracker2.setCustomDimension(1, configurationName);
-    		if(moduleName != null) gaTracker2.setCustomDimension(2, moduleName);
-    		gaTracker2.sendView(appScreen);
+    		mb.set(Fields.customDimension(1), configurationName);
+    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
+			gaTracker2.send(mb.build());
     	}
     }
 }

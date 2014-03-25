@@ -24,7 +24,7 @@
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     
-    int responseStatusCode = [httpResponse statusCode];
+    NSInteger responseStatusCode = [httpResponse statusCode];
     if (responseStatusCode == 200 )
     {
         NSDictionary* json = [NSJSONSerialization

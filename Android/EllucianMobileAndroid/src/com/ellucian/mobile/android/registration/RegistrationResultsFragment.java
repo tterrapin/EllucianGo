@@ -3,6 +3,7 @@
 package com.ellucian.mobile.android.registration;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class RegistrationResultsFragment extends EllucianFragment {
 			
 		} else {
 			rootView.findViewById(R.id.general_header).setVisibility(View.GONE);
+			rootView.findViewById(R.id.general_sub_header).setVisibility(View.GONE);
 		}
 		
 		if (response.successes != null && response.successes.length > 0) {
@@ -48,7 +50,12 @@ public class RegistrationResultsFragment extends EllucianFragment {
 			for (RegisterSection section: response.successes) {
 				final LinearLayout sectionRow = (LinearLayout) inflater.inflate(
 						R.layout.registration_section_row, successLayout, false);
-				((TextView)sectionRow.findViewById(R.id.course_name)).setText(section.courseName);
+				
+				String courseName = section.courseName;
+				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
+					courseName += "-" + section.courseSectionNumber;
+				}
+				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);
 				
 				for (Message message : section.messages) {
@@ -64,6 +71,7 @@ public class RegistrationResultsFragment extends EllucianFragment {
 
 		} else {
 			rootView.findViewById(R.id.success_header).setVisibility(View.GONE);
+			rootView.findViewById(R.id.success_sub_header).setVisibility(View.GONE);
 		}
 		
 		if (response.failures != null && response.failures.length > 0) {
@@ -72,7 +80,12 @@ public class RegistrationResultsFragment extends EllucianFragment {
 			for (RegisterSection section: response.failures) {
 				final LinearLayout sectionRow = (LinearLayout) inflater.inflate(
 						R.layout.registration_section_row, failureLayout, false);
-				((TextView)sectionRow.findViewById(R.id.course_name)).setText(section.courseName);
+				
+				String courseName = section.courseName;
+				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
+					courseName += "-" + section.courseSectionNumber;
+				}
+				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);
 				
 				for (Message message : section.messages) {
@@ -89,9 +102,16 @@ public class RegistrationResultsFragment extends EllucianFragment {
 
 		} else {
 			rootView.findViewById(R.id.failure_header).setVisibility(View.GONE);
+			rootView.findViewById(R.id.failure_sub_header).setVisibility(View.GONE);
 		}
 		
 		return rootView;
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		sendView("Registration Results", getEllucianActivity().moduleName);
 	}
 
 }

@@ -4,9 +4,9 @@
 
 	<configuration-list-url>https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations</configuration-list-url> 
     
-    <use-default-configuration>true</use-default-configuration>
+    <use-default-configuration>false</use-default-configuration>
     
-    <default-configuration-url>http://msdev.sghedu.com/mobilecloud-daily/api/applicationConfiguration/1</default-configuration-url>
+    <default-configuration-url></default-configuration-url>
     
     <enable-version-checking>true</enable-version-checking>
     

@@ -10,12 +10,17 @@
 #import "Module+Attributes.h"
 #import "EllucianSectionedUITableViewController.h"
 #import "EventsFilterViewController.h"
+#import "DetailSelectionDelegate.h"
 
-@interface EventsViewController : EllucianSectionedUITableViewController<NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, EventsFilterDelegate>
+@interface EventsViewController : EllucianSectionedUITableViewController<NSFetchedResultsControllerDelegate,
+    UISearchBarDelegate,
+    UISearchDisplayDelegate,
+    EventsFilterDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSFetchedResultsController *searchFetchedResultsController;
 @property (strong, nonatomic) Module *module;
+@property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;

@@ -182,5 +182,11 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 			getActivity().setProgressBarIndeterminateVisibility(false);
 		}
 	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		sendView("Registration Search", getEllucianActivity().moduleName);
+	}
 
 }

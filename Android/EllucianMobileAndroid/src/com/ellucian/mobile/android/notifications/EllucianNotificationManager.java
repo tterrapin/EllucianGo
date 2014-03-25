@@ -41,9 +41,9 @@ public class EllucianNotificationManager {
 		return code == ConnectionResult.SUCCESS;
 	}
 	
-	private String getNotificationUrl() {
+	private String getConfigValue(String key, String defaultValue) {
 		SharedPreferences preferences = getPreferences();
-		String url = preferences.getString(Utils.NOTIFICATION_URL, null);
+		String url = preferences.getString(key, defaultValue);
 		
 		return url;
 	}
@@ -51,7 +51,7 @@ public class EllucianNotificationManager {
 	public void registerWithGcmIfNeeded() {
 		// only do attempt for logged in user
 		if (ellucianApplication.isUserAuthenticated() &&
-			getNotificationUrl() != null) {
+			getConfigValue(Utils.NOTIFICATION_NOTIFICATIONS_URL, null) != null) {
 			SharedPreferences preferences = getPreferences();
 			
 			// check if user change since last registered
@@ -138,7 +138,7 @@ public class EllucianNotificationManager {
     		try{
     		
     		SharedPreferences preferences = getPreferences();
-    		String url = getNotificationUrl();
+    		String url = getConfigValue(Utils.NOTIFICATION_REGISTRATION_URL, null);
     		Boolean notificationEnabled = preferences.contains(Utils.NOTIFICATION_ENABLED) ?
     				preferences.getBoolean(Utils.NOTIFICATION_ENABLED, false) : null;
     				
@@ -148,6 +148,7 @@ public class EllucianNotificationManager {
     	    	DeviceRegister deviceRegister = new DeviceRegister();
     	    	deviceRegister.deviceId = deviceId;
     	    	deviceRegister.platform = "android";
+    	    	deviceRegister.applicationName = "Ellucian GO";
     	    	deviceRegister.loginId = ellucianApplication.getAppUserName();
     	    	deviceRegister.sisId = ellucianApplication.getAppUserId();
     	    	String jsonDeviceRegister = gson.toJson(deviceRegister);
@@ -184,6 +185,7 @@ public class EllucianNotificationManager {
 	private class DeviceRegister {
 		public String deviceId;
 		public String platform;
+		public String applicationName;
 		public String loginId;
 		public String sisId;
 		// public String email; not available yet
