@@ -20,7 +20,8 @@
 @interface EventDetailViewController : UIViewController<EKEventEditViewDelegate,
         UIPopoverControllerDelegate,
         DetailSelectionDelegate,
-        UISplitViewControllerDelegate>
+        UISplitViewControllerDelegate,
+        UIWebViewDelegate>
 
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) EventsViewController *masterController;
@@ -37,7 +38,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *endDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
-@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
+@property (weak, nonatomic) IBOutlet UIWebView *descriptionWebView;
 @property (weak, nonatomic) IBOutlet UIView *titleBackgroundView;
 
 @property (strong, nonatomic) Module *module;

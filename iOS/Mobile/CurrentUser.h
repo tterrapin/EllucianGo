@@ -3,7 +3,7 @@
 //  Mobile
 //
 //  Created by Alan McEwan on 9/13/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -16,6 +16,8 @@
 #define kLoginRemember @"login-remember"
 #define kLoginUserauth @"login-userauth"
 #define kLoginUserid @"login-userid"
+
+#define kLoginExecutorSuccess @"Login Executor Success"
 
 @interface CurrentUser : NSObject
 
@@ -35,8 +37,10 @@
      andUserid: (NSString *) uID
       andRoles: (NSSet *) roleSet
    andRemember: (BOOL) remember;
+- (void) login: (NSString *) auth
+     andUserid: (NSString *) uID
+      andRoles: (NSSet *) roleSet;
 -(NSString *)getPassword;
 
-+(NSString *) userid;
-
++(CurrentUser *) sharedInstance;
 @end

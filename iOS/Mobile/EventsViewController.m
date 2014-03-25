@@ -13,6 +13,7 @@
 #import "Event.h"
 #import "EventCategory.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "MBProgressHUD.h"
 
 @interface EventsViewController ()
 
@@ -338,6 +339,14 @@
     [importContext setUndoManager:nil];
     NSString *urlString = [self.module propertyForKey:@"events"];
     NSLog(@"events urlString: %@", urlString);
+    
+    // If we don't have anything in the DB for events let's show the loading HUD.
+    if ( [self.fetchedResultsController.fetchedObjects count] <= 0 )
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"Loading", @"loading message while waiting for data to load");
+    }
+
 
     [importContext performBlock: ^{
         
@@ -486,6 +495,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self readEventModule];
             [self.filterButton setEnabled:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     }];
 }

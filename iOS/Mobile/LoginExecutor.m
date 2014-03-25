@@ -3,26 +3,28 @@
 //  Mobile
 //
 //  Created by jkh on 6/20/13.
-//  Copyright (c) 2013 Ellucian. All rights reserved.
+//  Copyright (c) 2013-2014 Ellucian. All rights reserved.
 //
 
 #import "LoginExecutor.h"
 #import "AppDelegate.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "NotificationManager.h"
+#import "Base64.h"
 
 @implementation LoginExecutor
 
--(NSInteger) performLogin:(NSString *)urlString forUser:(NSString *)username andPassword:(NSString *)password andRememberUser:(BOOL)rememberUser returningRoles:(NSArray**)roles
++(NSInteger) getUserInfo
 {
     NSError *error;
-    NSURLResponse *response;
     
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *loginUrl = [defaults objectForKey:@"login-url"];
     
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString] user:username password:password returningResponse: &response error: &error];
+    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    NSData *data = [authenticatedRequet requestURL:[NSURL URLWithString:loginUrl] fromView:nil];
     
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)authenticatedRequet.response;
     
     NSInteger responseStatusCode = [httpResponse statusCode];
     if (responseStatusCode == 200 )
@@ -33,23 +35,44 @@
                               error:&error];
         NSString *userId = [json objectForKey:@"userId"];
         NSString *authId = [json objectForKey:@"authId"];
-        *roles = [json objectForKey:@"roles"];
+        NSArray *roles = [json objectForKey:@"roles"];
+
+        CurrentUser *user = [CurrentUser sharedInstance];
+        [user login:authId andUserid:userId andRoles:[NSSet setWithArray:roles]];
         
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        CurrentUser *user = [appDelegate getCurrentUser];
-        [user login:authId andPassword:password andUserid:userId andRoles:[NSSet setWithArray:*roles] andRemember:rememberUser];
-        
-        NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
-        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:response.URL];
+        NSDictionary *headers = [httpResponse allHeaderFields];
+        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:httpResponse.URL];
         for(NSHTTPCookie *cookie in cookies) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
+        
         // register the device if needed
         [NotificationManager registerDeviceIfNeeded];
     }
-
     return responseStatusCode;
+}
+
++ (UIViewController *) loginController
+{
+    NSString *storyboardName;
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        storyboardName = @"MainStoryboard_iPad";
+    } else {
+        storyboardName = @"MainStoryboard_iPhone";
+    }
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    
+    UIViewController *vc;
+    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    if([authenticationMode isEqualToString:@"browser"]) {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"Web Login"];
+    } else {
+        vc = [storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    }
+    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    return vc;
 }
 
 

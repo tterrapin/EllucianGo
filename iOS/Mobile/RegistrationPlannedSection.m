@@ -20,6 +20,8 @@
 
 @implementation RegistrationPlannedSection
 
+
+
 -(NSString *) facultyNames
 {
     NSMutableArray *names = [NSMutableArray new];
@@ -106,6 +108,19 @@
         [_displayTimeFormatter setTimeStyle:NSDateFormatterShortStyle];
     }
     return _displayTimeFormatter;
+}
+
+- (void) setGradingType:(NSString *)gradingType
+{
+    _gradingType = gradingType;
+    
+    if ([_gradingType caseInsensitiveCompare:kGraded] == NSOrderedSame){
+        _isGraded = YES;
+    } else if ([_gradingType caseInsensitiveCompare:kAudit] == NSOrderedSame){
+        _isAudit = YES;
+    } else if ([_gradingType caseInsensitiveCompare:kPassNoPass] == NSOrderedSame){
+        _isPassFail = YES;
+    }
 }
 
 @end

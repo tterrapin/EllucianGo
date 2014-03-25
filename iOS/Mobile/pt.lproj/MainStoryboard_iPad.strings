@@ -1,29 +1,89 @@
+﻿
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "00w-2F-9FB"; */
+"00w-2F-9FB.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "0RZ-Ry-Ol7"; */
+"0RZ-Ry-Ol7.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "17o-ED-Hrc"; */
+"17o-ED-Hrc.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "1QT-pL-5Sz"; */
+"1QT-pL-5Sz.text" = "Rótulo";
 
 /* Class = "IBUINavigationItem"; title = "Buildings"; ObjectID = "1t4-Y0-lFB"; */
-"1t4-Y0-lFB.title" = "Criar lista";
+"1t4-Y0-lFB.title" = "Buscar prédios";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "22m-2H-nRN"; */
+"22m-2H-nRN.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2IA-SC-G6y"; */
+"2IA-SC-G6y.text" = "Rótulo";
 
 /* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "2Lr-Sh-71a"; */
 "2Lr-Sh-71a.title" = "Períodos";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2bH-co-qB5"; */
+"2bH-co-qB5.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2vG-MR-DDL"; */
+"2vG-MR-DDL.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "3OU-oH-b9O"; */
+"3OU-oH-b9O.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "3TR-0j-Al6"; */
+"3TR-0j-Al6.text" = "Rótulo";
+
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "3bs-4f-p1c"; */
 "3bs-4f-p1c.text" = "Endereço";
 
-/* Class = "IBUIButton"; normalTitle = "Entrar"; ObjectID = "54f-9M-XmF"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4Qc-Uz-gjV"; */
+"4Qc-Uz-gjV.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "53q-9M-oiC"; */
+"53q-9M-oiC.text" = "Rótulo";
+
+/* Class = "IBUIButton"; normalTitle = "Sign In"; ObjectID = "54f-9M-XmF"; */
 "54f-9M-XmF.normalTitle" = "Entrar";
 
-/* Class = "IBUIButton"; selectedTitle = "Entrar"; ObjectID = "54f-9M-XmF"; */
-"54f-9M-XmF.selectedTitle" = "Entrar";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "5T8-YL-lNA"; */
+"5T8-YL-lNA.text" = "Rótulo";
 
-/* Class = "IBUILabel"; text = "Data final:"; ObjectID = "75q-pk-sdU"; */
-"75q-pk-sdU.text" = "Data final:";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "5fj-kV-FRh"; */
+"5fj-kV-FRh.text" = "Rótulo";
 
-/* Class = "IBUILabel"; text = "Fazer a busca sem entrar.  Para acessar o menu, pressione ou arraste para a direita."; ObjectID = "8NP-0Z-YlQ"; */
+/* Class = "IBUILabel"; text = "Section Number"; ObjectID = "5sy-0m-10j"; */
+"5sy-0m-10j.text" = "Número da turma";
+
+/* Class = "IBUIBarButtonItem"; title = "Filter"; ObjectID = "6Ig-eb-dXi"; */
+"6Ig-eb-dXi.title" = "Filtro";
+
+/* Class = "IBUILabel"; text = "Look around without signing in.  Tap or swipe right for the menu."; ObjectID = "8NP-0Z-YlQ"; */
 "8NP-0Z-YlQ.text" = "Fazer a busca sem entrar.  Para acessar o menu, pressione ou arraste para a direita.";
 
-/* Class = "IBUILabel"; text = "Manter-se conectado"; ObjectID = "97f-pZ-LLK"; */
-"97f-pZ-LLK.text" = "Manter-se conectado";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "8hs-OA-B0n"; */
+"8hs-OA-B0n.text" = "Rótulo";
 
-/* Class = "IBUITextField"; placeholder = "Senha"; ObjectID = "AK3-hT-iFJ"; */
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "8mC-Ul-wmT"; */
+"8mC-Ul-wmT.text" = "Título";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "8x1-48-OP6"; */
+"8x1-48-OP6.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Stay signed in"; ObjectID = "97f-pZ-LLK"; */
+"97f-pZ-LLK.text" = "Manter-me conectado";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "9nt-tG-8Bn"; */
+"9nt-tG-8Bn.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "9wf-e8-pcD"; */
+"9wf-e8-pcD.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "AFH-AF-wuJ"; */
+"AFH-AF-wuJ.text" = "Rótulo";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "AK3-hT-iFJ"; */
 "AK3-hT-iFJ.placeholder" = "Senha";
 
 /* Class = "IBUILabel"; text = "Mobile"; ObjectID = "AhB-UD-EFQ"; */
@@ -32,149 +92,410 @@
 /* Class = "IBUILabel"; text = "Get Directions"; ObjectID = "At7-K0-AnS"; */
 "At7-K0-AnS.text" = "Trajeto";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "BJP-te-kzB"; */
+"BJP-te-kzB.text" = "Rótulo";
+
+/* Class = "IBUIBarButtonItem"; title = "Filter"; ObjectID = "BQt-8r-Fyx"; */
+"BQt-8r-Fyx.title" = "Filtro";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Bf0-2U-KKq"; */
+"Bf0-2U-KKq.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Bl8-Ze-CvO"; */
+"Bl8-Ze-CvO.text" = "Rótulo";
+
 /* Class = "IBUINavigationItem"; title = "Institutions"; ObjectID = "C51-mL-08y"; */
-"C51-mL-08y.title" = "Selecionar a instituição";
+"C51-mL-08y.title" = "Instituições";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Co8-Uj-Emz"; */
+"Co8-Uj-Emz.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "D5f-ve-ddG"; */
+"D5f-ve-ddG.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "DLT-hy-h2X"; */
+"DLT-hy-h2X.text" = "Rótulo";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "DQT-RF-YSo"; */
 "DQT-RF-YSo.text" = "Docente";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Ddd-eD-yqc"; */
+"Ddd-eD-yqc.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "DrJ-Gz-5n3"; */
+"DrJ-Gz-5n3.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "E89-Jn-LQQ"; */
+"E89-Jn-LQQ.text" = "Rótulo";
+
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "EJW-yt-Me7"; */
 "EJW-yt-Me7.text" = "Email";
 
-/* Class = "IBUILabel"; text = "Data final:"; ObjectID = "FCg-hg-gKr"; */
+/* Class = "IBUINavigationItem"; title = "Sign In"; ObjectID = "Ems-g9-Hx4"; */
+"Ems-g9-Hx4.title" = "Entrar";
+
+/* Class = "IBUILabel"; text = "Category"; ObjectID = "Eqd-61-CTb"; */
+"Eqd-61-CTb.text" = "Categoria";
+
+/* Class = "IBUILabel"; text = "End Date:"; ObjectID = "FCg-hg-gKr"; */
 "FCg-hg-gKr.text" = "Data final:";
 
-/* Class = "IBUITableViewController"; title = "Seletor de eventos"; ObjectID = "FZV-jm-8aU"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "FET-69-yt4"; */
+"FET-69-yt4.text" = "Rótulo";
+
+/* Class = "IBUITableViewController"; title = "Events Selector"; ObjectID = "FZV-jm-8aU"; */
 "FZV-jm-8aU.title" = "Seletor de eventos";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "FeC-yO-Qzu"; */
 "FeC-yO-Qzu.text" = "Email";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Fjx-Sb-trp"; */
+"Fjx-Sb-trp.text" = "Rótulo";
+
 /* Class = "IBUILabel"; text = "Server Version"; ObjectID = "Fpa-gA-itw"; */
 "Fpa-gA-itw.text" = "Versão do servidor";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "G4I-hB-Noc"; */
+"G4I-hB-Noc.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Registered"; ObjectID = "GIY-HU-6b2"; */
+"GIY-HU-6b2.title" = "Matriculado";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "GJy-Kh-bHW"; */
+"GJy-Kh-bHW.text" = "Rótulo";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "Gfb-8A-civ"; */
 "Gfb-8A-civ.text" = "Email";
 
-/* Class = "IBUIBarButtonItem"; title = "Períodos"; ObjectID = "H0f-iJ-HXh"; */
+/* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "H0f-iJ-HXh"; */
 "H0f-iJ-HXh.title" = "Períodos";
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "HPb-ye-lMK"; */
 "HPb-ye-lMK.text" = "Telefone";
 
-/* Class = "IBUITabBarItem"; title = "Atribuições"; ObjectID = "HhG-Wa-Dpy"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "HgA-9g-0ur"; */
+"HgA-9g-0ur.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Assignments"; ObjectID = "HhG-Wa-Dpy"; */
 "HhG-Wa-Dpy.title" = "Atribuições";
+
+/* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "HqQ-UT-FCy"; */
+"HqQ-UT-FCy.text" = "Data de início:";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Hvi-iv-xLP"; */
+"Hvi-iv-xLP.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "IJN-QE-67F"; */
+"IJN-QE-67F.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "End Date:"; ObjectID = "IRO-ZW-dLs"; */
+"IRO-ZW-dLs.text" = "Data final:";
+
+/* Class = "IBUILabel"; text = "Description"; ObjectID = "IfC-2m-YyC"; */
+"IfC-2m-YyC.text" = "Descrição";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Iii-Uh-Gv7"; */
+"Iii-Uh-Gv7.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "J0i-Bi-dhz"; */
+"J0i-Bi-dhz.text" = "Informações sobre a aula";
+
+/* Class = "IBUILabel"; text = "Section ID:"; ObjectID = "JPr-5w-y0Z"; */
+"JPr-5w-y0Z.text" = "ID turma:";
 
 /* Class = "IBUILabel"; text = "Department"; ObjectID = "Jd4-mQ-4DT"; */
 "Jd4-mQ-4DT.text" = "Departamento";
 
-/* Class = "IBUIBarButtonItem"; title = "Filtro"; ObjectID = "Jd6-qQ-cwi"; */
-"Jd6-qQ-cwi.title" = "Filtro";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Jkp-ub-6IH"; */
+"Jkp-ub-6IH.text" = "Rótulo";
 
-/* Class = "IBUITableViewController"; title = "Eventos"; ObjectID = "KWa-IW-KQL"; */
-"KWa-IW-KQL.title" = "Eventos";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "KL6-ve-fXB"; */
+"KL6-ve-fXB.text" = "Rótulo";
 
-/* Class = "IBUITabBarItem"; title = "Avisos"; ObjectID = "Ljt-hl-OqR"; */
-"Ljt-hl-OqR.title" = "Avisos";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "KgY-dZ-hQ1"; */
+"KgY-dZ-hQ1.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "L7h-n2-6Ux"; */
+"L7h-n2-6Ux.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Announcements"; ObjectID = "Ljt-hl-OqR"; */
+"Ljt-hl-OqR.title" = "Comunicados";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "Mhz-nc-CX7"; */
+"Mhz-nc-CX7.text" = "Título";
+
+/* Class = "IBUILabel"; text = "Select a Term and enter Course Keywords"; ObjectID = "NFB-Hy-Kdp"; */
+"NFB-Hy-Kdp.text" = "Selecione um período e digite as palavras-chaves da disciplina.";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "NOY-pJ-hQP"; */
 "NOY-pJ-hQP.text" = "Endereço";
 
-/* Class = "IBUINavigationItem"; title = "Entrar"; ObjectID = "Okd-La-GIl"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Nqd-6E-u9g"; */
+"Nqd-6E-u9g.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "O0m-DQ-R7f"; */
+"O0m-DQ-R7f.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "O4J-KU-FNV"; */
+"O4J-KU-FNV.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "OeG-dy-UyA"; */
+"OeG-dy-UyA.text" = "Rótulo";
+
+/* Class = "IBUINavigationItem"; title = "Sign In"; ObjectID = "Okd-La-GIl"; */
 "Okd-La-GIl.title" = "Entrar";
 
-/* Class = "IBUITabBarItem"; title = "Visualização diária"; ObjectID = "QEQ-m0-qxt"; */
+/* Class = "IBUILabel"; text = "Faculty"; ObjectID = "PZR-jf-Ox7"; */
+"PZR-jf-Ox7.text" = "Docente";
+
+/* Class = "IBUINavigationItem"; title = "Root View Controller"; ObjectID = "Q3H-yh-AB3"; */
+"Q3H-yh-AB3.title" = "Controlador de visualização raiz";
+
+/* Class = "IBUITabBarItem"; title = "Daily View"; ObjectID = "QEQ-m0-qxt"; */
 "QEQ-m0-qxt.title" = "Visualização diária";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[0] = "Mapa"; ObjectID = "QjC-Rp-3mY"; */
+/* Class = "IBUILabel"; text = "Course Keywords"; ObjectID = "Qcc-uo-ReC"; */
+"Qcc-uo-ReC.text" = "Palavras-chaves da disciplina";
+
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[0] = "Map"; ObjectID = "QjC-Rp-3mY"; */
 "QjC-Rp-3mY.segmentTitles[0]" = "Mapa";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[1] = "Satélite"; ObjectID = "QjC-Rp-3mY"; */
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[1] = "Satellite"; ObjectID = "QjC-Rp-3mY"; */
 "QjC-Rp-3mY.segmentTitles[1]" = "Satélite";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[2] = "Híbrido"; ObjectID = "QjC-Rp-3mY"; */
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[2] = "Hybrid"; ObjectID = "QjC-Rp-3mY"; */
 "QjC-Rp-3mY.segmentTitles[2]" = "Híbrido";
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "R7w-jn-5Dc"; */
 "R7w-jn-5Dc.text" = "Telefone";
 
+/* Class = "IBUILabel"; text = "Credits:"; ObjectID = "RiH-GQ-Rwu"; */
+"RiH-GQ-Rwu.text" = "Créditos:";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "RpM-dJ-8XT"; */
+"RpM-dJ-8XT.text" = "Título";
+
 /* Class = "IBUILabel"; text = "Office"; ObjectID = "Rtd-54-HAz"; */
 "Rtd-54-HAz.text" = "Escritório";
 
-/* Class = "IBUILabel"; text = "Localização:"; ObjectID = "UMZ-6o-XkW"; */
-"UMZ-6o-XkW.text" = "Localização:";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "S3i-Ij-l8N"; */
+"S3i-Ij-l8N.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "SxT-BA-iPR"; */
+"SxT-BA-iPR.text" = "Informações sobre a aula";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "U9X-Nn-7Qk"; */
+"U9X-Nn-7Qk.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "Ups-K2-cx9"; */
+"Ups-K2-cx9.text" = "Título";
 
 /* Class = "IBUIBarButtonItem"; title = "Campus"; ObjectID = "V3M-x4-FdC"; */
 "V3M-x4-FdC.title" = "Campus";
 
+/* Class = "IBUILabel"; text = "Ineligible for Registration"; ObjectID = "VNr-Yk-rGR"; */
+"VNr-Yk-rGR.text" = "Matrícula não autorizada";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "W5l-OC-5RH"; */
+"W5l-OC-5RH.text" = "Rótulo";
+
 /* Class = "IBUINavigationItem"; title = "Home"; ObjectID = "WcN-vw-nXx"; */
 "WcN-vw-nXx.title" = "Home";
 
-/* Class = "IBUITableViewController"; title = "Detalhes do evento"; ObjectID = "XpR-ww-OiW"; */
-"XpR-ww-OiW.title" = "Detalhes do evento";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Wgk-zR-K8G"; */
+"Wgk-zR-K8G.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Credits:"; ObjectID = "Wwh-Wo-QbI"; */
+"Wwh-Wo-QbI.text" = "Créditos:";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "X55-zO-KoE"; */
+"X55-zO-KoE.text" = "Rótulo";
+
+/* Class = "IBUISplitViewController"; title = "EventsSplitView"; ObjectID = "Xob-R7-CWU"; */
+"Xob-R7-CWU.title" = "EventsSplitView";
 
 /* Class = "IBUILabel"; text = "Please contact your institution’s IT staff for assistance with login."; ObjectID = "YFZ-bh-3IF"; */
 "YFZ-bh-3IF.text" = "Entre em contato com a equipe de TI da sua instituição para ajuda com o login.";
 
-/* Class = "IBUITabBarItem"; title = "Detalhes"; ObjectID = "Yff-ow-vZn"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "YTM-Wq-kco"; */
+"YTM-Wq-kco.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Details"; ObjectID = "Yff-ow-vZn"; */
 "Yff-ow-vZn.title" = "Detalhes";
 
-/* Class = "IBUISearchBar"; placeholder = "Buscar instituições"; ObjectID = "aCq-E4-VbG"; */
+/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "aAf-1D-XPb"; */
+"aAf-1D-XPb.normalTitle" = "Botão";
+
+/* Class = "IBUISearchBar"; placeholder = "Search schools"; ObjectID = "aCq-E4-VbG"; */
 "aCq-E4-VbG.placeholder" = "Buscar instituições";
 
-/* Class = "IBUITabBarItem"; title = "Horário completo"; ObjectID = "ajc-cg-o0I"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aGG-d1-1x1"; */
+"aGG-d1-1x1.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
+"aNm-pv-19M.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aTg-wc-XmG"; */
+"aTg-wc-XmG.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aUk-f5-GXf"; */
+"aUk-f5-GXf.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Full Schedule"; ObjectID = "ajc-cg-o0I"; */
 "ajc-cg-o0I.title" = "Horário completo";
 
-/* Class = "IBUITableViewController"; title = "Detalhe do feed"; ObjectID = "apR-pn-o7Y"; */
-"apR-pn-o7Y.title" = "Detalhe do feed";
-
-/* Class = "IBUILabel"; text = "Data de início:"; ObjectID = "b2W-Cv-P62"; */
+/* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "b2W-Cv-P62"; */
 "b2W-Cv-P62.text" = "Data de início:";
 
-/* Class = "IBUILabel"; text = "Alterar a instituição"; ObjectID = "bM8-E7-rDr"; */
-"bM8-E7-rDr.text" = "Alterar a instituição";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "bM8-E7-rDr"; */
+"bM8-E7-rDr.text" = "Rótulo";
 
-/* Class = "IBUIButton"; normalTitle = "Desenvolvido por"; ObjectID = "cAZ-do-lgl"; */
+/* Class = "IBUILabel"; text = "Date"; ObjectID = "bg6-Gr-Huk"; */
+"bg6-Gr-Huk.text" = "Data";
+
+/* Class = "IBUIButton"; normalTitle = "Powered by"; ObjectID = "cAZ-do-lgl"; */
 "cAZ-do-lgl.normalTitle" = "Desenvolvido por";
 
-/* Class = "IBUITabBarItem"; title = "Lista"; ObjectID = "cyd-zX-EAQ"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "cJQ-yV-GLz"; */
+"cJQ-yV-GLz.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Section ID:"; ObjectID = "cNA-LO-9qm"; */
+"cNA-LO-9qm.text" = "ID turma:";
+
+/* Class = "IBUISplitViewController"; title = "FeedSplitView"; ObjectID = "cRB-sM-P2C"; */
+"cRB-sM-P2C.title" = "FeedSplitView";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "ciP-UD-tXe"; */
+"ciP-UD-tXe.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Credits:"; ObjectID = "coE-7g-iSR"; */
+"coE-7g-iSR.text" = "Créditos:";
+
+/* Class = "IBUITabBarItem"; title = "Roster"; ObjectID = "cyd-zX-EAQ"; */
 "cyd-zX-EAQ.title" = "Lista";
 
-/* Class = "IBUIButton"; normalTitle = "Política de privacidade da Ellucian"; ObjectID = "d8N-9n-28Q"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "d6Z-g1-ls4"; */
+"d6Z-g1-ls4.text" = "Rótulo";
+
+/* Class = "IBUIButton"; normalTitle = "Ellucian Privacy Policy"; ObjectID = "d8N-9n-28Q"; */
 "d8N-9n-28Q.normalTitle" = "Política de privacidade da Ellucian";
 
-/* Class = "IBUIViewController"; title = "Notas"; ObjectID = "elS-z3-eCK"; */
+/* Class = "IBUILabel"; text = "Section ID:"; ObjectID = "dN7-rS-hzX"; */
+"dN7-rS-hzX.text" = "ID turma:";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "dPE-MB-DOp"; */
+"dPE-MB-DOp.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Description"; ObjectID = "eBD-3Y-aTU"; */
+"eBD-3Y-aTU.text" = "Descrição";
+
+/* Class = "IBUIViewController"; title = "Grades"; ObjectID = "elS-z3-eCK"; */
 "elS-z3-eCK.title" = "Notas";
+
+/* Class = "IBUILabel"; text = "Faculty"; ObjectID = "emH-3B-C0w"; */
+"emH-3B-C0w.text" = "Docente";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "euH-tm-iyk"; */
+"euH-tm-iyk.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "eym-XD-fCh"; */
+"eym-XD-fCh.text" = "Rótulo";
 
 /* Class = "IBUILabel"; text = "Client Version"; ObjectID = "fC3-ak-lmX"; */
 "fC3-ak-lmX.text" = "Versão do cliente";
 
-/* Class = "IBUITabBarItem"; title = "Notas"; ObjectID = "gQV-aW-o6b"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fGt-lb-aDh"; */
+"fGt-lb-aDh.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fQo-KN-f2k"; */
+"fQo-KN-f2k.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fR2-Qj-Q40"; */
+"fR2-Qj-Q40.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fsK-Fn-fCK"; */
+"fsK-Fn-fCK.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fub-ew-Svv"; */
+"fub-ew-Svv.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Terms"; ObjectID = "gFa-Iz-O3N"; */
+"gFa-Iz-O3N.text" = "Períodos";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gKk-NO-EDm"; */
+"gKk-NO-EDm.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Grades"; ObjectID = "gQV-aW-o6b"; */
 "gQV-aW-o6b.title" = "Notas";
 
-/* Class = "IBUIButton"; normalTitle = "Cancelar"; ObjectID = "hK7-iJ-2oq"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gQu-30-kVn"; */
+"gQu-30-kVn.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gWA-vc-aMo"; */
+"gWA-vc-aMo.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gaS-Mv-pmJ"; */
+"gaS-Mv-pmJ.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "hCQ-rc-e9E"; */
+"hCQ-rc-e9E.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "hEE-FL-990"; */
+"hEE-FL-990.text" = "Rótulo";
+
+/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "hK7-iJ-2oq"; */
 "hK7-iJ-2oq.normalTitle" = "Cancelar";
 
-/* Class = "IBUIButton"; selectedTitle = "Cancelar"; ObjectID = "hK7-iJ-2oq"; */
-"hK7-iJ-2oq.selectedTitle" = "Cancelar";
+/* Class = "IBUILabel"; text = "Faculty"; ObjectID = "hVM-M4-sff"; */
+"hVM-M4-sff.text" = "Docente";
 
-/* Class = "IBUISearchBar"; placeholder = "Buscar no diretório"; ObjectID = "iS4-ME-cUg"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "hxv-dg-4vS"; */
+"hxv-dg-4vS.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "i4a-IQ-rld"; */
+"i4a-IQ-rld.text" = "Rótulo";
+
+/* Class = "IBUISearchBar"; placeholder = "Search directory"; ObjectID = "iS4-ME-cUg"; */
 "iS4-ME-cUg.placeholder" = "Buscar no diretório";
 
-/* Class = "IBUINavigationItem"; title = "Notas"; ObjectID = "kfV-dh-hvq"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "j7o-5d-eIp"; */
+"j7o-5d-eIp.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Cart"; ObjectID = "jen-vv-J8g"; */
+"jen-vv-J8g.title" = "Carrinho";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "jkC-EC-FMB"; */
+"jkC-EC-FMB.text" = "Título";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "jmH-WE-VrO"; */
+"jmH-WE-VrO.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "jyB-En-RI3"; */
+"jyB-En-RI3.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "k6Q-Fm-Z0V"; */
+"k6Q-Fm-Z0V.text" = "Rótulo";
+
+/* Class = "IBUINavigationItem"; title = "Grades"; ObjectID = "kfV-dh-hvq"; */
 "kfV-dh-hvq.title" = "Notas";
 
-/* Class = "IBUIButton"; normalTitle = "Sair"; ObjectID = "kgH-4i-YcN"; */
-"kgH-4i-YcN.normalTitle" = "Sair";
-
-/* Class = "IBUIViewController"; title = "Notas"; ObjectID = "lT8-ez-Xtc"; */
+/* Class = "IBUIViewController"; title = "Grades"; ObjectID = "lT8-ez-Xtc"; */
 "lT8-ez-Xtc.title" = "Notas";
 
-/* Class = "IBUIBarButtonItem"; title = "Filtro"; ObjectID = "mb6-6x-BeD"; */
-"mb6-6x-BeD.title" = "Filtro";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "lnT-Nh-UCs"; */
+"lnT-Nh-UCs.text" = "Rótulo";
 
-/* Class = "IBUILabel"; text = "Carregando a configuração. Aguarde..."; ObjectID = "nbl-jr-rw5"; */
-"nbl-jr-rw5.text" = "Carregando a configuração. Aguarde...";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "nTY-29-aWa"; */
+"nTY-29-aWa.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Loading configuration.  Please wait..."; ObjectID = "nbl-jr-rw5"; */
+"nbl-jr-rw5.text" = "Carregando a configuração.  Aguarde...";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "njg-yN-6Gd"; */
+"njg-yN-6Gd.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Description"; ObjectID = "nyU-nE-I0N"; */
+"nyU-nE-I0N.text" = "Descrição";
 
 /* Class = "IBUILabel"; text = "Website"; ObjectID = "o9z-QP-cOL"; */
 "o9z-QP-cOL.text" = "Site";
@@ -182,35 +503,107 @@
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "oAa-S2-lIX"; */
 "oAa-S2-lIX.text" = "Telefone";
 
-/* Class = "IBUINavigationItem"; title = "Filtro de eventos"; ObjectID = "q2a-Wr-jVI"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "oYP-F0-SCe"; */
+"oYP-F0-SCe.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Location:"; ObjectID = "oeT-ee-x7m"; */
+"oeT-ee-x7m.text" = "Localização:";
+
+/* Class = "IBUILabel"; text = "We're Sorry."; ObjectID = "pbT-4v-ggk"; */
+"pbT-4v-ggk.text" = "Desculpe!";
+
+/* Class = "IBUILabel"; text = "Category"; ObjectID = "pen-Zi-cTU"; */
+"pen-Zi-cTU.text" = "Categoria";
+
+/* Class = "IBUINavigationItem"; title = "Events Filter"; ObjectID = "q2a-Wr-jVI"; */
 "q2a-Wr-jVI.title" = "Filtro de eventos";
 
-/* Class = "IBUITableViewController"; title = "Detalhe do feed"; ObjectID = "qiG-qb-brp"; */
-"qiG-qb-brp.title" = "Detalhe do feed";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "qJU-ek-R6I"; */
+"qJU-ek-R6I.text" = "Rótulo";
 
-/* Class = "IBUILabel"; text = "Data de início:"; ObjectID = "sVb-cu-7R4"; */
-"sVb-cu-7R4.text" = "Data de início:";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "qhL-Yj-2q9"; */
+"qhL-Yj-2q9.text" = "Rótulo";
 
-/* Class = "IBUILabel"; text = "Localização:"; ObjectID = "tPe-jc-4j5"; */
+/* Class = "IBUINavigationItem"; title = "Root View Controller"; ObjectID = "s4q-VJ-8eD"; */
+"s4q-VJ-8eD.title" = "Controlador de visualização raiz";
+
+/* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "sKd-DU-ql9"; */
+"sKd-DU-ql9.title" = "Períodos";
+
+/* Class = "IBUINavigationItem"; title = "Root View Controller"; ObjectID = "sV7-Bi-cjR"; */
+"sV7-Bi-cjR.title" = "Controlador de visualização raiz";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "swe-cY-hvE"; */
+"swe-cY-hvE.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "t3y-Ba-Rux"; */
+"t3y-Ba-Rux.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Location:"; ObjectID = "tPe-jc-4j5"; */
 "tPe-jc-4j5.text" = "Localização:";
 
-/* Class = "IBUINavigationItem"; title = "Períodos"; ObjectID = "te1-hZ-gYH"; */
-"te1-hZ-gYH.title" = "Períodos";
+/* Class = "IBUILabel"; text = "Section Number"; ObjectID = "tRS-Ls-Izm"; */
+"tRS-Ls-Izm.text" = "Número da turma";
 
-/* Class = "IBUIBarButtonItem"; title = "Períodos"; ObjectID = "wIN-QM-0wd"; */
+/* Class = "IBUITextView"; text = "0"; ObjectID = "v71-OW-LtF"; */
+"v71-OW-LtF.text" = "0";
+
+/* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "vcj-p8-E2a"; */
+"vcj-p8-E2a.text" = "Informações sobre a aula";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "vzY-lI-QDZ"; */
+"vzY-lI-QDZ.text" = "Rótulo";
+
+/* Class = "IBUIButton"; normalTitle = "Search"; ObjectID = "w97-aO-gZp"; */
+"w97-aO-gZp.normalTitle" = "Buscar";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "w9h-YX-q4v"; */
+"w9h-YX-q4v.text" = "Rótulo";
+
+/* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "wIN-QM-0wd"; */
 "wIN-QM-0wd.title" = "Períodos";
 
-/* Class = "IBUITabBarItem"; title = "Eventos"; ObjectID = "wx8-ah-lSq"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "whO-1B-Hei"; */
+"whO-1B-Hei.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "wju-Gz-sdw"; */
+"wju-Gz-sdw.text" = "Rótulo";
+
+/* Class = "IBUITabBarItem"; title = "Events"; ObjectID = "wx8-ah-lSq"; */
 "wx8-ah-lSq.title" = "Eventos";
 
-/* Class = "IBUITextField"; placeholder = "Nome de usuário"; ObjectID = "xO1-j7-8f9"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "x3v-wd-jS0"; */
+"x3v-wd-jS0.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "x7L-Og-ECF"; */
+"x7L-Og-ECF.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "x9v-Xj-xMB"; */
+"x9v-Xj-xMB.text" = "Rótulo";
+
+/* Class = "IBUITextField"; placeholder = "User Name"; ObjectID = "xO1-j7-8f9"; */
 "xO1-j7-8f9.placeholder" = "Nome de usuário";
 
-/* Class = "IBUIViewController"; title = "Entrar"; ObjectID = "xx6-HK-Qkg"; */
-"xx6-HK-Qkg.title" = "Entrar";
+/* Class = "IBUILabel"; text = "Section Number"; ObjectID = "xpQ-54-V91"; */
+"xpQ-54-V91.text" = "Número da turma";
 
-/* Class = "IBUITableViewController"; title = "Detalhe do feed"; ObjectID = "zes-fc-7Zk"; */
-"zes-fc-7Zk.title" = "Detalhe do feed";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "yHe-5f-0Ra"; */
+"yHe-5f-0Ra.text" = "Rótulo";
 
-/* Class = "IBUITableViewController"; title = "Detalhes do evento"; ObjectID = "ziA-85-s86"; */
-"ziA-85-s86.title" = "Detalhes do evento";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "yUc-Ly-Uec"; */
+"yUc-Ly-Uec.text" = "Rótulo";
+
+/* Class = "IBUITextField"; placeholder = "Tap to Select"; ObjectID = "yck-wi-hfB"; */
+"yck-wi-hfB.placeholder" = "Toque para selecionar";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "z0S-RM-XG6"; */
+"z0S-RM-XG6.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "zRM-P6-Pdb"; */
+"zRM-P6-Pdb.text" = "Rótulo";
+
+/* Class = "IBUILabel"; text = "Date"; ObjectID = "zaG-Hf-qWK"; */
+"zaG-Hf-qWK.text" = "Data";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "zrl-W4-IYY"; */
+"zrl-W4-IYY.text" = "Rótulo";

@@ -109,7 +109,6 @@
 
     self.clientVersion.text = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
-    self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height;
     
     [self retrieveVersion];
     [self loadImage];
@@ -121,7 +120,13 @@
     [self sendView:@"About Page" forModuleNamed:nil];
 
     self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
-    self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height + 16;
+    
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
+        self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
+    } else {
+        self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height;
+    }
 }
 
 - (void) loadImage
@@ -245,6 +250,12 @@
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
+        self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent .height;
+    } else {
+        self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height;
+    }
     [self resetScrollViewContentOffset];
 }
 
@@ -252,6 +263,6 @@
 {
     [self.contactTextView setContentOffset:CGPointZero animated:YES];
     [self.scrollView setContentOffset:CGPointZero animated:YES];
-
+    
 }
 @end

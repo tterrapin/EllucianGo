@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "EllucianSectionedUITableViewController.h"
+#import "DetailSelectionDelegate.h"
 
 @class Module;
 
 @interface RegistrationRegisteredSectionsViewController : EllucianSectionedUITableViewController<UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) Module *module;
+@property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
 
 @end

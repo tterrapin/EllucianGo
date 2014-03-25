@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
-import android.widget.TextView;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.ellucian.elluciango.R;
@@ -27,7 +27,6 @@ import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.URLImageParser;
 import com.ellucian.mobile.android.util.Utils;
-import com.ellucian.mobile.android.webframe.WebframeActivity;
 
 public class NewsDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = NewsDetailFragment.class.getSimpleName();

@@ -1,29 +1,95 @@
+﻿
+/* Class = "IBUILabel"; text = "Section ID:"; ObjectID = "0r0-Zi-Ifz"; */
+"0r0-Zi-Ifz.text" = "معرف الشعبة";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "17o-ED-Hrc"; */
+"17o-ED-Hrc.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "1CK-Rx-Vwf"; */
+"1CK-Rx-Vwf.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "1QT-pL-5Sz"; */
+"1QT-pL-5Sz.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "1pL-PQ-Wwx"; */
+"1pL-PQ-Wwx.text" = "المسمى";
 
 /* Class = "IBUINavigationItem"; title = "Buildings"; ObjectID = "1t4-Y0-lFB"; */
-"1t4-Y0-lFB.title" = "قائمة المباني";
+"1t4-Y0-lFB.title" = "المباني";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "22m-2H-nRN"; */
+"22m-2H-nRN.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2IA-SC-G6y"; */
+"2IA-SC-G6y.text" = "المسمى";
 
 /* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "2Lr-Sh-71a"; */
 "2Lr-Sh-71a.title" = "الفصول الدراسية";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2bH-co-qB5"; */
+"2bH-co-qB5.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2vG-MR-DDL"; */
+"2vG-MR-DDL.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Faculty"; ObjectID = "39M-Ib-Gvn"; */
+"39M-Ib-Gvn.text" = "أعضاء هيئة التدريس";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "3TR-0j-Al6"; */
+"3TR-0j-Al6.text" = "المسمى";
+
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "3bs-4f-p1c"; */
 "3bs-4f-p1c.text" = "العنوان";
 
-/* Class = "IBUIButton"; normalTitle = "تسجيل الدخول"; ObjectID = "54f-9M-XmF"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4Qc-Uz-gjV"; */
+"4Qc-Uz-gjV.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4Rh-O0-Xs9"; */
+"4Rh-O0-Xs9.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4Sw-NK-sbk"; */
+"4Sw-NK-sbk.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "4TW-bx-cDi"; */
+"4TW-bx-cDi.text" = "المسمى";
+
+/* Class = "IBUIButton"; normalTitle = "Sign In"; ObjectID = "54f-9M-XmF"; */
 "54f-9M-XmF.normalTitle" = "تسجيل الدخول";
 
-/* Class = "IBUIButton"; selectedTitle = "تسجيل الدخول"; ObjectID = "54f-9M-XmF"; */
-"54f-9M-XmF.selectedTitle" = "تسجيل الدخول";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "5T8-YL-lNA"; */
+"5T8-YL-lNA.text" = "المسمى";
 
-/* Class = "IBUILabel"; text = "تاريخ النهاية:"; ObjectID = "75q-pk-sdU"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "5fj-kV-FRh"; */
+"5fj-kV-FRh.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "696-Bg-Vla"; */
+"696-Bg-Vla.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "End Date:"; ObjectID = "75q-pk-sdU"; */
 "75q-pk-sdU.text" = "تاريخ النهاية:";
 
-/* Class = "IBUILabel"; text = "التصفح دون تسجيل الدخول.  المس أو اسحب إلى اليمين للقائمة."; ObjectID = "8NP-0Z-YlQ"; */
-"8NP-0Z-YlQ.text" = "التصفح دون تسجيل الدخول.  المس أو اسحب إلى اليمين للقائمة.";
+/* Class = "IBUILabel"; text = "Look around without signing in.  Tap or swipe right for the menu."; ObjectID = "8NP-0Z-YlQ"; */
+"8NP-0Z-YlQ.text" = "التصفح دون تسجيل الدخول.  المس أو اسحب إلى اليمين لتظهر القائمة.";
 
-/* Class = "IBUILabel"; text = "الإبقاء متصلا"; ObjectID = "97f-pZ-LLK"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "8x1-48-OP6"; */
+"8x1-48-OP6.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Stay signed in"; ObjectID = "97f-pZ-LLK"; */
 "97f-pZ-LLK.text" = "الإبقاء متصلا";
 
-/* Class = "IBUITextField"; placeholder = "كلمة المرور"; ObjectID = "AK3-hT-iFJ"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "9Mc-6a-gDc"; */
+"9Mc-6a-gDc.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "9nt-tG-8Bn"; */
+"9nt-tG-8Bn.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "9wf-e8-pcD"; */
+"9wf-e8-pcD.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "AFH-AF-wuJ"; */
+"AFH-AF-wuJ.text" = "المسمى";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "AK3-hT-iFJ"; */
 "AK3-hT-iFJ.placeholder" = "كلمة المرور";
 
 /* Class = "IBUILabel"; text = "Mobile"; ObjectID = "AhB-UD-EFQ"; */
@@ -33,67 +99,136 @@
 "At7-K0-AnS.text" = "معرفة الطريق";
 
 /* Class = "IBUINavigationItem"; title = "Institutions"; ObjectID = "C51-mL-08y"; */
-"C51-mL-08y.title" = "قم باختيار الجامعة";
+"C51-mL-08y.title" = "الجامعات";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Co8-Uj-Emz"; */
+"Co8-Uj-Emz.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "D5f-ve-ddG"; */
+"D5f-ve-ddG.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "DLT-hy-h2X"; */
+"DLT-hy-h2X.text" = "المسمى";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "DQT-RF-YSo"; */
 "DQT-RF-YSo.text" = "أعضاء هيئة التدريس";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "DrJ-Gz-5n3"; */
+"DrJ-Gz-5n3.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "EDj-cV-y6N"; */
+"EDj-cV-y6N.text" = "المسمى";
+
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "EJW-yt-Me7"; */
 "EJW-yt-Me7.text" = "البريد الإلكتروني";
 
-/* Class = "IBUILabel"; text = "تاريخ النهاية:"; ObjectID = "FCg-hg-gKr"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "FAL-zW-o2D"; */
+"FAL-zW-o2D.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "End Date:"; ObjectID = "FCg-hg-gKr"; */
 "FCg-hg-gKr.text" = "تاريخ النهاية:";
 
-/* Class = "IBUITableViewController"; title = "اختيار الفعاليات"; ObjectID = "FZV-jm-8aU"; */
+/* Class = "IBUITableViewController"; title = "Events Selector"; ObjectID = "FZV-jm-8aU"; */
 "FZV-jm-8aU.title" = "اختيار الفعاليات";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "FeC-yO-Qzu"; */
 "FeC-yO-Qzu.text" = "البريد الإلكتروني";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Fjx-Sb-trp"; */
+"Fjx-Sb-trp.text" = "المسمى";
+
 /* Class = "IBUILabel"; text = "Server Version"; ObjectID = "Fpa-gA-itw"; */
 "Fpa-gA-itw.text" = "إصدار الخادم";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "G4I-hB-Noc"; */
+"G4I-hB-Noc.text" = "المسمى";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "Gfb-8A-civ"; */
 "Gfb-8A-civ.text" = "البريد الإلكتروني";
 
-/* Class = "IBUIBarButtonItem"; title = "الفصول الدراسية"; ObjectID = "H0f-iJ-HXh"; */
+/* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "H0f-iJ-HXh"; */
 "H0f-iJ-HXh.title" = "الفصول الدراسية";
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "HPb-ye-lMK"; */
 "HPb-ye-lMK.text" = "رقم الهاتف";
 
-/* Class = "IBUITabBarItem"; title = "الواجبات"; ObjectID = "HhG-Wa-Dpy"; */
+/* Class = "IBUITabBarItem"; title = "Assignments"; ObjectID = "HhG-Wa-Dpy"; */
 "HhG-Wa-Dpy.title" = "الواجبات";
+
+/* Class = "IBUILabel"; text = "We're Sorry."; ObjectID = "I2k-R4-900"; */
+"I2k-R4-900.text" = "نأسف.";
+
+/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "Irr-yT-wFW"; */
+"Irr-yT-wFW.normalTitle" = "زر";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Izd-jA-UB6"; */
+"Izd-jA-UB6.text" = "المسمى";
 
 /* Class = "IBUILabel"; text = "Department"; ObjectID = "Jd4-mQ-4DT"; */
 "Jd4-mQ-4DT.text" = "القسم";
 
-/* Class = "IBUIBarButtonItem"; title = "الفرز"; ObjectID = "Jd6-qQ-cwi"; */
+/* Class = "IBUIBarButtonItem"; title = "Filter"; ObjectID = "Jd6-qQ-cwi"; */
 "Jd6-qQ-cwi.title" = "الفرز";
 
-/* Class = "IBUITableViewController"; title = "الفعاليات"; ObjectID = "KWa-IW-KQL"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Jkp-ub-6IH"; */
+"Jkp-ub-6IH.text" = "المسمى";
+
+/* Class = "IBUITableViewController"; title = "Events"; ObjectID = "KWa-IW-KQL"; */
 "KWa-IW-KQL.title" = "الفعاليات";
 
-/* Class = "IBUITabBarItem"; title = "الإعلانات"; ObjectID = "Ljt-hl-OqR"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "KgY-dZ-hQ1"; */
+"KgY-dZ-hQ1.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "L7h-n2-6Ux"; */
+"L7h-n2-6Ux.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "LQ3-h3-xmh"; */
+"LQ3-h3-xmh.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Section Number"; ObjectID = "LSE-d9-y1h"; */
+"LSE-d9-y1h.text" = "رقم الشعبة";
+
+/* Class = "IBUITabBarItem"; title = "Announcements"; ObjectID = "Ljt-hl-OqR"; */
 "Ljt-hl-OqR.title" = "الإعلانات";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "N4F-KJ-BMl"; */
+"N4F-KJ-BMl.text" = "المسمى";
 
 /* Class = "IBUILabel"; text = "Address"; ObjectID = "NOY-pJ-hQP"; */
 "NOY-pJ-hQP.text" = "العنوان";
 
-/* Class = "IBUINavigationItem"; title = "تسجيل الدخول"; ObjectID = "Okd-La-GIl"; */
+/* Class = "IBUILabel"; text = "Description"; ObjectID = "NW4-rN-o2Q"; */
+"NW4-rN-o2Q.text" = "الوصف";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "O0m-DQ-R7f"; */
+"O0m-DQ-R7f.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "O4J-KU-FNV"; */
+"O4J-KU-FNV.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "OVI-Wu-ykp"; */
+"OVI-Wu-ykp.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "OeG-dy-UyA"; */
+"OeG-dy-UyA.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Sign In"; ObjectID = "Okd-La-GIl"; */
 "Okd-La-GIl.title" = "تسجيل الدخول";
 
-/* Class = "IBUITabBarItem"; title = "عرض اليوم"; ObjectID = "QEQ-m0-qxt"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Pqn-G8-9m2"; */
+"Pqn-G8-9m2.text" = "المسمى";
+
+/* Class = "IBUITabBarItem"; title = "Daily View"; ObjectID = "QEQ-m0-qxt"; */
 "QEQ-m0-qxt.title" = "عرض اليوم";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[0] = "الخريطة"; ObjectID = "QjC-Rp-3mY"; */
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[0] = "Map"; ObjectID = "QjC-Rp-3mY"; */
 "QjC-Rp-3mY.segmentTitles[0]" = "الخريطة";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[1] = "قمر صناعي"; ObjectID = "QjC-Rp-3mY"; */
-"QjC-Rp-3mY.segmentTitles[1]" = "قمر صناعي";
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[1] = "Satellite"; ObjectID = "QjC-Rp-3mY"; */
+"QjC-Rp-3mY.segmentTitles[1]" = "طبقة القمر الصناعي";
 
-/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[2] = "هجينة"; ObjectID = "QjC-Rp-3mY"; */
-"QjC-Rp-3mY.segmentTitles[2]" = "هجينة";
+/* Class = "IBUISegmentedControl"; QjC-Rp-3mY.segmentTitles[2] = "Hybrid"; ObjectID = "QjC-Rp-3mY"; */
+"QjC-Rp-3mY.segmentTitles[2]" = "الطبقة المختلطة";
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "R7w-jn-5Dc"; */
 "R7w-jn-5Dc.text" = "رقم الهاتف";
@@ -101,116 +236,302 @@
 /* Class = "IBUILabel"; text = "Office"; ObjectID = "Rtd-54-HAz"; */
 "Rtd-54-HAz.text" = "المكتب";
 
-/* Class = "IBUILabel"; text = "المكان:"; ObjectID = "UMZ-6o-XkW"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "S0P-yP-dnX"; */
+"S0P-yP-dnX.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "T4o-xi-9Lh"; */
+"T4o-xi-9Lh.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "T7m-XS-EtO"; */
+"T7m-XS-EtO.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "U9X-Nn-7Qk"; */
+"U9X-Nn-7Qk.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Location:"; ObjectID = "UMZ-6o-XkW"; */
 "UMZ-6o-XkW.text" = "المكان:";
 
-/* Class = "IBUIBarButtonItem"; title = "الفرع"; ObjectID = "V3M-x4-FdC"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Ubi-kb-vAm"; */
+"Ubi-kb-vAm.text" = "المسمى";
+
+/* Class = "IBUIBarButtonItem"; title = "Campus"; ObjectID = "V3M-x4-FdC"; */
 "V3M-x4-FdC.title" = "الفرع";
 
-/* Class = "IBUINavigationItem"; title = "الرئيسية"; ObjectID = "WcN-vw-nXx"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "VCg-7o-fHG"; */
+"VCg-7o-fHG.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "VlD-Nw-eqe"; */
+"VlD-Nw-eqe.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "W5l-OC-5RH"; */
+"W5l-OC-5RH.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "WJU-l6-w4o"; */
+"WJU-l6-w4o.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "WTH-lf-Rp1"; */
+"WTH-lf-Rp1.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Home"; ObjectID = "WcN-vw-nXx"; */
 "WcN-vw-nXx.title" = "الرئيسية";
 
-/* Class = "IBUITableViewController"; title = "تفاصيل الفعالية"; ObjectID = "XpR-ww-OiW"; */
-"XpR-ww-OiW.title" = "تفاصيل الفعالية";
+/* Class = "IBUIBarButtonItem"; title = "Item"; ObjectID = "WtM-Y5-Jw1"; */
+"WtM-Y5-Jw1.title" = "البند";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "X55-zO-KoE"; */
+"X55-zO-KoE.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Course Keywords"; ObjectID = "XU3-FU-Pq7"; */
+"XU3-FU-Pq7.text" = "الكلمات المفتاحية للمقررات";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Xsi-ai-4vO"; */
+"Xsi-ai-4vO.text" = "المسمى";
 
 /* Class = "IBUILabel"; text = "Please contact your institution’s IT staff for assistance with login."; ObjectID = "YFZ-bh-3IF"; */
-"YFZ-bh-3IF.text" = "يرجى التواصل مع قسم تقنية المعلومات للمساعدة في تسجيل الدخول.";
+"YFZ-bh-3IF.text" = "يرجى التواصل مع قسم تقنية المعلومات في جامعتك للمساعدة في تسجيل الدخول.";
 
-/* Class = "IBUITabBarItem"; title = "التفاصيل"; ObjectID = "Yff-ow-vZn"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "YTM-Wq-kco"; */
+"YTM-Wq-kco.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Term"; ObjectID = "YVN-su-c3w"; */
+"YVN-su-c3w.text" = "الفصل الدراسي";
+
+/* Class = "IBUITabBarItem"; title = "Details"; ObjectID = "Yff-ow-vZn"; */
 "Yff-ow-vZn.title" = "التفاصيل";
 
-/* Class = "IBUISearchBar"; placeholder = "البحث في الجامعات"; ObjectID = "aCq-E4-VbG"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Z3R-Yf-xqL"; */
+"Z3R-Yf-xqL.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Select a Term and enter Course Keywords"; ObjectID = "Z7a-PW-0lx"; */
+"Z7a-PW-0lx.text" = "قم باختيار فصل دراسي وأدخل الكلمات المفتاحية للمقررات";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "ZND-Mu-F1p"; */
+"ZND-Mu-F1p.text" = "المسمى";
+
+/* Class = "IBUISearchBar"; placeholder = "Search schools"; ObjectID = "aCq-E4-VbG"; */
 "aCq-E4-VbG.placeholder" = "البحث في الجامعات";
 
-/* Class = "IBUITabBarItem"; title = "الجدول الكامل"; ObjectID = "ajc-cg-o0I"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
+"aNm-pv-19M.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "aUk-f5-GXf"; */
+"aUk-f5-GXf.text" = "المسمى";
+
+/* Class = "IBUITabBarItem"; title = "Full Schedule"; ObjectID = "ajc-cg-o0I"; */
 "ajc-cg-o0I.title" = "الجدول الكامل";
 
-/* Class = "IBUITableViewController"; title = "تفاصيل الموجز"; ObjectID = "apR-pn-o7Y"; */
-"apR-pn-o7Y.title" = "تفاصيل الموجز";
-
-/* Class = "IBUILabel"; text = "تاريخ البدء:"; ObjectID = "b2W-Cv-P62"; */
+/* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "b2W-Cv-P62"; */
 "b2W-Cv-P62.text" = "تاريخ البدء:";
 
-/* Class = "IBUILabel"; text = "تغيير الجامعة"; ObjectID = "bM8-E7-rDr"; */
-"bM8-E7-rDr.text" = "تغيير الجامعة";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "bM8-E7-rDr"; */
+"bM8-E7-rDr.text" = "المسمى";
 
-/* Class = "IBUIButton"; normalTitle = "مشغل بواسطة"; ObjectID = "cAZ-do-lgl"; */
+/* Class = "IBUIButton"; normalTitle = "Powered by"; ObjectID = "cAZ-do-lgl"; */
 "cAZ-do-lgl.normalTitle" = "مشغل بواسطة";
 
-/* Class = "IBUITabBarItem"; title = "القائمة"; ObjectID = "cyd-zX-EAQ"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "cJQ-yV-GLz"; */
+"cJQ-yV-GLz.text" = "المسمى";
+
+/* Class = "IBUITabBarItem"; title = "Roster"; ObjectID = "cyd-zX-EAQ"; */
 "cyd-zX-EAQ.title" = "القائمة";
 
-/* Class = "IBUIButton"; normalTitle = "سياسة خصوصية Ellucian"; ObjectID = "d8N-9n-28Q"; */
+/* Class = "IBUIButton"; normalTitle = "Ellucian Privacy Policy"; ObjectID = "d8N-9n-28Q"; */
 "d8N-9n-28Q.normalTitle" = "سياسة خصوصية Ellucian";
 
-/* Class = "IBUIViewController"; title = "الدرجات"; ObjectID = "elS-z3-eCK"; */
+/* Class = "IBUITextField"; placeholder = "Tap to Select"; ObjectID = "dKP-hl-IAS"; */
+"dKP-hl-IAS.placeholder" = "انقر للاختيار";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "dPE-MB-DOp"; */
+"dPE-MB-DOp.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "eE2-jT-lyc"; */
+"eE2-jT-lyc.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "eSS-dl-cac"; */
+"eSS-dl-cac.text" = "المسمى";
+
+/* Class = "IBUIViewController"; title = "Grades"; ObjectID = "elS-z3-eCK"; */
 "elS-z3-eCK.title" = "الدرجات";
 
-/* Class = "IBUILabel"; text = "Client Version"; ObjectID = "fC3-ak-lmX"; */
-"fC3-ak-lmX.text" = "إصدار الرخصة";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "f9u-9p-nB4"; */
+"f9u-9p-nB4.text" = "المسمى";
 
-/* Class = "IBUITabBarItem"; title = "الدرجات"; ObjectID = "gQV-aW-o6b"; */
+/* Class = "IBUILabel"; text = "Client Version"; ObjectID = "fC3-ak-lmX"; */
+"fC3-ak-lmX.text" = "إصدار العميل";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fGt-lb-aDh"; */
+"fGt-lb-aDh.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fQo-KN-f2k"; */
+"fQo-KN-f2k.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fR2-Qj-Q40"; */
+"fR2-Qj-Q40.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "fY9-eT-CmT"; */
+"fY9-eT-CmT.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Sign In"; ObjectID = "fiz-pS-peM"; */
+"fiz-pS-peM.title" = "تسجيل الدخول";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "g1Q-6e-iBu"; */
+"g1Q-6e-iBu.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gKk-NO-EDm"; */
+"gKk-NO-EDm.text" = "المسمى";
+
+/* Class = "IBUITabBarItem"; title = "Grades"; ObjectID = "gQV-aW-o6b"; */
 "gQV-aW-o6b.title" = "الدرجات";
 
-/* Class = "IBUIButton"; normalTitle = "إلغاء"; ObjectID = "hK7-iJ-2oq"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gWA-vc-aMo"; */
+"gWA-vc-aMo.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "gaS-Mv-pmJ"; */
+"gaS-Mv-pmJ.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Meets"; ObjectID = "hBm-p7-2VH"; */
+"hBm-p7-2VH.text" = "لقاءات";
+
+/* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "hK7-iJ-2oq"; */
 "hK7-iJ-2oq.normalTitle" = "إلغاء";
 
-/* Class = "IBUIButton"; selectedTitle = "إلغاء"; ObjectID = "hK7-iJ-2oq"; */
-"hK7-iJ-2oq.selectedTitle" = "إلغاء";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "hep-RJ-gfn"; */
+"hep-RJ-gfn.text" = "المسمى";
 
-/* Class = "IBUISearchBar"; placeholder = "دليل البحث"; ObjectID = "iS4-ME-cUg"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "i4a-IQ-rld"; */
+"i4a-IQ-rld.text" = "المسمى";
+
+/* Class = "IBUISearchBar"; placeholder = "Search directory"; ObjectID = "iS4-ME-cUg"; */
 "iS4-ME-cUg.placeholder" = "دليل البحث";
 
-/* Class = "IBUINavigationItem"; title = "الدرجات"; ObjectID = "kfV-dh-hvq"; */
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "jmp-kD-D9o"; */
+"jmp-kD-D9o.text" = "اللقب";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "jvN-do-BL5"; */
+"jvN-do-BL5.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "jyB-En-RI3"; */
+"jyB-En-RI3.text" = "المسمى";
+
+/* Class = "IBUIButton"; normalTitle = "Search"; ObjectID = "k8q-Td-hPU"; */
+"k8q-Td-hPU.normalTitle" = "البحث";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "kIn-T8-Tkv"; */
+"kIn-T8-Tkv.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Grades"; ObjectID = "kfV-dh-hvq"; */
 "kfV-dh-hvq.title" = "الدرجات";
 
-/* Class = "IBUIButton"; normalTitle = "تسجيل الخروج"; ObjectID = "kgH-4i-YcN"; */
-"kgH-4i-YcN.normalTitle" = "تسجيل الخروج";
-
-/* Class = "IBUIViewController"; title = "الدرجات"; ObjectID = "lT8-ez-Xtc"; */
+/* Class = "IBUIViewController"; title = "Grades"; ObjectID = "lT8-ez-Xtc"; */
 "lT8-ez-Xtc.title" = "الدرجات";
 
-/* Class = "IBUIBarButtonItem"; title = "الفرز"; ObjectID = "mb6-6x-BeD"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "lnT-Nh-UCs"; */
+"lnT-Nh-UCs.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "m67-OG-evC"; */
+"m67-OG-evC.text" = "المسمى";
+
+/* Class = "IBUIBarButtonItem"; title = "Filter"; ObjectID = "mb6-6x-BeD"; */
 "mb6-6x-BeD.title" = "الفرز";
 
-/* Class = "IBUILabel"; text = "يتم تحميل التهيئة الآن. يرجى الانتظار..."; ObjectID = "nbl-jr-rw5"; */
-"nbl-jr-rw5.text" = "يتم تحميل التهيئة الآن. يرجى الانتظار...";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "nTY-29-aWa"; */
+"nTY-29-aWa.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Ineligible for Registration"; ObjectID = "nbc-20-7dD"; */
+"nbc-20-7dD.text" = "غير مؤهل للتسجيل";
+
+/* Class = "IBUILabel"; text = "Loading configuration.  Please wait..."; ObjectID = "nbl-jr-rw5"; */
+"nbl-jr-rw5.text" = "جاري تحميل التهيئة.  يرجى الانتظار...";
 
 /* Class = "IBUILabel"; text = "Website"; ObjectID = "o9z-QP-cOL"; */
-"o9z-QP-cOL.text" = "الموقع";
+"o9z-QP-cOL.text" = "الموقع الإلكتروني";
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "oAa-S2-lIX"; */
 "oAa-S2-lIX.text" = "رقم الهاتف";
 
-/* Class = "IBUINavigationItem"; title = "فرز الفعاليات"; ObjectID = "q2a-Wr-jVI"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "otW-v7-irB"; */
+"otW-v7-irB.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "ozP-lz-Jd5"; */
+"ozP-lz-Jd5.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "pdn-Bx-xkz"; */
+"pdn-Bx-xkz.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Events Filter"; ObjectID = "q2a-Wr-jVI"; */
 "q2a-Wr-jVI.title" = "فرز الفعاليات";
 
-/* Class = "IBUITableViewController"; title = "تفاصيل الموجز"; ObjectID = "qiG-qb-brp"; */
-"qiG-qb-brp.title" = "تفاصيل الموجز";
+/* Class = "IBUITabBarItem"; title = "Registered"; ObjectID = "qJA-E1-sjv"; */
+"qJA-E1-sjv.title" = "مسجل";
 
-/* Class = "IBUILabel"; text = "تاريخ البدء:"; ObjectID = "sVb-cu-7R4"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "qJU-ek-R6I"; */
+"qJU-ek-R6I.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "sA1-Wl-2wc"; */
+"sA1-Wl-2wc.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "sGg-vf-AD6"; */
+"sGg-vf-AD6.text" = "المسمى";
+
+/* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "sKd-DU-ql9"; */
+"sKd-DU-ql9.title" = "الفصول الدراسية";
+
+/* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "sVb-cu-7R4"; */
 "sVb-cu-7R4.text" = "تاريخ البدء:";
 
-/* Class = "IBUILabel"; text = "المكان:"; ObjectID = "tPe-jc-4j5"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "swe-cY-hvE"; */
+"swe-cY-hvE.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "t3y-Ba-Rux"; */
+"t3y-Ba-Rux.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "tLw-PQ-fJo"; */
+"tLw-PQ-fJo.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Location:"; ObjectID = "tPe-jc-4j5"; */
 "tPe-jc-4j5.text" = "المكان:";
 
-/* Class = "IBUINavigationItem"; title = "الفصول الدراسية"; ObjectID = "te1-hZ-gYH"; */
-"te1-hZ-gYH.title" = "الفصول الدراسية";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "vt1-4a-KEu"; */
+"vt1-4a-KEu.text" = "المسمى";
 
-/* Class = "IBUIBarButtonItem"; title = "الفصول الدراسية"; ObjectID = "wIN-QM-0wd"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "vzY-lI-QDZ"; */
+"vzY-lI-QDZ.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "w9i-KX-E7W"; */
+"w9i-KX-E7W.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Credits:"; ObjectID = "wG5-pn-CaP"; */
+"wG5-pn-CaP.text" = "الساعات المعتمدة:";
+
+/* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "wIN-QM-0wd"; */
 "wIN-QM-0wd.title" = "الفصول الدراسية";
 
-/* Class = "IBUITabBarItem"; title = "الفعاليات"; ObjectID = "wx8-ah-lSq"; */
+/* Class = "IBUITabBarItem"; title = "Cart"; ObjectID = "wMw-p9-BS9"; */
+"wMw-p9-BS9.title" = "سلة التسجيل";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "wju-Gz-sdw"; */
+"wju-Gz-sdw.text" = "المسمى";
+
+/* Class = "IBUIBarButtonItem"; title = "Item"; ObjectID = "wv6-JC-xRR"; */
+"wv6-JC-xRR.title" = "البند";
+
+/* Class = "IBUITabBarItem"; title = "Events"; ObjectID = "wx8-ah-lSq"; */
 "wx8-ah-lSq.title" = "الفعاليات";
 
-/* Class = "IBUITextField"; placeholder = "اسم المستخدم"; ObjectID = "xO1-j7-8f9"; */
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "x3v-wd-jS0"; */
+"x3v-wd-jS0.text" = "المسمى";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "x7L-Og-ECF"; */
+"x7L-Og-ECF.text" = "المسمى";
+
+/* Class = "IBUITextField"; placeholder = "User Name"; ObjectID = "xO1-j7-8f9"; */
 "xO1-j7-8f9.placeholder" = "اسم المستخدم";
 
-/* Class = "IBUIViewController"; title = "تسجيل الدخول"; ObjectID = "xx6-HK-Qkg"; */
-"xx6-HK-Qkg.title" = "تسجيل الدخول";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "yHe-5f-0Ra"; */
+"yHe-5f-0Ra.text" = "المسمى";
 
-/* Class = "IBUITableViewController"; title = "تفاصيل الموجز"; ObjectID = "zes-fc-7Zk"; */
-"zes-fc-7Zk.title" = "تفاصيل الموجز";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "z0S-RM-XG6"; */
+"z0S-RM-XG6.text" = "المسمى";
 
-/* Class = "IBUITableViewController"; title = "تفاصيل الفعالية"; ObjectID = "ziA-85-s86"; */
-"ziA-85-s86.title" = "تفاصيل الفعالية";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "zrl-W4-IYY"; */
+"zrl-W4-IYY.text" = "المسمى";

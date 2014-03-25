@@ -13,6 +13,7 @@
 #import "ImageCache.h"
 #import "NotificationsFetcher.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "LoginExecutor.h"
 
 @interface HomeViewController ()
 
@@ -111,14 +112,13 @@
 
 - (IBAction)signIn:(id)sender {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionLogin withLabel:@"Home-Click Sign In" withValue:nil forModuleNamed:nil];
-    LoginViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-    [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+    UIViewController *vc = [LoginExecutor loginController];
     [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (IBAction)signOut:(id)sender {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionLogout withLabel:@"Home-Click Sign Out" withValue:nil forModuleNamed:nil];
-    [[self currentUser] logout];
+    [[CurrentUser sharedInstance] logout];
 }
 
 - (IBAction)switchSchools:(id)sender {
@@ -133,7 +133,7 @@
 -(void) setLoginState
 {
     [self.signInButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-    if([self currentUser].isLoggedIn) {
+    if([CurrentUser sharedInstance].isLoggedIn) {
         self.signInLabel.text = NSLocalizedString(@"Sign Out", @"label to sign out");
          [self.signInButton addTarget:self action:@selector(signOut:) forControlEvents:UIControlEventTouchUpInside];
         [NotificationsFetcher fetchNotifications:self.managedObjectContext];
@@ -141,13 +141,6 @@
         self.signInLabel.text = NSLocalizedString(@"Sign In", @"label to sign in");
         [self.signInButton addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];
     }
-}
-
--(CurrentUser *) currentUser
-{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate getCurrentUser];
-    return user;
 }
 
 -(void) viewWillAppear:(BOOL)animated

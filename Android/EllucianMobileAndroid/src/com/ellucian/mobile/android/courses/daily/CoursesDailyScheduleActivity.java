@@ -326,7 +326,7 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 		@Override
 		protected DailyScheduleResponse doInBackground(String... params) {
 			String requestUrl = params[0];
-			MobileClient client = new MobileClient(CoursesDailyScheduleActivity.this.getApplication());
+			MobileClient client = new MobileClient(CoursesDailyScheduleActivity.this);
 			client.setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 			DailyScheduleResponse dailySchedule = client.getDailySchedule(requestUrl);
 			return dailySchedule;

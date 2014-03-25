@@ -33,6 +33,10 @@ public class NotificationsBuilder extends ContentProviderOperationBuilder<Notifi
 			} else {
 				id = notification.title;
 			}
+			String statuses = null;
+			if (notification.statuses != null && notification.statuses.length > 0) {
+				statuses = TextUtils.join(",", notification.statuses);
+			}
 			
 			batch.add(ContentProviderOperation
 					.newInsert(Notifications.CONTENT_URI)
@@ -42,6 +46,14 @@ public class NotificationsBuilder extends ContentProviderOperationBuilder<Notifi
 					.withValue(Notifications.NOTIFICATIONS_HYPERLINK, notification.hyperlink)
 					.withValue(Notifications.NOTIFICATIONS_LINK_LABEL, notification.linkLabel)
 					.withValue(Notifications.NOTIFICATIONS_DATE, notification.noticeDate)
+					.withValue(Notifications.NOTIFICATIONS_SOURCE, notification.source)
+					.withValue(Notifications.NOTIFICATIONS_DISPATCH_DATE, notification.dispatchDate)
+					.withValue(Notifications.NOTIFICATIONS_MOBILE_HEADLINE, notification.mobileHeadline)
+					.withValue(Notifications.NOTIFICATIONS_EXPIRES, notification.expires)
+					.withValue(Notifications.NOTIFICATIONS_PUSH, notification.push ? 1 : 0)
+					.withValue(Notifications.NOTIFICATIONS_MODULE, notification.module ? 1 : 0)
+					.withValue(Notifications.NOTIFICATIONS_STICKY, notification.sticky ? 1 : 0)
+					.withValue(Notifications.NOTIFICATIONS_STATUSES, statuses)
 					.build());
 		}
 			

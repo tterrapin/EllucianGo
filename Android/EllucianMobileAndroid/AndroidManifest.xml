@@ -470,7 +470,10 @@
         <service android:name="com.ellucian.mobile.android.client.services.MapsIntentService" ></service>
         <service android:name="com.ellucian.mobile.android.client.services.NewsIntentService" ></service>
         <service android:name="com.ellucian.mobile.android.client.services.NotificationsIntentService" ></service>
+        <service android:name="com.ellucian.mobile.android.client.services.NotificationsUpdateDatabaseService" ></service>
+        <service android:name="com.ellucian.mobile.android.client.services.NotificationsUpdateServerService" ></service>
         <service android:name="com.ellucian.mobile.android.client.services.NumbersIntentService" ></service>
+        <service android:name="com.ellucian.mobile.android.client.services.RegisterService" ></service>
                     
         <!-- GCM receiver -->
         <receiver android:name="com.ellucian.mobile.android.notifications.GcmBroadcastReceiver"

@@ -138,6 +138,10 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		
 	}
 	
+	protected void setRegisterButtonEnabled(boolean enabled) {
+		registerButton.setEnabled(enabled);
+	}
+	
 	protected void showEligibilityErrorView(boolean show) {
 		if (show) {
 			if (!TextUtils.isEmpty(errorMessages)) {

@@ -37,6 +37,7 @@ public class ConfigurationUpdateService extends IntentService {
 	public static String latestVersionToCauseAlert = null;
 
 	public static final String PARAM_UPGRADE_AVAILABLE = "upgradeAvailable";
+	public static final String REFRESH = "refresh";
 	public static final String ACTION_SUCCESS = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.success";
 	public static final String ACTION_SEND_TO_SELECTION = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.reselect";
 	public static final String ACTION_OUTDATED = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.outdated";
@@ -45,6 +46,7 @@ public class ConfigurationUpdateService extends IntentService {
 			.getSimpleName();
 	private boolean imagesDone;
 	private ImageLoaderReceiver imageReceiver;
+	private boolean refresh;
 
 	public ConfigurationUpdateService() {
 		super("ConfigurationUpdateService");
@@ -64,12 +66,12 @@ public class ConfigurationUpdateService extends IntentService {
 		LocalBroadcastManager.getInstance(this).registerReceiver(imageReceiver,
 				imageFilter);
 
-		ellucianApp.setNotificationsPresent(false);
 		imagesDone = false;
 
 		String configUrl = intent.getStringExtra(Utils.CONFIGURATION_URL);
+		refresh = intent.getBooleanExtra(REFRESH, false);
 
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		String configurationString = client.getConfiguration(configUrl);
 
 		JSONObject jsonConfiguration = null;
@@ -224,16 +226,18 @@ public class ConfigurationUpdateService extends IntentService {
 							}
 
 							// Check to see if notifications are present
-							if (type.equals(ModuleType.NOTIFICATIONS)) {
+							if (type.equals(ModuleType.NOTIFICATIONS)) {								
+								Utils.addBooleanToPreferences(this, Utils.CONFIGURATION,
+								        Utils.NOTIFICATION_PRESENT, true);
 
-								JSONObject urls = moduleObject
-										.getJSONObject("urls");
-								String requestUrl = urls
-										.getString("notifications");
-								ellucianApp.setNotificationsUrl(requestUrl);
-								if (!TextUtils.isEmpty(requestUrl)) {
-									ellucianApp.setNotificationsPresent(true);
-								}
+								JSONObject urls = moduleObject.getJSONObject("urls");
+
+								Utils.addStringToPreferences(this, Utils.NOTIFICATION,
+								        Utils.NOTIFICATION_NOTIFICATIONS_URL, urls.getString("notifications"));
+	
+								Utils.addStringToPreferences(this, Utils.NOTIFICATION,
+								        Utils.NOTIFICATION_MOBILE_NOTIFICATIONS_URL, urls.getString("mobilenotifications"));
+
 							}
 
 							// Set if the course roster is visible
@@ -288,6 +292,7 @@ public class ConfigurationUpdateService extends IntentService {
 			Intent broadcastIntent = new Intent();
 			broadcastIntent.setAction(ACTION_SUCCESS);
 			broadcastIntent.putExtra(PARAM_UPGRADE_AVAILABLE, upgradeAvailable);
+			broadcastIntent.putExtra(REFRESH, refresh);
 			bm.sendBroadcast(broadcastIntent);
 		} else if (sendToSelection) {
 			Intent broadcastIntent = new Intent();
@@ -546,6 +551,21 @@ public class ConfigurationUpdateService extends IntentService {
 			Utils.addStringToPreferences(this, Utils.SECURITY,
 					Utils.SECURITY_URL, security.getString("url"));
 		}
+		if (security.has("cas")) {
+			JSONObject cas = security.getJSONObject("cas");
+			String loginType = null;
+			if (cas.has("loginType")) {
+				loginType = cas.getString("loginType");
+			}
+			Utils.addStringToPreferences(this, Utils.SECURITY,
+					Utils.LOGIN_TYPE, loginType);
+			String loginUrl = null;
+			if (cas.has("loginUrl")) {
+				loginUrl = cas.getString("loginUrl");
+			}
+			Utils.addStringToPreferences(this, Utils.SECURITY,
+					Utils.LOGIN_URL, loginUrl);
+		}
 
 		/** Adding Notification Info **/
 		JSONObject notification = null;
@@ -555,18 +575,17 @@ public class ConfigurationUpdateService extends IntentService {
 			    JSONObject urls = notification.getJSONObject("urls");
 			    if (urls != null) {
 				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
-					        Utils.NOTIFICATION_NOTIFICATIONS_URL, notification.getString("notifications"));
+					        Utils.NOTIFICATION_REGISTRATION_URL, urls.getString("registration"));
 				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
-					        Utils.NOTIFICATION_REGISTRATION_URL, notification.getString("registration"));
-				    Utils.addStringToPreferences(this, Utils.NOTIFICATION,
-					        Utils.NOTIFICATION_DELIVERED_URL, notification.getString("delivered"));
+					        Utils.NOTIFICATION_DELIVERED_URL, urls.getString("delivered"));
 			    }
 		    }
 		} catch(JSONException e) {
-			// ignore this for now
+            Log.e(TAG, "exception processing NOTIFICATION URLs " + e, e);
+			// ignore this for nddow
 		}
 		// remove enabled attribute if it exists to ensure we check
-		Utils.removeValuesFromPreferences(this, Utils.NOTIFICATION_ENABLED,
+		Utils.removeValuesFromPreferences(this, Utils.NOTIFICATION,
 				Utils.NOTIFICATION_ENABLED);
 
 		/** Adding Map urls */

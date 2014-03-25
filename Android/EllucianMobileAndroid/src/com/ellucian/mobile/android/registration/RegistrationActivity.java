@@ -21,24 +21,30 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.CheckableCursorAdapter;
-import com.ellucian.mobile.android.adapter.SectionedListAdapter;
 import com.ellucian.mobile.android.adapter.CheckableCursorAdapter.OnCheckBoxClickedListener;
 import com.ellucian.mobile.android.adapter.CheckableSectionedListAdapter;
+import com.ellucian.mobile.android.adapter.SectionedListAdapter;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
@@ -55,7 +61,9 @@ import com.ellucian.mobile.android.client.registration.RegistrationResponse;
 import com.ellucian.mobile.android.client.registration.SearchResponse;
 import com.ellucian.mobile.android.client.registration.Section;
 import com.ellucian.mobile.android.client.registration.Term;
+import com.ellucian.mobile.android.client.services.RegisterService;
 import com.ellucian.mobile.android.util.CalendarUtils;
+import com.ellucian.mobile.android.util.Extra;
 import com.google.gson.Gson;
 
 public class RegistrationActivity extends EllucianActivity {
@@ -82,7 +90,9 @@ public class RegistrationActivity extends EllucianActivity {
 	private RetrieveCartListTask cartListTask;
 	private int previousSelected; 
 	protected boolean eligibilityChecked;
+	protected boolean planPresent;
 	private CheckEligibilityTask eligibilityTask;
+	private RegisterReceiver registerReceivcer;
 	
 	protected SearchSectionTask searchTask;
 	protected SearchResponse currentResults;
@@ -156,9 +166,11 @@ public class RegistrationActivity extends EllucianActivity {
 			if (savedInstanceState.containsKey("searchResultsAdded")) {
 				searchResultsAdded = savedInstanceState.getBoolean("searchResultsAdded");
 			}
+
 		}
 
 		if (currentCart != null) {
+			planPresent = true;
 			Log.d(TAG, "Cart is current, building adapter.");
 			
 			fillCartAdapter(currentCart, savedInstanceState);
@@ -267,15 +279,24 @@ public class RegistrationActivity extends EllucianActivity {
 	}
 	
 	@Override
-	protected void onPause() {
-		super.onPause();	
-		isInForeground = false;
-	}
-	
-	@Override
 	protected void onResume() {
 		super.onResume();	
 		isInForeground = true;
+		// Check if the RegisterService is still currently running and if so show the progress bar
+		if (getEllucianApp().isServiceRunning(RegisterService.class)) {
+			setProgressBarIndeterminateVisibility(true);
+		}
+		registerReceivcer = new RegisterReceiver();
+		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+		lbm.registerReceiver(registerReceivcer, new IntentFilter(RegisterService.ACTION_REGISTER_FINISHED));
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();	
+		isInForeground = false;
+		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+		lbm.unregisterReceiver(registerReceivcer);
 	}
 	
 	@Override
@@ -355,7 +376,7 @@ public class RegistrationActivity extends EllucianActivity {
 			} else {
 				Log.e(TAG, "failed to cancel");
 			}
-		}
+		}		
 		super.onDestroy();
 	}
 	
@@ -552,16 +573,24 @@ public class RegistrationActivity extends EllucianActivity {
 			}
 
 			Section section = findSectionInCart(termId, sectionId);
-			
+			String action = null;
+			Float credits = null;
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
+				action = Section.GRADING_TYPE_AUDIT;
+			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
+				action = Section.GRADING_TYPE_PASS_FAIL;
+			} else {
+				action = "Add";
+				if (section.minimumCredits != 0 && section.maximumCredits != 0) {
+					credits = Float.valueOf(section.credits);
+				}
+			}
+
 			SectionRegistration sectionRegistration = new SectionRegistration();
 			sectionRegistration.termId = termId;
 			sectionRegistration.sectionId = sectionId;
-			sectionRegistration.action = "Add";
-			if (section.credits != 0) {
-				sectionRegistration.credits = (int) section.credits;
-			} else {
-				sectionRegistration.credits = (int) section.minimumCredits;
-			}
+			sectionRegistration.action = action;
+			sectionRegistration.credits = credits;
 			
 			currentSelectionList.add(sectionRegistration);
 		}
@@ -580,8 +609,10 @@ public class RegistrationActivity extends EllucianActivity {
 	}
 	
 	public void onRegisterClicked(View view) {
-		registerConfirmDialogFragment = new RegisterConfirmDialogFragment();
-		registerConfirmDialogFragment.show(getFragmentManager(), "RegisterConfirmDialogFragment");
+		if (planPresent && !getEllucianApp().isServiceRunning(RegisterService.class)) {
+			registerConfirmDialogFragment = new RegisterConfirmDialogFragment();
+			registerConfirmDialogFragment.show(getFragmentManager(), "RegisterConfirmDialogFragment");
+		}
 	}
 	
 	void onRegisterConfirmOkClicked() {
@@ -593,8 +624,10 @@ public class RegistrationActivity extends EllucianActivity {
 			String planInJson = gson.toJson(plan);
 			Log.d(TAG, "Registering : " + planInJson);
 			
-			RegisterTask registerTask = new RegisterTask();
-			registerTask.execute(requestUrl, planInJson);
+			Intent registerIntent = new Intent(this, RegisterService.class);
+			registerIntent.putExtra(Extra.REQUEST_URL, requestUrl);
+			registerIntent.putExtra(RegisterService.PLAN_TO_REGISTER, planInJson);
+			startService(registerIntent);
 			setProgressBarIndeterminateVisibility(true);
 		} else {
 			Log.e(TAG, "List of plans is either null or empty");
@@ -622,18 +655,27 @@ public class RegistrationActivity extends EllucianActivity {
 		}
 	}
 	
-	public void onAddToCartClicked(View view) {
-		addToCartConfirmDialogFragment = new AddToCartConfirmDialogFragment();
-		addToCartConfirmDialogFragment.show(getFragmentManager(), "AddToCartConfirmDialogFragment");
-	}
-	
-	void onVariableCreditsConfirmOkClicked(String termId, String sectionId, String credits) {
+	void onVariableCreditsConfirmOkClicked(String termId, String sectionId, float credits) {
 		Section section = findSectionInResults(termId, sectionId);
 		float setCredits = section.credits;
-		section.credits = Float.parseFloat(credits);
+		section.credits = credits;
 
 		if (setCredits != section.credits) {			
 			resultsAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	void onVariableCreditsConfirmCancelClicked(int position) {
+		CheckBox checkBox = resultsAdapter.getCheckBoxAtPosition(position);
+		if (checkBox != null) {
+			checkBox.performClick();
+		}
+	}
+	
+	public void onAddToCartClicked(View view) {
+		if (planPresent) {
+			addToCartConfirmDialogFragment = new AddToCartConfirmDialogFragment();
+			addToCartConfirmDialogFragment.show(getFragmentManager(), "AddToCartConfirmDialogFragment");
 		}
 	}
 	
@@ -799,7 +841,7 @@ public class RegistrationActivity extends EllucianActivity {
 		public String termId;
 		public String sectionId;
 		public String action;
-		public int credits;
+		public Float credits;
 	}
 	
 	private class CheckEligibilityTask extends AsyncTask<String, Void, EligibilityResponse> {
@@ -808,7 +850,7 @@ public class RegistrationActivity extends EllucianActivity {
 		protected EligibilityResponse doInBackground(String... params) {
 			String requestUrl = params[0];
 			
-			MobileClient client = new MobileClient(getApplication());
+			MobileClient client = new MobileClient(RegistrationActivity.this);
 			requestUrl = client.addUserToUrl(requestUrl);
 			requestUrl += "/eligibility";
 
@@ -855,7 +897,7 @@ public class RegistrationActivity extends EllucianActivity {
 		protected CartResponse doInBackground(String... params) {		
 			String requestUrl = params[0];
 			
-			MobileClient client = new MobileClient(getApplication());
+			MobileClient client = new MobileClient(RegistrationActivity.this);
 			requestUrl = client.addUserToUrl(requestUrl);
 			requestUrl += "/plans";
 
@@ -871,7 +913,7 @@ public class RegistrationActivity extends EllucianActivity {
 			
 			if (result != null) {
 				if (result.plans != null || result.plans.length > 0) {
-
+					planPresent = true;
 					fillCartAdapter(result, null);
 					fillRegisteredAdapter(result);
 					
@@ -886,42 +928,42 @@ public class RegistrationActivity extends EllucianActivity {
 					}
 				} else {
 					Log.e(TAG, "No plans returned");
+					planPresent = false;
 				}
 			} else {
 				Log.e(TAG, "Response is null");
+				planPresent = false;
 			}
 
 			getActionBar().setSelectedNavigationItem(SEARCH_TAB_INDEX);
 			setProgressBarIndeterminateVisibility(false);
+			
+			if (!planPresent) {
+				EligibilityDialogFragment eligibilityDialogFragment = 
+						EligibilityDialogFragment.newInstance(getString(R.string.registration_no_plan_eligibility_message));
+				if(isInForeground) {
+					eligibilityDialogFragment.show(getFragmentManager(), "PlanNotPresentDialogFragment");				
+				}
+			}
 		}
 	}
 	
-	private class RegisterTask extends AsyncTask<String, Void, String> {
+	private class RegisterReceiver extends BroadcastReceiver {
 
 		@Override
-		protected String doInBackground(String... params) {
-			String requestUrl = params[0];
-			String planInJson = params[1];
+		public void onReceive(Context context, Intent intent) {
 			
-			MobileClient client = new MobileClient(getApplication());
-			requestUrl = client.addUserToUrl(requestUrl);
-			requestUrl += "/register-sections";
+			String result = intent.getStringExtra(RegisterService.REGISTRATION_RESULT);
 			
-			String response = client.putCoursesToRegister(requestUrl, planInJson);
-			
-			return response;
-		}
-		
-		
-		@Override
-		protected void onPostExecute(String result) {
 			RegistrationResponse registrationResponse = null;
 			Log.d(TAG, "RegisterTask result: " + result);
 			if (!TextUtils.isEmpty(result)) {
 				registrationResponse = gson.fromJson(result, RegistrationResponse.class);
-			} else {
+			} else {				
 				Log.e(TAG, "result is empty or null");
+				return;
 			}
+			
 			FragmentManager manager = getFragmentManager();
 			FragmentTransaction ft = manager.beginTransaction();
 			Fragment mainFrame = manager.findFragmentById(R.id.frame_main);
@@ -948,6 +990,7 @@ public class RegistrationActivity extends EllucianActivity {
 			setProgressBarIndeterminateVisibility(false);
 			
 		}
+		
 	}
 	
 	private class SearchSectionTask extends AsyncTask<String, Void, SearchResponse> {
@@ -966,7 +1009,7 @@ public class RegistrationActivity extends EllucianActivity {
 				Log.e(TAG, "UnsupportedEncodingException:", e);
 			}
 			
-			MobileClient client = new MobileClient(getApplication());
+			MobileClient client = new MobileClient(RegistrationActivity.this);
 			requestUrl = client.addUserToUrl(requestUrl);
 			requestUrl += "/search-courses?pattern=" + encodedPattern + "&term=" + encodedTermId;
 			
@@ -1025,19 +1068,6 @@ public class RegistrationActivity extends EllucianActivity {
 	    private final Class<? extends Fragment> mClass;
 		private FragmentManager fragmentManager;
 		private int fragmentContainerResId;
-
-	    /** Constructor used each time a new tab is created.
-	      * @param activity  The host Activity, used to instantiate the fragment
-	      * @param tag  The identifier tag for the fragment
-	      * @param clz  The fragment's Class, used to instantiate the fragment
-	      */
-	    public RegistrationTabListener(Activity activity, String tag, Class<T> clz, int fragmentContainerResId) {
-	        mActivity = activity;
-	        mTag = tag;
-	        mClass = clz;
-	        fragmentManager = activity.getFragmentManager();
-	        this.fragmentContainerResId = fragmentContainerResId;
-	    }
 	    
 	    public RegistrationTabListener(Activity activity, String tag, Fragment fragment,  int fragmentContainerResId) {
 	    	mFragment = fragment;
@@ -1169,7 +1199,14 @@ public class RegistrationActivity extends EllucianActivity {
 		
 		TextView creditsView = (TextView) view.findViewById(R.id.credits);
 		if (section.credits != 0) {
-			creditsView.setText("" + section.credits + " " + getString(R.string.registration_credits));
+			String creditsString = "" + section.credits + " " + getString(R.string.registration_credits);
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
+				creditsString += " | " + getString(R.string.registration_audit);
+			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
+				creditsString += " | " + getString(R.string.registration_pass_fail_abbrev);
+			}
+			creditsView.setText(creditsString);
+			
 		} else if (section.minimumCredits != 0){
 			String creditsText = "" + (float)section.minimumCredits;
 			if (section.maximumCredits != 0) {
@@ -1177,6 +1214,8 @@ public class RegistrationActivity extends EllucianActivity {
 			}
 			creditsText += " " + getString(R.string.registration_credits);
 			creditsView.setText(creditsText);
+		} else if (section.ceus != 0){
+			creditsView.setText("" + section.ceus + " " + getString(R.string.registration_ceus));
 		} else {
 			view.findViewById(R.id.instructor_credits_separator).setVisibility(View.GONE);
 		}
@@ -1246,7 +1285,7 @@ public class RegistrationActivity extends EllucianActivity {
 	private class RegisterCheckBoxClickedListener implements OnCheckBoxClickedListener {
 				
 		@Override
-		public void onCheckBoxClicked(boolean isChecked, int position) {
+		public void onCheckBoxClicked(CheckBox checkBox, boolean isChecked, int position) {
 
 			if (isChecked || !cartAdapter.getCheckedPositions().isEmpty()) {
 				cartFragment.showRegisterButton(true, cartAdapter.getCheckedPositions().size());
@@ -1259,7 +1298,7 @@ public class RegistrationActivity extends EllucianActivity {
 	private class SearchCheckBoxClickedListener implements OnCheckBoxClickedListener {
 		
 		@Override
-		public void onCheckBoxClicked(boolean isChecked, int position) {
+		public void onCheckBoxClicked(CheckBox checkBox, boolean isChecked, int position) {
 
 			if (isChecked || !resultsAdapter.getCheckedPositions().isEmpty()) {
 				
@@ -1273,7 +1312,10 @@ public class RegistrationActivity extends EllucianActivity {
 					Section section = findSectionInResults(termId, sectionId);
 					
 					if (section != null && section.minimumCredits != 0 && section.maximumCredits != 0) {
-						VariableCreditsConfirmDialogFragment creditsDialogFragment = VariableCreditsConfirmDialogFragment.newInstance(section);
+
+						VariableCreditsConfirmDialogFragment creditsDialogFragment = VariableCreditsConfirmDialogFragment.newInstance(section, position);
+						// Stops the back button from closing dialog
+						creditsDialogFragment.setCancelable(false);
 						creditsDialogFragment.show(getFragmentManager(), "VariableCreditsConfirmDialogFragment");
 					}
 					

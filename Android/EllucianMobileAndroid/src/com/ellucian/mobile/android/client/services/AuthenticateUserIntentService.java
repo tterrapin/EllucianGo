@@ -42,51 +42,47 @@ public class AuthenticateUserIntentService extends IntentService {
 		boolean backgroundAuth = intent.getBooleanExtra(Extra.LOGIN_BACKGROUND, false);
 		
 		boolean success = false;
-		if (!TextUtils.isEmpty(loginUsername) && !TextUtils.isEmpty(loginPassword)) {
-		
-			MobileClient client = new MobileClient(this.getApplication());
-			String response = client.authenticateUser(securityUrl, loginUsername, loginPassword);
-			
-			if(!TextUtils.isEmpty(response)) {
-				JSONObject userInfoJson;
-				String status = null;
-				try {
-					userInfoJson = new JSONObject(response);
-					status = userInfoJson.getString("status");
-					
-					if (status.equals("success")) {
-						
-						String userId = userInfoJson.getString("userId");
-						String username = userInfoJson.getString("authId");
-						ArrayList<String> roleList = new ArrayList<String>();
-						if(userInfoJson.has("roles")) {
-							JSONArray roles = userInfoJson.getJSONArray("roles");
-							int rolesLength = roles.length();
-							if (rolesLength > 0) {							
-								for (int i = 0; i < rolesLength; i++) {
-									roleList.add((String) roles.get(i));								
-								}
+
+		MobileClient client = new MobileClient(this);
+		String response = client.authenticateUser(securityUrl, loginUsername, loginPassword);
+
+		if (!TextUtils.isEmpty(response)) {
+			JSONObject userInfoJson;
+			String status = null;
+			try {
+				userInfoJson = new JSONObject(response);
+				status = userInfoJson.getString("status");
+
+				if (status.equals("success")) {
+
+					String userId = userInfoJson.getString("userId");
+					String username = userInfoJson.getString("authId");
+					ArrayList<String> roleList = new ArrayList<String>();
+					if (userInfoJson.has("roles")) {
+						JSONArray roles = userInfoJson.getJSONArray("roles");
+						int rolesLength = roles.length();
+						if (rolesLength > 0) {
+							for (int i = 0; i < rolesLength; i++) {
+								roleList.add((String) roles.get(i));
 							}
 						}
-	
-						ellucianApp.createAppUser(userId, username, loginPassword, roleList);
-						
-						// Save User Info into shared preferences if the user chooses to.
-						if (saveUser) {
-							Utils.saveUserInfo(this, userId, username, loginPassword, roleList);
-							
-						}
-						success = true;
 					}
-				} catch (JSONException e) {
-					Log.d(TAG, "JSONException parsing userInfoJson");
-					e.printStackTrace();
+
+					ellucianApp.createAppUser(userId, username, loginPassword,
+							roleList);
+
+					// Save User Info into shared preferences if the user chooses to.
+					if (saveUser) {
+						Utils.saveUserInfo(this, userId, username,
+								loginPassword, roleList);
+
+					}
+					success = true;
 				}
+			} catch (JSONException e) {
+				Log.e(TAG, "JSONException parsing userInfoJson");
 			}
-			
-			
-		}
-		
+		}		
 		LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
 		Intent broadcastIntent = new Intent();
 		

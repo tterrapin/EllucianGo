@@ -10,6 +10,7 @@
 #import "FeedCategory.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "MBProgressHUD.h"
 
 @interface FeedViewController ()
 @property (nonatomic,strong) NSMutableSet *hiddenCategories;
@@ -74,7 +75,6 @@
             [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
         }
     }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -402,6 +402,14 @@
     importContext.parentContext = self.module.managedObjectContext;
     [importContext setUndoManager:nil];
     NSString *urlString = [self.module propertyForKey:@"feed"];
+
+    // If we don't have anything in the DB for events let's show the loading HUD.
+    if ( [self.fetchedResultsController.fetchedObjects count] <= 0 )
+    {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"Loading", @"loading message while waiting for data to load");
+    }
+        
     [importContext performBlock: ^{
 
         //download data
@@ -549,6 +557,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self readFeedModule];
             [self.filterButton setEnabled:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     }];
 }

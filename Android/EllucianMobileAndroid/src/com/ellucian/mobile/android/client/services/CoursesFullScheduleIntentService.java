@@ -32,7 +32,7 @@ public class CoursesFullScheduleIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("CoursesFullScheduleIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		client.setDateFormat("yyyy-MM-dd");
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.COURSES_FULL_URL));

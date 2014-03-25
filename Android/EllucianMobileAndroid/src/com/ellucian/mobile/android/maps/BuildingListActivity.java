@@ -37,6 +37,7 @@ public class BuildingListActivity extends EllucianActivity
 	private String query;
 	private SimpleCursorAdapter adapter;
 	private EllucianDefaultListFragment mainFragment;
+	@SuppressWarnings("unused")
 	private boolean resetListPosition;
 
 

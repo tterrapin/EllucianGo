@@ -2,13 +2,11 @@ package com.ellucian.mobile.android.maps;
 
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 // TODO: Need to clean up image cache from AQ

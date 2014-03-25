@@ -3,12 +3,12 @@
 //  Mobile
 //
 //  Created by jkh on 6/4/13.
-//  Copyright (c) 2013 Ellucian. All rights reserved.
+//  Copyright (c) 2013-2014 Ellucian. All rights reserved.
 //
 
 #import "CourseAnnouncementsViewController.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "EmptyTableViewCell.h"
 #import "CourseAnnouncement.h"
 #import "CourseAnnouncementDetailViewController.h"
@@ -35,7 +35,12 @@
 	}
     
     self.navigationItem.title = self.courseNameAndSectionNumber;
-    [self fetchAnnouncements];
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self fetchAnnouncements:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchAnnouncements:) name:kLoginExecutorSuccess object:nil];
+    
     
 }
 
@@ -178,20 +183,20 @@
 }
 
 #pragma mark - fetch announcements
-
-- (void) fetchAnnouncements {
+- (void) fetchAnnouncements:(id)sender {
     
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/announcements", [self.module propertyForKey:@"ilp"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/announcements", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     
     [importContext performBlock: ^{
         
         NSError *error;
-        NSURLResponse *response;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser: [NSURL URLWithString: urlString] returningResponse:&response error:&error];
+        AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if(responseData) {

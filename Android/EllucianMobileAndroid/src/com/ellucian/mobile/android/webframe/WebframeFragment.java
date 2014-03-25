@@ -21,7 +21,6 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianFragment;
 import com.ellucian.mobile.android.util.Extra;
 
-@SuppressLint("SetJavaScriptEnabled")
 public class WebframeFragment extends EllucianFragment {
 	private static final String TAG = WebframeFragment.class.getSimpleName();
 	
@@ -47,6 +46,11 @@ public class WebframeFragment extends EllucianFragment {
 		return rootView;	
     }
 	
+	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressWarnings("deprecation") 
+	// WebSettings.setDatabasePath - This method was deprecated in API level 19
+	// Database paths are managed by the implementation and calling this method
+	// will have no effect.
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -82,7 +86,7 @@ public class WebframeFragment extends EllucianFragment {
 		String databasePath = webView.getContext().getDir("databases", 
                 Context.MODE_PRIVATE).getPath(); 
 		webSettings.setDatabaseEnabled(true);
-		webSettings.setDatabasePath(databasePath); 
+		webSettings.setDatabasePath(databasePath); //deprecated, but needed for earlier than API 19
 		webSettings.setDomStorageEnabled(true);
 		
 		String requestUrl = getActivity().getIntent().getStringExtra(Extra.REQUEST_URL);

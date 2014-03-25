@@ -2,13 +2,17 @@
 
 package com.ellucian.mobile.android.notifications;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import java.util.HashMap;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
+
+import com.ellucian.mobile.android.EllucianApplication;
+import com.ellucian.mobile.android.util.Extra;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmIntentService extends IntentService {
 	public static final String TAG = GcmIntentService.class.getSimpleName();
@@ -38,8 +42,12 @@ public class GcmIntentService extends IntentService {
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 // Post notification of received message.
-                //sendNotification("Received: " + extras.toString());
-                Log.d(TAG, "Received: " + extras.toString());
+            	
+            	String message = extras.getString("message");
+            	String uuid = extras.getString("uuid");
+                postNotificationToDrawer(uuid, message);
+                
+                Log.d(TAG, "Recieved message: '" + message + "' for uuid: '" + uuid + "'");
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -49,25 +57,15 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    /*
-    private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, DemoActivity.class), 0);
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.ic_stat_gcm)
-        .setContentTitle("GCM Notification")
-        .setStyle(new NotificationCompat.BigTextStyle()
-        .bigText(msg))
-        .setContentText(msg);
-
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    private void postNotificationToDrawer(String uuid, String message) {
+    	EllucianApplication app = (EllucianApplication)getApplication();
+    	DeviceNotifications deviceNotifications = app.getDeviceNotifications();
+    	
+    	HashMap<String, String> extras = new HashMap<String, String>();
+    	extras.put(Extra.NOTIFICATIONS_NOTIFICATION_ID, uuid);
+    	
+    	Notification notification = deviceNotifications.buildiGcmNotification(message, extras);
+    	
+    	deviceNotifications.makeNotificationActive(uuid, notification);
     }
-    */
-
 }

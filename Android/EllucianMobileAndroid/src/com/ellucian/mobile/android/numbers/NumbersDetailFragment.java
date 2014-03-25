@@ -48,7 +48,9 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 	private String buildingName;
 	private String campusId;
 	private String type;
+	@SuppressWarnings("unused")
 	private boolean showDirections = false;
+	@SuppressWarnings("unused")
 	private boolean showMap = false;
 	private String buildingUrl;
 
@@ -328,7 +330,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		@Override
 		protected BuildingsResponse doInBackground(String... params) {
 			String requestUrl = params[0];
-			MobileClient client = new MobileClient(activity.getApplication());
+			MobileClient client = new MobileClient(activity);
 			BuildingsResponse buildingsResponse = client.getBuildings(requestUrl);
 			return buildingsResponse;
 			

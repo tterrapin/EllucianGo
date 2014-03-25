@@ -5,33 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ShareActionProvider;
-import android.widget.TextView;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.widget.TextView;
 
-import com.androidquery.AQuery;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
-import com.ellucian.mobile.android.util.URLImageParser;
 import com.ellucian.mobile.android.util.Utils;
 
 public class EventsDetailFragment extends EllucianDefaultDetailFragment {
-private static final String TAG = EventsDetailFragment.class.getSimpleName();
 	
 	private Activity activity;
 	private View rootView;

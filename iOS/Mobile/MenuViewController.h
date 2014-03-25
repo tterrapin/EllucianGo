@@ -22,4 +22,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 -(void)reload;
+-(void) showModule:(Module*) module;
+- (UIViewController*) findControllerByModule:(Module*)module;
+-(void) showViewController:(UIViewController*) newTopViewController;
+
 @end

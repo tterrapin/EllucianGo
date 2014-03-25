@@ -3,13 +3,12 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 9/26/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "CourseDetailViewController.h"
 #import "CurrentUser.h"
 #import "CourseDetail.h"
-#import "NSData+AuthenticatedRequest.h"
 #import "CourseDetailInstructor.h"
 #import "CourseMeetingPattern.h"
 #import "POIDetailViewController.h"
@@ -26,6 +25,7 @@
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
 @property (nonatomic, strong) NSDateFormatter *displayDateFormatter;
 @property (nonatomic, strong) NSDateFormatter *displayTimeFormatter;
+@property (nonatomic, strong) NSDateFormatter *sisTimeFormatterWTz;
 @end
 
 @implementation CourseDetailViewController

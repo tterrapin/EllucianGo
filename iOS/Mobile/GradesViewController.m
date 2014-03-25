@@ -3,7 +3,7 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 8/2/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "GradesViewController.h"
@@ -11,12 +11,12 @@
 #import "GradeCourse.h"
 #import "GradesCourseNameCell.h"
 #import "Grade.h"
-#import "NSData+AuthenticatedRequest.h"
 #import "CurrentUser.h"
 #import "UIColor+SchoolCustomization.h"
 #import "EmptyTableViewCell.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "AuthenticatedRequest.h"
 
 @interface GradesViewController ()
 
@@ -39,13 +39,18 @@
     self.pages = [NSMutableSet new];
     self.navigationController.navigationBar.translucent = NO;
     
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self fetchGrades:self];
+    }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchGrades:) name:kLoginExecutorSuccess object:nil];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self loadGrades];
-    [self fetchGrades];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -323,25 +328,24 @@
 }
 
 #pragma mark - fetch grades
-
-- (void) fetchGrades {
-    
+- (void) fetchGrades:(id) sender
+{
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
-    NSString *userid = [CurrentUser userid];
+    NSString *userid = [[CurrentUser sharedInstance ] userid];
     if(userid) {
-        NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"grades"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"grades"], [userid  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         
         [importContext performBlock: ^{
             
             //download data
-            NSError *error;
-            NSURLResponse *response;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+            AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+            NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             if(responseData) {
+                NSError *error;
                 NSDictionary* json = [NSJSONSerialization
                                       JSONObjectWithData:responseData
                                       options:kNilOptions
@@ -413,7 +417,7 @@
                 [importContext.parentContext performBlock:^{
                     NSError *parentError = nil;
                     if(![importContext.parentContext save:&parentError]) {
-                        NSLog(@"Could not save to store after update to grades: %@", [error userInfo]);
+                        NSLog(@"Could not save to store after update to grades: %@", [parentError userInfo]);
                     }
                     [self loadGrades ];
                 }];

@@ -26,6 +26,6 @@
 - (IBAction)backgroundTap:(id)sender;
 - (IBAction)textFieldDoneEditing:(id)sender;
 - (IBAction)progressToPasswordField:(id)sender;
-
+-(NSInteger) backgroundLogin;
 
 @end

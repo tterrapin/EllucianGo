@@ -5,10 +5,13 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import android.app.ActionBar;
 import android.app.ExpandableListActivity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -17,23 +20,31 @@ import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
+import com.ellucian.mobile.android.client.MobileClient;
+import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
+import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
-import com.google.analytics.tracking.android.Logger.LogLevel;
 
-public abstract class EllucianExpandableListActivity extends ExpandableListActivity {
+public abstract class EllucianExpandableListActivity extends ExpandableListActivity implements DrawerLayoutActivity {
 	public String moduleId;
 	public String moduleName;
 	public String requestUrl;
 	private GoogleAnalytics gaInstance;
 	private Tracker gaTracker1;
-	private Tracker gaTracker2;
+	private Tracker gaTracker2;	
+	private MainAuthenticationReceiver mainAuthenticationReceiver;
+	private ConfigurationUpdateReceiver configReceiver;
+	private SendToSelectionReceiver resetReceiver;
+	private OutdatedReceiver outdatedReceiver;
+	private UnauthenticatedUserReceiver unauthenticatedUserReceiver;
 	
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +73,69 @@ public abstract class EllucianExpandableListActivity extends ExpandableListActiv
 		getActionBar();
 		setProgressBarIndeterminateVisibility(false);
         
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+		
+		lbm.unregisterReceiver(mainAuthenticationReceiver);
+		lbm.unregisterReceiver(configReceiver);
+		lbm.unregisterReceiver(resetReceiver);
+		lbm.unregisterReceiver(outdatedReceiver);
+		lbm.unregisterReceiver(unauthenticatedUserReceiver);
+
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		String tag = getClass().getName();
+		
+		SharedPreferences preferences = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE);
+		String configUrl = preferences.getString(Utils.CONFIGURATION_URL, null);
+		
+		long lastUpdate = preferences.getLong(Utils.CONFIGURATION_LAST_UPDATE, 0);
+		Log.d(tag, "last update time: " + lastUpdate);
+		
+		if(lastUpdate != 0 && (lastUpdate + EllucianApplication.MILLISECONDS_PER_DAY) < System.currentTimeMillis()) {
+			Log.d(tag, "24 hours past since last update, updating configuration");
+			Intent intent = new Intent(this, ConfigurationUpdateService.class);
+			intent.putExtra(Extra.CONFIG_URL, configUrl);			
+			intent.putExtra(ConfigurationUpdateService.REFRESH, true);	
+			startService(intent);
+		}
+		
+		//notifications
+		if (getEllucianApp().isUserAuthenticated()) {
+			if (System.currentTimeMillis() > getEllucianApp().getLastNotificationsCheck() + EllucianApplication.DEFAULT_NOTIFICATIONS_REFRESH) {
+				Log.d("MainActivity.onStart", "startingNotifications");
+				getEllucianApp().startNotifications();
+			}
+		}
+		
+		// call registerWithGcmIfNeeded often - it checks criteria to see if it needs to register or re-register
+		getEllucianApp().registerWithGcmIfNeeded();
+
+		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+		
+		configReceiver = new ConfigurationUpdateReceiver(this);
+		lbm.registerReceiver(configReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_SUCCESS));
+		
+		resetReceiver = new SendToSelectionReceiver(this);
+		lbm.registerReceiver(resetReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_SEND_TO_SELECTION));
+		
+		outdatedReceiver = new OutdatedReceiver(this);
+		lbm.registerReceiver(outdatedReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_OUTDATED));
+		
+		mainAuthenticationReceiver = new MainAuthenticationReceiver(this);
+		lbm.registerReceiver(mainAuthenticationReceiver, new IntentFilter(AuthenticateUserIntentService.ACTION_UPDATE_MAIN));
+		
+		unauthenticatedUserReceiver = new UnauthenticatedUserReceiver(this);
+		lbm.registerReceiver(unauthenticatedUserReceiver, new IntentFilter(MobileClient.ACTION_UNAUTHENTICATED_USER));
 	}
 
 	@Override

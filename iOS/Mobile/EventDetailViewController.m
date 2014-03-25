@@ -28,7 +28,6 @@
     if([AppearanceChanger isRTL]) {
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.locationLabel.textAlignment = NSTextAlignmentRight;
-        self.descriptionTextView.textAlignment = NSTextAlignmentRight;
         self.startDateLabelLabel.textAlignment = NSTextAlignmentRight;
         self.endDateLabelLabel.textAlignment = NSTextAlignmentRight;
         self.locationLabelLabel.textAlignment = NSTextAlignmentRight;
@@ -62,14 +61,15 @@
   
     self.locationLabel.text = self.location;
     if (self.eventDescription) {
-        self.descriptionTextView.text = self.eventDescription;
+        [self setDescriptionText:self.eventDescription];
     } else {
-        self.descriptionTextView.text = @" ";
+        [self setDescriptionText:@""];
     }
     
     self.titleBackgroundView.backgroundColor = [UIColor accentColor];
     self.titleLabel.textColor = [UIColor subheaderTextColor];
 
+    [self.descriptionWebView setDelegate:self];
 }
 
 
@@ -272,8 +272,9 @@
     self.location = _event.location;
     self.eventDescription = _event.description_;
     self.allDay = [_event.allDay boolValue];
-    self.titleLabel.text = self.eventTitle;
     
+    
+    self.titleLabel.text = self.eventTitle;
     
     NSDateFormatter *datetimeFormatter = [[NSDateFormatter alloc] init];
     [datetimeFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -300,14 +301,32 @@
     
     self.locationLabel.text = self.location;
     if (self.eventDescription) {
-        self.descriptionTextView.text = self.eventDescription;
+        [self setDescriptionText:self.eventDescription];
     } else {
-        self.descriptionTextView.text = @" ";
+        [self setDescriptionText:@""];
     }
     
     [self.view setNeedsDisplay];
     
 }
+
+-(void)setDescriptionText:(NSString *) descText
+{
+    // Create a div that the content will reside in formatting for RTL if necessary.
+    NSString  *htmlStringwithFont;
+    if ([AppearanceChanger isRTL] ){
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i; direction:rtl;\" >%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, descText];
+    }
+    else{
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i\">%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, descText];
+    }
+    
+    // Replace '\n' characters with <br /> for content that isn't html based to begin with...
+    // One issue is if html text also has \n characters in it. In that case we'll be changing the spacing of the content.
+    htmlStringwithFont = [htmlStringwithFont stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+    [self.descriptionWebView loadHTMLString:htmlStringwithFont baseURL:nil];
+}
+
 
 #pragma mark - UISplitViewDelegate methods
 -(void)splitViewController:(UISplitViewController *)svc
@@ -335,6 +354,22 @@
     //Nil out the pointer to the popover.
     _masterPopover = nil;
 }
+
+#pragma mark - UIWebViewDelegate
+
+// Delegate method to launch the URL links in an external browser or app. We don't want to just replace
+// the contents of this webview with the destination of the URL being clicked on.
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return false;
+    }
+    return true;
+}
+
+
+
 
 @end
 

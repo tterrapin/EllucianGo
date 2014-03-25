@@ -3,12 +3,12 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 9/25/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "ScheduleViewController.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "CourseSection.h"
 #import "CourseDetailTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
@@ -35,13 +35,19 @@
     self.navigationController.navigationBar.translucent = NO;
 
     self.navigationItem.title = self.module.name;
+    
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self fetchSchedule:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchSchedule:) name:kLoginExecutorSuccess object:nil];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self loadSchedule];
-    [self fetchSchedule];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -235,20 +241,20 @@
     return _dateFormatter;
 }
 
-- (void) fetchSchedule {
+- (void) fetchSchedule:(id)sender {
     
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
-    NSString *userid = [CurrentUser userid];
+    NSString *userid = [[CurrentUser sharedInstance] userid];
     if(userid) {
-        NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"full"], [[CurrentUser userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"full"], [userid stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
                 
         [importContext performBlock: ^{
             //download data
             NSError *error;
-            NSURLResponse *response;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+            AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+            NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             if(responseData) {

@@ -28,6 +28,7 @@
 #define kAnalyticsCategoryAuthentication @"Authentication"
 #define kAnalyticsCategoryCourses @"Courses"
 #define kAnalyticsCategoryUI_Action @"UI_Action"
+#define kAnalyticsCategoryPushNotification @"Push_Notification"
 
 #define kAnalyticsActionButton_Press @"Button_Press"
 #define kAnalyticsActionCancel @"Cancel"
@@ -40,6 +41,7 @@
 #define kAnalyticsActionSearch @"Search"
 #define kAnalyticsActionSlide_Action @"Slide_Action"
 #define kAnalyticsActionTimeout @"Timeout"
+#define kAnalyticsActionReceivedMessage @"Received_Message"
 
 
 @interface UIViewController (GoogleAnalyticsTrackerSupport)

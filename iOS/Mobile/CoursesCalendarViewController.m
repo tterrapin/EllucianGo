@@ -1,7 +1,7 @@
 #import "CoursesCalendarViewController.h"
 #import "CalendarViewEvent.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "CourseDetailTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 
@@ -12,7 +12,9 @@
 
 @property (nonatomic,strong) NSDateFormatter *datetimeOutputFormatter;
 @property (nonatomic, strong) NSDate *date;
-@property (nonatomic, strong) NSMutableDictionary *cachedData;
+@property (nonatomic, strong) NSMutableSet *cachedData;
+// dates that were fetched with previous and the next day so that it is complete
+@property (nonatomic, strong) NSMutableSet *fetchedDates;
 @end
 
 
@@ -23,10 +25,14 @@
     
     self.navigationController.navigationBar.translucent = NO;
     
-    self.cachedData = [[NSMutableDictionary alloc] init];
+    self.fetchedDates = [NSMutableSet new];
+    self.cachedData = [[NSMutableSet alloc] init];
 	CalendarViewDayView *dayView = (CalendarViewDayView *) self.view;
 	dayView.autoScrollToFirstEvent = YES;
     self.navigationItem.title = self.module.name;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDay:) name:kLoginExecutorSuccess object:nil];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -45,45 +51,60 @@
     [dayView reloadData];
 }
 
-- (NSArray *)dayView:(CalendarViewDayView *)dayView eventsForDate:(NSDate *)startDate {
-	self.date = startDate;
+- (NSSet *)dayView:(CalendarViewDayView *)dayView eventsForDate:(NSDate *)date {
     
-    NSString *userid = [CurrentUser userid];
+    static NSDateFormatter *dateFormatterISO8601;
+    if(dateFormatterISO8601 == nil) {
+        
+        dateFormatterISO8601 = [[NSDateFormatter alloc] init];
+        [dateFormatterISO8601 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        [dateFormatterISO8601 setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    }
+    
+    static NSDateFormatter *timeFormatter;
+    if(timeFormatter == nil) {
+        timeFormatter = [[NSDateFormatter alloc] init];
+        [timeFormatter setDateStyle:NSDateFormatterNoStyle];
+        [timeFormatter setTimeStyle:NSDateFormatterShortStyle];
+    }
+    
+    static NSDateFormatter *dateFormatter;
+    if(dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    }
+
+	self.date = date;
+    
+    NSString *userid = [[CurrentUser sharedInstance] userid];
     
     if(userid) {
-        static NSDateFormatter *dateFormatter;
-        if(dateFormatter == nil) {
-            dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        }
+
+        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+        NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
         
-        NSString *dateValue = [dateFormatter stringFromDate:startDate];
-        NSArray *cachedValues = [self.cachedData objectForKey:dateValue];
-        if(!cachedValues) {
-            
-            
-            static NSDateFormatter *dateFormatterISO8601;
-            if(dateFormatterISO8601 == nil) {
-                
-                dateFormatterISO8601 = [[NSDateFormatter alloc] init];
-                [dateFormatterISO8601 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-                [dateFormatterISO8601 setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-            }
-            
-            static NSDateFormatter *timeFormatter;
-            if(timeFormatter == nil) {
-                timeFormatter = [[NSDateFormatter alloc] init];
-                [timeFormatter setDateStyle:NSDateFormatterNoStyle];
-                [timeFormatter setTimeStyle:NSDateFormatterShortStyle];
-            }
-            NSString *urlString = [NSString stringWithFormat:@"%@/%@?start=%@", [self.module propertyForKey:@"daily"], [[CurrentUser userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [dateValue  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSDate *startDate = [self.date dateByAddingTimeInterval: -86400.0];
+        NSDate *endDate = [self.date dateByAddingTimeInterval: (86400.0*7.0)];
+        NSString *startFormattedString = [dateFormatter stringFromDate:startDate];
+        NSString *endFormattedString = [dateFormatter stringFromDate:endDate];
+        NSString *thisFormattedDate = [dateFormatter stringFromDate:date];
+        
+        NSDate *firstDate = [self.date dateByAddingTimeInterval: -86400.0];
+        firstDate = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
+        NSDate *secondDate = [firstDate dateByAddingTimeInterval: 86400.0];
+        NSPredicate *firstPredicate = [NSPredicate predicateWithFormat:@"start > %@", firstDate];
+        NSPredicate *secondPredicate = [NSPredicate predicateWithFormat:@"start < %@", secondDate];
+        
+        NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:firstPredicate, secondPredicate, nil]];
+        
+        if(![self.fetchedDates containsObject:thisFormattedDate]) {
+            NSString *urlString = [NSString stringWithFormat:@"%@/%@?start=%@&end=%@", [self.module propertyForKey:@"daily"], [[[CurrentUser sharedInstance] userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [startFormattedString  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding],
+                                   [endFormattedString  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]          ];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-            //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
             NSError *error;
-            NSURLResponse *response;
-            
-            NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+            AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+            NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
             
             if(responseData) {
                 NSDictionary* json = [NSJSONSerialization
@@ -95,8 +116,13 @@
                 for(NSDictionary *selectedDateDictionary in courseDays) {
                     NSDate *date = [dateFormatter dateFromString:[selectedDateDictionary objectForKey:@"date"]];
                     
-                    NSMutableArray *events = [[NSMutableArray alloc] init];
                     NSString *dateString = [dateFormatter stringFromDate:date];
+                    
+                    if([dateString isEqual:startFormattedString] || [dateString isEqual:endFormattedString]) {
+                        //At the edges of the response, do not include as fully fetched date
+                    } else {
+                        [self.fetchedDates addObject:dateString];
+                    }
                     NSArray *courseMeetingsJson = [selectedDateDictionary objectForKey:@"coursesMeetings"];
                     for(NSDictionary *meetingJson in courseMeetingsJson) {
                         
@@ -120,7 +146,7 @@
                             event.line3 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
                             event.line2 = [NSString stringWithFormat:NSLocalizedString(@"Room %@", @"label - room number"), [meetingJson objectForKey:@"room"]];
                         } else {
-                            event.line2 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];   
+                            event.line2 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
                         }
                         
                         event.start = startDate;
@@ -130,21 +156,20 @@
                         NSDictionary *userInfo = [[NSDictionary alloc] initWithObjects:userInfoObjects forKeys:userInfoKeys];
                         event.userInfo = userInfo;
                         
-                        [events addObject:event];
+                        if(![self.cachedData containsObject:event]) {
+                            [self.cachedData addObject:event];
+                        }
                     }
-                    [self.cachedData setObject:events forKey:dateString];
                 }
             }
-            
-            
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            
         }
         
-        return [self.cachedData objectForKey:dateValue];
+        NSSet *results = [self.cachedData filteredSetUsingPredicate:predicate];
+        return results;
     }
     
-    return [[NSArray alloc] init];
+    return [[NSSet alloc] init];
 }
 
 - (void)dayView:(CalendarViewDayView *)dayView eventTapped:(CalendarViewEvent *)event
@@ -200,6 +225,12 @@
             }
         }
     }
+}
+
+-(void) reloadDay:(id)sender
+{
+    CalendarViewDayView *dayView = (CalendarViewDayView *) self.view;
+    [dayView reloadData];
 }
 
 @end

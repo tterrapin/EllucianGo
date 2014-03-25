@@ -21,7 +21,7 @@ public class EllucianNotificationManager {
 	private EllucianApplication ellucianApplication;
 	
 	private long lastRegisterWithGCMTime;
-	private long MIN_REGISTRATION_REFRESH_TIME;
+	private long MIN_REGISTRATION_REFRESH_TIME = 1000L * 60 * 60 * 24;
 	private static String REGISTERED_DEVICE_ID_KEY = "deviceId";
 	private static String REGISTERED_APP_VERSION_KEY = "registeredAppVersion";
 	private static String REGISTERED_USER_ID_KEY = "registeredUserId";
@@ -51,7 +51,7 @@ public class EllucianNotificationManager {
 	public void registerWithGcmIfNeeded() {
 		// only do attempt for logged in user
 		if (ellucianApplication.isUserAuthenticated() &&
-			getConfigValue(Utils.NOTIFICATION_NOTIFICATIONS_URL, null) != null) {
+			getConfigValue(Utils.NOTIFICATION_REGISTRATION_URL, null) != null) {
 			SharedPreferences preferences = getPreferences();
 			
 			// check if user change since last registered
@@ -98,7 +98,8 @@ public class EllucianNotificationManager {
 	    			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(ellucianApplication.getApplicationContext());
 	    			
 	                deviceId = gcm.register(GCM_SENDER_ID);
-	
+	                Log.d(TAG, "GCM deviceId: " + deviceId);
+	                
 	                registeredWithMobileServer = registerWithMobileServer(deviceId);
 	            } catch (IOException e) {
 	            	Log.e(TAG, "Exception while registering with GCM", e);
@@ -146,17 +147,17 @@ public class EllucianNotificationManager {
     	    if (url != null && (notificationEnabled == null || notificationEnabled )) {    	    	
     	    	Gson gson = new Gson();
     	    	DeviceRegister deviceRegister = new DeviceRegister();
-    	    	deviceRegister.deviceId = deviceId;
+    	    	deviceRegister.devicePushId = deviceId;
     	    	deviceRegister.platform = "android";
-    	    	deviceRegister.applicationName = "Ellucian GO";
+    	    	deviceRegister.applicationName = ellucianApplication.getPackageName();
     	    	deviceRegister.loginId = ellucianApplication.getAppUserName();
     	    	deviceRegister.sisId = ellucianApplication.getAppUserId();
     	    	String jsonDeviceRegister = gson.toJson(deviceRegister);
 
     			MobileClient client = new MobileClient(ellucianApplication);
     			
-    			String response = client.makeAuthenticatedServerPost(url, ellucianApplication.getAppUserName(), 
-    					ellucianApplication.getAppUserPassword(), false, jsonDeviceRegister);
+    			String response = client.makeAuthenticatedServerRequest(url, 
+    					MobileClient.REQUEST_POST, true, jsonDeviceRegister);
     			
     			// check for good response
     			if (response != null && !response.equals("401") && !response.equals("403") && !response.equals("404")  ) {
@@ -183,7 +184,7 @@ public class EllucianNotificationManager {
 
 	@SuppressWarnings("unused")
 	private class DeviceRegister {
-		public String deviceId;
+		public String devicePushId;
 		public String platform;
 		public String applicationName;
 		public String loginId;
@@ -199,6 +200,6 @@ public class EllucianNotificationManager {
 
 
 	private SharedPreferences getPreferences() {
-		return ellucianApplication.getSharedPreferences("NotificationManager", EllucianApplication.MODE_PRIVATE);
+		return ellucianApplication.getSharedPreferences(Utils.NOTIFICATION, EllucianApplication.MODE_PRIVATE);
 	}
 }

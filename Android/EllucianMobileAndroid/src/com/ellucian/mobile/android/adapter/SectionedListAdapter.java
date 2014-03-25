@@ -47,6 +47,21 @@ public class SectionedListAdapter extends BaseAdapter {
 		}
 		return null;
 	}
+	
+	public Adapter getSectionAdapterForPosition(int position) {
+		for(int i = 0; i < this.headers.getCount(); i++) {
+			Adapter sectionAdapter = sections.get(i);
+
+			int size = sectionAdapter.getCount() + 1;
+
+			if (position < size)
+				return sectionAdapter;
+
+			// otherwise jump into next section
+			position -= size;
+		}
+		return null;
+	}
 
 	public int getCount() {
 		// total together all sections, plus one for each section header

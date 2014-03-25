@@ -3,16 +3,16 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 8/2/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "WebViewController.h"
 #import "SafariActivity.h"
 #import "CurrentUser.h"
 #import "AppDelegate.h"
-#import "NSData+AuthenticatedRequest.h"
 #import "LoginExecutor.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "LoginViewController.h"
 
 @interface WebViewController ()
 
@@ -38,8 +38,7 @@
 
     self.webView.backgroundColor = [UIColor underPageBackgroundColor];
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate getCurrentUser];
+    CurrentUser *user = [CurrentUser sharedInstance];
     
     NSDate *lastLoggedInDate = [user lastLoggedInDate];
     
@@ -51,25 +50,24 @@
         if (!lastLoggedInDate || [timeNow timeIntervalSinceDate:lastLoggedInDate] > 1800)
         {
             [self sendEventWithCategory:@"Authentication" withAction:@"Login" withLabel:@"Background re-authenticate" withValue:nil forModuleNamed:self.analyticsLabel];
-            
-            NSArray *roles;
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            NSString *loginUrl = [defaults objectForKey:@"login-url"];
-        
-            LoginExecutor *executor = [[LoginExecutor alloc] init];
-            NSInteger responseStatusCode = [executor performLogin:loginUrl forUser:[user userauth] andPassword:[user getPassword] andRememberUser:[user remember] returningRoles:&roles];
 
-            if (responseStatusCode != 200 )
-            {
-                UIAlertView *alert = [[UIAlertView alloc]
-                                  initWithTitle:NSLocalizedString(@"Sign In Failed", @"title for failed sign in")
-                                  message:NSLocalizedString(@"The password or user name you entered is incorrect. Please try again.", @"message for failed sign in")
-                                  delegate:self
-                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                  otherButtonTitles:nil];
-            
-                [alert show];
-                [user logout];
+            UIViewController *controller = [LoginExecutor loginController].childViewControllers[0];
+            if([controller isKindOfClass:[LoginViewController class]]) {
+                LoginViewController *loginViewController = (LoginViewController *)controller;
+                NSInteger responseStatusCode = [loginViewController backgroundLogin];
+                
+                if (responseStatusCode != 200 )
+                {
+                    UIAlertView *alert = [[UIAlertView alloc]
+                                          initWithTitle:NSLocalizedString(@"Sign In Failed", @"title for failed sign in")
+                                          message:NSLocalizedString(@"The password or user name you entered is incorrect. Please try again.", @"message for failed sign in")
+                                          delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                          otherButtonTitles:nil];
+                    
+                    [alert show];
+                    [user logout];
+                }
             }
         
         }
@@ -90,9 +88,8 @@
     NSString *userId = [json objectForKey:@"userId"];
     NSString *authId = [json objectForKey:@"authId"];
     NSMutableArray *roles = [json objectForKey:@"roles"];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate getCurrentUser];
+
+    CurrentUser *user = [CurrentUser sharedInstance];
     [user login:authId andPassword:password andUserid:userId andRoles:[NSSet setWithArray:roles] andRemember:[user remember]];
 }
 

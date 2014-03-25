@@ -42,7 +42,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategoriesCo
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersColumns;
 
 public class EllucianDatabase extends SQLiteOpenHelper {
-	private static final int DB_VERSION = 5;
+	private static final int DB_VERSION = 6;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -281,6 +281,14 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ NotificationsColumns.NOTIFICATIONS_HYPERLINK + " TEXT, "
 				+ NotificationsColumns.NOTIFICATIONS_LINK_LABEL + " TEXT, "
 				+ NotificationsColumns.NOTIFICATIONS_DATE + " TEXT, "
+				+ NotificationsColumns.NOTIFICATIONS_SOURCE + " TEXT, "
+				+ NotificationsColumns.NOTIFICATIONS_DISPATCH_DATE + " TEXT, "
+				+ NotificationsColumns.NOTIFICATIONS_MOBILE_HEADLINE + " TEXT, "
+				+ NotificationsColumns.NOTIFICATIONS_EXPIRES + " TEXT, "
+				+ NotificationsColumns.NOTIFICATIONS_PUSH + " INTEGER NOT NULL DEFAULT 0, " 
+				+ NotificationsColumns.NOTIFICATIONS_MODULE + " INTEGER NOT NULL DEFAULT 0, " 
+				+ NotificationsColumns.NOTIFICATIONS_STICKY + " INTEGER NOT NULL DEFAULT 1, "
+				+ NotificationsColumns.NOTIFICATIONS_STATUSES + " TEXT, " 
 				+ "UNIQUE (" + NotificationsColumns.NOTIFICATIONS_ID
 				+ ") ON CONFLICT REPLACE)");
 		
@@ -600,7 +608,24 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 					+ " ADD COLUMN "
 					+ ModulesColumns.MODULE_SUB_TYPE + " TEXT " 
 					);
-			
+		case 5:
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS					
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_SOURCE + " TEXT ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS	
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_DISPATCH_DATE + " TEXT ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_MOBILE_HEADLINE + " TEXT ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_EXPIRES + " TEXT ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_PUSH + " INTEGER NOT NULL DEFAULT 0 ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_MODULE + " INTEGER NOT NULL DEFAULT 0 ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_STICKY + " INTEGER NOT NULL DEFAULT 1 ");
+			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
+					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_STATUSES + " TEXT ");
+
 		}
 
 		Log.d(this.getClass().getSimpleName(),

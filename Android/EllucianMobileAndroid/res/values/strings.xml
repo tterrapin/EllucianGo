@@ -65,6 +65,7 @@
     <string name="label_faculty">Faculty</string>
     <string name="label_credits">Credits</string>
     <string name="label_meeting_information">Meeting Information</string>
+    <string name="label_open">Open</string>
     
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_ok">OK</string>
@@ -167,6 +168,9 @@
     <string name="course_assignments_no_assignments">No assignments</string>
     <string name="course_assignments_due">Due:</string>
     <string name="course_assignments_none_assigned">None assigned</string>
+    <string name="label_left_button">Left Button</string>
+	<string name="label_right_button">Right Button</string>
+    
 
     <!-- Directory -->
     
@@ -250,6 +254,9 @@
     <string name="notifications_device_title">Ellucian GO</string>
     <string name="notifications_device_content">You have new notifications!</string>
     <string name="notifications_no_notifications">No Notifications to Display</string>
+    <string name="notifications_sticky_marker_image_text">Marker</string>
+    <string name="notifications_delete">Delete</string>
+    <string name="notifications_unable_to_delete_message">Unable to delete this notification.</string>
     
     <!-- Numbers -->
     
@@ -277,7 +284,9 @@
     <string name="registration_dialog_title">Title</string>
     <string name="registration_dialog_register_message">Are you sure you want to register these sections?</string>
     <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart? Any items added to your cart are only for the current session.</string>
-    <string name="registration_dialog_variable_credits_message">Please set the number of credits.</string>
+    <string name="registration_dialog_variable_credits_message">Please set the number of credits. \nRange: </string>
+    <string name="registration_dialog_variable_credits_range_error">A number in the range indicated must be entered.</string>
+    <string name="registration_dialog_variable_credits_increment_error">increment must be used.</string>
     <string name="registration_search_header">Select a Term and enter Course Keywords.</string>
     <string name="registration_search_field_hint">Course Keywords</string>
     <string name="registration_add_to_cart">Add To Cart</string>
@@ -285,7 +294,14 @@
     <string name="registration_added_to_cart_failed">failed to add to cart. Missing data or section already exists in cart.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
+    <string name="registration_grading">Grading</string>
+    <string name="registration_ceus">CEUs</string>
+    <string name="registration_audit">Audit</string>
+    <string name="registration_graded">Graded</string>
+    <string name="registration_pass_fail">Pass/Fail</string>
+    <string name="registration_pass_fail_abbrev">P/F</string>
     <string name="registration_default_eligibility_message">Can not register at this time.</string>
+    <string name="registration_no_plan_eligibility_message">Not an enrolled student.</string>
     <string name="registration_were_sorry">We\'re sorry</string>
     <string name="registration_ineligible_to_register">Ineligible for Registration</string>
         
@@ -294,5 +310,6 @@
 	<string name="version_outdated">Outdated</string>
 	<string name="version_outdated_message">A new version is available.</string>
 	<string name="version_force_upgrade_message">The application must be upgraded to the latest version.</string>
+
 
 </resources>

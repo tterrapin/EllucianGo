@@ -28,7 +28,7 @@ public class CourseRosterIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("CourseRosterIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.COURSES_ROSTER_URL));
 		url = client.addTermAndSectionToUrl(url, intent.getStringExtra(Extra.COURSES_TERM_ID), intent.getStringExtra(Extra.COURSES_COURSE_ID));

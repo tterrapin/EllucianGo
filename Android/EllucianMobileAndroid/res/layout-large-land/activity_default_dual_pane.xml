@@ -1,27 +1,29 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="horizontal"> 
-	     
-	    <FrameLayout android:id="@+id/frame_main" 
-	        android:layout_weight="1"
-	        android:layout_width="0dp" 
-	        android:layout_height="match_parent"
-	        android:background="@drawable/dual_pane_separator"
-	        style="@style/listFrame"/>
-	    
-	    <FrameLayout android:id="@+id/frame_extra" 
-	        android:layout_weight="2"
-	        android:layout_width="0dp" 
-	        android:layout_height="match_parent"
-	         />
-	
-	</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <FrameLayout
+            android:id="@+id/frame_main"
+            style="@style/listFrame"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/dual_pane_separator" />
+
+        <FrameLayout
+            android:id="@+id/frame_extra"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            tools:ignore="InconsistentLayout" />
+    </LinearLayout>
 
     <include layout="@layout/drawer_list" />
 

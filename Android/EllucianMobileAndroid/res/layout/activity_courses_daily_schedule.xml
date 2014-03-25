@@ -33,7 +33,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/right_border_1dp"
                 android:onClick="dayBefore"
-                android:src="@drawable/ic_calendar_nav_left" />
+                android:src="@drawable/ic_calendar_nav_left" android:contentDescription="@string/label_left_button"/>
 
             <TextView
                 android:id="@+id/courses_daily_date_display"
@@ -57,7 +57,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/left_border_1dp"
                 android:onClick="dayAfter"
-                android:src="@drawable/ic_calendar_nav_right" />
+                android:src="@drawable/ic_calendar_nav_right" android:contentDescription="@string/label_right_button"/>
             <!--
                  <Button
 	   	     android:id="@+id/courses_daily_date_foward_button"

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -68,7 +69,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 	};
 	
 	// TODO - fix this when events gets fixed on the mobile server
-	private final SimpleDateFormat eventsFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+	private final SimpleDateFormat eventsFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
 	
 	
 	@Override

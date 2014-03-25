@@ -42,6 +42,46 @@ static const NSUInteger DAY_IN_MINUTES = 1440;
 	return duration;
 }
 
+- (BOOL)isEqual:(id)other {
+    if (other == self)
+        return YES;
+    if (!other || ![other isKindOfClass:[self class]])
+        return NO;
+    return [self isEqualToCalendarViewEvent:other];
+}
+
+- (BOOL)isEqualToCalendarViewEvent:(CalendarViewEvent *)event {
+    if (self == event)
+        return YES;
+    
+    if (![self.line1 isEqual:[event line1]])
+        return NO;
+    if (![self.line2 isEqual:[event line2]])
+        return NO;
+    if (![self.line3 isEqual:[event line3]])
+        return NO;
+    if (![self.start isEqualToDate:[event start]])
+        return NO;
+    if (![self.end isEqualToDate:[event end]])
+        return NO;
+    if (self.allDay != [event allDay])
+        return NO;
+    if(![self.userInfo isEqualToDictionary:[event userInfo]])
+        return NO;
+
+    return YES;
+}
+
+- (NSUInteger)hash {
+    return [self.line1 hash];
+}
+
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@: %p, %@, %@, %@>",
+            NSStringFromClass([self class]), self, self.line1, self.line2, self.line3];
+}
+
 #undef DATE_CMP
 
 

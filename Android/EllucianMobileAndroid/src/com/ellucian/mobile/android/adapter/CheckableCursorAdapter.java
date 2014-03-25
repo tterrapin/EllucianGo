@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.SimpleCursorAdapter;
 
+@SuppressWarnings("unused")
 public class CheckableCursorAdapter extends SimpleCursorAdapter {
 	public List<Boolean> checkedStates = new ArrayList<Boolean>();
+	public List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
 	
 	private List<OnCheckBoxClickedListener> listenerList = new ArrayList<OnCheckBoxClickedListener>();
 	
@@ -37,12 +39,13 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		this.checkBoxResId = checkBoxResId;
 		for (int i = 0; i < c.getCount(); i++) {
 			checkedStates.add(false);
+			checkBoxes.add(null);
 		}
 	}
 	
 	public interface OnCheckBoxClickedListener {
 		
-		public void onCheckBoxClicked(boolean isChecked, int position);
+		public void onCheckBoxClicked(CheckBox checkBox, boolean isChecked, int position);
 	}
 	
 	public void registerOnCheckBoxClickedListener(OnCheckBoxClickedListener value) {
@@ -57,7 +60,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		}
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View row = inflater.inflate(layout, null);
+		final View row = inflater.inflate(layout, null);
 
 		CheckBox checkBox = (CheckBox) row.findViewById(checkBoxResId);
 
@@ -73,7 +76,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 					checkedStates.set(position, false);
 				}
 				for (OnCheckBoxClickedListener listener : listenerList) {
-					listener.onCheckBoxClicked(checked, position);
+					listener.onCheckBoxClicked(checkBox, checked, position);
 				}
 			}
 
@@ -82,6 +85,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		boolean state = checkedStates.get(position);
 
 		checkBox.setChecked(state);
+		setCheckBoxAtPosition(position, checkBox);
 		bindView(row, context, cursor);
 		return row;
 	}
@@ -129,5 +133,11 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		}
 	}
 
+	public void setCheckBoxAtPosition(int position, CheckBox checkBox) {
+		checkBoxes.set(position, checkBox);
+	}
 	
+	public CheckBox getCheckBoxAtPostition(int position) {
+		return checkBoxes.get(position);
+	}
 }

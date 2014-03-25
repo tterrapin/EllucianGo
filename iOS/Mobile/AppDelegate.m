@@ -17,6 +17,8 @@
 #import "NotificationManager.h"
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
+#import "Notification.h"
+#import "NotificationsFetcher.h"
 
 static BOOL openURL = NO;
 
@@ -77,15 +79,16 @@ BOOL logoutOnStartup = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidTimeout:) name:kApplicationDidTimeoutNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidTouch:) name:kApplicationDidTouchNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.managedObjectContext];
 
-    CurrentUser *currentUser = [self getCurrentUser];
+    CurrentUser *currentUser = [CurrentUser sharedInstance];
     if(currentUser && [currentUser isLoggedIn ] && ![currentUser remember] && logoutOnStartup != NO) {
         [currentUser logout];
     }
 
     // for when swapping the application in, honor the current logged in/out state
     logoutOnStartup = NO;
-    return YES;
+    return YES;    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -107,7 +110,7 @@ BOOL logoutOnStartup = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshConfigurationListIfPresent object:nil];
     }
     openURL = NO;
-    CurrentUser *currentUser = [self getCurrentUser];
+    CurrentUser *currentUser = [CurrentUser sharedInstance];
     if(currentUser && [currentUser isLoggedIn ] && ![currentUser remember]) {
         NSDate *compareDate = [timestampLastActivity dateByAddingTimeInterval:kApplicationTimeoutInMinutes*60];
         NSDate *currentDate = [NSDate new];
@@ -121,7 +124,7 @@ BOOL logoutOnStartup = YES;
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     
-    CurrentUser *currentUser = [self getCurrentUser];
+    CurrentUser *currentUser = [CurrentUser sharedInstance];
     if([currentUser isLoggedIn ] && ![currentUser remember]) {
         [currentUser logout];
     }
@@ -233,18 +236,6 @@ BOOL logoutOnStartup = YES;
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
-#pragma mark - Application's current user
-- (CurrentUser *)getCurrentUser
-{
-    if (self.currentUser != nil ) {
-        return self.currentUser;
-    }
-    
-    self.currentUser = [[CurrentUser alloc] init];
-    return self.currentUser;
-}
-
-
 #pragma mark - Configuration reset
 -(void)reset
 {
@@ -265,7 +256,7 @@ BOOL logoutOnStartup = YES;
 
     }
     
-    [self.currentUser logoutWithoutUpdatingUI]; //has to be done before erasing the persistent store since it clears up notifications from the database.
+    [[CurrentUser sharedInstance] logoutWithoutUpdatingUI]; //has to be done before erasing the persistent store since it clears up notifications from the database.
     
     //Erase the persistent store from coordinator and also file manager.
     NSPersistentStore *store = [self.persistentStoreCoordinator.persistentStores lastObject];
@@ -292,6 +283,7 @@ BOOL logoutOnStartup = YES;
         abort();
     }
     
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
 }
@@ -301,9 +293,12 @@ BOOL logoutOnStartup = YES;
 {
     NSLog (@"time exceeded!!");
     
-    CurrentUser *currentUser = [self getCurrentUser];
+    CurrentUser *currentUser = [CurrentUser sharedInstance];
     if([currentUser isLoggedIn ] && ![currentUser remember]) {
-        [currentUser logout];
+        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        if(!authenticationMode || [authenticationMode isEqualToString:@"browser"]) {
+            [currentUser logout];
+        }
     }
 }
 
@@ -339,7 +334,7 @@ BOOL logoutOnStartup = YES;
             vc.managedObjectContext = self.managedObjectContext;
             [self.window setRootViewController:navcontroller];
         } else if([type isEqualToString:@"configuration"]) {
-            [[self getCurrentUser] logoutWithoutUpdatingUI];
+            [[CurrentUser sharedInstance] logoutWithoutUpdatingUI];
             [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
             NSString *passcode = [parser valueForVariable:@"passcode"];
             UIViewController *vc = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Loading"];
@@ -397,18 +392,27 @@ BOOL logoutOnStartup = YES;
 #pragma mark - Launch from local notification
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    //[self showNotifications:application withOnlyLaunchIfInactive:YES];
+}
+
+/*
+- (void) showNotifications:(UIApplication*) application withOnlyLaunchIfInactive:(BOOL)onlyLaunchIfInactive
+{
     UIApplicationState state = [application applicationState];
-    if (state == UIApplicationStateInactive) {
+    if (!onlyLaunchIfInactive || state == UIApplicationStateInactive) {
         //the case may be that the user was on the modal "configuration selection" screen.  dismiss in case that's the case.
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
         
         SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
         slidingViewController.managedObjectContext = self.managedObjectContext;
+        
+        
         [slidingViewController showNotifications];
         
         [self.window setRootViewController:slidingViewController];
     }
 }
+*/
 
 #pragma mark - Hard-coded configuration launch
 // This function will only be called by customers that are hard coding a single
@@ -496,6 +500,69 @@ void onUncaughtException(NSException* exception)
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+
+    NSString* uuid = [userInfo objectForKey:@"uuid"];
+
+    UIApplicationState state = [application applicationState];
+    if (state == UIApplicationStateActive) {
+        NSLog(@"application active - show notification message alert");
+
+        // log activity to Google Analytics
+        [self sendEventWithCategory:kAnalyticsCategoryPushNotification withAction:kAnalyticsActionReceivedMessage withLabel:@"whileActive" withValue:nil];
+
+        NSString* alertMessage = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+        SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
+        
+        [slidingViewController showNotificationAlert:alertMessage withNotificationId:uuid];
+    } else {
+        // navigate to notifications
+        NSLog(@"application not active - open notifications");
+
+        // log activity to Google Analytics
+        [self sendEventWithCategory:kAnalyticsCategoryPushNotification withAction:kAnalyticsActionReceivedMessage withLabel:@"whileInActive" withValue:nil];
+
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+        
+        SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
+        slidingViewController.managedObjectContext = self.managedObjectContext;
+        
+        [slidingViewController showNotifications:uuid];
+        
+        [self.window setRootViewController:slidingViewController];
+    }
+}
+
+- (void)handleDataModelChange:(NSNotification *)note
+{
+    //if Notifications changed, update badge
+    NSSet *updatedObjects = [[note userInfo] objectForKey:NSUpdatedObjectsKey];
+    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    NSSet *insertedObjects = [[note userInfo] objectForKey:NSInsertedObjectsKey];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"self isKindOfClass: %@", [Notification class]];
+    updatedObjects = [updatedObjects filteredSetUsingPredicate:predicate];
+    deletedObjects = [deletedObjects filteredSetUsingPredicate:predicate];
+    insertedObjects = [insertedObjects filteredSetUsingPredicate:predicate];
+    NSUInteger changesCount = [updatedObjects count] + [deletedObjects count] + [insertedObjects count];
+    if(changesCount > 0) {
+        NSManagedObjectContext *moc = [self managedObjectContext];
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Notification" inManagedObjectContext:moc];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entityDescription];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"read == %@",[NSNumber numberWithBool:NO]];
+        [request setPredicate:predicate];
+        
+        NSError *error;
+        NSUInteger notificationCount = [[moc executeFetchRequest:request error:&error] count];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        
+        [UIApplication sharedApplication].applicationIconBadgeNumber = notificationCount;
+    }
+    
 }
 
 @end

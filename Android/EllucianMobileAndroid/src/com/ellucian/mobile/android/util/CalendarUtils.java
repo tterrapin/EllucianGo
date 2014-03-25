@@ -19,7 +19,7 @@ public class CalendarUtils {
 	private static SimpleDateFormat UTCFormat;// = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	static {
-		UTCFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		UTCFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
 		UTCFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}
 	

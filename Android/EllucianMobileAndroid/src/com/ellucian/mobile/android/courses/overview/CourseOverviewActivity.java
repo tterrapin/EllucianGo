@@ -27,6 +27,7 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class CourseOverviewActivity extends EllucianActivity  {
 	private static final String TAG = CourseOverviewActivity.class.getSimpleName();
+	@SuppressWarnings("unused")
 	private String courseId;
 	private boolean moreTabPreviouslyAdded;
 	

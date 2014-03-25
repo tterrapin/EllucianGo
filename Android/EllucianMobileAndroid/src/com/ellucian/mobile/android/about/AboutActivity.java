@@ -43,13 +43,12 @@ public class AboutActivity extends EllucianActivity {
 	private String clickedEmailAddress;
 	private String clickedWebsiteUrl;
 	private String clickedPrivacyUrl;
-	private String clickedExtraInformation;
 	
 	private class RetrieveServerVersionTask extends AsyncTask<String, Void, String>{
 
 		@Override
 		protected String doInBackground(String... params) {
-			MobileClient client = new MobileClient(AboutActivity.this.getApplication());
+			MobileClient client = new MobileClient(AboutActivity.this);
 			String version = client.getServerVersion(params[0]);
 			return version;
 		}
@@ -181,8 +180,7 @@ public class AboutActivity extends EllucianActivity {
         TextView extraInformation = (TextView) findViewById(R.id.about_extra_information);
         if (!TextUtils.isEmpty(configExtraInformation)) {    		
         	extraInformation.setAutoLinkMask(Utils.getAvailableLinkMasks(this, Linkify.MAP_ADDRESSES)); 
-        	extraInformation.setText(configExtraInformation);
-        	clickedExtraInformation = configExtraInformation;    	
+        	extraInformation.setText(configExtraInformation);	
         } else {
         	extraInformation.setVisibility(View.GONE);
         }	

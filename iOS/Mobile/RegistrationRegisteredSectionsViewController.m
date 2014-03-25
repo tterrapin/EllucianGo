@@ -11,7 +11,6 @@
 #import "RegistrationPlannedSection.h"
 #import "Module+Attributes.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
 #import "RegistrationPlannedSectionInstructor.h"
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "RegistrationTerm.h"
@@ -22,9 +21,10 @@
 #import "AppDelegate.h"
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "RegistrationPlannedSectionDetailViewController.h"
 
 @interface RegistrationRegisteredSectionsViewController ()
-
+@property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
 @end
 
 @implementation RegistrationRegisteredSectionsViewController
@@ -42,6 +42,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kRegistrationPlanDataReloaded object:nil];
     
     self.navigationItem.title = [self.module name];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 #pragma mark - variables from tab
@@ -80,13 +81,37 @@
     UILabel *line3Label = (UILabel *)[cell viewWithTag:3];
     UILabel *line3bLabel = (UILabel *)[cell viewWithTag:5];
     NSString *faculty = [plannedSection facultyNames];
+    
+    NSString *credits = [self.creditsFormatter stringFromNumber:plannedSection.credits];
+    NSString *ceus = [self.creditsFormatter stringFromNumber:plannedSection.ceus];
+    NSString *gradingType = @"";
+    if (plannedSection.isAudit) {
+        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"Audit", @"Audit label for registration")];
+    }
+    else if (plannedSection.isPassFail) {
+        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"P/F", @"PassFail abbrev label for registration cart")];
+    }
+    
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
-        line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", plannedSection.credits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+        if (credits){
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+        }
+        else if (ceus) {
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+        }
     } else {
-        line3Label.text = [NSString stringWithFormat:@"%@ %@", plannedSection.credits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+        if (credits) {
+            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+        }
+        else if (ceus) {
+            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+        }
         line3bLabel.text = nil;
+        
     }
+    
+    
     UILabel *line4Label = (UILabel *)[cell viewWithTag:4];
     if(plannedSection.meetingPatternDescription) {
         line4Label.text = [NSString stringWithFormat:@"%@", plannedSection.meetingPatternDescription];
@@ -108,8 +133,38 @@
     RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section];
     NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
     RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
-#warning implement
-    //    [self performSegueWithIdentifier:@"Show Planned Course Detail" sender:plannedSection];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UISplitViewController *split = [self.registrationTabController childViewControllers][2];
+        split.presentsWithGesture = YES;
+        
+        UINavigationController *controller = split.viewControllers[0];
+        UINavigationController *detailNavController = split.viewControllers[1];
+        
+        UIViewController *masterController = controller.topViewController;
+        UIViewController *detailController = detailNavController.topViewController;
+        
+        if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)masterController;
+        }
+        if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)detailController;
+        }
+        if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
+            if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
+            {
+                [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
+            }
+        }
+        
+        if (_detailSelectionDelegate) {
+            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+        }
+    }
+    else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+    }
+
 }
 
 - (NSString *)tableView:(UITableView *)tableView stringForTitleForHeaderInSection:(NSInteger)section
@@ -139,6 +194,15 @@
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
+-(NSNumberFormatter *)creditsFormatter
+{
+    if(_creditsFormatter == nil) {
+        _creditsFormatter = [NSNumberFormatter new];
+        _creditsFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        [_creditsFormatter setMinimumFractionDigits:1];
+    }
+    return _creditsFormatter;
+}
 
 #pragma mark - logic
 
@@ -146,7 +210,9 @@
 {
     [self.navigationController setToolbarHidden:YES animated:YES];
     if ([[segue identifier] isEqualToString:@"Show Section Detail"]) {
-        
+        RegistrationPlannedSection *courseSection = sender;
+        RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
+        detailController.registrationPlannedSection = courseSection;
     }
 }
 

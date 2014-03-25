@@ -20,7 +20,7 @@ import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
 public class WebframeActivity extends EllucianActivity {
-	private static final String TAG = WebframeActivity.class.getSimpleName();
+
 	private WebView webView;
 	private SecurityDialogFragment securityDialogFragment;
 	private SslErrorHandler handler;

@@ -37,7 +37,9 @@ public class Utils {
 	public static final String SECURITY = "security";
 	public static final String SECURITY_URL = "securityUrl";
 	public static final String NOTIFICATION = "notification";
+	public static final String NOTIFICATION_PRESENT = "notificationPresent";
 	public static final String NOTIFICATION_NOTIFICATIONS_URL = "notificationNotificationsUrl";
+	public static final String NOTIFICATION_MOBILE_NOTIFICATIONS_URL = "notificationMobileNotificationsUrl";
 	public static final String NOTIFICATION_REGISTRATION_URL = "notificationRegistrationUrl";
 	public static final String NOTIFICATION_DELIVERED_URL = "notificationDeliveredUrl";
 	public static final String NOTIFICATION_ENABLED = "notificationEnabled";
@@ -65,6 +67,11 @@ public class Utils {
 	public static final String GOOGLE_ANALYTICS = "googleAnalytics";
 	public static final String GOOGLE_ANALYTICS_TRACKER1 = "tracker1";
 	public static final String GOOGLE_ANALYTICS_TRACKER2 = "tracker2";
+	public static final String LOGIN_URL = "loginUrl";
+	public static final String LOGIN_TYPE = "loginType";
+	public static final String BROWSER_LOGIN_TYPE = "browser";
+	public static final String NATIVE_LOGIN_TYPE = "native";
+
 
 	public static boolean isIntentAvailable(Context context, Intent intent) {
 		if(intent == null) return false;
@@ -270,6 +277,10 @@ public class Utils {
 	 
 	public static boolean isDirectoryPresent(Context context) {
 		return getBooleanFromPreferences(context, CONFIGURATION, DIRECTORY_PRESENT, false);
+	}
+	
+	public static boolean isNotificationsPresent(Context context) {
+		return getBooleanFromPreferences(context, CONFIGURATION, NOTIFICATION_PRESENT, false);
 	}
 	
 	public static boolean isGoogleMapsInstalled(Context context) {

@@ -108,14 +108,23 @@
             }
         }
         
-        [defaults setObject:[[json objectForKey:@"security"] objectForKey:@"url"]  forKey:@"login-url"];
+        NSDictionary *security = [json objectForKey:@"security"];
+        [defaults setObject:[security objectForKey:@"url"] forKey:@"login-url"];
+        if(security[@"cas"]) {
+            NSDictionary *cas = [security objectForKey:@"cas"];
+            [defaults setObject:[cas objectForKey:@"loginType"] forKey:@"login-authenticationType"];
+            [defaults setObject:[cas objectForKey:@"loginUrl"] forKey:@"login-web-url"];
+        } else {
+            [defaults setObject:@"native" forKey:@"login-authenticationType"];
+        }
+        
+        
         [defaults setObject:[[json objectForKey:@"map"] objectForKey:@"buildings"]  forKey:@"urls-map-buildings"];
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"allSearch"]  forKey:@"urls-directory-allSearch"];
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"facultySearch"]  forKey:@"urls-directory-facultySearch"];
         [defaults setObject:[[json objectForKey:@"directory"] objectForKey:@"studentSearch"]  forKey:@"urls-directory-studentSearch"];
         
         if ([json objectForKey:@"notification"]) {
-            [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"notifications"] forKey:@"notification-notifications-url"];
             [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"registration"] forKey:@"notification-registration-url"];
             [defaults setObject:[[[json objectForKey:@"notification"] objectForKey:@"urls"] objectForKey:@"delivered"] forKey:@"notification-delivered-url"];
         }

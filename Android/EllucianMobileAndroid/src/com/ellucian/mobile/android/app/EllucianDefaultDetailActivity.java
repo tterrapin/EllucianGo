@@ -12,9 +12,7 @@ import com.ellucian.elluciango.R;
  *
  */
 public class EllucianDefaultDetailActivity extends EllucianActivity {
-	private static final String TAG = EllucianDefaultDetailActivity.class.getSimpleName();
-	
-	
+
 	/** A subclass can override this method to change the support for different screen sizes and modes */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

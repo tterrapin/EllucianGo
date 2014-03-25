@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -40,7 +39,6 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class CourseDetailsFragment extends EllucianFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
-	private static final String TAG = CourseDetailsFragment.class.getSimpleName();
 	
 	private Activity activity;
 	private String courseId;
@@ -157,6 +155,7 @@ public class CourseDetailsFragment extends EllucianFragment implements
 						.getColumnIndex(CoursePatterns.PATTERN_ROOM));
 				final String buildingId = cursor.getString(cursor
 						.getColumnIndex(MapsBuildings.BUILDING_BUILDING_ID));
+				@SuppressWarnings("unused")
 				final String campusId = cursor.getString(cursor
 						.getColumnIndex(MapsCampuses.CAMPUS_ID));
 				

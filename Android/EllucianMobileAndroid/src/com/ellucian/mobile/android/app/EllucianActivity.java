@@ -4,7 +4,6 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -30,7 +29,7 @@ import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
-import com.ellucian.mobile.android.MainActivity;
+import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.ConfigurationProperties;
@@ -44,8 +43,10 @@ import com.google.analytics.tracking.android.Logger.LogLevel;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
-public abstract class EllucianActivity extends Activity {
-	private static final String TAG = EllucianActivity.class.getName();
+
+public abstract class EllucianActivity extends Activity implements DrawerLayoutActivity {
+	private static final String TAG = EllucianActivity.class.getSimpleName();
+
 	private static final long MILLISECONDS_PER_DAY = 24*60*60*1000;
 	public String moduleId;
 	public String moduleName;
@@ -58,27 +59,29 @@ public abstract class EllucianActivity extends Activity {
 	private ConfigurationUpdateReceiver configReceiver;
 	private SendToSelectionReceiver resetReceiver;
 	private OutdatedReceiver outdatedReceiver;
-	private boolean noReset;
+	private UnauthenticatedUserReceiver unauthenticatedUserReceiver;
 	
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         
+
+		String tag = getClass().getName();
+		
         configureGoogleAnalytics();
        
         Intent incomingIntent = getIntent();
         if (incomingIntent.hasExtra(Extra.MODULE_ID)) {
         	moduleId = incomingIntent.getStringExtra(Extra.MODULE_ID);
-        	Log.d(TAG, "Activity moduleId set to: " + moduleId);
+        	Log.d(tag, "Activity moduleId set to: " + moduleId);
         } 
                
         if (incomingIntent.hasExtra(Extra.MODULE_NAME)) {
         	moduleName = incomingIntent.getStringExtra(Extra.MODULE_NAME);
-        	Log.d(TAG, "Activity moduleId set to: " + moduleId);
+        	Log.d(tag, "Activity moduleId set to: " + moduleId);
         } 
         
         if (incomingIntent.hasExtra(Extra.REQUEST_URL))	{
         	requestUrl = incomingIntent.getStringExtra(Extra.REQUEST_URL);
-        	Log.d(TAG, "Activity requestUrl set to: " + requestUrl);
+        	Log.d(tag, "Activity requestUrl set to: " + requestUrl);
         } else {
         	requestUrl = "";
         }
@@ -334,6 +337,7 @@ public abstract class EllucianActivity extends Activity {
 		lbm.unregisterReceiver(configReceiver);
 		lbm.unregisterReceiver(resetReceiver);
 		lbm.unregisterReceiver(outdatedReceiver);
+		lbm.unregisterReceiver(unauthenticatedUserReceiver);
 
 	}
 	
@@ -341,24 +345,26 @@ public abstract class EllucianActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		String tag = getClass().getName();
+		
 		SharedPreferences preferences = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE);
 		String configUrl = preferences.getString(Utils.CONFIGURATION_URL, null);
 		
 		long lastUpdate = preferences.getLong(Utils.CONFIGURATION_LAST_UPDATE, 0);
-		Log.d(TAG, "last update time: " + lastUpdate);
+		Log.d(tag, "last update time: " + lastUpdate);
 		
 		if(lastUpdate != 0 && (lastUpdate + MILLISECONDS_PER_DAY) < System.currentTimeMillis()) {
-			Log.d(TAG, "24 hours past since last update, updating configuration");
-			noReset = true;
+			Log.d(tag, "24 hours past since last update, updating configuration");
 			Intent intent = new Intent(this, ConfigurationUpdateService.class);
 			intent.putExtra(Extra.CONFIG_URL, configUrl);			
+			intent.putExtra(ConfigurationUpdateService.REFRESH, true);	
 			startService(intent);
 		}
 		
 		//notifications
 		if (getEllucianApp().isUserAuthenticated()) {
 			if (System.currentTimeMillis() > getEllucianApp().getLastNotificationsCheck() + EllucianApplication.DEFAULT_NOTIFICATIONS_REFRESH) {
-				Log.d("MainActivity.onStart", "startingNotifications");
+				Log.d(TAG, "startingNotifications");
 				getEllucianApp().startNotifications();
 			}
 		}
@@ -368,99 +374,22 @@ public abstract class EllucianActivity extends Activity {
 
 		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
 		
-		configReceiver = new ConfigurationUpdateReceiver();
+		configReceiver = new ConfigurationUpdateReceiver(this);
 		lbm.registerReceiver(configReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_SUCCESS));
 		
-		resetReceiver = new SendToSelectionReceiver();
+		resetReceiver = new SendToSelectionReceiver(this);
 		lbm.registerReceiver(resetReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_SEND_TO_SELECTION));
 		
-		outdatedReceiver = new OutdatedReceiver();
+		outdatedReceiver = new OutdatedReceiver(this);
 		lbm.registerReceiver(outdatedReceiver, new IntentFilter(ConfigurationUpdateService.ACTION_OUTDATED));
 		
-		mainAuthenticationReceiver = new MainAuthenticationReceiver();
-		lbm.registerReceiver(mainAuthenticationReceiver, new IntentFilter(AuthenticateUserIntentService.ACTION_UPDATE_MAIN));	
-	}
-	
-	public class MainAuthenticationReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent incomingIntent) {	
-			if(drawerLayoutHelper != null) {
-				drawerLayoutHelper.invalidateItems();
-			}
-		}		
-	}
-	
-	public class ConfigurationUpdateReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(final Context context, Intent incomingIntent) {
-			Log.d(TAG, "onReceive, ConfigurationUpdateReceiver");
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-
-			boolean upgradeAvailable = incomingIntent.getBooleanExtra(
-					ConfigurationUpdateService.PARAM_UPGRADE_AVAILABLE, false);
-			
-			if (upgradeAvailable) {
-
-				// launch an Activity to allow the use of an AlertDialog
-				Intent i = new Intent(context, ConfigurationUpdateReceiverActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				i.putExtra("upgradeAvailable",  upgradeAvailable);
-				i.putExtra("negativeButtonAction", false);
-				context.startActivity(i);
-			} else {
-
-				if (!noReset) {
-					Log.d(TAG, "logoutUser flag is set");
-					// Logging out any user
-					((EllucianApplication) getApplication()).removeAppUser();
-					loadMainActivity();
-				} 
-			}
-		}
-	}
-	
-	private void loadMainActivity() {
-		Log.d(TAG, "Starting MainActivity");
-		Intent mainIntent = new Intent(this, MainActivity.class);
-		mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(mainIntent);
-	}
-	
-	public class SendToSelectionReceiver extends BroadcastReceiver {
+		mainAuthenticationReceiver = new MainAuthenticationReceiver(this);
+		lbm.registerReceiver(mainAuthenticationReceiver, new IntentFilter(AuthenticateUserIntentService.ACTION_UPDATE_MAIN));
 		
-		@Override
-		public void onReceive(final Context context, Intent incomingIntent) {
-			Log.d(TAG, "onReceive, SendToSelectionReceiver");
-
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-			Utils.removeValuesFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_URL);
-
-			// launch an Activity to allow the use of an AlertDialog
-			Intent i = new Intent(context, SendToSelectionReceiverActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(i);
-		}
+		unauthenticatedUserReceiver = new UnauthenticatedUserReceiver(this);
+		lbm.registerReceiver(unauthenticatedUserReceiver, new IntentFilter(MobileClient.ACTION_UNAUTHENTICATED_USER));
 	}
 
-	public class OutdatedReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(final Context context, Intent incomingIntent) {
-			Log.d(TAG, "onReceive, OutdatedReceiver");
-
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
-			Utils.removeValuesFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_URL);
-			
-			// launch an Activity to allow the use of an AlertDialog
-			Intent i = new Intent(context, OutdatedReceiverActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(i);
-		}
-	}
-	
 	/**
 	 * Called to process touch screen events. At the very least your
 	 * implementation must call superDispatchTouchEvent(MotionEvent) to do the

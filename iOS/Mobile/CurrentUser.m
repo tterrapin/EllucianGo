@@ -77,12 +77,11 @@
     NSArray *allCookies = [cookies cookies];
     
     for(NSHTTPCookie *cookie in allCookies) {
-        if(![cookie expiresDate]) {
-            [cookies deleteCookie:cookie];
-        }
+        [cookies deleteCookie:cookie];
     }
     
     [self removeSensitiveData];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     if(postNotification) {
@@ -131,6 +130,38 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
 }
 
+- (void) login: (NSString *) auth andUserid: (NSString *) uID andRoles: (NSSet *) roleSet
+{
+    NSError *error = nil;
+    
+    self.userauth = auth;
+    self.userid = uID;
+    self.roles = roleSet;
+    self.isLoggedIn = true;
+          
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    //set the new config for about
+    [defaults setObject:[roleSet allObjects] forKey:kLoginRoles];
+    NSData* encryptedUserAuthData = [self.userauth dataUsingEncoding:NSUTF8StringEncoding];
+    encryptedUserAuthData = [RNEncryptor encryptData:encryptedUserAuthData
+                                        withSettings:kRNCryptorAES256Settings
+                                            password:kAES256Key
+                                               error:&error];
+    
+    [defaults setObject:encryptedUserAuthData forKey:kLoginUserauth];
+    NSData* encryptedUserIdData = [self.userid dataUsingEncoding:NSUTF8StringEncoding];
+    encryptedUserIdData = [RNEncryptor encryptData:encryptedUserIdData
+                                      withSettings:kRNCryptorAES256Settings
+                                          password:kAES256Key
+                                             error:&error];
+    
+    [defaults setObject:encryptedUserIdData forKey:kLoginUserid];
+    
+    self.lastLoggedInDate = [NSDate date];
+          
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
+}
+
 -(NSString *)getPassword
 {
     NSError *error = nil;
@@ -150,13 +181,6 @@
     }
     else
         return [[NSSet alloc] init];
-}
-
-+(NSString *) userid
-{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate currentUser];
-    return user.userid;
 }
 
 -(NSString*) sha1:(NSString*)input
@@ -202,6 +226,23 @@
         [managedObjectContext deleteObject:object];
     }
     [managedObjectContext save:&error];
+}
+
++ (id)sharedInstance
+{
+    // structure used to test whether the block has completed or not
+    static dispatch_once_t p = 0;
+    
+    // initialize sharedObject as nil (first call only)
+    __strong static id _sharedObject = nil;
+    
+    // executes a block object once and only once for the lifetime of an application
+    dispatch_once(&p, ^{
+        _sharedObject = [[self alloc] init];
+    });
+    
+    // returns the same object each time
+    return _sharedObject;
 }
 
 

@@ -318,7 +318,10 @@ public class DrawerLayoutHelper {
 					loginFragment.show(activity.getFragmentManager(),
 							LoginDialogFragment.LOGIN_DIALOG);
 				} else if (type.equals(ModuleType.WEB)) {
-					if (System.currentTimeMillis() > (ellucianApp
+					
+					//do if basic authentication only; web login will be handled by cookies
+					String loginType = Utils.getStringFromPreferences(activity, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+					if (loginType.equals(Utils.NATIVE_LOGIN_TYPE) && System.currentTimeMillis() > (ellucianApp
 							.getLastAuthRefresh() + AUTH_REFRESH_TIME)) {
 						LocalBroadcastManager lbm = LocalBroadcastManager
 								.getInstance(activity);

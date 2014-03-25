@@ -32,7 +32,6 @@
     if([AppearanceChanger isRTL]) {
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.dateLabel.textAlignment = NSTextAlignmentRight;
-        self.descriptionTextView.textAlignment = NSTextAlignmentRight;
         self.categoryValue.textAlignment = NSTextAlignmentRight;
     }
     
@@ -59,7 +58,7 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     self.dateLabel.text = [dateFormatter stringFromDate:self.itemPostDateTime];
-    self.descriptionTextView.text = self.itemContent;
+    [self setDescriptionText:self.itemContent];
     if(self.itemImageUrl) {
         [self.imageView loadImageFromURLString: self.itemImageUrl];
 
@@ -79,6 +78,8 @@
 //    CGRect frame = self.descriptionTextView.frame;
 //    frame.size.height = self.descriptionTextView.contentSize.height;
 //    self.descriptionTextView.frame = frame;
+    
+    [self.descriptionWebView setDelegate:self];
     
        
 }
@@ -189,7 +190,7 @@
 {
     _titleLabel.text = _feed.title;
     _dateLabel.text = _feed.dateLabel;
-    _descriptionTextView.text = _feed.description;
+    [self setDescriptionText:_feed.description];
     _itemTitle = _feed.title;
     _itemContent = _feed.content;
     _itemLink = [_feed.link stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -219,7 +220,7 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     self.dateLabel.text = [dateFormatter stringFromDate:self.itemPostDateTime];
-    self.descriptionTextView.text = self.itemContent;
+    [self setDescriptionText:self.itemContent];
     if(self.itemImageUrl) {
         self.imageHeightConstraint.constant = 120;
         self.imageWidthConstraint.constant = 120;
@@ -235,6 +236,24 @@
     [self.view setNeedsDisplay];
     
 }
+
+-(void)setDescriptionText:(NSString *) descText
+{
+    // Create a div that the content will reside in formatting for RTL if necessary.
+    NSString  *htmlStringwithFont;
+    if ([AppearanceChanger isRTL] ){
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i; direction:rtl;\" >%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, descText];
+    }
+    else{
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i\">%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, descText];
+    }
+    
+    // Replace '\n' characters with <br /> for content that isn't html based to begin with...
+    // One issue is if html text also has \n characters in it. In that case we'll be changing the spacing of the content.
+    htmlStringwithFont = [htmlStringwithFont stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+    [self.descriptionWebView loadHTMLString:htmlStringwithFont baseURL:nil];
+}
+
 
 #pragma mark - UISplitViewDelegate methods
 -(void)splitViewController:(UISplitViewController *)svc
@@ -264,5 +283,19 @@
     //Nil out the pointer to the popover.
     _masterPopover = nil;
 }
+
+#pragma mark - UIWebViewDelegate
+
+// Delegate method to launch the URL links in an external browser or app. We don't want to just replace
+// the contents of this webview with the destination of the URL being clicked on.
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return false;
+    }
+    return true;
+}
+
 
 @end

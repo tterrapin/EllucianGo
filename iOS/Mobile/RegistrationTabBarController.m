@@ -12,10 +12,9 @@
 #import "AppearanceChanger.h"
 #import "RegistrationCartViewController.h"
 #import "MBProgressHUD.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "Module+Attributes.h"
 #import "CurrentUser.h"
-#import "LoginViewController.h"
 #import "RegistrationTerm.h"
 #import "RegistrationPlannedSection.h"
 #import "RegistrationPlannedSectionMeetingPattern.h"
@@ -45,6 +44,8 @@
     }
     
     self.searchedSections = [NSMutableArray new];
+    //self.tabBar.translucent = NO;
+    
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -61,14 +62,14 @@
         hud2.labelText = NSLocalizedString(@"Checking Eligibility", @"checking registration eligibility message");
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
-            self.registrationAllowed = [self checkRegistrationEligibility];
+            self.registrationAllowed = [self checkRegistrationEligibility:self];
             [MBProgressHUD hideHUDForView:self.view animated:YES];
     
             MBProgressHUD *hud3 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud3.labelText = NSLocalizedString(@"Fetching Registration Plan", @"fetching registration plan message");
 
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self fetchRegistrationPlans];
+                [self fetchRegistrationPlans:self];
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 if([self itemsInCartCount] == 0 && !self.ineligibleMessage) {
                     self.selectedIndex = 1;
@@ -101,17 +102,22 @@
     [super revealMenu:sender];
 }
 
--(BOOL) checkRegistrationEligibility
+-(BOOL) checkRegistrationEligibility:(id)sender
 {
     NSError *error;
-    NSURLResponse *response;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/eligibility", [self.module propertyForKey:@"registration"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/eligibility", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkRegistrationEligibility:) name:kLoginExecutorSuccess object:nil];
+    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if(responseData)
     {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+        
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData
                               options:kNilOptions
@@ -154,17 +160,31 @@
     return _timeFormatter;
 }
 
-- (void)fetchRegistrationPlans
+- (NSDateFormatter *)tzTimeFormatter:(NSString*)timeZone
+{
+    NSDateFormatter *tzTimeFormatter = [[NSDateFormatter alloc] init];
+    [tzTimeFormatter setDateFormat:@"HH:mm'Z'"];
+    [tzTimeFormatter setTimeZone:[NSTimeZone timeZoneWithName:timeZone]];
+    return tzTimeFormatter;
+}
+
+- (void)fetchRegistrationPlans:(id)sender
 {
     NSError *error;
-    NSURLResponse *response;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/plans", [self.module propertyForKey:@"registration"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/plans", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRegistrationPlans:) name:kLoginExecutorSuccess object:nil];
+    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if(responseData)
     {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+        
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData
                               options:kNilOptions
@@ -179,10 +199,16 @@
                     RegistrationPlannedSection *plannedSection = [RegistrationPlannedSection new];
                     plannedSection.sectionId = [plannedSectionJson objectForKey:@"sectionId"];
                     plannedSection.courseId = [plannedSectionJson objectForKey:@"courseId"];
-                    plannedSection.courseName = [plannedSectionJson objectForKey:@"courseName"];
+                    if([plannedSectionJson objectForKey:@"courseName"] != [NSNull null]) {
+                        plannedSection.courseName = [plannedSectionJson objectForKey:@"courseName"];
+                    }
                     plannedSection.courseSectionNumber = [plannedSectionJson objectForKey:@"courseSectionNumber"];
-                    plannedSection.sectionTitle = [plannedSectionJson objectForKey:@"sectionTitle"];
-                    plannedSection.courseDescription = [plannedSectionJson objectForKey:@"courseDescription"];
+                    if([plannedSectionJson objectForKey:@"sectionTitle"] != [NSNull null]) {
+                        plannedSection.sectionTitle = [plannedSectionJson objectForKey:@"sectionTitle"];
+                    }
+                    if([plannedSectionJson objectForKey:@"courseDescription"] != [NSNull null]) {
+                        plannedSection.courseDescription = [plannedSectionJson objectForKey:@"courseDescription"];
+                    }
                     if([plannedSectionJson objectForKey:@"credits"] != [NSNull null]) {
                         plannedSection.credits = [plannedSectionJson objectForKey:@"credits"];
                     }
@@ -192,16 +218,39 @@
                     if([plannedSectionJson objectForKey:@"maximumCredits"] != [NSNull null]) {
                         plannedSection.maximumCredits = [plannedSectionJson objectForKey:@"maximumCredits"];
                     }
+                    
+                    if (plannedSection.minimumCredits && plannedSection.maximumCredits) {
+                        plannedSection.isVariableCredit = true;
+                    } else {
+                        plannedSection.isVariableCredit = false;
+                    }
+                    
                     if([plannedSectionJson objectForKey:@"variableCreditIncrement"] != [NSNull null]) {
                         plannedSection.variableCreditIncrement = [plannedSectionJson objectForKey:@"variableCreditIncrement"];
                     }
                     if([plannedSectionJson objectForKey:@"ceus"] != [NSNull null]) {
                         plannedSection.ceus = [plannedSectionJson objectForKey:@"ceus"];
                     }
+                    
                     plannedSection.status = [plannedSectionJson objectForKey:@"status"];
                     plannedSection.gradingType = [plannedSectionJson objectForKey:@"gradingType"];
+                    
                     plannedSection.termId = termId;
                     plannedSection.classification = [plannedSectionJson objectForKey:@"classification"];
+                    
+                    if([plannedSectionJson objectForKey:@"firstMeetingDate"] != [NSNull null]) {
+                        plannedSection.firstMeetingDate = [self.dateFormatter dateFromString:[plannedSectionJson objectForKey:@"firstMeetingDate"]];
+                    }
+                    
+                    if([plannedSectionJson objectForKey:@"lastMeetingDate"] != [NSNull null]) {
+                        plannedSection.lastMeetingDate = [self.dateFormatter dateFromString:[plannedSectionJson objectForKey:@"lastMeetingDate"]];
+                    }
+                    
+                    //if there is a non zero value for CEUs, then make sure that the credits value is nil
+                    if ( plannedSection.ceus && [plannedSection.ceus intValue] > 0 ) {
+                        plannedSection.credits = nil;
+                    }
+                        
                     
                     NSMutableArray *meetingPatterns = [NSMutableArray new];
                     for(NSDictionary *meetingPatternJson in [plannedSectionJson objectForKey:@"meetingPatterns"]) {
@@ -209,8 +258,37 @@
                         meetingPattern.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
                         meetingPattern.startDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"startDate"]];
                         meetingPattern.endDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"endDate"]];
-                        meetingPattern.startTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"startTime"]];
-                        meetingPattern.endTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"endTime"]];
+                        
+                        if ([meetingPatternJson objectForKey:@"startTime"] && [meetingPatternJson objectForKey:@"startTime"] != [NSNull null]){
+                            meetingPattern.startTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"startTime"]];
+                        }
+                        
+                        if([meetingPatternJson objectForKey:@"endTime"] && [meetingPatternJson objectForKey:@"endTime"] != [NSNull null]) {
+                            meetingPattern.endTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"endTime"]];
+                        }
+                        
+                        if([meetingPatternJson objectForKey:@"sisStartTimeWTz"] && [meetingPatternJson objectForKey:@"sisStartTimeWTz"] != [NSNull null]) {
+                            
+                            NSString * sisStartTimeWTZ = [meetingPatternJson objectForKey:@"sisStartTimeWTz"];
+                            NSArray  * startTimeComplex = [sisStartTimeWTZ componentsSeparatedByString:@" "];
+                            if ( [startTimeComplex count] == 2 ) {
+                                NSDateFormatter *tzTimeFormatter = [self tzTimeFormatter:startTimeComplex[1]];
+                                meetingPattern.startTime = [tzTimeFormatter dateFromString:startTimeComplex[0]];
+                            }
+                        }
+                        
+                        if([meetingPatternJson objectForKey:@"sisEndTimeWTz"] && [meetingPatternJson objectForKey:@"sisEndTimeWTz"] != [NSNull null]) {
+                            
+                            NSString * sisEndTimeWTZ = [meetingPatternJson objectForKey:@"sisEndTimeWTz"];
+                            NSArray  * endTimeComplex = [sisEndTimeWTZ componentsSeparatedByString:@" "];
+                            if ( [endTimeComplex count] == 2 ) {
+                                NSDateFormatter *tzTimeFormatter = [self tzTimeFormatter:endTimeComplex[1]];
+                                meetingPattern.endTime = [tzTimeFormatter dateFromString:endTimeComplex[0]];
+                            }
+                        }
+                        
+                        
+                        
                         meetingPattern.daysOfWeek = [meetingPatternJson objectForKey:@"daysOfWeek"];
                         if([meetingPatternJson objectForKey:@"room"] != [NSNull null]) {
                             meetingPattern.room = [meetingPatternJson objectForKey:@"room"];
@@ -277,10 +355,12 @@
 -(void) fetchTerms
 {
     NSError *error;
-    NSURLResponse *response;
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/terms", [self.module propertyForKey:@"registration"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser:[NSURL URLWithString:urlString] returningResponse:&response error:&error];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/terms", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     if(responseData)

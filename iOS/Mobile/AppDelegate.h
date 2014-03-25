@@ -21,13 +21,11 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic) CurrentUser* currentUser;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *privateWriterContext;
 @property(nonatomic, readonly) BOOL useDefaultConfiguration;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
-- (CurrentUser *)getCurrentUser;
 - (void)reset;
 
 @end

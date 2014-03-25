@@ -32,7 +32,6 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_search_results_list, container, false);
 		addToCartButton = (Button) rootView.findViewById(R.id.add_to_cart);
-
 		TextView emptyView = (TextView) rootView.findViewById(android.R.id.empty);
 		emptyView.setText(R.string.no_results_found);
 		
@@ -97,6 +96,10 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 			addToCartButton.setVisibility(View.GONE);
 		}	
 		
+	}
+	
+	protected void setAddToCartButtonEnabled(boolean enabled) {
+		addToCartButton.setEnabled(enabled);
 	}
 
 	@Override

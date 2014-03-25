@@ -8,8 +8,6 @@ import android.os.Bundle;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
-import com.ellucian.mobile.android.news.NewsDetailActivity;
-import com.ellucian.mobile.android.news.NewsDetailFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.Events;
 import com.ellucian.mobile.android.util.Extra;
 

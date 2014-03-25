@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "EllucianUITableViewController.h"
+#import "DetailSelectionDelegate.h"
 
 @class Module;
 @interface RegistrationSearchResultsViewController : EllucianUITableViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate>
 
-
 @property (nonatomic, strong) NSMutableArray *courses;
 @property (strong, nonatomic) Module *module;
+@property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
 
 @end

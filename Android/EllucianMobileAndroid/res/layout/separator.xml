@@ -7,4 +7,4 @@
     android:background="#FFDDDDDD"
     android:paddingBottom="2sp"
     android:paddingTop="2sp"
-    tools:ignore="Overdraw" />
+    tools:ignore="Overdraw,SmallSp" />

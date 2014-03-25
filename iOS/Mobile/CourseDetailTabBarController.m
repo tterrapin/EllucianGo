@@ -3,13 +3,13 @@
 //  Mobile
 //
 //  Created by jkh on 2/11/13.
-//  Copyright (c) 2013 Ellucian. All rights reserved.
+//  Copyright (c) 2013-2014 Ellucian. All rights reserved.
 //
 
 #import "CourseDetailTabBarController.h"
 #import "Module+Attributes.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "CourseDetail.h"
 #import "CourseDetailInstructor.h"
 #import "CourseMeetingPattern.h"
@@ -41,7 +41,12 @@
     
     self.originalViewControllers = [[NSArray alloc] initWithArray:self.viewControllers];
     [self renderTabs];
-    [self fetchCourseDetail];
+
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self fetchCourseDetail:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchCourseDetail:) name:kLoginExecutorSuccess object:nil];
 }
 
 -(void)renderTabs
@@ -113,17 +118,25 @@
     return _timeFormatter;
 }
 
--(void) fetchCourseDetail
+- (NSDateFormatter *)tzTimeFormatter:(NSString*)timeZone
+{
+    NSDateFormatter *tzTimeFormatter = [[NSDateFormatter alloc] init];
+    [tzTimeFormatter setDateFormat:@"HH:mm'Z'"];
+    [tzTimeFormatter setTimeZone:[NSTimeZone timeZoneWithName:timeZone]];
+    return tzTimeFormatter;
+}
+
+-(void) fetchCourseDetail:(id)sender
 {
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@?term=%@&section=%@", [self.module propertyForKey:@"overview"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] ,[self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@?term=%@&section=%@", [self.module propertyForKey:@"overview"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] ,[self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     [importContext performBlock: ^{
         
         NSError *error;
-        NSURLResponse *response;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser: [NSURL URLWithString: urlString] returningResponse:&response error:&error];
+        AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if(responseData) {
@@ -202,8 +215,35 @@
                             mp.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
                             mp.startDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"startDate"]];
                             mp.endDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"endDate"]];
-                            mp.startTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"startTime"]];
-                            mp.endTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"endTime"]];
+                            
+                            //check if it exists and if its value is not null
+                            if([meetingPatternJson objectForKey:@"startTime"] && [meetingPatternJson objectForKey:@"startTime"] != [NSNull null]) {
+                                mp.startTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"startTime"]];
+                            }
+                            if([meetingPatternJson objectForKey:@"endTime"] && [meetingPatternJson objectForKey:@"endTime"] != [NSNull null]) {
+                                mp.endTime =  [self.timeFormatter dateFromString:[meetingPatternJson objectForKey:@"endTime"]];
+                            }
+                            
+                            if([meetingPatternJson objectForKey:@"sisStartTimeWTz"] && [meetingPatternJson objectForKey:@"sisStartTimeWTz"] != [NSNull null]) {
+                                
+                                NSString * sisStartTimeWTZ = [meetingPatternJson objectForKey:@"sisStartTimeWTz"];
+                                NSArray  * startTimeComplex = [sisStartTimeWTZ componentsSeparatedByString:@" "];
+                                if ( [startTimeComplex count] == 2 ) {
+                                    NSDateFormatter *tzTimeFormatter = [self tzTimeFormatter:startTimeComplex[1]];
+                                    mp.startTime = [tzTimeFormatter dateFromString:startTimeComplex[0]];
+                                }
+                            }
+                            
+                            if([meetingPatternJson objectForKey:@"sisEndTimeWTz"] && [meetingPatternJson objectForKey:@"sisEndTimeWTz"] != [NSNull null]) {
+                                
+                                NSString * sisEndTimeWTZ = [meetingPatternJson objectForKey:@"sisEndTimeWTz"];
+                                NSArray  * endTimeComplex = [sisEndTimeWTZ componentsSeparatedByString:@" "];
+                                if ( [endTimeComplex count] == 2 ) {
+                                    NSDateFormatter *tzTimeFormatter = [self tzTimeFormatter:endTimeComplex[1]];
+                                    mp.endTime = [tzTimeFormatter dateFromString:endTimeComplex[0]];
+                                }
+                            }
+                            
                             NSArray *daysOfWeek = [meetingPatternJson objectForKey:@"daysOfWeek"];
                             {
                                 mp.daysOfWeek = [daysOfWeek componentsJoinedByString:@","];

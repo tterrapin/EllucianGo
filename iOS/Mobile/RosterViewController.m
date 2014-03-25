@@ -3,12 +3,12 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 10/2/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "RosterViewController.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "DirectoryViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 
@@ -33,7 +33,12 @@
 	}
     
     self.navigationItem.title = self.courseNameAndSectionNumber;
-    [self fetchRoster];
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self fetchRoster:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRoster:) name:kLoginExecutorSuccess object:nil];
+    
     
 }
 
@@ -212,18 +217,17 @@
 }
 
 #pragma mark - fetch notifications
-
-- (void) fetchRoster {
+- (void) fetchRoster:(id)sender {
     
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@?term=%@&section=%@", [self.module propertyForKey:@"roster"], [[CurrentUser userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] ,[self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@?term=%@&section=%@", [self.module propertyForKey:@"roster"], [[[CurrentUser sharedInstance] userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] ,[self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     [importContext performBlock: ^{
 
         NSError *error;
-        NSURLResponse *response;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        NSData *responseData = [NSData dataWithContentsOfURLUsingCurrentUser: [NSURL URLWithString: urlString] returningResponse:&response error:&error];
+        AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if(responseData) {

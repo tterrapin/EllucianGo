@@ -9,6 +9,11 @@ import com.ellucian.mobile.android.client.courses.Instructor;
 import com.ellucian.mobile.android.client.courses.MeetingPattern;
 
 public class Section implements Parcelable {
+	public static final String GRADING_TYPE_AUDIT = "Audit";
+	public static final String GRADING_TYPE_GRADED = "Graded";
+	public static final String GRADING_TYPE_PASS_FAIL = "PassFail";
+	
+	
 	public String termId;
 	public String sectionId;
 	public String courseId;

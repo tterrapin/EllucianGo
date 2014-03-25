@@ -9,5 +9,10 @@ public class NotificationsDetailActivity extends EllucianDefaultDetailActivity {
 	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
 		return NotificationsDetailFragment.class;
 	}
+	
+	protected void deleteNotification() {
+		setResult(NotificationsActivity.RESULT_DELETE);
+		finish();
+	}
 
 }

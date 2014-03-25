@@ -318,9 +318,8 @@
             }
         }
         url = [NSString stringWithFormat:@"%@?searchString=%@", url, [searchString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-        
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        CurrentUser *user = [appDelegate currentUser];
+
+        CurrentUser *user = [CurrentUser sharedInstance];
         NSMutableString *loginString = (NSMutableString*)[@"" stringByAppendingFormat:@"%@:%@", user.userauth, user.getPassword];
 
         NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];

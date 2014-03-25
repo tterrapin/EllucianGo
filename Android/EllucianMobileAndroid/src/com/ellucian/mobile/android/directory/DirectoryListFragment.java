@@ -333,7 +333,7 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
 					modifiedUrl += "?searchString=" + encodedQuery;
 				}
 				
-				MobileClient client = new MobileClient(activity.getApplication());
+				MobileClient client = new MobileClient(activity);
 				response = client.searchDirectory(modifiedUrl);
 				
 			} else {

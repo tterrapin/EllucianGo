@@ -18,7 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.Service;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -45,16 +49,33 @@ import com.ellucian.mobile.android.client.registration.CartResponse;
 import com.ellucian.mobile.android.client.registration.EligibilityResponse;
 import com.ellucian.mobile.android.client.registration.SearchResponse;
 import com.ellucian.mobile.android.client.registration.TermsResponse;
+import com.ellucian.mobile.android.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 public class MobileClient {
 	private static final String TAG = MobileClient.class.getSimpleName();
+	public static final String REQUEST_DELETE= "DELETE";
+	public static final String REQUEST_GET= "GET";
+	public static final String REQUEST_PUT = "PUT";
+	public static final String REQUEST_POST = "POST";
+	
+	public static final String ACTION_UNAUTHENTICATED_USER = "com.ellucian.mobile.android.client.MobileClient.action.unauthenticatedUser";
+
 	private Gson jsonParser;
 	private EllucianApplication application;
 	
-	public MobileClient(Application application) {
+	public MobileClient(Activity activity) {
+		this(activity.getApplication());
+	}
+	
+	public MobileClient(Service service) {
+		this(service.getApplication());
+	}
+	
+	public
+	MobileClient(Application application) {
 		GsonBuilder builder = new GsonBuilder();
 		//builder.registerTypeAdapter(Date.class, new DateDeserializer());
 		builder.setDateFormat("yyyy-MM-dd HH:mm:ss'Z'");
@@ -64,69 +85,80 @@ public class MobileClient {
 		}
 	}
 	
+	
 	public void setDateFormat(String dateFormat) {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setDateFormat(dateFormat);
 		jsonParser = builder.create();
 	}
 	
-	private String makeServerRequest(String requestUrl, boolean handleErrorCodes) {
+	public String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
 		Log.d(TAG + ".makeServerRequest", "Making request at url: " + requestUrl );
 		
 		HttpURLConnection urlConnection = getConnection(requestUrl);
 	
 		if (urlConnection != null) {
 			urlConnection.setConnectTimeout(20000);
-			return handleResponse(urlConnection, handleErrorCodes);
+			return handleResponse(urlConnection, returnErrorCodesAsResponse);
 		} else {
 			return null;
 		}
 	}
-	
-	private String makeAuthenticatedServerRequest(String requestUrl, String username, String password, boolean handleErrorCodes) {
-		Log.d(TAG + ".makeAuthenticatedServerRequest", "Making request at url: " + requestUrl );
-		
-		HttpURLConnection urlConnection = getConnection(requestUrl);
-	
-		if (urlConnection != null) {
-			String auth = null;
-			try {
-				auth = Base64.encodeToString((username + ":" + password).getBytes("UTF-8"),
-																 Base64.NO_WRAP);
-				urlConnection.setRequestProperty("Authorization", "Basic " + auth);
-			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "UnsupportedEncodingException", e);
-			}
-			urlConnection.setConnectTimeout(20000);
-			return handleResponse(urlConnection, handleErrorCodes);
+
+	public String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
+		String loginType = Utils.getStringFromPreferences(application, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+		if("native".equals(loginType)) {
+			String username = application.getAppUserName();
+			String password = application.getAppUserPassword();
+			return makeBasicAuthenticatedServerRequest(requestUrl, username, password, returnErrorCodesAsResponse);
 		} else {
-			return null;
+			//Authentication handled by cookies
+			return makeServerRequest(requestUrl, returnErrorCodesAsResponse);
 		}
-		
+
+	}
+
+	public String makeAuthenticatedServerRequest(String requestUrl, String method, boolean returnErrorCodesAsResponse, String dataToBeWritten) {
+		String loginType = Utils.getStringFromPreferences(application, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+		if("native".equals(loginType)) {
+			String username = application.getAppUserName();
+			String password = application.getAppUserPassword();
+			return makeAuthenticatedServerRequest(requestUrl, username, password, method, returnErrorCodesAsResponse, dataToBeWritten);
+		} else {
+			//Authentication handled by cookies
+			return makeAuthenticatedServerRequest(requestUrl, null, null, method, returnErrorCodesAsResponse, dataToBeWritten);
+		}
+
 	}
 	
-	private String makeAuthenticatedServerPut(String requestUrl, String username, String password, boolean handleErrorCodes, String dataToBeWritten) {
+
+	private String makeAuthenticatedServerRequest(String requestUrl, String username, String password, String method, boolean returnErrorCodesAsResponse, String dataToBeWritten) {
 		Log.d(TAG + ".makeAuthenticatedServerPut", "Making request at url: " + requestUrl );
 		
 		HttpURLConnection urlConnection = getConnection(requestUrl);
-		
 	
 		if (urlConnection != null) {
-			String auth = null;
 			try {
-				auth = Base64.encodeToString((username + ":" + password).getBytes("UTF-8"),
+				if(username != null && password != null) {
+					String auth = Base64.encodeToString((username + ":" + password).getBytes("UTF-8"),
 																 Base64.NO_WRAP);
-				urlConnection.setRequestProperty("Authorization", "Basic " + auth);
+					urlConnection.setRequestProperty("Authorization", "Basic " + auth);
+				}
+				if(method != null) {
+					urlConnection.setRequestMethod(method);
+				} else {
+					urlConnection.setRequestMethod(REQUEST_GET);
+				}
 				
-				urlConnection.setRequestMethod("PUT");
-				urlConnection.setDoOutput(true);
-				urlConnection.setRequestProperty("Content-Type", "application/json");
-				urlConnection.setRequestProperty("Accept", "application/json");
-		        OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
-		        osw.write(dataToBeWritten);
-		        osw.flush();
-		        osw.close();
-		        System.err.println(urlConnection.getResponseCode());
+				if (!TextUtils.isEmpty(dataToBeWritten)) {
+					urlConnection.setDoOutput(true);
+					urlConnection.setRequestProperty("Content-Type", "application/json");
+					urlConnection.setRequestProperty("Accept", "application/json");
+			        OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
+			        osw.write(dataToBeWritten);
+			        osw.flush();
+			        osw.close();
+				}
 			} catch (UnsupportedEncodingException e) {
 				Log.e(TAG, "UnsupportedEncodingException", e);
 			} catch (ProtocolException e) {
@@ -135,45 +167,15 @@ public class MobileClient {
 				Log.e(TAG, "IOException", e);
 			}
 			urlConnection.setConnectTimeout(20000);	
-			return handleResponse(urlConnection, handleErrorCodes);
+			return handleResponse(urlConnection, returnErrorCodesAsResponse);
 		} else {
 			return null;
 		}
 	}
-	
-	public String makeAuthenticatedServerPost(String requestUrl, String username, String password, boolean handleErrorCodes, String dataToBeWritten) {
-		Log.d(TAG + ".makeAuthenticatedServerPost", "Making request at url: " + requestUrl );
 		
-		HttpURLConnection urlConnection = getConnection(requestUrl);
-	
-		if (urlConnection != null) {
-			String auth = null;
-			try {
-				auth = Base64.encodeToString((username + ":" + password).getBytes("UTF-8"),
-																 Base64.NO_WRAP);
-				urlConnection.setRequestProperty("Authorization", "Basic " + auth);
-				
-				urlConnection.setRequestMethod("POST");
-				urlConnection.setDoOutput(true);
-				urlConnection.setRequestProperty("Content-Type", "application/json");
-				urlConnection.setRequestProperty("Accept", "application/json");
-		        OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
-		        osw.write(dataToBeWritten);
-		        osw.flush();
-		        osw.close();
-		        System.err.println(urlConnection.getResponseCode());
-			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "UnsupportedEncodingException", e);
-			} catch (ProtocolException e) {
-				Log.e(TAG, "ProtocolException", e);
-			} catch (IOException e) {
-				Log.e(TAG, "IOException", e);
-			}
-			urlConnection.setConnectTimeout(20000);	
-			return handleResponse(urlConnection, handleErrorCodes);
-		} else {
-			return null;
-		}
+	private String makeBasicAuthenticatedServerRequest(String requestUrl, String username, String password, boolean returnErrorCodesAsResponse) {
+		return makeAuthenticatedServerRequest(requestUrl, username, password, null, returnErrorCodesAsResponse, null);
+		
 	}
 	
 	private HttpURLConnection getConnection(String requestUrl) {
@@ -192,36 +194,33 @@ public class MobileClient {
 		return urlConnection;
 	}
 	
-	private String handleResponse(HttpURLConnection urlConnection, boolean handleErrorCodes) {
+	private String handleResponse(HttpURLConnection urlConnection, boolean returnErrorCodesAsResponse) {
 		String responseString = null;
 	
 		try {
 			int statusCode = urlConnection.getResponseCode();
-			Log.d(TAG, "Response code :" + statusCode);
-			
-			if (statusCode == HttpURLConnection.HTTP_OK) {
+			if (statusCode == HttpURLConnection.HTTP_OK ||
+			    statusCode == HttpURLConnection.HTTP_CREATED) {
 				
 				storeCookies(urlConnection);
 				
 				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 				responseString = readStream(in);
 			} else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-				Log.e(TAG, "Unauthorized request.");
-				if (handleErrorCodes) {
-					responseString = "401";
+				Log.e(TAG, "Status code " + statusCode + " for " + urlConnection.getURL());
+				if (returnErrorCodesAsResponse) {
+					responseString = "" + statusCode;
 				}
-			} else if (statusCode == HttpURLConnection.HTTP_FORBIDDEN) {
-				Log.e(TAG, "Forbidden request.");
-				if (handleErrorCodes) {
-					responseString = "403";
-				}
-			} else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-				Log.e(TAG, "Resource Not Found.");
-				if (handleErrorCodes) {
-					responseString = "404";
-				}
+					
+				LocalBroadcastManager bm = LocalBroadcastManager.getInstance(application.getApplicationContext());
+				Intent broadcastIntent = new Intent();
+				broadcastIntent.setAction(ACTION_UNAUTHENTICATED_USER);
+				bm.sendBroadcast(broadcastIntent);
 			} else {
-				Log.e(TAG, "Unable to get the json response.");
+				Log.e(TAG, "Status code " + statusCode + " for " + urlConnection.getURL());
+				if (returnErrorCodesAsResponse) {
+					responseString = "" + statusCode;
+				}
 			}
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "ClientProtocolException", e);
@@ -282,8 +281,7 @@ public class MobileClient {
 		
 		String jsonString;
 		if (authenticated) {
-			jsonString = makeAuthenticatedServerRequest(requestUrl, 
-					application.getAppUserName(), application.getAppUserPassword(), false);
+			jsonString = makeAuthenticatedServerRequest(requestUrl, false);
 		} else {
 			jsonString = makeServerRequest(requestUrl, false);
 		}
@@ -317,9 +315,15 @@ public class MobileClient {
 		return responseString;
 	}
 	
+	//username and password are passed because the user is not yet authenticated.
 	public String authenticateUser(String requestUrl, String username, String password) {
 		Log.d(TAG, "Authenticating User");
-		String authResponse = makeAuthenticatedServerRequest(requestUrl, username, password, false);
+		String authResponse;
+		if(username != null && password != null) {
+			authResponse = makeBasicAuthenticatedServerRequest(requestUrl, username, password, false);
+		} else {
+			authResponse = makeAuthenticatedServerRequest(requestUrl, false);
+		}
 		
 		return authResponse;
 		
@@ -360,8 +364,21 @@ public class MobileClient {
 	}
 	
 	public JSONObject makeAuthenticatedJsonRequest(String requestUrl) {
-		String jsonString = makeAuthenticatedServerRequest(requestUrl, application.getAppUserName(), 
-				application.getAppUserPassword(), false);
+		String jsonString = makeAuthenticatedServerRequest(requestUrl, false);
+		JSONObject jsonObject = null;
+		
+		if (!TextUtils.isEmpty(jsonString)) {
+			try {
+				jsonObject = new JSONObject(jsonString);
+			} catch (JSONException e) {
+				Log.e(TAG + ".makeAuthenticatedDefaultJsonRequest", "JsonSyntaxException", e);
+			}
+		}
+		return jsonObject;
+	}
+	
+	public JSONObject makeAuthenticatedJsonRequest(String requestUrl, String method, String dataToBeWritten) {
+		String jsonString = makeAuthenticatedServerRequest(requestUrl, method, false, dataToBeWritten);
 		JSONObject jsonObject = null;
 		
 		if (!TextUtils.isEmpty(jsonString)) {
@@ -504,6 +521,16 @@ public class MobileClient {
 		Log.d(TAG, "Retrieving Notifications");
 		return getResponseObject(NotificationsResponse.class, requestUrl,  true);
 	}
+	
+	public JSONObject postNotificationMarkedRead(String requestUrl, String dataToBeWritten) {
+		Log.d(TAG, "Marking Notification read");
+		return makeAuthenticatedJsonRequest(requestUrl, REQUEST_POST, dataToBeWritten);
+	}
+	
+	public JSONObject deleteNotification(String requestUrl) {
+		Log.d(TAG, "Deleting Notification");
+		return makeAuthenticatedJsonRequest(requestUrl, REQUEST_DELETE, null);
+	}
 		
 	/** Numbers requests */
 	
@@ -521,8 +548,7 @@ public class MobileClient {
 	
 	public String putCoursesToRegister(String requestUrl, String dataToBeWritten) {
 		Log.d(TAG, "Registering Courses");
-		return makeAuthenticatedServerPut(requestUrl, application.getAppUserName(), 
-				application.getAppUserPassword(), false, dataToBeWritten);
+		return makeAuthenticatedServerRequest(requestUrl, REQUEST_PUT, false, dataToBeWritten);
 	}
 	
 	public TermsResponse getOpenTerms(String requestUrl) {

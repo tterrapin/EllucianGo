@@ -15,9 +15,8 @@
 
 -(void) addAuthenticationHeader
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate currentUser];
-    NSMutableString *loginString = (NSMutableString*)[@"" stringByAppendingFormat:@"%@:%@", user.userauth, user.getPassword];
+    CurrentUser *user = [CurrentUser sharedInstance];
+    NSString *loginString = [NSString stringWithFormat:@"%@:%@", user.userauth, user.getPassword];
     NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];
     NSString *authHeader = [@"Basic " stringByAppendingFormat:@"%@", encodedLoginData];
     [self addValue:authHeader forHTTPHeaderField:@"Authorization"];

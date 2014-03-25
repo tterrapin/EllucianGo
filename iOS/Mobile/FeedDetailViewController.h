@@ -16,13 +16,13 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "DetailSelectionDelegate.h"
 
-@interface FeedDetailViewController : UIViewController <UIPopoverControllerDelegate, DetailSelectionDelegate, UISplitViewControllerDelegate>
+@interface FeedDetailViewController : UIViewController <UIPopoverControllerDelegate, DetailSelectionDelegate, UISplitViewControllerDelegate, UIWebViewDelegate>
 
 
 @property (nonatomic, strong) Feed *feed;
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
+@property (weak, nonatomic) IBOutlet UIWebView *descriptionWebView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *categoryValue;
 @property (weak, nonatomic) IBOutlet AsynchronousImageView *imageView;

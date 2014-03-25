@@ -26,6 +26,7 @@
 @property (nonatomic, strong) UIViewController *topViewController;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, strong) UITapGestureRecognizer *resetTapGesture;
+@property (nonatomic, strong) NSString* notificationAlertNotificationId;
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
@@ -37,6 +38,8 @@
 - (void)resetTopViewWithAnimations:(void(^)())animations onComplete:(void(^)())complete;
 - (BOOL)topViewIsOffScreen;
 - (void)showHome;
-- (void)showNotifications;
+- (void) showNotifications;
+- (void) showNotifications:(NSString*) notificationId;
+- (void) showNotificationAlert:(NSString*) message withNotificationId:(NSString*) notificationId;
 
 @end

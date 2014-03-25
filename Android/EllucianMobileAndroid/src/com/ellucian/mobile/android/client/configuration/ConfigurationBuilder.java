@@ -19,6 +19,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
 
 public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONObject>{
+	@SuppressWarnings("unused")
 	private Context context;
 	
 	public ConfigurationBuilder(Context context) {

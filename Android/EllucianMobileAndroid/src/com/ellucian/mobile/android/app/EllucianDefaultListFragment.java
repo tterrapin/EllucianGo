@@ -90,6 +90,10 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 		this.viewBinder = binder;
 	}
 	
+	public int getCurrentPosition() {
+		return mCurCheckPosition;
+	}
+	
 	public Bundle getDetailBundle() {
 		return detailBundle;
 	}
@@ -181,10 +185,6 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
         }       
 	}
 	
-	public void showDetailsOnLoad() {
-		
-	}
-	
 	@Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -253,6 +253,27 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
     	} 
     }
     
+    public void setInitialCursorPosition(int position, boolean forceClickOnSinglePane) {
+    	
+    	if (!(position >= 0 && position < getListView().getAdapter().getCount())) {
+    		Log.e(TAG, "The position requested is not within bounds of adapter.");
+    		position = 0;
+    	}
+
+    	getListView().setSelection(position);
+    	
+    	if (forceClickOnSinglePane || mDualPane) { 
+    		
+    		View selectedView = getListView().getChildAt(position);
+
+    		if (getListAdapter().isEmpty()) {
+    			clearCurrentDetailFragment();
+    		} else {
+    			getListView().performItemClick(selectedView, position, 0);
+    		}
+    	} 
+    }
+    
     public void clearCurrentDetailFragment() {
     	EllucianDefaultDetailFragment details = (EllucianDefaultDetailFragment)
                 getFragmentManager().findFragmentById(R.id.frame_extra);
@@ -283,7 +304,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 	}
     
     /** Override to return custom Bundle */
-    public Bundle buildDetailBundle(Cursor cusor) {
+    public Bundle buildDetailBundle(Cursor cursor) {
 		Bundle bundle = null;
 		return bundle;
 	}

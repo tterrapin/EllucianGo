@@ -22,6 +22,7 @@ static const CGFloat kCornerRadius = 6.0;
 }
 
 - (id)initWithFrame:(CGRect)frame {
+    #ifndef __clang_analyzer__
     if (self = [super initWithFrame:frame]) {
         NSArray *theView =  [[NSBundle mainBundle] loadNibNamed:@"CalendarViewDayEventView" owner:self options:nil];
         UIView *nv = [theView objectAtIndex:0];
@@ -37,6 +38,7 @@ static const CGFloat kCornerRadius = 6.0;
         layer.masksToBounds = YES;
         [layer setCornerRadius:kCornerRadius];
     }
+    #endif
     return self;
 }
 

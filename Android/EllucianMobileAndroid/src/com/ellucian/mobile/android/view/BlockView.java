@@ -19,14 +19,17 @@ public class BlockView extends Button {
             | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY |
             DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;
 
-    private final String mBlockId;
-    private final String mTitle;
-    private final long mStartTime;
-    private final long mEndTime;
-    private final int mColumn;
+    private String mBlockId;
+    private String mTitle;
+    private long mStartTime;
+    private long mEndTime;
+    private int mColumn;
 
     public static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
 
+    public BlockView(Context context) {
+    	super(context);
+    }
 
     public BlockView(Context context, String blockId, String title, long startTime,
             long endTime, int column) {

@@ -5,11 +5,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Application;
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 
 import com.ellucian.mobile.android.client.services.NotificationsIntentService;
 import com.ellucian.mobile.android.login.IdleTimer;
@@ -22,15 +25,16 @@ import com.ellucian.mobile.android.util.Encrypt;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.ModuleConfiguration;
 import com.ellucian.mobile.android.util.Utils;
+import com.ellucian.mobile.android.util.WebkitCookieManagerProxy;
 import com.ellucian.mobile.android.util.XmlParser;
 
 public class EllucianApplication extends Application {
+	public static final String TAG = EllucianApplication.class.getSimpleName();
+	
 	private HashMap<String, Object> liveObjects = new HashMap<String, Object>();
 	private User user;
 	private IdleTimer idleTimer;
 	private long idleTime = 30 * 60 * 1000; // 30 Minutes
-	private boolean notificationsPresent;
-	private String notificationsUrl;
 	private DeviceNotifications deviceNotifications;
 	private long lastNotificationsCheck;
 	public static final long DEFAULT_NOTIFICATIONS_REFRESH = 60 * 60 * 1000; // 60 minutes
@@ -38,6 +42,7 @@ public class EllucianApplication extends Application {
 	private ConfigurationProperties configurationProperties;
 	private HashMap<String, ModuleConfiguration> moduleConfigMap;
 	private EllucianNotificationManager ellucianNotificationManager;
+	public static final long MILLISECONDS_PER_DAY = 24*60*60*1000;
 	
 	@Override
 	public void onCreate() {
@@ -46,9 +51,11 @@ public class EllucianApplication extends Application {
 	    deviceNotifications = new DeviceNotifications(this);
 	    lastAuthRefresh = 0;
 	    
-	    // Setting up cookie management for WebView
-	    CookieSyncManager.createInstance(this);
-	    CookieManager.getInstance().setAcceptCookie(true);;
+	    // Setting up cookie management
+	    android.webkit.CookieSyncManager.createInstance(this);
+	    android.webkit.CookieManager.getInstance().setAcceptCookie(true);
+	 	WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(null, java.net.CookiePolicy.ACCEPT_ALL);
+	 	java.net.CookieHandler.setDefault(coreCookieManager);
 
 	    loadSavedUser();
 	    
@@ -100,26 +107,26 @@ public class EllucianApplication extends Application {
 			String username = Utils.getSavedUserName(this);
 			
 			String encryptedPassword = Utils.getSavedUserPassword(this);
-
-			String password = null;
-			try {
-				password = Encrypt.decrypt(Utils.USER_MASTER, encryptedPassword);
-				
-				String roles = Utils.getSavedUserRoles(this);
-				List<String> roleList = null;
-				if (roles != null) {
-					roleList = Arrays.asList(roles.split(","));
-				}
-				
-				createAppUser(userId, username, password, roleList);
-				
-			} catch (Exception e) {
-				Log.d("EllucianApplication.loadSavedUser", "Decrypting on password failed, user not created.");
-				e.printStackTrace();
-			}
 			
+			String password = null;
+			if(encryptedPassword != null) {
+				try {
+					password = Encrypt.decrypt(Utils.USER_MASTER, encryptedPassword);
+				
+					
+				} catch (Exception e) {
+					Log.e("EllucianApplication.loadSavedUser", "Decrypting on password failed, user not created.");
+				}
+			}
+			String roles = Utils.getSavedUserRoles(this);
+			List<String> roleList = null;
+			if (roles != null) {
+				roleList = Arrays.asList(roles.split(","));
+			}	
+			createAppUser(userId, username, password, roleList);
 		} else {
 			Log.d("EllucianApplication.loadSavedUser", "No saved user to load"); 
+			CookieManager.getInstance().removeAllCookie();
 		}
 	}
 	
@@ -174,10 +181,11 @@ public class EllucianApplication extends Application {
 	}
 	
 	public void startNotifications() {
-		if (notificationsPresent) {
+		if (Utils.isNotificationsPresent(this)) {
+			Log.d(TAG, "Starting Notifications");
 			resetLastNotificationsCheck();
 			Intent intent = new Intent(this, NotificationsIntentService.class);
-			intent.putExtra(Extra.REQUEST_URL, notificationsUrl);
+			intent.putExtra(Extra.REQUEST_URL, getNotificationsUrl());
 	        startService(intent);
 		}
 	}
@@ -202,16 +210,14 @@ public class EllucianApplication extends Application {
 		this.lastNotificationsCheck = System.currentTimeMillis();
 	}
 	
-	public void setNotificationsPresent(boolean value) {
-		notificationsPresent = value;
+	public String getNotificationsUrl() {
+		return Utils.getStringFromPreferences(this, 
+				Utils.NOTIFICATION, Utils.NOTIFICATION_NOTIFICATIONS_URL, null);
 	}
 	
-	public boolean isNotificationsPresent() {
-		return notificationsPresent;
-	}
-	
-	public void setNotificationsUrl(String requestUrl) {
-		notificationsUrl = requestUrl;
+	public String getMobileNotificationsUrl() {
+		return Utils.getStringFromPreferences(this, 
+				Utils.NOTIFICATION, Utils.NOTIFICATION_MOBILE_NOTIFICATIONS_URL, null);
 	}
 	
 	public long getLastAuthRefresh() {
@@ -236,5 +242,15 @@ public class EllucianApplication extends Application {
 	
 	public List<String> getModuleConfigTypeList() {
 		return new ArrayList<String>(moduleConfigMap.keySet());	
+	}
+	
+	public boolean isServiceRunning(Class<? extends Service> clazz) {
+	    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if (clazz.getName().equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 } 

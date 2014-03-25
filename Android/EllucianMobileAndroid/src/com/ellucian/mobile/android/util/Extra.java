@@ -13,6 +13,7 @@ public class Extra {
 	public static final String VIDEO_URL = "videoUrl";
 	public static final String REQUESTING_CLASS = "requestingClass";
 	public static final String IMAGE_URL_LIST = "imageUrlList";
+	public static final String ID = "id";
 	public static final String TITLE = "title";
 	public static final String CONTENT = "content";	
 	public static final String LOCATION = "location";	
@@ -32,8 +33,7 @@ public class Extra {
 	public static final String LOGIN_SAVE_USER = "loginSaveUser";
 	public static final String LOGIN_BACKGROUND = "loginBackground";
 	public static final String LOGIN_SUCCESS = "loginSuccess";
-	//public static final String SHOW_LOGIN = "showLogin";
-	//public static final String QUEUE_INTENT = "queueIntent";
+	public static final String CONFIGURATION_REFRESH = "configurationRefresh";
 	
 	/** Courses Extras */
 	
@@ -71,4 +71,14 @@ public class Extra {
 	
 	public static final String MAPS_CAMPUSES_URL = "mapsCampusesUrl";
 	public static final String MAPS_BUILDINGS_URL = "mapsbuildingsUrl";
+	
+	/** Notifications Extras */ 
+	
+	public static final String NOTIFICATIONS_MOBILE_URL = "notificationsMobileUrl";
+	public static final String NOTIFICATIONS_STICKY = "notificationsSticky";
+	public static final String NOTIFICATIONS_STATUSES = "notificationsStatuses";
+	public static final String NOTIFICATIONS_MODIFICATION_TYPE = "notificationsModificationType";
+	public static final String NOTIFICATIONS_NOTIFICATION_ID = "notificationsNotificationId";
+
+
 }

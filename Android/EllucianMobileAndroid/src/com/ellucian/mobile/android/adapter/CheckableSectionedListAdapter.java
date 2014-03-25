@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.widget.Adapter;
+import android.widget.CheckBox;
 
 public class CheckableSectionedListAdapter extends SectionedListAdapter {
 	public CheckableSectionedListAdapter(Context context) {
@@ -48,6 +49,23 @@ public class CheckableSectionedListAdapter extends SectionedListAdapter {
 
 			cursorAdapter.resetCheckedStates();	
 		}
+	}
+	
+	public CheckBox getCheckBoxAtPosition(int position) {
+		
+		for(int i = 0; i < this.headers.getCount(); i++) {
+			CheckableCursorAdapter adapter = (CheckableCursorAdapter) sections.get(i);
+
+			int size = adapter.getCount() + 1;
+
+			if (position < size) {
+				return adapter.getCheckBoxAtPostition(position);
+			}
+			// otherwise jump into next section
+			position -= size;
+		}
+		return null;
+		
 	}
 
 }

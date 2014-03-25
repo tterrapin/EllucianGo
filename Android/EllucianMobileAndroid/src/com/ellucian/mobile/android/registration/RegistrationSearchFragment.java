@@ -144,11 +144,9 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		protected TermsResponse doInBackground(String... params) {
 			String requestUrl = params[0];
 			
-			MobileClient client = new MobileClient(getActivity().getApplication());
+			MobileClient client = new MobileClient(getActivity());
 			requestUrl = client.addUserToUrl(requestUrl);
 			requestUrl += "/terms";
-			
-			client.getOpenTerms(requestUrl);
 			
 			return client.getOpenTerms(requestUrl);
 		}

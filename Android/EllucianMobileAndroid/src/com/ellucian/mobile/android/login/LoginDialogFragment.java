@@ -1,5 +1,7 @@
 package com.ellucian.mobile.android.login;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -13,6 +15,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,13 +27,12 @@ import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
+import com.ellucian.mobile.android.MainActivity;
 import com.ellucian.mobile.android.app.EllucianDialogFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
-
-
 
 public class LoginDialogFragment extends EllucianDialogFragment {
 	public static final String LOGIN_DIALOG = "login_dialog";
@@ -35,9 +40,78 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	private Intent queuedIntent;
 	
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
+	private boolean forcedLogin;
 	
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		String loginType = Utils.getStringFromPreferences(getActivity(), Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+		if(loginType.equals(Utils.NATIVE_LOGIN_TYPE)) {
+			createBasicAuthenticationLoginDialog();
+		} else {
+			createWebAuthentiationLoginDialog();
+		}
+
+		return loginDialog;
+	}
+
+	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressWarnings("deprecation") 
+	// WebSettings.setDatabasePath - This method was deprecated in API level 19
+	// Database paths are managed by the implementation and calling this method
+	// will have no effect.
+	private void createWebAuthentiationLoginDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.fragment_login_web_dialog, null);
+		builder.setView(dialogView);
 		
+		loginDialog = builder.create();
+		
+		Button cancelButton = (Button)dialogView.findViewById(R.id.login_button_cancel);
+		cancelButton.setOnClickListener(
+                new View.OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						view.setEnabled(false);
+						doCancel();
+					}
+                }
+        );
+		
+		WebView webView = (WebView) dialogView.findViewById(R.id.login_webview);
+	
+		webView.setWebChromeClient(new WebChromeClient());
+		webView.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				String title = view.getTitle();
+				if ("Authentication Success".equals(title)) {
+					sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication using web login", null, null);
+					loginUser(null, null, false);
+				}
+			}
+		});
+
+		WebSettings webSettings = webView.getSettings();
+		webSettings.setJavaScriptEnabled(true);
+		webSettings.setUseWideViewPort(true);
+		webSettings.setSupportZoom(true);
+		webSettings.setBuiltInZoomControls(true);
+		
+		//Enable HTML 5 local storage
+		String databasePath = webView.getContext().getDir("databases", 
+                Context.MODE_PRIVATE).getPath(); 
+		webSettings.setDatabaseEnabled(true);
+		webSettings.setDatabasePath(databasePath);  //deprecated, but needed for earlier than API 19
+		webSettings.setDomStorageEnabled(true);
+
+		String loginUrl = Utils.getStringFromPreferences(getActivity(), Utils.SECURITY, Utils.LOGIN_URL, "");		
+		webView.loadUrl(loginUrl);
+		
+	}
+
+	private void createBasicAuthenticationLoginDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
@@ -88,24 +162,34 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 
 					@Override
 					public void onClick(View view) {
-						sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_CANCEL, "Click Cancel", null, null);
 						view.setEnabled(false);
-						loginDialog.cancel();
-						// Make sure queue is empty in case of another login attempt
-						clearQueuedIntent();
+						doCancel();
 					}
                 }
         );
-		
-
-		
-		return loginDialog;
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		sendView("Sign In Page", null);
+	}
+	
+	private void doCancel() {
+		sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_CANCEL, "Click Cancel", null, null);
+		loginDialog.cancel();
+		// Make sure queue is empty in case of another login attempt
+		clearQueuedIntent();
+		getEllucianActivity().getEllucianApp().removeAppUser();
+		if(forcedLogin) {
+			Activity activity = getActivity();
+			Intent mainIntent = new Intent(activity, MainActivity.class);
+			mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			activity.startActivity(mainIntent);
+			activity.finish();
+		}
 	}
 	
 	
@@ -122,6 +206,9 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 			Intent startedIntent = queuedIntent;
 			queuedIntent = null;
 			startActivity(startedIntent);
+			if(forcedLogin) {
+				getActivity().finish();
+			}
 		}
 	}
 	
@@ -165,10 +252,11 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 				signInMessage.setText(R.string.dialog_signed_in);
 				closeLoginDialog();
 				EllucianApplication ellucianApp = LoginDialogFragment.this.getEllucianActivity().getEllucianApp();
-				
-				if(!staySignedIn.isChecked()) {
-					
-					ellucianApp.startIdleTimer();
+				String loginType = Utils.getStringFromPreferences(getActivity(), Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+				if(loginType.equals(Utils.NATIVE_LOGIN_TYPE)) {
+					if(!staySignedIn.isChecked()) {
+						ellucianApp.startIdleTimer();
+					}
 				}
 				signInMessage.show();
 				//signInButton.setText(R.string.main_sign_out);
@@ -188,6 +276,18 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	
 	private void closeLoginDialog() {
 		getDialog().dismiss();
+	}
+
+	/**
+	 * If true, call finish after a successful login.
+	 * 
+	 * This will be used when the user is prompted because of an unauthorized or session timeout, and need to login again.
+	 * By finishing the activity, and with the same activity queued, it will restart the activity without the item on the stack.
+	 * @param b
+	 */
+	public void forcedLogin(boolean b) {
+		this.forcedLogin = b;
+		this.setCancelable(false);
 	}
 	
 }

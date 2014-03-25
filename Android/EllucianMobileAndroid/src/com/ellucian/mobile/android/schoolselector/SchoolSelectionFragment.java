@@ -131,7 +131,7 @@ public class SchoolSelectionFragment extends EllucianFragment {
 		@Override
 		protected ArrayList<Configuration> doInBackground(String... urls) {
 			
-			MobileClient client = new MobileClient(activity.getApplication());
+			MobileClient client = new MobileClient(activity);
 			ConfigurationListResponse response = client.getConfigurationList(urls[0]);
 			
 			//Version checking

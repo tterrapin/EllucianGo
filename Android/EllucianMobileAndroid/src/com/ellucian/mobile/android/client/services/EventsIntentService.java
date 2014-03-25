@@ -27,7 +27,7 @@ public class EventsIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("EventsIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		EventsResponse response = client.getEvents(intent.getStringExtra(Extra.REQUEST_URL));
 		if (response != null) {
 			Log.d("EventsIntentService", "Retrieved response from Events client");

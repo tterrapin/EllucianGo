@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSArray *terms;
 
 
-- (void)fetchRegistrationPlans;
+- (void)fetchRegistrationPlans:(id)sender;
 -(int) itemsInCartCount;
 -(NSString *)termName:(NSString *)termId;
 -(NSArray *) sectionsInCart:(NSString *) termId;

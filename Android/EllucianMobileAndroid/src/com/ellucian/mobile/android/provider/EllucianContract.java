@@ -94,6 +94,14 @@ public class EllucianContract {
 		String NOTIFICATIONS_HYPERLINK = "notifications_hyperlink";
 		String NOTIFICATIONS_LINK_LABEL = "notifications_link_label";
 		String NOTIFICATIONS_DATE = "notifications_date";
+		String NOTIFICATIONS_SOURCE = "notifications_source";
+		String NOTIFICATIONS_DISPATCH_DATE = "notifications_dispatch_date";
+		String NOTIFICATIONS_MOBILE_HEADLINE= "notifications_mobile_headline";
+		String NOTIFICATIONS_EXPIRES = "notifications_expires";
+		String NOTIFICATIONS_PUSH = "notifications_push";
+		String NOTIFICATIONS_MODULE = "notifications_module";
+		String NOTIFICATIONS_STICKY = "notifications_sticky";
+		String NOTIFICATIONS_STATUSES = "notifications_statuses";
 	}
 	
 	interface NumbersColumns {
@@ -425,7 +433,7 @@ public class EllucianContract {
 		
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.notifications";
 		
-		public static final String DEFAULT_SORT = NotificationsColumns.NOTIFICATIONS_DATE + " DESC";
+		public static final String DEFAULT_SORT = NotificationsColumns.NOTIFICATIONS_STICKY + " DESC, " + NotificationsColumns.NOTIFICATIONS_DATE + " DESC";
 		
 		public static Uri buildNotificationsUri(String id) {
 			return CONTENT_URI.buildUpon().appendPath(id).build();

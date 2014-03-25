@@ -8,12 +8,12 @@
 #import "SlidingViewController.h"
 #import "MenuViewController.h"
 #import "HomeViewController.h"
-#import "LoginViewController.h"
 #import "CurrentUser.h"
 #import "ImageCache.h"
 #import "AppDelegate.h"
 #import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "NotificationsViewController.h"
 
 #define kSlidingViewMenuOpenTargetWidth 44.0f
 #define kSlidingViewMenuVelocityX 100.0f
@@ -467,50 +467,57 @@
 
 -(void) showNotifications
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate getCurrentUser];
-    if(!user.isLoggedIn) {
+    [self showNotifications:nil];
+}
+
+-(void) showNotifications:(NSString*) notificationId
+{
+    // find the module then use menuViewController->showModule
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    NSError *error;
+    Module* module;
+    NSArray *modules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for(NSManagedObject *managedObject in modules) {
+        if([[managedObject valueForKey:@"type"] isEqualToString:@"notifications"]) {
+            module = (Module*)managedObject;
+        }
+    }
+
+    if(!module) {
         [self showHome];
     } else {
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:self.managedObjectContext];
-        [fetchRequest setEntity:entity];
+        [self.menuViewController showModule:module];
         
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        NSError *error;
-        Module* module;
-        NSArray *modules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        for(NSManagedObject *managedObject in modules) {
-            if([[managedObject valueForKey:@"type"] isEqualToString:@"notifications"]) {
-                module = (Module*)managedObject;
-            }
+        if (notificationId) {
+            // display details for notificationId
+            // need to find way to send message to notificationsViewController
+            [NotificationsViewController requestNotificationDetailById:notificationId];
         }
+    }
+}
 
-        if(!module) {
-            [self showHome];
-        } else {
-            UIViewController *notificationViewController = (UIViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"Notifications"];
-            [notificationViewController setValue:module forKey:@"module"];
-            
-            UINavigationController *newTopViewController = [[UINavigationController alloc] initWithRootViewController:notificationViewController];
-            newTopViewController.navigationBar.translucent = NO;
-            UIImage *buttonImage = [UIImage imageNamed:@"icon-menu-iphone"];
-            NSString *menuImageName = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu-icon"];
-            
-            if(menuImageName)
-            {
-                buttonImage = [[ImageCache sharedCache] getCachedImage: menuImageName];
-                buttonImage=  [UIImage imageWithCGImage:[buttonImage CGImage] scale:2.0 orientation:UIImageOrientationUp];
-            }
-            notificationViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:newTopViewController action:@selector(revealMenu:)];
-            
-            self.topViewController = newTopViewController;
-            
-            [self.topViewController.view addGestureRecognizer:self.panGesture];
-        }
+-(void) showNotificationAlert:(NSString*) message withNotificationId:(NSString *)notificationId
+{
+    self.notificationAlertNotificationId = notificationId;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New Notification",@"new notification has arrived")
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
+                                          otherButtonTitles:NSLocalizedString(@"View", @"view label"), nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self showNotifications:self.notificationAlertNotificationId];
     }
 }
 

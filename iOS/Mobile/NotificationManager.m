@@ -16,24 +16,23 @@
 +(void) registerDeviceIfNeeded
 {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSString* notificationNotificationsUrl = [defaults stringForKey:@"notification-notifications-url"];
+    NSString* notificationRegistrationUrl = [defaults stringForKey:@"notification-registration-url"];
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate currentUser];
+    CurrentUser *user = [CurrentUser sharedInstance];
     
-    // is notification url is defined and user is logged in
-    if (user && [user isLoggedIn] && notificationNotificationsUrl) {
+    // if notification url is defined and user is logged in
+    if (user && [user isLoggedIn] && notificationRegistrationUrl) {
         // check if user change since last registered
         NSString* currentUserId = [user userid];
         NSString* registeredUserId = [defaults stringForKey:@"registered-user-id"];
         BOOL userIdChanged = registeredUserId == NULL || ![currentUserId isEqualToString:registeredUserId];
         
         // no need to register if user hasn't changed
-        if (userIdChanged) {
+        if (YES || userIdChanged) {
             // register for PUSH notifications, results in didRegisterForRemoteNotificationsWithError or
             // didFailToRegisterForRemoteNotificationsWithError called on AppDelegate
             [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+                (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
         }
     }
 }
@@ -45,8 +44,7 @@
     NSString* notificationRegistrationUrl = [defaults stringForKey:@"notification-registration-url"];
     NSString* notificationEnabled = [defaults stringForKey:@"notification-enabled"];
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate currentUser];
+    CurrentUser *user = [CurrentUser sharedInstance];
     
     NSString* deviceTokenString = [[[NSString stringWithFormat:@"%@", deviceToken] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]] stringByReplacingOccurrencesOfString:@" " withString:@""];
     
@@ -70,8 +68,10 @@
         NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:notificationRegistrationUrl]];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         
-        // create a plaintext string in the format username:password
-        [urlRequest addAuthenticationHeader];
+        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+            [urlRequest addAuthenticationHeader];
+        }
         
         [urlRequest setHTTPMethod:@"POST"];
 
@@ -88,7 +88,7 @@
 
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
         // check if the status is "success" if not we should not continue to attempt to interact with the Notifications API
-        if (statusCode != 200) {
+        if (statusCode != 200 && statusCode != 201) {
             NSLog(@"Device token registration failed status: %li - %@", (long) (long)statusCode, [error localizedDescription]);
         } else {
             NSString* status = [jsonResponse objectForKey:@"status"] ? : @"disabled";

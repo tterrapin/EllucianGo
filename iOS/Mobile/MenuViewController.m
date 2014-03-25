@@ -26,7 +26,7 @@
 #import "FeedDetailViewController.h"
 #import "EventsViewController.h"
 #import "EventDetailViewController.h"
-
+#import "LoginExecutor.h"
 
 @interface MenuViewController()
 
@@ -48,24 +48,23 @@
     [super viewDidLoad];
     
     [self readModuleDefinitionsPlist];
-
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"Header"];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(outdated:) name:kVersionCheckerOutdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAvailable:) name:kVersionCheckerUpdateAvailableNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToSignOut:) name:kSignOutNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(respondToSignIn:) name:kSignInNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationsUpdated:) name:kNotificationsUpdatedNotification object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:NO];
-
+    
     self.headings = [[NSMutableArray alloc] init];
     self.moduleSections = [[NSMutableArray alloc] init];
     
@@ -97,13 +96,6 @@
 {
     [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows]
                           withRowAnimation:UITableViewRowAnimationNone];
-}
-
--(void) respondToSignIn:(id)sender
-{
-    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows]
-                          withRowAnimation:UITableViewRowAnimationNone];
-    
 }
 
 -(void) notificationsUpdated:(id)sender
@@ -165,19 +157,19 @@
         }
         
         if([[object valueForKey:@"type"] isEqualToString:@"notifications"]) {
+            
+            NSManagedObjectContext *moc = object.managedObjectContext;
+            NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"Notification" inManagedObjectContext:moc];
             NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            [request setEntity:[NSEntityDescription entityForName:@"Notification" inManagedObjectContext:self.managedObjectContext]];
-            
-            [request setIncludesSubentities:NO];
-            
-            NSError *err;
-            NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
-            if(count == NSNotFound) {
-                //Handle error
-            }
-            
-            countLabel.text = [NSString stringWithFormat:@"%@", @(count)];
-            [countLabel setHidden:(count == 0)];
+            [request setEntity:entityDescription];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat: @"read == %@",[NSNumber numberWithBool:NO]];
+            [request setPredicate:predicate];
+
+            NSError *error;
+            NSArray *array = [moc executeFetchRequest:request error:&error];
+            NSUInteger notificationCount = [array count];
+            countLabel.text = [NSString stringWithFormat:@"%@", @(notificationCount)];
+            [countLabel setHidden:(notificationCount == 0)];
         }
         
     } else {
@@ -197,7 +189,7 @@
             label.text = NSLocalizedString(@"Switch School", @"Switch school menu item");
             cellImage.image = [UIImage imageNamed:@"icon-switch-schools"];
         } else if(indexPath.row == 3 || (indexPath.row == 2 && !self.useSwitchSchool)) {
-            if ( [self userIsLoggedIn ] ) {
+            if ( [CurrentUser sharedInstance].isLoggedIn  ) {
                 label.text = NSLocalizedString(@"Sign Out", nil);
             } else {
                 label.text = NSLocalizedString(@"Sign In", nil);
@@ -233,7 +225,7 @@
         headerLabel.backgroundColor = [UIColor clearColor];
         headerLabel.opaque = NO;
         [h.contentView addSubview:headerLabel];
-
+        
         headerLabel.translatesAutoresizingMaskIntoConstraints = NO;
         if([AppearanceChanger isRTL]) {
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -246,7 +238,7 @@
                                                      options:0 metrics:nil
                                                        views:@{@"headerLabel":headerLabel}]];
         }
-
+        
         [h.contentView addConstraints:
          [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerLabel]|"
                                                  options:0 metrics:nil
@@ -260,7 +252,7 @@
     } else {
         headerLabel.text = [self.headings count] > section ? [self.headings objectAtIndex:section] : @"";
     }
-
+    
     return h;
 }
 
@@ -273,121 +265,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController *newTopViewController = nil;
-    BOOL requiresAuthenticatedUser = NO;
     
     if([self.moduleSections count] > [indexPath section]) {
         NSArray *modules = [self.moduleSections objectAtIndex:[indexPath section]];
-
+        
         Module *module = [modules objectAtIndex:[indexPath row]];
-        if([module.type isEqualToString:@"web"]) {
-            
-            if([[module propertyForKey:@"external"] isEqualToString:@"true"]) {
-                NSURL *url = [NSURL URLWithString:[module propertyForKey:@"url"]];
-                [[UIApplication sharedApplication] openURL:url];
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                [self.slidingViewController resetTopView];
-                return;
-            }
-            WebViewController *vc = (WebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"Web"];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            vc.loadRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[module propertyForKey:@"url" ]]];
-            vc.title = module.name;
-            newTopViewController = nav;
-            BOOL secure = [[module propertyForKey:@"secure"] isEqualToString:@"true"];
-            requiresAuthenticatedUser = secure;
-            vc.secure = secure;
-            vc.analyticsLabel = module.name;
-        } else {
-            id storyboardViewController;
-            if([module.type isEqualToString:@"custom"]) {
-                NSString *customModuleType = [module propertyForKey:@"custom-type"];
-                
-                NSDictionary *moduleDefinition = [self.customModuleDefinitions objectForKey:customModuleType];
-                NSString *storyboardIdentifier = nil;
-                UIStoryboard* storyboard = nil;
-                if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-                    storyboardIdentifier = [moduleDefinition objectForKey:@"iPad Storyboard Identifier"];
-                    NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
-                    if(!storyboardName) storyboardName = @"CustomizationStoryboard_iPad";
-                    storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-                } else {
-                    storyboardIdentifier = [moduleDefinition objectForKey:@"iPhone Storyboard Identifier"];
-                    NSString *storyboardName = [moduleDefinition objectForKey:@"iPhone Storyboard Name"];
-                    if(!storyboardName) storyboardName = @"CustomizationStoryboard_iPhone";
-                    storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-                }
-                
-                storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:storyboardIdentifier];
-                requiresAuthenticatedUser = [[moduleDefinition objectForKey:@"Needs Authentication"] boolValue];
-               
-            } else {
-                NSDictionary *moduleDefinition = [self.moduleDefinitions objectForKey:module.type];
-                NSString *storyboardIdentifier = nil;
-                UIStoryboard* storyboard = nil;
-                if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-                    storyboardIdentifier = [moduleDefinition objectForKey:@"iPad Storyboard Identifier"];
-                    NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
-                    if(!storyboardName) storyboardName = @"MainStoryboard_iPad";
-                    storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-                } else {
-                    storyboardIdentifier = [moduleDefinition objectForKey:@"iPhone Storyboard Identifier"];
-                    NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
-                    if(!storyboardName) storyboardName = @"MainStoryboard_iPhone";
-                    storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
-                }
-                
-                storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:storyboardIdentifier];
-                                requiresAuthenticatedUser = [[moduleDefinition objectForKey:@"Needs Authentication"] boolValue];
-            }
-            
-            //Set top view controller
-            if ([storyboardViewController isKindOfClass:[UITabBarController class]]) {
-                newTopViewController = storyboardViewController;
-            }
-            else if([storyboardViewController isKindOfClass:[UISplitViewController class]]) {
-                newTopViewController = storyboardViewController;
-            }
-            else if([storyboardViewController isKindOfClass:[UINavigationController class]]) {
-                newTopViewController = storyboardViewController;
-            }
-            else {
-                UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:storyboardViewController];
-                newTopViewController = navigationViewController;
-            }
-            
-            //set Module object, if wanted
-            [self setModule:module onViewController:newTopViewController];
+        
+        newTopViewController = [self findControllerByModule:module];
+        
+        if (!newTopViewController) {
+            // nothing to launch
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            return;
         }
         
-        if(requiresAuthenticatedUser) {
-            if([self getCurrentUser].isLoggedIn) {
-                
-                BOOL match = module.roles.count == 0;
-                
-                for(ModuleRole *role in module.roles) {
-                    if([[self getCurrentUser].roles containsObject:role.role]) {
-                        match = YES;
-                    }
-                }
-                if(!match) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied",@"access denied error message")
-                                                                    message:NSLocalizedString(@"You do not have permission to use this feature.", @"permission access error message")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                    
-                    newTopViewController = nil;
-                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                    
-                }
-            } else {
-                LoginViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-                //vc.rolesForNextModule = module.roles;
-                [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-                [self presentViewController:vc animated:YES completion:nil];
-            }
-        }
     } else {
         if(indexPath.row == 0) {
             HomeViewController *vc = (HomeViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"LandingPage"];
@@ -407,7 +298,7 @@
             vc.managedObjectContext = self.managedObjectContext;
             [self presentViewController:navcontroller animated:YES completion:nil];
         } else if(indexPath.row == 3 || (indexPath.row == 2 && !self.useSwitchSchool)) {
-            if ( [self userIsLoggedIn] )
+            if ( [CurrentUser sharedInstance].isLoggedIn )
             {
                 [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionMenu_selection withLabel:@"Menu-Click Sign Out" withValue:nil forModuleNamed:nil];
                 [self logOutUser];
@@ -420,101 +311,14 @@
             else
             {
                 [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionMenu_selection withLabel:@"Menu-Click Sign In" withValue:nil forModuleNamed:nil];
-                LoginViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-                [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+                UIViewController *vc = [LoginExecutor loginController];
                 [self presentViewController:vc animated:YES completion:nil];
             }
         }
     }
     
-    UIImage *buttonImage = [UIImage imageNamed:@"icon-menu-iphone"];
-    NSString *menuImageName = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu-icon"];
-    
-    if(menuImageName)
-    {
-        buttonImage = [[ImageCache sharedCache] getCachedImage: menuImageName];
-        buttonImage=[UIImage imageWithCGImage:[buttonImage CGImage] scale:2.0 orientation:UIImageOrientationUp];
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        }
-    }
-    
     if (newTopViewController) {
-        
-        if ([newTopViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController *) newTopViewController;
-            nav.navigationBar.translucent = NO;
-            if([nav.topViewController respondsToSelector:@selector(revealMenu:)]) {
-                UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
-                nav.topViewController.navigationItem.leftBarButtonItem = menuButton;
-            }
-        } else if ([newTopViewController isKindOfClass:[UITabBarController class]]) {
-            UITabBarController *tab = (UITabBarController *) newTopViewController;
-            
-            if([newTopViewController respondsToSelector:@selector(setTranslucent:)]) {
-                tab.tabBar.translucent = NO;
-            }
-            for(UIViewController *tabbedController in tab.viewControllers) {
-                
-                if ([tabbedController isKindOfClass:[UISplitViewController class]]) {
-                    UISplitViewController *split = (UISplitViewController *) tabbedController;
-                    UINavigationController *controller = split.viewControllers[0];
-                    UIViewController *masterController = controller.topViewController;
-                    
-                    if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
-                        split.delegate = (id)masterController;
-                    }
-                    if([masterController respondsToSelector:@selector(revealMenu:)]) {
-                        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
-                        masterController.navigationItem.leftBarButtonItem = menuButton;
-                        
-                    }
-                }
-                else if ([tabbedController isKindOfClass:[UINavigationController class]]) {
-                    UINavigationController *nav = (UINavigationController *) tabbedController;
-                    if([nav.topViewController respondsToSelector:@selector(revealMenu:)]) {
-                        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
-                        nav.topViewController.navigationItem.leftBarButtonItem = menuButton;
-                    }
-                }
-            }
-        } else if ([newTopViewController isKindOfClass:[UISplitViewController class]]) {
-            
-            UISplitViewController *split = (UISplitViewController *) newTopViewController;
-            split.presentsWithGesture = YES;
-            
-            UINavigationController *controller = split.viewControllers[0];
-            UINavigationController *detailNavController = split.viewControllers[1];
-            
-            UIViewController *masterController = controller.topViewController;
-            UIViewController *detailController = detailNavController.topViewController;
-            
-            if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
-                split.delegate = (id)masterController;
-            }
-            if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
-                split.delegate = (id)detailController;
-            }
-            if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
-                if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
-                {
-                    [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
-                }
-            }
-            
-            if([masterController respondsToSelector:@selector(revealMenu:)]) {
-                UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
-                masterController.navigationItem.leftBarButtonItem = menuButton;
-            }
-        }
-    
-        [newTopViewController.view addGestureRecognizer:self.slidingViewController.panGesture];
-        [self.slidingViewController animateTopChange:nil onComplete:^{
-            CGRect frame = self.slidingViewController.topViewController.view.frame;
-            self.slidingViewController.topViewController = newTopViewController;
-            self.slidingViewController.topViewController.view.frame = frame;
-            [self.slidingViewController resetTopView];
-        }];
+        [self showViewController:newTopViewController];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -563,18 +367,17 @@
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CurrentUser *user = [appDelegate getCurrentUser];
-    NSSet *roles = user.roles;
-    NSMutableArray *parr = [NSMutableArray array];
-    [parr addObject: [NSPredicate predicateWithFormat:@"showForGuest == %@", [NSNumber numberWithBool:YES]] ];
-    [parr addObject: [NSPredicate predicateWithFormat:@"showForGuest == %@", [NSNumber numberWithBool:NO]] ];
-    //  [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
-    for(NSString *role in roles) {
-    //       [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
-    }
-    fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
-
+//    CurrentUser *user = [CurrentUser sharedInstance];
+//    NSSet *roles = user.roles;
+//    NSMutableArray *parr = [NSMutableArray array];
+//    [parr addObject: [NSPredicate predicateWithFormat:@"showForGuest == %@", [NSNumber numberWithBool:YES]] ];
+//    [parr addObject: [NSPredicate predicateWithFormat:@"showForGuest == %@", [NSNumber numberWithBool:NO]] ];
+//    [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
+//    for(NSString *role in roles) {
+//            [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
+//    }
+//    fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
+    
     NSError *error;
     NSArray *definedModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     NSMutableArray *sectionModules = [[NSMutableArray alloc] init];
@@ -583,7 +386,7 @@
     if([definedModules count] > 0) {
         for (int i = 0; i < [definedModules count]; i++) {
             Module *module = [definedModules objectAtIndex:i];
-        
+            
             if([module.type isEqualToString:@"header"]) {
                 if(i > 0) {
                     [tempModuleSections addObject:sectionModules];
@@ -600,7 +403,7 @@
                             useLegacyLabel = NO;
                         }
                     }
-
+                    
                     NSString *applicationsLabel = useLegacyLabel ? NSLocalizedString(@"Applications", @"Applications menu heading") : @"";
                     [tempHeadings addObject:applicationsLabel];
                 }
@@ -622,20 +425,9 @@
 
 #pragma mark - login
 
--(CurrentUser *) getCurrentUser
-{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    return [appDelegate getCurrentUser];
-}
-
--(BOOL) userIsLoggedIn
-{
-    return [self getCurrentUser].isLoggedIn;
-}
-
 -(void) logOutUser
 {
-    [[self getCurrentUser] logout];
+    [[CurrentUser sharedInstance] logout];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
 }
 
@@ -679,7 +471,7 @@
 {
     NSString * moduleType = module.type;
     
-
+    
     if([moduleType isEqualToString:@"web"]) {
         return YES;
     } else if([moduleType isEqualToString:@"custom"]) {
@@ -693,7 +485,7 @@
         if(module) {
             return YES;
         }
-
+        
     }
     return NO;
 }
@@ -743,5 +535,220 @@
     }
 }
 
+- (void)showModule:(Module *)module
+{
+    UIViewController* newTopViewController = [self findControllerByModule:module];
+    
+    if (newTopViewController) {
+        [self showViewController:newTopViewController];
+    }
+}
+
+- (UIViewController*) findControllerByModule:(Module*)module
+{
+    UIViewController* newTopViewController = nil;
+    BOOL requiresAuthenticatedUser = NO;
+    
+    if([module.type isEqualToString:@"web"]) {
+        
+        if([[module propertyForKey:@"external"] isEqualToString:@"true"]) {
+            NSURL *url = [NSURL URLWithString:[module propertyForKey:@"url"]];
+            [[UIApplication sharedApplication] openURL:url];
+            
+            // done - since no controler will be used
+            return nil;
+        }
+        WebViewController *vc = (WebViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"Web"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        vc.loadRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[module propertyForKey:@"url" ]]];
+        vc.title = module.name;
+        newTopViewController = nav;
+        BOOL secure = [[module propertyForKey:@"secure"] isEqualToString:@"true"];
+        requiresAuthenticatedUser = secure;
+        vc.secure = secure;
+        vc.analyticsLabel = module.name;
+    } else {
+        id storyboardViewController;
+        if([module.type isEqualToString:@"custom"]) {
+            NSString *customModuleType = [module propertyForKey:@"custom-type"];
+            
+            NSDictionary *moduleDefinition = [self.customModuleDefinitions objectForKey:customModuleType];
+            NSString *storyboardIdentifier = nil;
+            UIStoryboard* storyboard = nil;
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+                storyboardIdentifier = [moduleDefinition objectForKey:@"iPad Storyboard Identifier"];
+                NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
+                if(!storyboardName) storyboardName = @"CustomizationStoryboard_iPad";
+                storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+            } else {
+                storyboardIdentifier = [moduleDefinition objectForKey:@"iPhone Storyboard Identifier"];
+                NSString *storyboardName = [moduleDefinition objectForKey:@"iPhone Storyboard Name"];
+                if(!storyboardName) storyboardName = @"CustomizationStoryboard_iPhone";
+                storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+            }
+            
+            storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:storyboardIdentifier];
+            requiresAuthenticatedUser = [[moduleDefinition objectForKey:@"Needs Authentication"] boolValue];
+            
+        } else {
+            NSDictionary *moduleDefinition = [self.moduleDefinitions objectForKey:module.type];
+            NSString *storyboardIdentifier = nil;
+            UIStoryboard* storyboard = nil;
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+                storyboardIdentifier = [moduleDefinition objectForKey:@"iPad Storyboard Identifier"];
+                NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
+                if(!storyboardName) storyboardName = @"MainStoryboard_iPad";
+                storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+            } else {
+                storyboardIdentifier = [moduleDefinition objectForKey:@"iPhone Storyboard Identifier"];
+                NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
+                if(!storyboardName) storyboardName = @"MainStoryboard_iPhone";
+                storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+            }
+            
+            storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:storyboardIdentifier];
+            requiresAuthenticatedUser = [[moduleDefinition objectForKey:@"Needs Authentication"] boolValue];
+        }
+        
+        //Set top view controller
+        if ([storyboardViewController isKindOfClass:[UITabBarController class]]) {
+            newTopViewController = storyboardViewController;
+        }
+        else if([storyboardViewController isKindOfClass:[UISplitViewController class]]) {
+            newTopViewController = storyboardViewController;
+        }
+        else if([storyboardViewController isKindOfClass:[UINavigationController class]]) {
+            newTopViewController = storyboardViewController;
+        }
+        else {
+            UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:storyboardViewController];
+            newTopViewController = navigationViewController;
+        }
+        
+        //set Module object, if wanted
+        [self setModule:module onViewController:newTopViewController];
+    }
+    
+    if(requiresAuthenticatedUser) {
+        if([CurrentUser sharedInstance].isLoggedIn) {
+            
+            BOOL match = module.roles.count == 0;
+            
+            for(ModuleRole *role in module.roles) {
+                if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
+                    match = YES;
+                }
+            }
+            if(!match) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied",@"access denied error message")
+                                                                message:NSLocalizedString(@"You do not have permission to use this feature.", @"permission access error message")
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+                newTopViewController = nil;
+            }
+        } else {
+            UIViewController *vc = [LoginExecutor loginController];
+            //vc.rolesForNextModule = module.roles;
+            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+    }
+    
+    return newTopViewController;
+}
+
+-(void) showViewController:(UIViewController*) newTopViewController
+{
+    UIImage *buttonImage = [UIImage imageNamed:@"icon-menu-iphone"];
+    NSString *menuImageName = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu-icon"];
+    
+    if(menuImageName)
+    {
+        buttonImage = [[ImageCache sharedCache] getCachedImage: menuImageName];
+        buttonImage=[UIImage imageWithCGImage:[buttonImage CGImage] scale:2.0 orientation:UIImageOrientationUp];
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+            buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        }
+    }
+    
+    if ([newTopViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *) newTopViewController;
+        nav.navigationBar.translucent = NO;
+        if([nav.topViewController respondsToSelector:@selector(revealMenu:)]) {
+            UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+            nav.topViewController.navigationItem.leftBarButtonItem = menuButton;
+        }
+    } else if ([newTopViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tab = (UITabBarController *) newTopViewController;
+        
+        if([newTopViewController respondsToSelector:@selector(setTranslucent:)]) {
+            tab.tabBar.translucent = NO;
+        }
+        for(UIViewController *tabbedController in tab.viewControllers) {
+            
+            if ([tabbedController isKindOfClass:[UISplitViewController class]]) {
+                UISplitViewController *split = (UISplitViewController *) tabbedController;
+                UINavigationController *controller = split.viewControllers[0];
+                UIViewController *masterController = controller.topViewController;
+                
+                if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+                    split.delegate = (id)masterController;
+                }
+                if([masterController respondsToSelector:@selector(revealMenu:)]) {
+                    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+                    masterController.navigationItem.leftBarButtonItem = menuButton;
+                    
+                }
+            }
+            else if ([tabbedController isKindOfClass:[UINavigationController class]]) {
+                UINavigationController *nav = (UINavigationController *) tabbedController;
+                if([nav.topViewController respondsToSelector:@selector(revealMenu:)]) {
+                    UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+                    nav.topViewController.navigationItem.leftBarButtonItem = menuButton;
+                }
+            }
+        }
+    } else if ([newTopViewController isKindOfClass:[UISplitViewController class]]) {
+        
+        UISplitViewController *split = (UISplitViewController *) newTopViewController;
+        split.presentsWithGesture = YES;
+        
+        UINavigationController *controller = split.viewControllers[0];
+        UINavigationController *detailNavController = split.viewControllers[1];
+        
+        UIViewController *masterController = controller.topViewController;
+        UIViewController *detailController = detailNavController.topViewController;
+        
+        if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)masterController;
+        }
+        if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)detailController;
+        }
+        if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
+            if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
+            {
+                [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
+            }
+        }
+        
+        if([masterController respondsToSelector:@selector(revealMenu:)]) {
+            UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:buttonImage
+                                                                           style:UIBarButtonItemStyleBordered target:newTopViewController action:@selector(revealMenu:)];
+            masterController.navigationItem.leftBarButtonItem = menuButton;
+        }
+    }
+    
+    [newTopViewController.view addGestureRecognizer:self.slidingViewController.panGesture];
+    [self.slidingViewController animateTopChange:nil onComplete:^{
+        CGRect frame = self.slidingViewController.topViewController.view.frame;
+        self.slidingViewController.topViewController = newTopViewController;
+        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
 
 @end

@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#define kPassNoPass @"PassFail"
+#define kAudit @"Audit"
+#define kGraded @"Graded"
+
+
 @interface RegistrationPlannedSection : NSObject
 
 @property (nonatomic, strong) NSString *sectionId;
@@ -20,6 +25,8 @@
 @property (nonatomic, strong) NSNumber *ceus;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *gradingType;
+@property (nonatomic, strong) NSDate * firstMeetingDate;
+@property (nonatomic, strong) NSDate * lastMeetingDate;
 @property (nonatomic, strong) NSArray *meetingPatterns;
 @property (nonatomic, strong) NSArray *instructors;
 @property (nonatomic, strong) NSString *termId;
@@ -29,6 +36,13 @@
 @property (nonatomic, strong) NSNumber *variableCreditIncrement;
 
 @property (nonatomic, assign) BOOL selectedForRegistration;
+@property (nonatomic, assign) BOOL isVariableCredit;
+
+
+@property (nonatomic, assign) BOOL isPassFail;
+@property (nonatomic, assign) BOOL isGraded;
+@property (nonatomic, assign) BOOL isAudit;
+
 
 -(NSString *)facultyNames;
 -(NSString *)meetingPatternDescription;

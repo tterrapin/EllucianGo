@@ -1,9 +1,8 @@
 package com.ellucian.mobile.android.app;
 
-import com.ellucian.mobile.android.EllucianApplication;
-import com.ellucian.mobile.android.util.ConfigurationProperties;
-
 import android.app.Fragment;
+
+import com.ellucian.mobile.android.util.ConfigurationProperties;
 
 public class EllucianFragment extends Fragment {
 	

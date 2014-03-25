@@ -4,7 +4,6 @@
 #import "AppearanceChanger.h"
 
 static const unsigned int HOURS_IN_DAY                   = 25; // Beginning and end of day is include twice
-static const unsigned int MINUTES_IN_HOUR                = 60;
 static const unsigned int SPACE_BETWEEN_HOUR_LABELS      = 5;
 static const unsigned int DEFAULT_LABEL_FONT_SIZE        = 12;
 static const unsigned int ALL_DAY_VIEW_EMPTY_SPACE       = 3;
@@ -175,7 +174,6 @@ static const unsigned int ARROW_RIGHT                    = 1;
 
 - (void)setDataSource:(id <CalendarViewDayViewDataSource>)newDataSource {
 	dataSource = newDataSource;
-	[self reloadData];
 }
 
 - (id <CalendarViewDayViewDataSource>)dataSource {
@@ -273,7 +271,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
                     
                     if (event.allDay) {
                         [self.allDayGridView addEvent:event];
-                    } else {
+                    } else if([event minutesSinceMidnight] > 0) {
                         [self.gridView addEvent:event];
                     }
                 }

@@ -28,7 +28,7 @@ public class NumbersIntentService extends IntentService {
 		boolean success = false;
 		
 		Log.d("NumbersIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		NumbersResponse response = client.getNumbers(intent.getStringExtra(Extra.REQUEST_URL)); 
 		if (response != null) {
 			NumbersBuilder builder = new NumbersBuilder(this, intent.getStringExtra(Extra.MODULE_ID));

@@ -2,31 +2,20 @@
 package com.ellucian.mobile.android.registration;
 
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.SectionedListAdapter;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
-import com.ellucian.mobile.android.client.registration.CartResponse;
-import com.ellucian.mobile.android.client.registration.Plan;
 import com.ellucian.mobile.android.client.registration.Section;
-import com.ellucian.mobile.android.client.registration.Term;
-import com.ellucian.mobile.android.util.Extra;
 
 public class RegistrationRegisteredListFragment extends EllucianDefaultListFragment {
-private static final String TAG = RegistrationRegisteredListFragment.class.getSimpleName();
 	
 	protected RegistrationActivity activity;
 	protected View rootView;

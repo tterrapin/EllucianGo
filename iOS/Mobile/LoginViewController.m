@@ -3,7 +3,7 @@
 //  Mobile
 //
 //  Created by Alan McEwan on 9/10/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import "LoginViewController.h"
@@ -12,9 +12,9 @@
 #import "AppDelegate.h"
 #import "CurrentUser.h"
 #import "ModuleRole.h"
-#import "NSData+AuthenticatedRequest.h"
 #import "LoginExecutor.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "NotificationManager.h"
 
 #define LOGIN_SUCCESS 200
 
@@ -72,6 +72,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.url = [defaults objectForKey:@"login-url"];
     
+    self.usernameField.text = [[CurrentUser sharedInstance] userauth];
+    self.rememberUserSwitch.on = [[CurrentUser sharedInstance] remember];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -83,6 +86,8 @@
 - (IBAction)signInCanceled:(id)sender
 {
     [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionCancel withLabel:@"Click Cancel" withValue:nil forModuleNamed:nil];
+    //For cases where the user was previously signed in and timedout and canceled the prompt
+    [[CurrentUser sharedInstance] logoutWithoutUpdatingUI];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
     [self dismissViewControllerAnimated:YES completion: nil];
 }
@@ -113,9 +118,7 @@
     }
     
     NSArray *roles;
-    
-    LoginExecutor *executor = [[LoginExecutor alloc] init];
-    NSInteger responseStatusCode = [executor performLogin:self.url forUser:usernameField.text andPassword:passwordField.text andRememberUser:self.rememberUserSwitch.isOn returningRoles:&roles];
+    NSInteger responseStatusCode = [self performLogin:self.url forUser:usernameField.text andPassword:passwordField.text andRememberUser:self.rememberUserSwitch.isOn returningRoles:&roles];
 
     if (responseStatusCode == LOGIN_SUCCESS )
     {
@@ -155,5 +158,67 @@
 
 }
 
+-(NSInteger) backgroundLogin
+{
+    CurrentUser *user = [CurrentUser sharedInstance];
+    NSArray *roles;
+    NSString *loginUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-url"];
+    return [self performLogin:loginUrl forUser:[user userauth] andPassword:[user getPassword] andRememberUser:[user remember] returningRoles:&roles];
+
+}
+
+-(NSInteger) performLogin:(NSString *)urlString forUser:(NSString *)username andPassword:(NSString *)password andRememberUser:(BOOL)rememberUser returningRoles:(NSArray**)roles
+{
+    NSError *error;
+    NSURLResponse *response;
+
+    // create a plaintext string in the format username:password
+    NSString *loginString = [NSString stringWithFormat:@"%@:%@", username, password];
+    NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];
+    NSString *authHeader = [@"Basic " stringByAppendingFormat:@"%@", encodedLoginData];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:urlString]
+                                                           cachePolicy: NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval: 90];
+    
+    // add the header to the request.
+    [request addValue:authHeader forHTTPHeaderField:@"Authorization"];
+    
+    NSData *data = [NSURLConnection
+                    sendSynchronousRequest: request
+                    returningResponse: &response
+                    error: &error];
+    
+    
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    
+    NSInteger responseStatusCode = [httpResponse statusCode];
+    if (responseStatusCode == 200 )
+    {
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:data
+                              options:kNilOptions
+                              error:&error];
+        NSString *userId = [json objectForKey:@"userId"];
+        NSString *authId = [json objectForKey:@"authId"];
+        *roles = [json objectForKey:@"roles"];
+        
+        CurrentUser *user = [CurrentUser sharedInstance];
+        [user login:authId andPassword:password andUserid:userId andRoles:[NSSet setWithArray:*roles] andRemember:rememberUser];
+        
+        NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:response.URL];
+        for(NSHTTPCookie *cookie in cookies) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
+        
+        // register the device if needed
+        [NotificationManager registerDeviceIfNeeded];
+    }
+    
+    return responseStatusCode;
+}
 
 @end

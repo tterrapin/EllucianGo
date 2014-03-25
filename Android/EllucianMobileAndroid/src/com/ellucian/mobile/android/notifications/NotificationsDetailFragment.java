@@ -1,18 +1,23 @@
 package com.ellucian.mobile.android.notifications;
 
-import android.os.Bundle;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.util.Linkify;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ShareActionProvider;
+import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
@@ -25,6 +30,12 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 	private View rootView;
 	
 	public NotificationsDetailFragment() {
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -95,6 +106,81 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 
 		return rootView;
 	}
+	
+	@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.notifications_detail, menu);
+        
+        Bundle args = getArguments();
+        String title = args.getString(Extra.TITLE);
+        String content = args.getString(Extra.CONTENT);
+       
+        MenuItem sharedMenuItem = menu.findItem(R.id.share);
+        
+        /** Getting the actionprovider associated with the menu item whose id is share */
+        ShareActionProvider shareActionProvider = 
+        		(ShareActionProvider) sharedMenuItem.getActionProvider();
+        
+        shareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
+			
+			@Override
+			public boolean onShareTargetSelected(ShareActionProvider source,
+					Intent intent) {
+				String label = "Tap Share Icon - " + intent.getComponent().flattenToShortString();
+				sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, label, null, getEllucianActivity().moduleName);
+				return false;
+			}
+		});
+          
+        /** Getting the target intent */
+        Intent shareIntent = getDefaultShareIntent(title, content);
+ 
+        /** Setting a share intent */
+        if(Utils.isIntentAvailable(getActivity(), shareIntent)) {
+            shareActionProvider.setShareIntent(shareIntent);
+        } else {
+        	sharedMenuItem.setVisible(false).setEnabled(false);
+        }
+ 
+    }
+    
+    private Intent getDefaultShareIntent(String subject, String text){
+    	 
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        return shareIntent;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.notifications_delete:
+			sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+					GoogleAnalyticsConstants.ACTION_BUTTON_PRESS,
+					"Deleting notification", null, getEllucianActivity().moduleName);
+			triggerDeleteNotification();
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    }
+    
+    private void triggerDeleteNotification() {
+    	if (getArguments().getInt(Extra.NOTIFICATIONS_STICKY) == 1) {
+    		Toast emptyMessage = Toast.makeText(getActivity(), R.string.notifications_unable_to_delete_message, Toast.LENGTH_LONG);
+			emptyMessage.setGravity(Gravity.CENTER, 0, 0);
+			emptyMessage.show();
+    	} else {
+    		Activity activity = getActivity();
+	    	if (activity instanceof NotificationsActivity) {
+	    		((NotificationsActivity)activity).deleteNotification();
+	    	} else if (getActivity() instanceof NotificationsDetailActivity) {
+	    		((NotificationsDetailActivity)activity).deleteNotification();
+	    	}
+    	}
+    }
 
 	@Override
 	public void onStart() {

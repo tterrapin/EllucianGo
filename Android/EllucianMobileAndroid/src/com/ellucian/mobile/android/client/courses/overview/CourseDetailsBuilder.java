@@ -1,6 +1,5 @@
 package com.ellucian.mobile.android.client.courses.overview;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.content.ContentProviderOperation;
@@ -21,7 +20,6 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsBuildings;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 
 public class CourseDetailsBuilder extends ContentProviderOperationBuilder<CoursesResponse> {
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 	
 	public CourseDetailsBuilder(Context context) {
 		super(context);

@@ -36,7 +36,7 @@ public class MapsIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("MapsIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		String url = intent.getStringExtra(Extra.MAPS_CAMPUSES_URL);
 		MapsResponse response = client.getMaps(url);
 		if (response != null) {

@@ -12,6 +12,7 @@
 #import "AppearanceChanger.h"
 #import "Module.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "RegistrationPlannedSectionDetailViewController.h"
 
 @interface RegistrationSearchResultsViewController ()
 @property (strong, nonatomic) UIBarButtonItem *addToCartButton;
@@ -46,7 +47,7 @@
     }
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.addToCartButton, flexibleItem, nil];
-    
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -93,18 +94,32 @@
     UILabel *line3Label = (UILabel *)[cell viewWithTag:3];
     UILabel *line3bLabel = (UILabel *)[cell viewWithTag:5];
     NSString *faculty = [plannedSection facultyNames];
+    
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    [formatter setMinimumFractionDigits:1];
+    
+    NSString *minCredits = [formatter stringFromNumber:plannedSection.minimumCredits];
+    NSString *maxCredits = [formatter stringFromNumber:plannedSection.maximumCredits];
+    NSString *ceus = [formatter stringFromNumber:plannedSection.ceus];
+    
+    
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
         if(plannedSection.maximumCredits) {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@-%@ %@", plannedSection.minimumCredits, plannedSection.maximumCredits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
-        } else {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", plannedSection.minimumCredits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+            line3bLabel.text = [NSString stringWithFormat:@" | %@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+        } else if (plannedSection.minimumCredits){
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+        } else if (plannedSection.ceus ) {
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration") ];
         }
     } else {
         if(plannedSection.maximumCredits) {
-            line3Label.text = [NSString stringWithFormat:@"%@-%@ %@", plannedSection.minimumCredits, plannedSection.maximumCredits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
-        } else {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@", plannedSection.minimumCredits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+            line3Label.text = [NSString stringWithFormat:@"%@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+        } else if(plannedSection.minimumCredits){
+            line3Label.text = [NSString stringWithFormat:@"%@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+        } else if (plannedSection.ceus) {
+            line3Label.text = [NSString stringWithFormat:@"%@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration") ];
         }
         line3bLabel.text = nil;
     }
@@ -131,9 +146,9 @@
 
     UIImage *image = [UIImage imageNamed:@"Registration Detail"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+    CGRect frame = CGRectMake(0.0f, 0.0f, 44.0f, 44.0f);
     button.frame = frame;
-    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setImage:image forState:UIControlStateNormal];
     
     [button addTarget: self
                action: @selector(accessoryButtonTapped:withEvent:)
@@ -150,13 +165,21 @@
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
     if(!plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"title of variable credits input alert") message:NSLocalizedString(@"Enter the number of Credits you want for this course", @"text for variable credits input alert") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+        NSString *title;
+        if(plannedSection.variableCreditIncrement) {
+            title = NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit incrementprompt");
+            title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
+        } else {
+            title = NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt");
+            title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits];
+        }
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"Credits label for registration") message:title delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
         alert.tag = indexPath.row;
         alert.delegate = self;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         UITextField * alertTextField = [alert textFieldAtIndex:0];
         alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
-        alertTextField.placeholder = NSLocalizedString(@"credits", @"variable credits input alert placeholder");
+        alertTextField.placeholder = NSLocalizedString(@"Credits", @"Credits label for registration");
         [alert show];
     } else {
         [self tableView:tableView addSectionToCart:indexPath];
@@ -193,7 +216,16 @@
     if([text length] > 0) {
         float f = [text floatValue];
         if( (f >= [plannedSection.minimumCredits floatValue] ) && (f <= [plannedSection.maximumCredits floatValue])) {
-            return YES;
+            if(plannedSection.variableCreditIncrement) {
+                float modulo = fmodf(f, [plannedSection.variableCreditIncrement floatValue]);
+                if (modulo == 0) {
+                    return YES;
+                } else {
+                    return NO;
+                }
+            } else {
+                return YES;
+            }
         }
     }
     return NO;
@@ -226,15 +258,49 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-#warning implement
     //[self performSegueWithIdentifier:@"Show Planned Course Detail" sender:plannedSection];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        UISplitViewController *split = [self.registrationTabController childViewControllers][1];
+        split.presentsWithGesture = YES;
+        
+        UINavigationController *controller = split.viewControllers[0];
+        UINavigationController *detailNavController = split.viewControllers[1];
+        
+        UIViewController *masterController = controller.topViewController;
+        UIViewController *detailController = detailNavController.topViewController;
+        
+        if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)masterController;
+        }
+        if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)detailController;
+        }
+        if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
+            if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
+            {
+                [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
+            }
+        }
+        
+        if (_detailSelectionDelegate) {
+            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+        }
+    }
+    else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+    }
+    
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //[self.navigationController setToolbarHidden:YES animated:YES];
     if ([[segue identifier] isEqualToString:@"Show Section Detail"]) {
-        
+        RegistrationPlannedSection *courseSection = sender;
+        RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
+        detailController.registrationPlannedSection = courseSection;
     }
 }
 

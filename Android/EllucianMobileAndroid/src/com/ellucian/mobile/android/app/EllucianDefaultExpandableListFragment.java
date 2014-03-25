@@ -90,6 +90,10 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 		this.viewBinder = binder;
 	}
 	
+	public int getCurrentPosition() {
+		return mCurCheckPosition;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -351,7 +355,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
     }
     
     /** Override to return custom Bundle */
-    public Bundle buildDetailBundle(Cursor cusor) {
+    public Bundle buildDetailBundle(Cursor cursor) {
 		Log.d(TAG, "buildDetailBundle");
 		Bundle bundle = null;
 		return bundle;

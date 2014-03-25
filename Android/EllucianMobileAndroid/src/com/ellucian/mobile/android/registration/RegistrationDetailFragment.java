@@ -75,10 +75,35 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				sectionIdView.setText(getString(R.string.registration_section_id) + ": " + section.sectionId);
 			}
 			
-			TextView creditsView = (TextView)rootView.findViewById(R.id.credits);		
-			creditsView.setText(getString(R.string.label_credits) + ": " + section.credits);
+			TextView creditsView = (TextView)rootView.findViewById(R.id.credits);
+			if (section.credits != 0) {
+				creditsView.setText(getString(R.string.label_credits) + ": " + section.credits);				
+			} else if (section.minimumCredits != 0) {
+				String creditsText = getString(R.string.label_credits) + ": " + (float)section.minimumCredits;
+				if (section.maximumCredits != 0) {
+					creditsText += "-" + (float)section.maximumCredits;
+				}
+				creditsText += " " + getString(R.string.registration_credits);
+				creditsView.setText(creditsText);
+			} else if (section.ceus != 0){
+				creditsView.setText(getString(R.string.label_credits) + ": "  + section.ceus + " " 
+						+ getString(R.string.registration_ceus));
+			}
 			
+			TextView gradingTypeView = (TextView) rootView.findViewById(R.id.grading_type);
 			
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_GRADED)) {				
+				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_graded));
+			
+			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
+				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_audit));
+				
+			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
+				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_pass_fail));
+			} else {
+				gradingTypeView.setVisibility(View.GONE);
+			}
+						
 			LinearLayout meetingLayout = (LinearLayout) rootView.findViewById(R.id.meeting_layout);
 			if (section.meetingPatterns != null && section.meetingPatterns.length > 0) {
 				

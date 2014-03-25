@@ -347,6 +347,16 @@ public class ModuleMenuAdapter extends CursorAdapter {
 			return intent;
 		} else if (type.equals(ModuleType.NOTIFICATIONS)) {
 			intent.setClass(context, NotificationsActivity.class);
+			
+			String requestUrl = moduleProperties.get("notifications");
+			if (!TextUtils.isEmpty(requestUrl)) {
+				intent.putExtra(Extra.REQUEST_URL, requestUrl);
+			}
+			
+			String mobileNotificationsUrl = moduleProperties.get("mobilenotifications");
+			if (!TextUtils.isEmpty(mobileNotificationsUrl)) {
+				intent.putExtra(Extra.NOTIFICATIONS_MOBILE_URL, mobileNotificationsUrl);
+			}
 			return intent;
 		} else if (type.equals(ModuleType.NUMBERS)) {
 			intent.setClass(context, NumberListActivity.class);

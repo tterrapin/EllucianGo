@@ -15,6 +15,10 @@
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
+// Used for the UIWebViews in the app.
+#define kAppearanceChangerWebViewSystemFontSize 14
+#define kAppearanceChangerWebViewSystemFontName @"HelveticaNeue"
+#define kAppearanceChangerWebViewSystemFontColor @"black"
 
 @interface AppearanceChanger : NSObject
 

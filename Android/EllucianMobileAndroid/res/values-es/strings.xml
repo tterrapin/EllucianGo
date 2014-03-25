@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Main -->
-
+    
     <string name="app_name">Ellucian GO</string>
     <string name="title_activity_main">Ellucian GO</string>
     <string name="title_home_page">Inicio</string>
     <string name="main_sign_in">Acceder</string>
     <string name="main_sign_out">Salir</string>
     <string name="main_switch_school">Cambiar escuela</string>
-
+    
     <!-- Menu -->
-
+    
     <string name="menu">Menú</string>
     <string name="menu_item_maps_title">Mapas</string>
     <string name="menu_item_grades_title">Calificaciones</string>
     <string name="menu_item_about_title">Acerca de</string>
-    <string name="menu_item_notifications_title">Notificaciones</string>
+    <string name="menu_item_notifications_title">Avisos</string>
     <string name="menu_filter">Filtrar</string>
     <string name="menu_search">Buscar</string>
     <string name="menu_add_to_contacts">Agregar a contactos</string>
@@ -30,19 +30,24 @@
     <string name="menu_search_school_hint">Buscar escuelas</string>
     <string name="menu_header_applications">Aplicaciones</string>
     <string name="menu_header_actions">Acciones</string>
-
+    <string name="drawer_open">Abrir el panel de navegación</string>
+    <string name="drawer_close">Cerrar el panel de navegación</string>
+    
     <!-- Configuration and Institutions -->
-
+    
     <string name="title_activity_school_selection">Elegir escuela</string>
     <string name="no_institutions">No hay instituciones a desplegar en este momento.</string>
-    <string name="school_selection_confirmation">Ha seleccionado \'%1$s\'. ¿Esto es correcto?</string>
+    
+    <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
+    <string name="school_selection_confirmation">Ha seleccionado \'%1$s\'. ¿Esto es correcto?</string>  
     <string name="title_activity_configuration_loading">Carga de configuración</string>
     <string name="configuration_loading_failed">Falló en la carga de configuración</string>
-    <string name="configuration_loading_message">Carga de configuración. Por favor espere&#8230;</string>
-    <string name="configuration_loading_missing_config">"No puede descargar la configuración de ese enlace."</string>
-
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="configuration_loading_message">Cargando la configuración. Por favor espere&amp;#8230;</string>
+    <string name="configuration_loading_missing_config">"No puede descargar la configuración de ese enlace."</string> 
+    
     <!-- General Defaults, Dialogs, and Rows -->
-
+    
     <string name="label_name">Nombre</string>
     <string name="label_title">Título</string>
     <string name="label_phone">Teléfono</string>
@@ -56,7 +61,12 @@
     <string name="label_office">Oficina</string>
     <string name="label_room">Salón</string>
     <string name="label_campus">Campus</string>
-
+    <string name="label_search">Buscar</string>
+    <string name="label_faculty">Docente</string>
+    <string name="label_credits">Créditos</string>
+    <string name="label_meeting_information">Información de reunión</string>
+    <string name="label_open">Abrir</string>
+    
     <string name="dialog_cancel">Anular</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_sign_in">Acceder</string>
@@ -65,40 +75,45 @@
     <string name="dialog_username">Nombre de usuario</string>
     <string name="dialog_password">Contraseña</string>
     <string name="dialog_sign_in_empty">Nombre de usuario o contraseña no puede estar vacío.</string>
-    <string name="dialog_sign_in_failed">No pudo acceder. Por favor, verifique la conexión de red y/o el nombre de usuario y contraseña. Favor de comunicarse con el personal de TI de su institución para apoyo con el acceso.</string>
+    <string name="dialog_sign_in_failed">No pudo acceder. Por favor, verifique la conexión de red y/o el nombre de usuario y contraseña. Por favor póngase en contacto con el personal de TI de la institución por apoyo con el acceso.</string>
     <string name="dialog_signed_in">Ya está conectado.</string>
     <string name="dialog_signed_out">Se ha cerrado la sesión.</string>
     <string name="dialog_idle_sign_out">Ha estado inactivo demasiado tiempo y se ha cerrado la sesión.</string>
     <string name="dialog_select_categories">Seleccionar categorías</string>
-    <string name="dialog_re_authenticate">Autenticando nuevamente, por favor espere&#8230;</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="dialog_re_authenticate">Autenticando nuevamente, por favor espere&amp;#8230;</string>
 	<string name="dialog_continue">Continuar</string>
 	<string name="dialog_go_back">Regresar</string>
 	<string name="dialog_security_warning">Alerta de seguridad</string>
 	<string name="dialog_cert_warning_statement">"Hay problemas con el certificado de seguridad para este sitio."</string>
-
+	
     <string name="row_category_label">Categoría:</string>
     <string name="row_contact_label">Contacto:</string>
     <string name="row_email_label">Correo-e:</string>
     <string name="row_date_label">Fecha:</string>
     <string name="row_due_label">Vencimiento:</string>
     <string name="row_location_label">Ubicación:</string>
-
+    
     <string name="default_image">Imagen</string>
-    <string name="no_data">Sin datos</string>
+    <string name="no_data">No hay datos</string>
+    <string name="no_results_found">No encontró resultados.</string>
     <string name="share">Compartir</string>
     <string name="terms">Periodos</string>
     <string name="layers">Capas</string>
     <string name="unavailable">No disponible</string>
     <string name="dash_separator">"-"</string>
+    <string name="line_speparator">|</string>
+    <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
     <string name="detail_page_title_format">Detalle de %s</string>
     <string name="nothing_to_display">Nada a desplegar</string>
     <string name="not_applicable">N/A</string>
     <string name="all_day_event">Evento de todo el día</string>
     <string name="title_activity_default_detail">Detalles</string>
-    <string name="loading_message">Cargando&#8230;</string>										<!-- NEW -->
-
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="loading_message">Cargando&amp;#8230;</string>
+	
     <!-- About -->
-
+    
     <string name="title_activity_about">Acerca de</string>
     <string name="about">Acerca de</string>
     <string name="about_logo_description">Logo de la escuela</string>
@@ -112,12 +127,12 @@
     <string name="about_ellucian_privacy_policy">Política de privacidad de Ellucian</string>
     <string name="about_powered_by">Desarrollado por</string>
     <string name="about_powered_by_ellucian">Desarrollado por Ellucian</string>
-
+    
     <!-- Courses -->
-
+    
     <string name="title_activity_courses">Cursos</string>
     <string name="title_activity_courses_schedule">Cursos</string>
-    <string name="title_activity_course_overview">Resumen de curso</string>
+    <string name="title_activity_course_overview">Resumen del curso</string>
     <string name="title_activity_course_assignments">Asignaciones de curso</string>
     <string name="title_activity_course_assignments_detail">Detalle de asignación</string>
     <string name="title_activity_course_announcements">Anuncios de curso</string>
@@ -143,25 +158,29 @@
     <string name="course_details">Detalles</string>
     <string name="course_grades">Calificaciones</string>
     <string name="course_roster">Lista de clases</string>
-    <string name="course_more">Más&#8230;</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="course_more">Más&amp;#8230;</string>
     <string name="course_assignments">Asignaciones</string>
     <string name="course_announcements">Anuncios</string>
     <string name="course_events">Eventos</string>
     <string name="course_details_no_directory">No hay módulo de directorio instalado</string>
     <string name="course_details_no_maps">No hay módulo de mapas instalado</string>
-    <string name="course_assignments_no_assignments">Sin asignaciones</string>
+    <string name="course_assignments_no_assignments">No hay asignaciones</string>
     <string name="course_assignments_due">Vencimiento:</string>
     <string name="course_assignments_none_assigned">Ninguno asignado</string>
+    <string name="label_left_button">Botón izquierdo</string>
+	<string name="label_right_button">Botón derecho</string>
+    
 
     <!-- Directory -->
-
+    
     <string name="title_activity_directory">Categorías de directorio</string>
     <string name="title_activity_directory_detail">Detalle de directorio</string>
     <string name="title_activity_directory_list_all">Directorio</string>
     <string name="title_activity_directory_list_student">Directorio de alumnos</string>
     <string name="title_activity_directory_list_faculty">Directorio de docentes</string>
     <string name="directory">Directorio</string>
-    <string name="directory_search">Para emplear el directorio, buscar arriba.</string>
+    <string name="directory_search">Para usar el directorio, buscar arriba.</string>
     <string name="directory_no_results">No encontró resultados.</string>
     <string name="directory_no_phone">No puede agregar el contacto sin número de teléfono.</string>
     <string name="searchable_directory_hint">Buscar directorio</string>
@@ -170,24 +189,24 @@
     <string name="directory_type_all">Todos</string>
     <string name="directory_type_student">Alumno</string>
     <string name="directory_type_faculty">Docente</string>
-
+    
     <!-- Events -->
-
+    
     <string name="title_activity_events">Eventos</string>
     <string name="title_activity_events_detail">Detalle de eventos</string>
     <string name="events_no_events">No hay eventos a desplegar</string>
     <string name="searchable_events_hint">Buscar eventos</string>
     <string name="searchable_events_label">Buscar eventos</string>
-
+    
     <!-- Grades -->
-
+    
     <string name="title_activity_grades">Calificaciones</string>
     <string name="grades_last_updated">Última actualización:</string>
     <string name="no_grades_in_term">No hay calificaciones para este periodo</string>
     <string name="grades_no_grades">No hay calificaciones registradas</string>
-
+    
     <!-- Maps -->
-
+    
     <string name="title_activity_maps">Mapas</string>
     <string name="maps_campus_selection_title">Elegir campus</string>
     <string name="maps_get_directions_label">Instrucciones</string>
@@ -213,36 +232,72 @@
     <string name="legal">Legal</string>
     <string name="maps_feature_not_supported">Característica no soportada por este dispositivo.</string>
     <string name="maps_building_additional_services_label">Servicios adicionales:</string>
-
+    
     <!-- Multimedia -->
-
+    
     <string name="title_activity_video">Video</string>
-
+    <string name="title_activity_audio">Audio</string>
+    
     <!-- News -->
-
+    
     <string name="title_activity_news">Noticias</string>
     <string name="title_activity_news_detail">Detalle de noticias</string>
     <string name="news_no_news">No hay noticias a desplegar</string>
     <string name="searchable_news_hint">Buscar noticias</string>
     <string name="searchable_news_label">Buscar noticias</string>
-
+       
     <!-- Notifications -->
-
-    <string name="title_activity_notifications">Notificaciones</string>
+    
+    <string name="title_activity_notifications">Avisos</string>
     <string name="notifications_detail_date_posted">Fecha de publicación:</string>
     <string name="notifications_detail_link_action">Actuar</string>
     <string name="notifications_device_title">Ellucian GO</string>
-    <string name="notifications_device_content">¡Tiene nuevas notificaciones!</string>
-    <string name="notifications_no_notifications">No hay notificaciones a desplegar</string>
-
+    <string name="notifications_device_content">¡Tiene nuevos avisos!</string>
+    <string name="notifications_no_notifications">No hay avisos a desplegar</string>
+    <string name="notifications_sticky_marker_image_text">Marcador</string>
+    <string name="notifications_delete">Eliminar</string>
+    <string name="notifications_unable_to_delete_message">No puede eliminar este aviso.</string>
+    
     <!-- Numbers -->
-
+    
     <string name="title_number_list">Números</string>
     <string name="title_number_detail">Detalle de número</string>
     <string name="numbers_no_entries">No hay números importantes</string>
     <string name="searchable_numbers_hint">Buscar números</string>
     <string name="searchable_numbers_label">Buscar números</string>
-
+    
+    <!-- Registration -->
+    
+    <string name="title_activity_registration">Inscripción</string>
+    <string name="title_activity_registration_detail">Detalle de inscripción</string>
+    <string name="registration_tab_cart">Mi carrito</string>
+    <string name="registration_tab_search">Buscar</string>
+    <string name="registration_tab_registered">Inscrito</string>
+    <string name="registration_register">Inscribir</string>
+    <string name="registration_credits">Créditos</string>
+    <string name="registration_results_important">Crítico</string>
+    <string name="registration_results_important_sub">Estos detalles pueden impedir la inscripción.</string>
+    <string name="registration_results_registered">¡Inscrito!</string>
+    <string name="registration_results_success_sub">Está inscrito para estos cursos.</string>
+    <string name="registration_results_warning">Lo sentimos.</string>
+    <string name="registration_results_failure_sub">No pudimos inscribir estos cursos:</string>
+    <string name="registration_dialog_title">Título</string>
+    <string name="registration_dialog_register_message">¿Está seguro que desea inscribir estas secciones?</string>
+    <string name="registration_dialog_add_to_cart_message">¿Está seguro que desea agregar estas secciones al carrito? Cualquier elemento agregado a su carrito es solo para la sesión actual.</string>
+    <string name="registration_dialog_variable_credits_message">Por favor establezca el número de créditos. \nRango: </string>
+    <string name="registration_dialog_variable_credits_range_error">Debe ingresar un número en el rango indicado.</string>
+    <string name="registration_dialog_variable_credits_increment_error">debe usar el incremento.</string>
+    <string name="registration_search_header">Seleccionar un periodo e ingresar las palabras claves del curso.</string>
+    <string name="registration_search_field_hint">Palabras claves del curso</string>
+    <string name="registration_add_to_cart">Agregar al carrito</string>
+    <string name="registration_added_to_cart_success">agregado al carrito.</string>
+    <string name="registration_added_to_cart_failed">falló al agregar al carrito. Faltan datos o la sección ya existe en el carrito.</string>
+    <string name="registration_fill_in_message">Debe seleccionar un periodo e ingresar una consulta para la búsqueda.</string>
+    <string name="registration_section_id">ID de sección</string>
+    <string name="registration_default_eligibility_message">No se puede inscribir en este momento.</string>
+    <string name="registration_were_sorry">Lo sentimos</string>
+    <string name="registration_ineligible_to_register">Inelegible para inscripción</string>
+        
 	<!-- Versioning -->
 	<string name="version_upgrade">Actualización</string>
 	<string name="version_outdated">Obsoleto</string>
@@ -250,5 +305,4 @@
 	<string name="version_force_upgrade_message">Debe actualizar la aplicación a la versión más reciente.</string>
 
 
-
-</resources>
+</resources> 

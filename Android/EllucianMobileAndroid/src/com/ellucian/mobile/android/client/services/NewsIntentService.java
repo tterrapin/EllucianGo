@@ -27,7 +27,7 @@ public class NewsIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("NewsIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		NewsResponse response = client.getNews(intent.getStringExtra(Extra.REQUEST_URL));
 		if (response != null) {
 			Log.d("NewsIntentService", "Retrieved response from News client");

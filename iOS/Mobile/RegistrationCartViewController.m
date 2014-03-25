@@ -11,7 +11,7 @@
 #import "RegistrationPlannedSection.h"
 #import "Module+Attributes.h"
 #import "CurrentUser.h"
-#import "NSData+AuthenticatedRequest.h"
+#import "AuthenticatedRequest.h"
 #import "RegistrationPlannedSectionInstructor.h"
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "RegistrationTerm.h"
@@ -22,9 +22,11 @@
 #import "AppDelegate.h"
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "RegistrationPlannedSectionDetailViewController.h"
 
 @interface RegistrationCartViewController ()
 @property (strong, nonatomic) UIBarButtonItem *registerButton;
+@property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
 @end
 
 @implementation RegistrationCartViewController
@@ -52,7 +54,7 @@
     }
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.registerButton, flexibleItem, nil];
-
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 #pragma mark - variables from tab
@@ -117,11 +119,32 @@
     UILabel *line3Label = (UILabel *)[cell viewWithTag:3];
     UILabel *line3bLabel = (UILabel *)[cell viewWithTag:5];
     NSString *faculty = [plannedSection facultyNames];
+    
+    NSString *credits = [self.creditsFormatter stringFromNumber:plannedSection.credits];
+    NSString *ceus = [self.creditsFormatter stringFromNumber:plannedSection.ceus];
+    NSString *gradingType = @"";
+    if (plannedSection.isAudit) {
+        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"Audit", @"Audit label for registration")];        
+    }
+    else if (plannedSection.isPassFail) {
+        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"P/F", @"PassFail abbrev label for registration cart")];
+    }
+
+    
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
-        line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", plannedSection.credits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+        if (credits)
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+        else if (ceus) {
+            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+        }
     } else {
-        line3Label.text = [NSString stringWithFormat:@"%@ %@", plannedSection.credits, NSLocalizedString(@"Credits", @"Credits label for registration cart") ];
+        if (credits) {
+            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+        }
+        else if (ceus) {
+            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+        }
         line3bLabel.text = nil;
     }
     UILabel *line4Label = (UILabel *)[cell viewWithTag:4];
@@ -147,9 +170,9 @@
     
     UIImage *image = [UIImage imageNamed:@"Registration Detail"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+    CGRect frame = CGRectMake(0.0, 0.0, 44.0f, 44.0f);
     button.frame = frame;
-    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button setImage:image forState:UIControlStateNormal];
     
     [button addTarget: self
                action: @selector(accessoryButtonTapped:withEvent:)
@@ -215,8 +238,38 @@
     RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section - 1];
     NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
     RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
-#warning implement
-    //    [self performSegueWithIdentifier:@"Show Planned Course Detail" sender:plannedSection];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UISplitViewController *split = [self.registrationTabController childViewControllers][0];
+        split.presentsWithGesture = YES;
+    
+        UINavigationController *controller = split.viewControllers[0];
+        UINavigationController *detailNavController = split.viewControllers[1];
+    
+        UIViewController *masterController = controller.topViewController;
+        UIViewController *detailController = detailNavController.topViewController;
+    
+        if([masterController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)masterController;
+        }
+        if([detailController conformsToProtocol:@protocol(UISplitViewControllerDelegate)]) {
+            split.delegate = (id)detailController;
+        }
+        if( [detailController conformsToProtocol:@protocol(DetailSelectionDelegate)]) {
+            if ( [masterController respondsToSelector:@selector(detailSelectionDelegate) ])
+            {
+                [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
+            }
+        }
+    
+        if (_detailSelectionDelegate) {
+            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+        }
+    }
+    else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -262,7 +315,12 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [self.navigationController setToolbarHidden:YES animated:YES];
-    if ([[segue identifier] isEqualToString:@"Show Planned Course Detail"]) {
+    if ([[segue identifier] isEqualToString:@"Show Section Detail"]) {
+        RegistrationPlannedSection *courseSection = sender;
+        RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
+        detailController.registrationPlannedSection = courseSection;
+    }
+    else if ([[segue identifier] isEqualToString:@"Show Planned Course Detail"]) {
         
     } else if ([[segue identifier] isEqualToString:@"Register"]) {
         NSDictionary *messages = (NSDictionary *)sender;
@@ -351,15 +409,37 @@
         for(RegistrationTerm *term in self.registrationTabController.terms) {
             NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
             for(RegistrationPlannedSection *course in plannedSections) {
-                if(course.selectedForRegistration) {
-                    NSDictionary *sectionToRegister = @{
-                                                        @"termId": term.termId,
-                                                        @"sectionId": course.sectionId,
-                                                        @"action": @"Add",
-                                                        @"credits": course.credits
-                                                        };
+
+                if ( course.selectedForRegistration ) {
+                    
+                    NSDictionary *sectionToRegister = nil;
+                    
+                    NSString * action = @"Add";
+                    
+                    if (course.isAudit) {
+                        action = @"Audit";
+                    } else if (course.isPassFail) {
+                        action = @"PassFail";
+                    }
+                        
+                    if(course.isVariableCredit) {
+                        sectionToRegister = @{
+                                            @"termId": term.termId,
+                                            @"sectionId": course.sectionId,
+                                            @"action": action,
+                                            @"credits": course.credits
+                                        };
+                    } else {
+                        sectionToRegister = @{
+                                          @"termId": term.termId,
+                                          @"sectionId": course.sectionId,
+                                          @"action": action
+                                        };
+                    }
+                    
                     [sectionRegistrations addObject:sectionToRegister];
                 }
+                
             }
         }
         
@@ -370,14 +450,16 @@
         NSError *jsonError;
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
         
-        NSString *urlString = [NSString stringWithFormat:@"%@/%@/register-sections", [self.module propertyForKey:@"registration"], [[CurrentUser userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSString *urlString = [NSString stringWithFormat:@"%@/%@/register-sections", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
         
         NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
         //[urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        
-        // create a plaintext string in the format username:password
-        [urlRequest addAuthenticationHeader];
+
+        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+            [urlRequest addAuthenticationHeader];
+        }
         
         [urlRequest setHTTPMethod:@"PUT"];
         [urlRequest setHTTPBody:jsonData];
@@ -392,12 +474,21 @@
         BOOL success = YES;
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if(success) {
-            [self.registrationTabController fetchRegistrationPlans];
+            [self.registrationTabController fetchRegistrationPlans:self];
             [self performSegueWithIdentifier:@"Register" sender:jsonResponse];
         }
     });
 }
 
+-(NSNumberFormatter *)creditsFormatter
+{
+    if(_creditsFormatter == nil) {
+        _creditsFormatter = [NSNumberFormatter new];
+        _creditsFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        [_creditsFormatter setMinimumFractionDigits:1];
+    }
+    return _creditsFormatter;
+}
 
 
 @end

@@ -29,7 +29,7 @@ public class CourseEventsIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d(TAG, "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		String courseId = intent.getStringExtra(Extra.COURSES_COURSE_ID);
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.COURSES_ILP_URL));

@@ -37,9 +37,10 @@
 		5453A81818B2607700C1196E /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453A81718B2607700C1196E /* Notification.m */; };
 		5453A81918B2607700C1196E /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453A81718B2607700C1196E /* Notification.m */; };
 		545AA9E0169C9B3B0013FBEE /* URLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 545AA9DF169C9B3B0013FBEE /* URLParser.m */; };
-		545AA9E4169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 545AA9E3169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m */; };
 		546B0E4B1734617D00C62730 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B0E4A1734617D00C62730 /* Configuration.m */; };
 		546B0E4C1734617D00C62730 /* Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B0E4A1734617D00C62730 /* Configuration.m */; };
+		546B3A6C18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */; };
+		546B3A6D18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */; };
 		546D01C817D61D06001FF4C9 /* GradesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6729815CA3DEC00D89522 /* GradesTableViewCell.xib */; };
 		546D01C917D61D06001FF4C9 /* GradesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84D6729815CA3DEC00D89522 /* GradesTableViewCell.xib */; };
 		54711CAF187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */; };
@@ -104,6 +105,8 @@
 		54B8611816C97CA300F56B52 /* CourseDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8611716C97CA300F56B52 /* CourseDetailTabBarController.m */; };
 		54B8611E16CAC93100F56B52 /* EmptyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8611D16CAC93100F56B52 /* EmptyTableViewCell.m */; };
 		54B8612116CAFBC100F56B52 /* EllucianSectionedUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8612016CAFBC100F56B52 /* EllucianSectionedUITableViewController.m */; };
+		54B8D5C118C427F200F088D4 /* AuthenticatedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8D5C018C427F200F088D4 /* AuthenticatedRequest.m */; };
+		54B8D5C218C427F200F088D4 /* AuthenticatedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8D5C018C427F200F088D4 /* AuthenticatedRequest.m */; };
 		54B96B6716D2CCB30055EDCE /* CourseDetailInstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B96B6616D2CCB30055EDCE /* CourseDetailInstructor.m */; };
 		54BC0FC316FC006B00698FE4 /* FeedCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC216FC006B00698FE4 /* FeedCategory.m */; };
 		54BC0FC616FC006B00698FE4 /* FeedModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC516FC006B00698FE4 /* FeedModule.m */; };
@@ -188,7 +191,6 @@
 		54E40B7B1728552E00F661A5 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D7BB42167A17C000B3D584 /* Event.m */; };
 		54E40B7C1728552E00F661A5 /* SafariActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = A919252F169B593A009A08C6 /* SafariActivity.m */; };
 		54E40B7D1728552E00F661A5 /* URLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 545AA9DF169C9B3B0013FBEE /* URLParser.m */; };
-		54E40B7E1728552E00F661A5 /* NSData+AuthenticatedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 545AA9E3169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m */; };
 		54E40B7F1728552E00F661A5 /* NotificationsFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5428553316B1EB3B001320A7 /* NotificationsFetcher.m */; };
 		54E40B821728552E00F661A5 /* GradeCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC962516C06187009C1B25 /* GradeCourse.m */; };
 		54E40B831728552E00F661A5 /* CourseTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC962E16C074FA009C1B25 /* CourseTerm.m */; };
@@ -385,11 +387,11 @@
 		5453A81718B2607700C1196E /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		545AA9DE169C9B3B0013FBEE /* URLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLParser.h; sourceTree = "<group>"; };
 		545AA9DF169C9B3B0013FBEE /* URLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLParser.m; sourceTree = "<group>"; };
-		545AA9E2169DCC2E0013FBEE /* NSData+AuthenticatedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AuthenticatedRequest.h"; sourceTree = "<group>"; };
-		545AA9E3169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AuthenticatedRequest.m"; sourceTree = "<group>"; };
 		546B0E491734617D00C62730 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configuration.h; sourceTree = "<group>"; };
 		546B0E4A1734617D00C62730 /* Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configuration.m; sourceTree = "<group>"; };
-		54704BE517B53E4E002D7C1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebLoginViewController.h; path = Mobile/WebLoginViewController.h; sourceTree = "<group>"; };
+		546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebLoginViewController.m; path = Mobile/WebLoginViewController.m; sourceTree = "<group>"; };
+		54704BE517B53E4E002D7C1C /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		54711CAD187CAA5B000DC9DC /* RegistrationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationSearchViewController.h; sourceTree = "<group>"; };
 		54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationSearchViewController.m; sourceTree = "<group>"; };
 		54711CB5187DD5DC000DC9DC /* RegistrationTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationTabBarController.h; sourceTree = "<group>"; };
@@ -476,6 +478,8 @@
 		54B8611D16CAC93100F56B52 /* EmptyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyTableViewCell.m; sourceTree = "<group>"; };
 		54B8611F16CAFBC100F56B52 /* EllucianSectionedUITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllucianSectionedUITableViewController.h; sourceTree = "<group>"; };
 		54B8612016CAFBC100F56B52 /* EllucianSectionedUITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EllucianSectionedUITableViewController.m; sourceTree = "<group>"; };
+		54B8D5BF18C427F200F088D4 /* AuthenticatedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AuthenticatedRequest.h; path = Mobile/AuthenticatedRequest.h; sourceTree = "<group>"; };
+		54B8D5C018C427F200F088D4 /* AuthenticatedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AuthenticatedRequest.m; path = Mobile/AuthenticatedRequest.m; sourceTree = "<group>"; };
 		54B96B6516D2CCB30055EDCE /* CourseDetailInstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailInstructor.h; sourceTree = "<group>"; };
 		54B96B6616D2CCB30055EDCE /* CourseDetailInstructor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailInstructor.m; sourceTree = "<group>"; };
 		54BC0FC116FC006B00698FE4 /* FeedCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedCategory.h; sourceTree = "<group>"; };
@@ -965,8 +969,6 @@
 				54CC12E816D566C200173D7B /* MBProgressHUD.m */,
 				841D880215D4579500FB5896 /* NoAnimationSegue.h */,
 				841D880315D4579500FB5896 /* NoAnimationSegue.m */,
-				545AA9E2169DCC2E0013FBEE /* NSData+AuthenticatedRequest.h */,
-				545AA9E3169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m */,
 				54931399185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.h */,
 				5493139A185BBDE20068084F /* NSMutableURLRequest+BasicAuthentication.m */,
 				A960E47D1664148E00BA5B0B /* NSString+Hash.h */,
@@ -1040,7 +1042,6 @@
 		842602B515AF12D900FE7360 /* Mobile */ = {
 			isa = PBXGroup;
 			children = (
-				A97BA06918AACBF800AC79F4 /* Ellucian UI Objects */,
 				A997082215DEC06500B9D25F /* About */,
 				543051F2178202340008FA6E /* Analytics */,
 				842602BE15AF12D900FE7360 /* AppDelegate.h */,
@@ -1052,6 +1053,7 @@
 				5493364618102F9900B6FDEF /* CustomizationStoryboard_iPad.storyboard */,
 				5493363818102F0F00B6FDEF /* CustomizationStoryboard_iPhone.storyboard */,
 				84B574BE161D472E00B66AA2 /* Directory */,
+				A97BA06918AACBF800AC79F4 /* Ellucian UI Objects */,
 				54EB393D1811A5C5002008C8 /* EllucianModules.plist */,
 				84A11F0E15C87089002FC14A /* Events */,
 				84EAC1C415DDF75600B6307A /* Feed */,
@@ -1068,8 +1070,8 @@
 				84D1192A165AB1FD009B85B8 /* MobileUIApplication.h */,
 				84D1192B165AB1FD009B85B8 /* MobileUIApplication.m */,
 				54C1472B177DDC3600C6CCBD /* Multimedia */,
-				84F391F61614D2CC003B3EE4 /* Notifications */,
 				0DDD89E01886531D00D1EE3A /* Notification Center */,
+				84F391F61614D2CC003B3EE4 /* Notifications */,
 				54931380185BBD050068084F /* Registration */,
 				54A8DBE116CD617500E20871 /* RNCryptor */,
 				842602B615AF12D900FE7360 /* Supporting Files */,
@@ -1228,8 +1230,8 @@
 				84DECE2A15D1954800203B4C /* EventsFilterViewController.h */,
 				84DECE2B15D1954800203B4C /* EventsFilterViewController.m */,
 				84AE699A15E7B9B00047891A /* EventsTableViewCell.xib */,
-				84A11F1315C87518002FC14A /* EventsViewController.m */,
 				84A11F1215C87518002FC14A /* EventsViewController.h */,
+				84A11F1315C87518002FC14A /* EventsViewController.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -1373,16 +1375,20 @@
 		A9C1221315FE6A3100BA2412 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				54B8D5BF18C427F200F088D4 /* AuthenticatedRequest.h */,
+				54B8D5C018C427F200F088D4 /* AuthenticatedRequest.m */,
 				54F0327416D59FA700318C7A /* Base64.h */,
 				54F0327516D59FA700318C7A /* Base64.m */,
-				54F0327616D59FBA00318C7A /* KeychainWrapper.h */,
-				54F0327716D59FC000318C7A /* KeychainWrapper.m */,
-				54F0327916D59FC700318C7A /* LoginViewController.h */,
-				54F0327A16D59FCC00318C7A /* LoginViewController.m */,
 				A9A4B8CA160262CF009E8B46 /* CurrentUser.h */,
 				A9A4B8CB160262CF009E8B46 /* CurrentUser.m */,
+				54F0327616D59FBA00318C7A /* KeychainWrapper.h */,
+				54F0327716D59FC000318C7A /* KeychainWrapper.m */,
 				54779E6317737B3F00ABD9F5 /* LoginExecutor.h */,
 				54779E6417737B3F00ABD9F5 /* LoginExecutor.m */,
+				54F0327916D59FC700318C7A /* LoginViewController.h */,
+				54F0327A16D59FCC00318C7A /* LoginViewController.m */,
+				546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */,
+				546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */,
 			);
 			name = Login;
 			path = ..;
@@ -1431,7 +1437,7 @@
 		842602A015AF12D800FE7360 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Ellucian Company L.P. and its affiliates.";
 				TargetAttributes = {
 					54E40B3A1728552E00F661A5 = {
@@ -1609,12 +1615,12 @@
 				54E40B7B1728552E00F661A5 /* Event.m in Sources */,
 				54E40B7C1728552E00F661A5 /* SafariActivity.m in Sources */,
 				54E40B7D1728552E00F661A5 /* URLParser.m in Sources */,
-				54E40B7E1728552E00F661A5 /* NSData+AuthenticatedRequest.m in Sources */,
 				54931398185BBD270068084F /* RegistrationTerm.m in Sources */,
 				54E40B7F1728552E00F661A5 /* NotificationsFetcher.m in Sources */,
 				54E40B821728552E00F661A5 /* GradeCourse.m in Sources */,
 				54E40B831728552E00F661A5 /* CourseTerm.m in Sources */,
 				54931392185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */,
+				54B8D5C218C427F200F088D4 /* AuthenticatedRequest.m in Sources */,
 				54E40B841728552E00F661A5 /* ModuleRole.m in Sources */,
 				54E40B851728552E00F661A5 /* Map.m in Sources */,
 				54E40B861728552E00F661A5 /* CourseDetailTabBarController.m in Sources */,
@@ -1623,6 +1629,7 @@
 				54E40B891728552E00F661A5 /* CourseSection.m in Sources */,
 				54E40B8A1728552E00F661A5 /* RNCryptor.m in Sources */,
 				54E40B8B1728552E00F661A5 /* RNDecryptor.m in Sources */,
+				546B3A6D18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */,
 				5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */,
 				54E40B8C1728552E00F661A5 /* RNCryptorEngine.m in Sources */,
 				54E40B8D1728552E00F661A5 /* RNEncryptor.m in Sources */,
@@ -1746,7 +1753,6 @@
 				84D7BB43167A17C000B3D584 /* Event.m in Sources */,
 				A9192530169B593A009A08C6 /* SafariActivity.m in Sources */,
 				545AA9E0169C9B3B0013FBEE /* URLParser.m in Sources */,
-				545AA9E4169DCC2E0013FBEE /* NSData+AuthenticatedRequest.m in Sources */,
 				54A313461805A7CF00D3D481 /* UIScrollView+Size.m in Sources */,
 				5428553416B1EB3B001320A7 /* NotificationsFetcher.m in Sources */,
 				54AC962616C06187009C1B25 /* GradeCourse.m in Sources */,
@@ -1755,6 +1761,7 @@
 				54ABAA3D16C1896E00141DD5 /* ModuleRole.m in Sources */,
 				5447CC7F17D669580077FA3F /* DirectoryNavigationController.m in Sources */,
 				54ABAA4616C18B9900141DD5 /* Map.m in Sources */,
+				54B8D5C118C427F200F088D4 /* AuthenticatedRequest.m in Sources */,
 				54B8611816C97CA300F56B52 /* CourseDetailTabBarController.m in Sources */,
 				54931391185BBD270068084F /* RegistrationPlannedSectionInstructor.m in Sources */,
 				54B8611E16CAC93100F56B52 /* EmptyTableViewCell.m in Sources */,
@@ -1763,6 +1770,7 @@
 				54A8DBE416CD618900E20871 /* RNCryptor.m in Sources */,
 				54A8DBE816CD620100E20871 /* RNDecryptor.m in Sources */,
 				54A8DBEB16CD625800E20871 /* RNCryptorEngine.m in Sources */,
+				546B3A6C18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */,
 				54A8DBEE16CD62C300E20871 /* RNEncryptor.m in Sources */,
 				54EE6E9016CEF69C0060613C /* CourseRoster.m in Sources */,
 				5493138D185BBD270068084F /* RegistrationCartViewController.m in Sources */,
@@ -1900,8 +1908,8 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "4291ACF6-F58F-4CF3-99E9-27346A95D67F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4291ACF6-F58F-4CF3-99E9-27346A95D67F";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -1924,8 +1932,8 @@
 					"\"$(SRCROOT)/Mobile\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2EC206E3-29FA-4B8B-AC0B-FCE7BB3795BB";
+				PROVISIONING_PROFILE = "4291ACF6-F58F-4CF3-99E9-27346A95D67F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4291ACF6-F58F-4CF3-99E9-27346A95D67F";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -1936,7 +1944,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -1967,7 +1974,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -2007,7 +2013,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "Ellucian Mobile";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8CE6C2B6-4725-4445-9C4D-F7E02CFEC3BB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0C6EF9FF-C062-4DF9-B656-FDCE78694408";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;

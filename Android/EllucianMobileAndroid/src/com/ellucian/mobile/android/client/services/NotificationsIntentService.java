@@ -35,7 +35,7 @@ public class NotificationsIntentService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean success = false;
 		Log.d("NotificationsIntentService", "handling intent");
-		MobileClient client = new MobileClient(getApplication());
+		MobileClient client = new MobileClient(this);
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.REQUEST_URL));
 		NotificationsResponse response = client.getNotifications(url);
