@@ -206,7 +206,8 @@ public class MobileClient {
 				
 				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 				responseString = readStream(in);
-			} else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+			} else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+				//treat redirects from cas just like a log in is needed.  We can't detect which redirects are for cas and which are not.
 				Log.e(TAG, "Status code " + statusCode + " for " + urlConnection.getURL());
 				if (returnErrorCodesAsResponse) {
 					responseString = "" + statusCode;

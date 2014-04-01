@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSMutableArray *courses;
 @property (strong, nonatomic) Module *module;
 @property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
+@property (nonatomic, assign) BOOL  allowAddToCart;
 
 @end

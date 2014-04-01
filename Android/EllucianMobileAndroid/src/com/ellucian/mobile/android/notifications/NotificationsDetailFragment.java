@@ -62,16 +62,22 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 			hyperlink = args.getString(Extra.LINK);
 			notificationDate = args.getString(Extra.DATE);
 			
+			int subheaderTextColor = Utils.getSubheaderTextColor(getActivity());
+			
 	        View outerHeader = (View) rootView.findViewById(R.id.header_layout);
 	        outerHeader.setBackgroundColor(Utils.getAccentColor(getActivity()));
 
 			if (!TextUtils.isEmpty(title)) {
 				TextView titleView = (TextView) rootView.findViewById(R.id.title);
+				titleView.setTextColor(subheaderTextColor);
 				titleView.setText(title);
 			}
 			if (!TextUtils.isEmpty(notificationDate)) {
 				TextView dateView = (TextView) rootView.findViewById(R.id.notificationDate);
+				dateView.setTextColor(subheaderTextColor);
 				dateView.setText(notificationDate);
+				TextView dateLabelView = (TextView) rootView.findViewById(R.id.notificationDateLabel);
+				dateLabelView.setTextColor(subheaderTextColor);			
 			}
 			if (!TextUtils.isEmpty(details)) {
 				TextView contentView = (TextView) rootView.findViewById(R.id.details);

@@ -102,8 +102,10 @@ public class RegistrationActivity extends EllucianActivity {
 	
 	protected OpenTerm[] openTerms;
 	
-	protected SimpleDateFormat dataFormat;
-	protected DateFormat timeFormatter;	
+	protected SimpleDateFormat defaultTimeParserFormat;
+	protected SimpleDateFormat altTimeParserFormat;
+	protected DateFormat timeFormatter;
+
 	protected Gson gson;
 	
 	private boolean isInForeground;
@@ -115,9 +117,11 @@ public class RegistrationActivity extends EllucianActivity {
 		
 		isInForeground = true;
 		
-		dataFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US);
-		dataFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		defaultTimeParserFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US);
+		defaultTimeParserFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		altTimeParserFormat = new SimpleDateFormat("HH:mm", Locale.US);
 		timeFormatter = android.text.format.DateFormat.getTimeFormat(this);
+		
 		gson = new Gson();
 		
 		
@@ -808,7 +812,7 @@ public class RegistrationActivity extends EllucianActivity {
 				}
 			}
 			if (sectionedCursor.getCount() > 0) {
-				resultsAdapter.addSection("Results", checkableAdapter);
+				resultsAdapter.addSection(getString(R.string.search_results_label), checkableAdapter);
 			}
 		}
 	}
@@ -1217,7 +1221,14 @@ public class RegistrationActivity extends EllucianActivity {
 		} else if (section.ceus != 0){
 			creditsView.setText("" + section.ceus + " " + getString(R.string.registration_ceus));
 		} else {
-			view.findViewById(R.id.instructor_credits_separator).setVisibility(View.GONE);
+			// Only want to display zero in last possible case to avoid not showing the correct alternative
+			String creditsString = "0 " + getString(R.string.registration_credits);
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
+				creditsString += " | " + getString(R.string.registration_audit);
+			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
+				creditsString += " | " + getString(R.string.registration_pass_fail_abbrev);
+			}
+			creditsView.setText(creditsString);
 		}
 
 		TextView meetingsView = (TextView) view.findViewById(R.id.meetings);
@@ -1244,10 +1255,27 @@ public class RegistrationActivity extends EllucianActivity {
 			Date endTimeDate = null;
 			String displayStartTime = "";
 			String displayEndTime = "";
-			
+
 			try {
-				startTimeDate = dataFormat.parse(pattern.startTime);
-				endTimeDate = dataFormat.parse(pattern.endTime);
+				if (!TextUtils.isEmpty(pattern.sisStartTimeWTz) && pattern.sisStartTimeWTz.contains(" ")) {
+					String[] splitTimeAndZone = pattern.sisStartTimeWTz.split(" ");
+					String time = splitTimeAndZone[0];
+					String timeZone = splitTimeAndZone[1];
+					altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+					startTimeDate = altTimeParserFormat.parse(time);
+				} else {
+					startTimeDate = defaultTimeParserFormat.parse(pattern.startTime);
+				}
+				
+				if (!TextUtils.isEmpty(pattern.sisEndTimeWTz) && pattern.sisEndTimeWTz.contains(" ")) {
+					String[] splitTimeAndZone = pattern.sisEndTimeWTz.split(" ");
+					String time = splitTimeAndZone[0];
+					String timeZone = splitTimeAndZone[1];
+					altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+					endTimeDate = altTimeParserFormat.parse(time);
+				} else {
+					endTimeDate = defaultTimeParserFormat.parse(pattern.endTime);
+				}
 				
 				if (startTimeDate != null) {
 					displayStartTime = timeFormatter.format(startTimeDate);

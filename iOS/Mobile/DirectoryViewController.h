@@ -11,16 +11,20 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "EllucianSectionedUITableViewController.h"
 
-#define kDirectoryViewTypeStudent NSLocalizedString(@"Students", @"student search scope in directory")
-#define kDirectoryViewTypeFaculty NSLocalizedString(@"Faculty/Staff", @"facilty/staff search scope in directory")
-#define kDirectoryViewTypeAll NSLocalizedString(@"All", @"all search scope in directory")
+typedef NS_ENUM(NSInteger, DirectoryViewType) {
+    DirectoryViewTypeUndefined,
+    DirectoryViewTypeStudent,
+    DirectoryViewTypeFaculty,
+    DirectoryViewTypeAll
+};
+
 
 @interface DirectoryViewController : EllucianSectionedUITableViewController<UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) Module *module;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSString *initialQueryString;
-@property (nonatomic, strong) NSString *initialScope;
+@property (nonatomic, assign) DirectoryViewType initialScope;
 @property (nonatomic, assign) BOOL hideFaculty;
 @property (nonatomic, assign) BOOL hideStudents;
 

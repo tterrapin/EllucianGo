@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AuthenticatedRequest : NSObject
+@interface AuthenticatedRequest : NSObject<NSURLConnectionDataDelegate>
 
 @property (nonatomic, strong) NSMutableURLRequest *request;
 @property (nonatomic, strong) NSURL *url;

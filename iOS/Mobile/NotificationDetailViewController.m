@@ -116,7 +116,7 @@
         return;
     }
     
-    NSString *text = self.notification.description;
+    NSString *text = self.notification.notificationDescription;
     if(self.notification.hyperlink) {
         text = [NSString stringWithFormat:@"%@ %@", self.notification.notificationDescription, self.notification.hyperlink];
     }

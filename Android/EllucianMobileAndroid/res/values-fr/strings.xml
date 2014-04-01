@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Main -->
@@ -57,12 +57,12 @@
     <string name="label_website">Site Web</string>
     <string name="label_type">Type</string>
     <string name="label_description">Description</string>
-    <string name="label_department">Service</string>
+    <string name="label_department">Département</string>
     <string name="label_office">Bureau</string>
     <string name="label_room">Salle</string>
     <string name="label_campus">Campus</string>
     <string name="label_search">Recherche</string>
-    <string name="label_faculty">Enseignants</string>
+    <string name="label_faculty">Enseignant(s)</string>
     <string name="label_credits">Crédits</string>
     <string name="label_meeting_information">Informations de réunion</string>
     <string name="label_open">Ouvrir</string>
@@ -140,7 +140,7 @@
     <string name="title_activity_course_events">Événements d\'enseignement</string>
     <string name="title_activity_course_events_detail">Détail de l\'événement</string>
     <string name="title_activity_course_activity">Activité d\'enseignement</string>
-    <string name="course_details_faculty">Enseignant</string>
+    <string name="course_details_faculty">Enseignant(s)</string>
     <string name="courses_section_details">Détails</string>
     <string name="courses_section_events">Événements</string>
     <string name="courses_section_activity">Activité</string>
@@ -188,7 +188,7 @@
     <string name="directory_icon_description">Icône</string>
     <string name="directory_type_all">Tous</string>
     <string name="directory_type_student">Étudiants</string>
-    <string name="directory_type_faculty">Enseignant</string>
+    <string name="directory_type_faculty">Enseignant(s)</string>
     
     <!-- Events -->
     
@@ -294,7 +294,14 @@
     <string name="registration_added_to_cart_failed">non ajouté(s) au panier. Données manquantes ou UP existe déjà dans le panier.</string>
     <string name="registration_fill_in_message">Sélectionner un semestre et saisir une recherche.</string>
     <string name="registration_section_id">ID d\'UP</string>
+    <string name="registration_grading">Notation</string>
+    <string name="registration_ceus">FC</string>
+    <string name="registration_audit">Auditeur libre</string>
+    <string name="registration_graded">Noté</string>
+    <string name="registration_pass_fail">Réussite/Échec</string>
+    <string name="registration_pass_fail_abbrev">R/É</string>
     <string name="registration_default_eligibility_message">Inscription actuellement impossible.</string>
+    <string name="registration_no_plan_eligibility_message">Étudiant non inscrit.</string>
     <string name="registration_were_sorry">Désolé.</string>
     <string name="registration_ineligible_to_register">Non admissible</string>
         

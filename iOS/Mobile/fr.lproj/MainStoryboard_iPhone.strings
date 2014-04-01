@@ -24,7 +24,7 @@
 "2IA-SC-G6y.text" = "Étiquette";
 
 /* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "2Lr-Sh-71a"; */
-"2Lr-Sh-71a.title" = "Conditions";
+"2Lr-Sh-71a.title" = "Semestres";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "2bH-co-qB5"; */
 "2bH-co-qB5.text" = "Étiquette";
@@ -33,7 +33,7 @@
 "2vG-MR-DDL.text" = "Libellé";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "39M-Ib-Gvn"; */
-"39M-Ib-Gvn.text" = "Enseignants";
+"39M-Ib-Gvn.text" = "Enseignant(s)";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "3TR-0j-Al6"; */
 "3TR-0j-Al6.text" = "Libellé";
@@ -111,7 +111,7 @@
 "DLT-hy-h2X.text" = "Libellé";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "DQT-RF-YSo"; */
-"DQT-RF-YSo.text" = "Enseignants";
+"DQT-RF-YSo.text" = "Enseignant(s)";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "DrJ-Gz-5n3"; */
 "DrJ-Gz-5n3.text" = "Libellé";
@@ -145,6 +145,9 @@
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "Gfb-8A-civ"; */
 "Gfb-8A-civ.text" = "E-mail";
+
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "Gmn-LE-lR9"; */
+"Gmn-LE-lR9.text" = "Notation:";
 
 /* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "H0f-iJ-HXh"; */
 "H0f-iJ-HXh.title" = "Semestres";
@@ -323,6 +326,9 @@
 /* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "b2W-Cv-P62"; */
 "b2W-Cv-P62.text" = "Date de début:";
 
+/* Class = "IBUILabel"; text = "Graded A-E"; ObjectID = "bAc-JY-i3p"; */
+"bAc-JY-i3p.text" = "Échelle notes 0 à 20";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "bM8-E7-rDr"; */
 "bM8-E7-rDr.text" = "Libellé";
 
@@ -389,8 +395,8 @@
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "gaS-Mv-pmJ"; */
 "gaS-Mv-pmJ.text" = "Libellé";
 
-/* Class = "IBUILabel"; text = "Meets"; ObjectID = "hBm-p7-2VH"; */
-"hBm-p7-2VH.text" = "Se réunit";
+/* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "hBm-p7-2VH"; */
+"hBm-p7-2VH.text" = "Informations de réunion";
 
 /* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "hK7-iJ-2oq"; */
 "hK7-iJ-2oq.normalTitle" = "Annuler";

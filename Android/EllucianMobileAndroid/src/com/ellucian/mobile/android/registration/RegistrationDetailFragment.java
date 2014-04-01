@@ -25,20 +25,32 @@ import com.ellucian.mobile.android.client.courses.Instructor;
 import com.ellucian.mobile.android.client.courses.MeetingPattern;
 import com.ellucian.mobile.android.client.registration.Section;
 import com.ellucian.mobile.android.util.CalendarUtils;
+import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = RegistrationDetailFragment.class.getSimpleName();
 	
 	private View rootView;
-	
-	private SimpleDateFormat dataFormat;
-	private DateFormat timeFormatter;
 	private Activity activity;
+	
+	protected SimpleDateFormat defaultTimeParserFormat;
+	protected SimpleDateFormat altTimeParserFormat;
+	protected DateFormat timeFormatter;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = activity;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		defaultTimeParserFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US);
+		defaultTimeParserFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		altTimeParserFormat = new SimpleDateFormat("HH:mm", Locale.US);
+		timeFormatter = android.text.format.DateFormat.getTimeFormat(activity);
 	}
 
 	@Override
@@ -46,13 +58,14 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_detail, container, false);	
 		
-		dataFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US);
-		dataFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-		timeFormatter = android.text.format.DateFormat.getTimeFormat(activity);
-		
 		Bundle args = getArguments();
 		
 		Section section = args.getParcelable(RegistrationActivity.SECTION);
+		
+		LinearLayout headerLayout = (LinearLayout) rootView.findViewById(R.id.header_layout);
+		headerLayout.setBackgroundColor(Utils.getAccentColor(activity));
+		
+		int subheaderTextColor = Utils.getSubheaderTextColor(getActivity());
 		
 		TextView courseTitleView = (TextView)rootView.findViewById(R.id.course_title);
 		if (section != null) {
@@ -61,13 +74,38 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				String title = section.courseName;
 				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
 					title += "-" + section.courseSectionNumber;
-				}	
-				courseTitleView.setText(title);
+				}
+				courseTitleView.setTextColor(subheaderTextColor);
+				courseTitleView.setText(title);				
 			}
 			
 			TextView sectionTitleView = (TextView)rootView.findViewById(R.id.section_title);
-			if (!TextUtils.isEmpty(section.sectionTitle)) {	
+			if (!TextUtils.isEmpty(section.sectionTitle)) {
+				sectionTitleView.setTextColor(subheaderTextColor);
 				sectionTitleView.setText(section.sectionTitle);
+			}
+			
+			TextView datesView = (TextView)rootView.findViewById(R.id.dates);
+			if (!TextUtils.isEmpty(section.firstMeetingDate) && !TextUtils.isEmpty(section.lastMeetingDate)) {
+				String startDate = "";
+				String endDate = "";
+				DateFormat fromDatabase = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		    	try {
+					Date start = fromDatabase.parse(section.firstMeetingDate);
+					Date end = fromDatabase.parse(section.lastMeetingDate);
+
+					
+			    	DateFormat localFormat = android.text.format.DateFormat.getDateFormat(getActivity());
+			    	startDate = localFormat.format(start);
+			    	endDate = localFormat.format(end);
+				} catch (ParseException e) {
+					Log.e(TAG, e.getMessage());
+				}
+		    	
+		    	datesView.setTextColor(subheaderTextColor);
+		    	datesView.setText(startDate + " - " + endDate);
+			} else {
+				datesView.setVisibility(View.GONE);
 			}
 			
 			TextView sectionIdView = (TextView)rootView.findViewById(R.id.section_id);
@@ -88,6 +126,9 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			} else if (section.ceus != 0){
 				creditsView.setText(getString(R.string.label_credits) + ": "  + section.ceus + " " 
 						+ getString(R.string.registration_ceus));
+			} else {
+				// Only want to display zero in last possible case to avoid not showing the correct alternative
+				creditsView.setText(getString(R.string.label_credits) + ": 0");
 			}
 			
 			TextView gradingTypeView = (TextView) rootView.findViewById(R.id.grading_type);
@@ -107,6 +148,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			LinearLayout meetingLayout = (LinearLayout) rootView.findViewById(R.id.meeting_layout);
 			if (section.meetingPatterns != null && section.meetingPatterns.length > 0) {
 				
+				int meetingCount = 0;
 				for (MeetingPattern pattern : section.meetingPatterns) {
 					
 					String meetingsString = "";
@@ -130,8 +172,25 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 					String displayEndTime = "";
 					
 					try {
-						startTimeDate = dataFormat.parse(pattern.startTime);
-						endTimeDate = dataFormat.parse(pattern.endTime);
+						if (!TextUtils.isEmpty(pattern.sisStartTimeWTz) && pattern.sisStartTimeWTz.contains(" ")) {
+							String[] splitTimeAndZone = pattern.sisStartTimeWTz.split(" ");
+							String time = splitTimeAndZone[0];
+							String timeZone = splitTimeAndZone[1];
+							altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+							startTimeDate = altTimeParserFormat.parse(time);							
+						} else {
+							startTimeDate = defaultTimeParserFormat.parse(pattern.startTime);
+						}
+						
+						if (!TextUtils.isEmpty(pattern.sisEndTimeWTz) && pattern.sisEndTimeWTz.contains(" ")) {
+							String[] splitTimeAndZone = pattern.sisEndTimeWTz.split(" ");
+							String time = splitTimeAndZone[0];
+							String timeZone = splitTimeAndZone[1];
+							altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+							endTimeDate = altTimeParserFormat.parse(time);
+						} else {
+							endTimeDate = defaultTimeParserFormat.parse(pattern.endTime);
+						}
 						
 						if (startTimeDate != null) {
 							displayStartTime = timeFormatter.format(startTimeDate);
@@ -161,7 +220,32 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 							typeView.setText(pattern.instructionalMethodCode);
 						} 
 						
-						meetingLayout.addView(rowLayout);				
+						TextView locationView = (TextView) rowLayout.findViewById(R.id.building_room);
+						String locationString = "";
+						if (!TextUtils.isEmpty(pattern.building)) {
+							locationString += pattern.building;
+						} 
+						
+						if (!TextUtils.isEmpty(pattern.room)) {
+							if (!TextUtils.isEmpty(locationString)) {
+								locationString += ", ";
+							}
+							locationString += pattern.room;
+						}
+						if (!TextUtils.isEmpty(locationString)) {
+							locationView.setText(locationString);
+							// Show underline of text
+							//locationView.setPaintFlags(locationView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+						} else {
+							locationView.setVisibility(View.GONE);
+						}
+						
+						if (meetingCount > 0) {
+							View separator = activity.getLayoutInflater().inflate(R.layout.separator, meetingLayout, false);
+							meetingLayout.addView(separator);
+						}
+						meetingLayout.addView(rowLayout);
+						meetingCount++;
 					}	
 				}
 			} else {
@@ -171,13 +255,26 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			LinearLayout facultyLayout = (LinearLayout) rootView.findViewById(R.id.faculty_layout);
 			if (section.instructors != null && section.instructors.length > 0) {
 				
+				int instructorCount = 0;
 				for (Instructor instructor : section.instructors) {
 					View rowLayout = activity.getLayoutInflater().inflate(R.layout.registration_faculty_row, facultyLayout, false);
 					TextView instructorView = (TextView) rowLayout.findViewById(R.id.instructor_name);
-					String shortName = instructor.lastName + ", " + instructor.firstName.charAt(0);
-					instructorView.setText(shortName);
+					String displayName = "";
+					if (!TextUtils.isEmpty(instructor.formattedName)) {
+						displayName = instructor.formattedName;
+					} else {
+						displayName = instructor.firstName + instructor.lastName;
+					}
+					
+					instructorView.setText(displayName);
+					
+					if (instructorCount > 0) {
+						View separator = activity.getLayoutInflater().inflate(R.layout.separator, meetingLayout, false);
+						facultyLayout.addView(separator);
+					}
 
 					facultyLayout.addView(rowLayout);
+					instructorCount++;
 				}
 				
 			} else {

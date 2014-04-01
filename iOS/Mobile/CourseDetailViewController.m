@@ -336,7 +336,7 @@
         DirectoryViewController *detailController = [segue destinationViewController];
         CourseDetailInstructor *instructor = (CourseDetailInstructor *)sender;
         detailController.initialQueryString = [NSString stringWithFormat:@"%@ %@", instructor.firstName, instructor.lastName];
-        detailController.initialScope = kDirectoryViewTypeFaculty;
+        detailController.initialScope = DirectoryViewTypeFaculty;
         detailController.hideStudents = YES;
         detailController.module = self.module;
     }

@@ -40,10 +40,10 @@
     
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
     <string name="school_selection_confirmation">Você selecionou \'%1$s\'. Está correta?</string>  
-    <string name="title_activity_configuration_loading">Carregando a configuração</string>
-    <string name="configuration_loading_failed">Falha ao carregar a configuração</string>
+    <string name="title_activity_configuration_loading">Carregando a configuração.</string>
+    <string name="configuration_loading_failed">Falha ao carregar a configuração.</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">Carregando a configuração. Aguarde&amp;#8230;</string>
+    <string name="configuration_loading_message">Carregando a configuração. Aguarde&#8230;</string>
     <string name="configuration_loading_missing_config">"Não é possível baixar a configuração a partir deste link."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -81,7 +81,7 @@
     <string name="dialog_idle_sign_out">Sua sessão expirou porque você ficou muito tempo inativo.</string>
     <string name="dialog_select_categories">Selecionar categorias</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">Fazendo nova autenticação, aguarde&amp;#8230;</string>
+    <string name="dialog_re_authenticate">Fazendo nova autenticação, aguarde&#8230;</string>
 	<string name="dialog_continue">Continuar</string>
 	<string name="dialog_go_back">Voltar</string>
 	<string name="dialog_security_warning">Aviso de segurança</string>
@@ -110,7 +110,7 @@
     <string name="all_day_event">Todos eventos do dia</string>
     <string name="title_activity_default_detail">Detalhes</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">Carregando&amp;#8230;</string>
+    <string name="loading_message">Carregando&#8230;</string>
 	
     <!-- About -->
     
@@ -159,7 +159,7 @@
     <string name="course_grades">Notas</string>
     <string name="course_roster">Lista</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">Mais&amp;#8230;</string>
+    <string name="course_more">Mais&#8230;</string>
     <string name="course_assignments">Atribuições</string>
     <string name="course_announcements">Comunicados</string>
     <string name="course_events">Eventos</string>
@@ -215,7 +215,7 @@
     <string name="maps_satellite_view_label">Visualizar satélite</string>
     <string name="maps_my_location_label">Minha localização</string>
     <string name="maps_restore_location_label">Restaurar o local</string>
-    <string name="maps_building_list_label">Criar lista</string>
+    <string name="maps_building_list_label">Lista de prédios</string>
     <string name="maps_no_locations">Não há locais para exibição</string>
     <string name="maps_show_map">Mapa</string>
     <string name="maps_building_image_label">Criar imagem</string>
@@ -294,7 +294,14 @@
     <string name="registration_added_to_cart_failed">falha ao adicionar no carrinho. A turma ou dados ausentes já existem no carrinho.</string>
     <string name="registration_fill_in_message">Selecione um período e faça uma busca.</string>
     <string name="registration_section_id">ID turma</string>
+    <string name="registration_grading">Classificação</string>
+    <string name="registration_ceus">UECs</string>
+    <string name="registration_audit">Auditoria</string>
+    <string name="registration_graded">Com nota</string>
+    <string name="registration_pass_fail">Aprovado/Reprovado</string>
+    <string name="registration_pass_fail_abbrev">A/R</string>
     <string name="registration_default_eligibility_message">Não é possível fazer a matrícula neste momento.</string>
+    <string name="registration_no_plan_eligibility_message">Não é um aluno matriculado.</string>
     <string name="registration_were_sorry">Desculpe!</string>
     <string name="registration_ineligible_to_register">Matrícula não autorizada</string>
         

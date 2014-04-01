@@ -110,13 +110,17 @@ BOOL logoutOnStartup = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshConfigurationListIfPresent object:nil];
     }
     openURL = NO;
-    CurrentUser *currentUser = [CurrentUser sharedInstance];
-    if(currentUser && [currentUser isLoggedIn ] && ![currentUser remember]) {
-        NSDate *compareDate = [timestampLastActivity dateByAddingTimeInterval:kApplicationTimeoutInMinutes*60];
-        NSDate *currentDate = [NSDate new];
-        if(([compareDate compare: currentDate] == NSOrderedAscending) || (logoutOnStartup != NO)) {
-            [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionTimeout withLabel:@"Password Timeout" withValue:nil];
-            [currentUser logout];
+    
+    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+        CurrentUser *currentUser = [CurrentUser sharedInstance];
+        if(currentUser && [currentUser isLoggedIn ] && ![currentUser remember]) {
+            NSDate *compareDate = [timestampLastActivity dateByAddingTimeInterval:kApplicationTimeoutInMinutes*60];
+            NSDate *currentDate = [NSDate new];
+            if(([compareDate compare: currentDate] == NSOrderedAscending) || (logoutOnStartup != NO)) {
+                [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionTimeout withLabel:@"Password Timeout" withValue:nil];
+                [currentUser logout];
+            }
         }
     }
 }
@@ -296,7 +300,7 @@ BOOL logoutOnStartup = YES;
     CurrentUser *currentUser = [CurrentUser sharedInstance];
     if([currentUser isLoggedIn ] && ![currentUser remember]) {
         NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
-        if(!authenticationMode || [authenticationMode isEqualToString:@"browser"]) {
+        if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
             [currentUser logout];
         }
     }

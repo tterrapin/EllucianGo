@@ -144,6 +144,7 @@
     //    }
     //    cell.accessoryView = [[UIImageView alloc ] initWithImage: [UIImage imageNamed:@"Registration Detail"]];
 
+
     UIImage *image = [UIImage imageNamed:@"Registration Detail"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     CGRect frame = CGRectMake(0.0f, 0.0f, 44.0f, 44.0f);
@@ -163,26 +164,28 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-    if(!plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
-        NSString *title;
-        if(plannedSection.variableCreditIncrement) {
-            title = NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit incrementprompt");
-            title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
+    if ( _allowAddToCart ) {
+        RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
+        if(!plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
+            NSString *title;
+            if(plannedSection.variableCreditIncrement) {
+                title = NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit incrementprompt");
+                title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
+            } else {
+                title = NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt");
+                title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits];
+            }
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"Credits label for registration") message:title delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+            alert.tag = indexPath.row;
+            alert.delegate = self;
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            UITextField * alertTextField = [alert textFieldAtIndex:0];
+            alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
+            alertTextField.placeholder = NSLocalizedString(@"Credits", @"Credits label for registration");
+            [alert show];
         } else {
-            title = NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt");
-            title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits];
+            [self tableView:tableView addSectionToCart:indexPath];
         }
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"Credits label for registration") message:title delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-        alert.tag = indexPath.row;
-        alert.delegate = self;
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [alert textFieldAtIndex:0];
-        alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
-        alertTextField.placeholder = NSLocalizedString(@"Credits", @"Credits label for registration");
-        [alert show];
-    } else {
-        [self tableView:tableView addSectionToCart:indexPath];
     }
 }
 

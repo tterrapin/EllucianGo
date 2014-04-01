@@ -8,26 +8,42 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
 	
-	    <TextView
-	        android:id="@+id/course_title"
-	        style="@style/detailTitle"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="0dp"
-	        android:background="@color/details_header_bg"
-	        android:padding="8dp"
-	        android:paddingBottom="0dp"
-	        android:textStyle="bold" />
-	
-	    <TextView
-	        android:id="@+id/section_title"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="-10dp"
-	        android:background="@drawable/detail_header_bottom_border_2dp"
-	        android:padding="8dp"
-	        android:paddingTop="0dp"
-	        android:textSize="14sp" />
+	    <LinearLayout
+	        android:id="@+id/header_layout"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		    
+		    <TextView
+		        android:id="@+id/course_title"
+		        style="@style/detailTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="8dp"
+		        android:paddingLeft="8dp"
+		        android:paddingStart="8dp"
+		        android:textStyle="bold" />
+
+		    <TextView
+		        android:id="@+id/section_title"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingTop="4dp"
+		        android:paddingLeft="8dp"
+		        android:paddingStart="8dp"
+		        android:textSize="14sp" />
+		    
+		    <TextView
+		        android:id="@+id/dates"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" 
+		        android:paddingTop="4dp"
+		        android:paddingLeft="8dp"
+		        android:paddingStart="8dp"
+		        android:paddingBottom="4dp"
+		        android:textSize="14sp" />
+	    
+	    </LinearLayout>
 	
 	
 	    <LinearLayout

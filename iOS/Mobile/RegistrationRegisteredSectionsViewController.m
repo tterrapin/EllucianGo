@@ -185,11 +185,6 @@
     return [self.registrationTabController.terms count];
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return 86.0f;
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [super tableView:tableView heightForHeaderInSection:section];
 }

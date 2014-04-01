@@ -137,10 +137,11 @@ public class CourseDetailsFragment extends EllucianFragment implements
 		meetingLayout.removeAllViews();
 		final LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		final SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US); //for dates	
-		dataFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		final SimpleDateFormat defaultTimeParserFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US); //for dates	
+		defaultTimeParserFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		final SimpleDateFormat altTimeParserFormat = new SimpleDateFormat("HH:mm", Locale.US); //for dates	
 		final DateFormat timeFormatter = android.text.format.DateFormat.getTimeFormat(getActivity());
-
+		
 		if (cursor.moveToFirst()) {
 			do {
 				final String daysOfWeek = cursor.getString(cursor
@@ -164,10 +165,28 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				Date endTimeDate = null;
 				String displayStartTime = "";
 				String displayEndTime = "";
-				
+
 				try {
-					startTimeDate = dataFormat.parse(startTime);
-					endTimeDate = dataFormat.parse(endTime);
+					if (!TextUtils.isEmpty(startTime) && startTime.contains(" ")) {
+						String[] splitTimeAndZone = startTime.split(" ");
+						String time = splitTimeAndZone[0];
+						String timeZone = splitTimeAndZone[1];
+						altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+						startTimeDate = altTimeParserFormat.parse(time);
+					} else {
+						startTimeDate = defaultTimeParserFormat.parse(startTime);
+					}
+					
+					if (!TextUtils.isEmpty(endTime) && endTime.contains(" ")) {
+						String[] splitTimeAndZone = endTime.split(" ");
+						String time = splitTimeAndZone[0];
+						String timeZone = splitTimeAndZone[1];
+						altTimeParserFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+						endTimeDate = altTimeParserFormat.parse(time);
+					} else {
+						endTimeDate = defaultTimeParserFormat.parse(endTime);
+					}
+										
 					
 					if (startTimeDate != null) {
 						displayStartTime = timeFormatter.format(startTimeDate);

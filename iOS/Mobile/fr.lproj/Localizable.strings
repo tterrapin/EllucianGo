@@ -19,17 +19,29 @@
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "Ajouter au panier (%d)";
 
+/* all search scope in directory */
+"All" = "Tous";
+
 /* label for all day event */
 "All Day" = "Toute la journée";
 
 /* Applications menu heading */
 "Applications" = "Applications";
 
+/* Audit label for registration */
+"Audit" = "Auditeur libre";
+
 /* Cancel */
 "Cancel" = "Annuler";
 
 /* label for the categories */
 "Category" = "Catégorie";
+
+/* CEU (singular) label for registration */
+"CEU" = "FC";
+
+/* CEUs label for registration */
+"CEUs" = "FC";
 
 /* checking registration eligibility message */
 "Checking Eligibility" = "Vérification de l'admissibilité";
@@ -40,12 +52,8 @@
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "Copier URL";
 
-/* Credits label for registration cart
-   title of variable credits input alert */
+/* Credits label for registration */
 "Credits" = "Crédits";
-
-/* variable credits input alert placeholder */
-"credits" = "crédits";
 
 /* message for heading of messages during registration */
 "Critical" = "Critique";
@@ -83,11 +91,17 @@
 /* phone extension */
 "ext." = "poste";
 
+/* facilty/staff search scope in directory */
+"Faculty/Staff" = "Enseign./Empl.";
+
 /* fetching registration plan message */
 "Fetching Registration Plan" = "Obtention du projet d'inscription";
 
 /* User can get directions for this location */
 "Get Directions" = "Itinéraire";
+
+/* Graded label for registration */
+"Graded" = "Noté";
 
 /* Home menu item */
 "Home" = "Accueil";
@@ -104,9 +118,7 @@
 /* label for when data for last updated time is unavailable */
 "Last Updated: Unavailable" = "Dernière mise à jour: Non disponible";
 
-/* loading message while waiting for data to load
-   loading message while waiting for events data
-   loading message while waiting for feed data */
+/* loading message while waiting for data to load */
 "Loading" = "Chargement";
 
 /* new notification has arrived */
@@ -141,6 +153,12 @@
 
 /* Outdated alert title */
 "Outdated" = "Périmé";
+
+/* PassFail abbrev label for registration cart */
+"P/F" = "R/É";
+
+/* PassFail label for registration */
+"Pass/Fail" = "Réussite/Échec";
 
 /* Register button */
 "Register" = "S'inscrire";
@@ -183,6 +201,9 @@
 
 /* label to sign out */
 "Sign Out" = "Déconnexion";
+
+/* student search scope in directory */
+"Students" = "Étudiants";
 
 /* Switch school menu item */
 "Switch School" = "Changer d'établissement";

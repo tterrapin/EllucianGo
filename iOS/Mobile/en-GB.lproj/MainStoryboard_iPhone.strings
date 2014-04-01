@@ -146,6 +146,9 @@
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "Gfb-8A-civ"; */
 "Gfb-8A-civ.text" = "Email";
 
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "Gmn-LE-lR9"; */
+"Gmn-LE-lR9.text" = "Grading:";
+
 /* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "H0f-iJ-HXh"; */
 "H0f-iJ-HXh.title" = "Terms";
 
@@ -323,6 +326,9 @@
 /* Class = "IBUILabel"; text = "Start Date:"; ObjectID = "b2W-Cv-P62"; */
 "b2W-Cv-P62.text" = "Start Date:";
 
+/* Class = "IBUILabel"; text = "Graded A-E"; ObjectID = "bAc-JY-i3p"; */
+"bAc-JY-i3p.text" = "Graded A-E";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "bM8-E7-rDr"; */
 "bM8-E7-rDr.text" = "Label";
 
@@ -389,8 +395,8 @@
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "gaS-Mv-pmJ"; */
 "gaS-Mv-pmJ.text" = "Label";
 
-/* Class = "IBUILabel"; text = "Meets"; ObjectID = "hBm-p7-2VH"; */
-"hBm-p7-2VH.text" = "Meets";
+/* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "hBm-p7-2VH"; */
+"hBm-p7-2VH.text" = "Meeting Information";
 
 /* Class = "IBUIButton"; normalTitle = "Cancel"; ObjectID = "hK7-iJ-2oq"; */
 "hK7-iJ-2oq.normalTitle" = "Cancel";

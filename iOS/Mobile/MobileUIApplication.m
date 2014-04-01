@@ -48,8 +48,11 @@
 //if the timer reaches the limit as defined in kApplicationTimeoutInMinutes, post this notification
 -(void)idleTimerExceeded
 {
-    [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionTimeout withLabel:@"Password Timeout" withValue:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kApplicationDidTimeoutNotification object:nil];
+    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+        [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionTimeout withLabel:@"Password Timeout" withValue:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kApplicationDidTimeoutNotification object:nil];
+    }
 }
 
 - (void)sendEventWithCategory:(NSString *)category

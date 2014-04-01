@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Main -->
@@ -43,7 +43,7 @@
     <string name="title_activity_configuration_loading">جاري تحميل التهيئة.</string>
     <string name="configuration_loading_failed">فشل تحميل التهيئة</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">&#8230;جاري تحميل التهيئة. يرجى الانتظار</string>
+    <string name="configuration_loading_message">جاري تحميل التهيئة. يرجى الانتظار</string>
     <string name="configuration_loading_missing_config">"تعذر تحميل التهيئة من ذلك الرابط."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -81,7 +81,7 @@
     <string name="dialog_idle_sign_out">لقد تم تسجيل خروجك بسبب خمول النشاط لفترة طويلة.</string>
     <string name="dialog_select_categories">اختيار الفئات</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">&#8230;إعادة المصادقة قيد التنفيذ، يرجى الانتظار</string>
+    <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار</string>
 	<string name="dialog_continue">المتابعة</string>
 	<string name="dialog_go_back">العودة</string>
 	<string name="dialog_security_warning">تحذير أمان</string>
@@ -110,7 +110,7 @@
     <string name="all_day_event">الفعالية طوال اليوم</string>
     <string name="title_activity_default_detail">التفاصيل</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">&#8230;جاري التحميل</string>
+    <string name="loading_message">جاري التحميل</string>
 	
     <!-- About -->
     
@@ -159,7 +159,7 @@
     <string name="course_grades">الدرجات</string>
     <string name="course_roster">القائمة</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">&#8230;المزيد</string>
+    <string name="course_more">المزيد</string>
     <string name="course_assignments">الواجبات</string>
     <string name="course_announcements">الإعلانات</string>
     <string name="course_events">الفعاليات</string>
@@ -294,7 +294,14 @@
     <string name="registration_added_to_cart_failed">فشلت الإضافة إلى سلة التسجيل. هناك بيانات مفقودة أو أن الشعبة موجودة مسبقا في سلة التسجيل.</string>
     <string name="registration_fill_in_message">يجب اختيار فصل دراسي وإدخال استعلام للبحث.</string>
     <string name="registration_section_id">معرف الشعبة</string>
+    <string name="registration_grading">وضع الدرجات</string>
+    <string name="registration_ceus">وحدات التعليم المستمر</string>
+    <string name="registration_audit">التدقيق</string>
+    <string name="registration_graded">تم وضع درجاتها</string>
+    <string name="registration_pass_fail">نجاح/رسوب</string>
+    <string name="registration_pass_fail_abbrev">نجاح/رسوب</string>
     <string name="registration_default_eligibility_message">لا يمكن التسجيل الآن.</string>
+    <string name="registration_no_plan_eligibility_message">الطالب غير ملتحق.</string>
     <string name="registration_were_sorry">نأسف.</string>
     <string name="registration_ineligible_to_register">غير مؤهل للتسجيل</string>
         

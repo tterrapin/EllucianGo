@@ -23,6 +23,9 @@
 /* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "2Lr-Sh-71a"; */
 "2Lr-Sh-71a.title" = "Terms";
 
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2PQ-p2-ZAZ"; */
+"2PQ-p2-ZAZ.text" = "Label";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "2bH-co-qB5"; */
 "2bH-co-qB5.text" = "Label";
 
@@ -142,9 +145,6 @@
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "FET-69-yt4"; */
 "FET-69-yt4.text" = "Label";
-
-/* Class = "IBUITableViewController"; title = "Events Selector"; ObjectID = "FZV-jm-8aU"; */
-"FZV-jm-8aU.title" = "Events Selector";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "FeC-yO-Qzu"; */
 "FeC-yO-Qzu.text" = "Email";
@@ -269,6 +269,9 @@
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "R7w-jn-5Dc"; */
 "R7w-jn-5Dc.text" = "Phone";
 
+/* Class = "IBUILabel"; text = "Grade Content"; ObjectID = "RCy-co-NJP"; */
+"RCy-co-NJP.text" = "Grade Content";
+
 /* Class = "IBUILabel"; text = "Credits:"; ObjectID = "RiH-GQ-Rwu"; */
 "RiH-GQ-Rwu.text" = "Credits:";
 
@@ -335,6 +338,9 @@
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
 "aNm-pv-19M.text" = "Label";
 
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "aPX-9A-e4m"; */
+"aPX-9A-e4m.text" = "Grading:";
+
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aTg-wc-XmG"; */
 "aTg-wc-XmG.text" = "Label";
 
@@ -388,6 +394,9 @@
 
 /* Class = "IBUILabel"; text = "Description"; ObjectID = "eBD-3Y-aTU"; */
 "eBD-3Y-aTU.text" = "Description";
+
+/* Class = "IBUILabel"; text = "Dates"; ObjectID = "eIR-C1-bT1"; */
+"eIR-C1-bT1.text" = "Dates";
 
 /* Class = "IBUIViewController"; title = "Grades"; ObjectID = "elS-z3-eCK"; */
 "elS-z3-eCK.title" = "Grades";
@@ -547,6 +556,12 @@
 
 /* Class = "IBUITextView"; text = "0"; ObjectID = "v71-OW-LtF"; */
 "v71-OW-LtF.text" = "0";
+
+/* Class = "IBUILabel"; text = "Dates"; ObjectID = "v9g-N9-qi6"; */
+"v9g-N9-qi6.text" = "Dates";
+
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "vAF-mZ-4et"; */
+"vAF-mZ-4et.text" = "Grading:";
 
 /* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "vcj-p8-E2a"; */
 "vcj-p8-E2a.text" = "Meeting Information";

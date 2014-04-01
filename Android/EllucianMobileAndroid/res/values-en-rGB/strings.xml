@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Main -->
@@ -43,7 +43,7 @@
     <string name="title_activity_configuration_loading">Configuration Loading</string>
     <string name="configuration_loading_failed">Configuration loading failed</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">Loading Configuration. Please wait…</string>
+    <string name="configuration_loading_message">Loading Configuration. Please wait&#8230;</string>
     <string name="configuration_loading_missing_config">"Unable to download the configuration from that link."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -81,7 +81,7 @@
     <string name="dialog_idle_sign_out">You have been idle too long and have been Signed Out.</string>
     <string name="dialog_select_categories">Select Categories</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">Re-authenticating, please wait…</string>
+    <string name="dialog_re_authenticate">Re-authenticating, please wait&#8230;</string>
 	<string name="dialog_continue">Continue</string>
 	<string name="dialog_go_back">Go Back</string>
 	<string name="dialog_security_warning">Security warning</string>
@@ -110,7 +110,7 @@
     <string name="all_day_event">All Day Event</string>
     <string name="title_activity_default_detail">Details</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">Loading…</string>
+    <string name="loading_message">Loading&#8230;</string>
 	
     <!-- About -->
     
@@ -159,7 +159,7 @@
     <string name="course_grades">Grades</string>
     <string name="course_roster">Roster</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">More…</string>
+    <string name="course_more">More&#8230;</string>
     <string name="course_assignments">Assignments</string>
     <string name="course_announcements">Announcements</string>
     <string name="course_events">Events</string>
@@ -294,7 +294,14 @@
     <string name="registration_added_to_cart_failed">failed to add to cart. Missing data or section already exists in cart.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
+    <string name="registration_grading">Grading</string>
+    <string name="registration_ceus">CEUs</string>
+    <string name="registration_audit">Audit</string>
+    <string name="registration_graded">Graded</string>
+    <string name="registration_pass_fail">Pass/Fail</string>
+    <string name="registration_pass_fail_abbrev">P/F</string>
     <string name="registration_default_eligibility_message">Cannot register at this time.</string>
+    <string name="registration_no_plan_eligibility_message">Not an enroled student.</string>
     <string name="registration_were_sorry">We\'re sorry</string>
     <string name="registration_ineligible_to_register">Ineligible for Registration</string>
         

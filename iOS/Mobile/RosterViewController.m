@@ -285,7 +285,7 @@
         CourseRoster *roster = (CourseRoster *)sender;
         DirectoryViewController *detailController = [segue destinationViewController];
         detailController.initialQueryString = [NSString  stringWithFormat:@"%@ %@", roster.firstName, roster.lastName];
-        detailController.initialScope = kDirectoryViewTypeStudent;
+        detailController.initialScope = DirectoryViewTypeStudent;
         detailController.hideFaculty = YES;
         detailController.module = self.module;
     }

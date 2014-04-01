@@ -21,6 +21,8 @@ public class Section implements Parcelable {
 	public String courseName;
 	public String courseDescription;
 	public String courseSectionNumber;
+	public String firstMeetingDate;
+	public String lastMeetingDate;
 	public float credits;
 	public float ceus;
 	public String status;
@@ -51,6 +53,8 @@ public class Section implements Parcelable {
 		courseName = in.readString();
 		courseDescription = in.readString();
 		courseSectionNumber = in.readString();
+		firstMeetingDate = in.readString();
+		lastMeetingDate = in .readString();
 		credits = in.readFloat();
 		ceus = in.readFloat();
 		status = in.readString();
@@ -82,6 +86,8 @@ public class Section implements Parcelable {
 		dest.writeString(courseName);
 		dest.writeString(courseDescription);
 		dest.writeString(courseSectionNumber);
+		dest.writeString(firstMeetingDate);
+		dest.writeString(lastMeetingDate);
 		dest.writeFloat(credits);
 		dest.writeFloat(ceus);
 		dest.writeString(status);

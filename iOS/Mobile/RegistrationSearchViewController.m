@@ -384,6 +384,7 @@
         }
         
         RegistrationSearchResultsViewController *resultsViewController = (RegistrationSearchResultsViewController *)detailController;
+        resultsViewController.allowAddToCart = self.allowAddToCart;
         resultsViewController.courses  = sender;
     }
 }

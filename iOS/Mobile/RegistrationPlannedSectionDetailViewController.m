@@ -122,31 +122,6 @@
     [self.scrollView setContentOffset:CGPointZero animated:YES];
 }
 
-//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-//{
-//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-//    if (self) {
-//        // Custom initialization
-//    }
-//    return self;
-//}
-//
-//- (void)viewDidLoad
-//{
-//    [super viewDidLoad];
-//	// Do any additional setup after loading the view.
-//}
-//
-//- (void)didReceiveMemoryWarning
-//{
-//    [super didReceiveMemoryWarning];
-//    // Dispose of any resources that can be recreated.
-//}
-//
-//-(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-//{
-//    return NO;
-//}
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
@@ -539,22 +514,25 @@
 -(void) adjustContraintsAccordingToContent
 {
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    
+    CGSize newSize;
+
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
-            self.descriptionContent.frame = CGRectMake(15, 206, 510, 3000.0f);
+            CGSize trialSize = CGSizeMake(510.0f, 1.0f);
+            newSize = [self.descriptionContent sizeThatFits:trialSize];
             self.creditLabelConstraint.constant = 197;
         } else {
-            self.descriptionContent.frame = CGRectMake(15, 206, 393, 3000.0f);
+            CGSize trialSize = CGSizeMake(388.0f, 1.0f);
+            newSize = [self.descriptionContent sizeThatFits:trialSize];
             self.creditLabelConstraint.constant = 40;
         }
     } else {
         self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
-        self.descriptionContent.frame = CGRectMake(10, 139, self.widthConstraint.constant-20, 30000.0f);
+        CGSize trialSize = CGSizeMake(self.widthConstraint.constant-20.0f, 1.0f);
+        newSize = [self.descriptionContent sizeThatFits:trialSize];
     }
-    
-    [self.descriptionContent sizeToFit];
-    self.descriptionConstraint.constant = self.descriptionContent.bounds.size.height;
+
+    self.descriptionConstraint.constant = newSize.height;
 
 }
 
@@ -722,18 +700,12 @@
     
     //Set the title of the bar button item
     barButtonItem.title = self.module.name;
-    
-    //Set the bar button item as the Nav Bar's leftBarButtonItem
-    //[_tabBarItem setLeftBarButtonItem:barButtonItem animated:YES];
 }
 
 -(void)splitViewController:(UISplitViewController *)svc
     willShowViewController:(UIViewController *)aViewController
  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-    //Remove the barButtonItem.
-    //[_navBarItem setLeftBarButtonItem:nil animated:YES];
-    
     //Nil out the pointer to the popover.
     _masterPopover = nil;
 }

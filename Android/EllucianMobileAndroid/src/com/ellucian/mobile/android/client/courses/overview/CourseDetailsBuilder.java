@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
 import com.ellucian.mobile.android.client.courses.CoursesResponse;
@@ -91,12 +92,17 @@ public class CourseDetailsBuilder extends ContentProviderOperationBuilder<Course
 						daysString += "" + dayNumber + ",";
 					}		
 					
+					String startTime = !TextUtils.isEmpty(pattern.sisStartTimeWTz) ? 
+							pattern.sisStartTimeWTz : pattern.startTime;
+					String endTime = !TextUtils.isEmpty(pattern.sisEndTimeWTz) ? 
+							pattern.sisEndTimeWTz : pattern.endTime;
+					
 					batch.add(ContentProviderOperation
 							.newInsert(CoursePatterns.CONTENT_URI)
 							.withValue(CourseCourses.COURSE_ID, section.sectionId)
 							.withValue(CoursePatterns.PATTERN_DAYS, daysString)
-							.withValue(CoursePatterns.PATTERN_START_TIME, pattern.startTime)
-							.withValue(CoursePatterns.PATTERN_END_TIME, pattern.endTime)
+							.withValue(CoursePatterns.PATTERN_START_TIME, startTime)
+							.withValue(CoursePatterns.PATTERN_END_TIME, endTime)
 							.withValue(CoursePatterns.PATTERN_ROOM, pattern.room)
 							.withValue(CoursePatterns.PATTERN_LOCATION, pattern.building)
 							.withValue(MapsBuildings.BUILDING_BUILDING_ID, pattern.buildingId)

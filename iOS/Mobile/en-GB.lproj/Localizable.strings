@@ -19,17 +19,29 @@
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "Add To Cart (%d)";
 
+/* all search scope in directory */
+"All" = "All";
+
 /* label for all day event */
 "All Day" = "All Day";
 
 /* Applications menu heading */
 "Applications" = "Applications";
 
+/* Audit label for registration */
+"Audit" = "Audit";
+
 /* Cancel */
 "Cancel" = "Cancel";
 
 /* label for the categories */
 "Category" = "Category";
+
+/* CEU (singular) label for registration */
+"CEU" = "CEU";
+
+/* CEUs label for registration */
+"CEUs" = "CEUs";
 
 /* checking registration eligibility message */
 "Checking Eligibility" = "Checking Eligibility";
@@ -40,12 +52,8 @@
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "Copy URL";
 
-/* Credits label for registration cart
-   title of variable credits input alert */
+/* Credits label for registration */
 "Credits" = "Credits";
-
-/* variable credits input alert placeholder */
-"credits" = "credits";
 
 /* message for heading of messages during registration */
 "Critical" = "Critical";
@@ -83,11 +91,17 @@
 /* phone extension */
 "ext." = "ext.";
 
+/* facilty/staff search scope in directory */
+"Faculty/Staff" = "Faculty/Staff";
+
 /* fetching registration plan message */
 "Fetching Registration Plan" = "Fetching Registration Plan";
 
 /* User can get directions for this location */
 "Get Directions" = "Get Directions";
+
+/* Graded label for registration */
+"Graded" = "Graded";
 
 /* Home menu item */
 "Home" = "Home";
@@ -104,9 +118,7 @@
 /* label for when data for last updated time is unavailable */
 "Last Updated: Unavailable" = "Last Updated: Unavailable";
 
-/* loading message while waiting for data to load
-   loading message while waiting for events data
-   loading message while waiting for feed data */
+/* loading message while waiting for data to load */
 "Loading" = "Loading";
 
 /* new notification has arrived */
@@ -141,6 +153,12 @@
 
 /* Outdated alert title */
 "Outdated" = "Outdated";
+
+/* PassFail abbrev label for registration cart */
+"P/F" = "P/F";
+
+/* PassFail label for registration */
+"Pass/Fail" = "Pass/Fail";
 
 /* Register button */
 "Register" = "Register";
@@ -183,6 +201,9 @@
 
 /* label to sign out */
 "Sign Out" = "Sign Out";
+
+/* student search scope in directory */
+"Students" = "Students";
 
 /* Switch school menu item */
 "Switch School" = "Switch University";

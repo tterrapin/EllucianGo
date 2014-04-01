@@ -21,7 +21,10 @@
 "2IA-SC-G6y.text" = "Étiquette";
 
 /* Class = "IBUINavigationItem"; title = "Terms"; ObjectID = "2Lr-Sh-71a"; */
-"2Lr-Sh-71a.title" = "Conditions";
+"2Lr-Sh-71a.title" = "Semestres";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "2PQ-p2-ZAZ"; */
+"2PQ-p2-ZAZ.text" = "Étiquette";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "2bH-co-qB5"; */
 "2bH-co-qB5.text" = "Étiquette";
@@ -117,7 +120,7 @@
 "DLT-hy-h2X.text" = "Libellé";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "DQT-RF-YSo"; */
-"DQT-RF-YSo.text" = "Enseignants";
+"DQT-RF-YSo.text" = "Enseignant(s)";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "Ddd-eD-yqc"; */
 "Ddd-eD-yqc.text" = "Libellé";
@@ -142,9 +145,6 @@
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "FET-69-yt4"; */
 "FET-69-yt4.text" = "Libellé";
-
-/* Class = "IBUITableViewController"; title = "Events Selector"; ObjectID = "FZV-jm-8aU"; */
-"FZV-jm-8aU.title" = "Sélecteur d'événements";
 
 /* Class = "IBUILabel"; text = "Email"; ObjectID = "FeC-yO-Qzu"; */
 "FeC-yO-Qzu.text" = "E-mail";
@@ -246,7 +246,7 @@
 "Okd-La-GIl.title" = "Connexion";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "PZR-jf-Ox7"; */
-"PZR-jf-Ox7.text" = "Enseignant";
+"PZR-jf-Ox7.text" = "Enseignant(s)";
 
 /* Class = "IBUINavigationItem"; title = "Root View Controller"; ObjectID = "Q3H-yh-AB3"; */
 "Q3H-yh-AB3.title" = "Contrôleur de vue racine";
@@ -268,6 +268,9 @@
 
 /* Class = "IBUILabel"; text = "Phone"; ObjectID = "R7w-jn-5Dc"; */
 "R7w-jn-5Dc.text" = "Téléphone";
+
+/* Class = "IBUILabel"; text = "Grade Content"; ObjectID = "RCy-co-NJP"; */
+"RCy-co-NJP.text" = "Grade Content";
 
 /* Class = "IBUILabel"; text = "Credits:"; ObjectID = "RiH-GQ-Rwu"; */
 "RiH-GQ-Rwu.text" = "Crédits:";
@@ -333,10 +336,13 @@
 "aGG-d1-1x1.text" = "Libellé";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
-"aNm-pv-19M.text" = "Étiquette";
+"aNm-pv-19M.text" = "Libellé";
+
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "aPX-9A-e4m"; */
+"aPX-9A-e4m.text" = "Notation:";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aTg-wc-XmG"; */
-"aTg-wc-XmG.text" = "Étiquette";
+"aTg-wc-XmG.text" = "Libellé";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "aUk-f5-GXf"; */
 "aUk-f5-GXf.text" = "Libellé";
@@ -389,11 +395,14 @@
 /* Class = "IBUILabel"; text = "Description"; ObjectID = "eBD-3Y-aTU"; */
 "eBD-3Y-aTU.text" = "Description";
 
+/* Class = "IBUILabel"; text = "Dates"; ObjectID = "eIR-C1-bT1"; */
+"eIR-C1-bT1.text" = "Dates";
+
 /* Class = "IBUIViewController"; title = "Grades"; ObjectID = "elS-z3-eCK"; */
 "elS-z3-eCK.title" = "Notes";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "emH-3B-C0w"; */
-"emH-3B-C0w.text" = "Enseignant";
+"emH-3B-C0w.text" = "Enseignant(s)";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "euH-tm-iyk"; */
 "euH-tm-iyk.text" = "Libellé";
@@ -420,7 +429,7 @@
 "fub-ew-Svv.text" = "Étiquette";
 
 /* Class = "IBUILabel"; text = "Terms"; ObjectID = "gFa-Iz-O3N"; */
-"gFa-Iz-O3N.text" = "Conditions";
+"gFa-Iz-O3N.text" = "Semestres";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "gKk-NO-EDm"; */
 "gKk-NO-EDm.text" = "Libellé";
@@ -447,7 +456,7 @@
 "hK7-iJ-2oq.normalTitle" = "Annuler";
 
 /* Class = "IBUILabel"; text = "Faculty"; ObjectID = "hVM-M4-sff"; */
-"hVM-M4-sff.text" = "Enseignant";
+"hVM-M4-sff.text" = "Enseignant(s)";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "hxv-dg-4vS"; */
 "hxv-dg-4vS.text" = "Libellé";
@@ -548,6 +557,12 @@
 /* Class = "IBUITextView"; text = "0"; ObjectID = "v71-OW-LtF"; */
 "v71-OW-LtF.text" = "0";
 
+/* Class = "IBUILabel"; text = "Dates"; ObjectID = "v9g-N9-qi6"; */
+"v9g-N9-qi6.text" = "Dates";
+
+/* Class = "IBUILabel"; text = "Grading:"; ObjectID = "vAF-mZ-4et"; */
+"vAF-mZ-4et.text" = "Notation:";
+
 /* Class = "IBUILabel"; text = "Meeting Information"; ObjectID = "vcj-p8-E2a"; */
 "vcj-p8-E2a.text" = "Informations de réunion";
 
@@ -561,7 +576,7 @@
 "w9h-YX-q4v.text" = "Libellé";
 
 /* Class = "IBUIBarButtonItem"; title = "Terms"; ObjectID = "wIN-QM-0wd"; */
-"wIN-QM-0wd.title" = "Conditions";
+"wIN-QM-0wd.title" = "Semestres";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "whO-1B-Hei"; */
 "whO-1B-Hei.text" = "Étiquette";

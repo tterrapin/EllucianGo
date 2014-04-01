@@ -3,7 +3,7 @@
 //  Mobile
 //
 //  Created by Jason Hocker on 10/4/12.
-//  Copyright (c) 2012 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
 //
 
 #import <AddressBook/AddressBook.h>
@@ -25,7 +25,8 @@
 @property (nonatomic, assign) UILocalizedIndexedCollation *collation;
 @property (readwrite, copy, nonatomic) NSArray *tableData;
 @property (nonatomic, assign) BOOL firstNameFirst;
-@property (nonatomic, strong) NSString *selectedScope;
+@property (nonatomic, assign) DirectoryViewType selectedScope;
+@property (nonatomic, strong) NSArray *scopesType;
 @end
 
 @implementation DirectoryViewController
@@ -68,41 +69,54 @@
     if(self.initialScope) {
         self.selectedScope = self.initialScope;
     }
-    NSMutableArray *scopes = [[NSMutableArray alloc] init];
+    
+    NSMutableArray *mutableScopesTitle = [[NSMutableArray alloc] init];
+    NSMutableArray *mutableScopesTypes = [[NSMutableArray alloc] init];
+    
+    //Directory module
     if(self.module && [self.module.type isEqualToString:@"directory"]) {
         if([[self.module propertyForKey:@"student"] isEqualToString:@"true"] && !self.hideStudents) {
-            if(!self.selectedScope) self.selectedScope = kDirectoryViewTypeStudent;
-            [scopes addObject:kDirectoryViewTypeStudent ];
+            if(!self.selectedScope) self.selectedScope = DirectoryViewTypeStudent;
+            [mutableScopesTitle addObject:NSLocalizedString(@"Students", @"student search scope in directory")];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeStudent]];
         }
         if([[self.module propertyForKey:@"faculty"] isEqualToString:@"true"] && !self.hideFaculty) {
-            if(!self.selectedScope) self.selectedScope = kDirectoryViewTypeFaculty;
-            [scopes addObject:kDirectoryViewTypeFaculty ];
+            if(!self.selectedScope) self.selectedScope = DirectoryViewTypeFaculty;
+            [mutableScopesTitle addObject:NSLocalizedString(@"Faculty/Staff", @"facilty/staff search scope in directory") ];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeFaculty]];
         }
-        if([scopes count] > 1) [scopes addObject:kDirectoryViewTypeAll ];
-    } else {
+        if([mutableScopesTitle count] > 1) {
+            [mutableScopesTitle addObject:NSLocalizedString(@"All", @"all search scope in directory") ];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeAll]];
+        }
+    } else { //not a directory module, but reusing search
         if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-studentSearch"] && !self.hideStudents) {
-            if(!self.selectedScope) self.selectedScope = kDirectoryViewTypeStudent;
-            [scopes addObject:kDirectoryViewTypeStudent ];
+            if(!self.selectedScope) self.selectedScope = DirectoryViewTypeStudent;
+            [mutableScopesTitle addObject:NSLocalizedString(@"Students", @"student search scope in directory") ];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeStudent]];
         }
         if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-facultySearch"] && !self.hideFaculty ) {
-            if(!self.selectedScope) self.selectedScope = kDirectoryViewTypeFaculty;
-            [scopes addObject:kDirectoryViewTypeFaculty ];
+            if(!self.selectedScope) self.selectedScope = DirectoryViewTypeFaculty;
+            [mutableScopesTitle addObject:NSLocalizedString(@"Faculty/Staff", @"facilty/staff search scope in directory") ];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeFaculty]];
         }
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-allSearch"] && [scopes count] > 1) {
-            if(!self.selectedScope) self.selectedScope = kDirectoryViewTypeAll;
-            [scopes addObject:kDirectoryViewTypeAll ];
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-allSearch"] && [mutableScopesTitle count] > 1) {
+            if(!self.selectedScope) self.selectedScope = DirectoryViewTypeAll;
+            [mutableScopesTitle addObject:NSLocalizedString(@"All", @"all search scope in directory") ];
+            [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeAll]];
         }
     }
     
-    if([scopes count] > 1) {
-        self.searchBar.scopeButtonTitles = [scopes copy];
+    self.scopesType = [mutableScopesTypes copy];
+    if([mutableScopesTitle count] > 1) {
+        self.searchBar.scopeButtonTitles = [mutableScopesTitle copy];
 
         if(SYSTEM_VERSION_LESS_THAN(@"7.0")) {
             self.searchBar.tintColor = [UIColor primaryColor];
         }
 
         if(self.initialScope) {
-            self.searchBar.selectedScopeButtonIndex = [self.searchBar.scopeButtonTitles indexOfObject:self.initialScope];
+            self.searchBar.selectedScopeButtonIndex = [self.scopesType indexOfObject:[NSNumber numberWithInt:self.initialScope]];
         } else {
             self.searchBar.selectedScopeButtonIndex = 0;
         }
@@ -288,7 +302,7 @@
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Select directory type" withValue:nil forModuleNamed:self.module.name];
-    self.selectedScope = [self.searchBar.scopeButtonTitles objectAtIndex:self.searchBar.selectedScopeButtonIndex];
+    self.selectedScope = [[self.scopesType objectAtIndex:self.searchBar.selectedScopeButtonIndex] intValue];
     if(searchBar.text.length > 0) {
         [self search:searchBar.text];
     }
@@ -299,19 +313,18 @@
     self.initialQueryString = searchString;
     if([searchString length] > 0) {
         NSString *url = nil;
-        NSString *scopeTitle = self.selectedScope;
         if(self.module && [self.module.type isEqualToString:@"directory"]) {
-            if([scopeTitle isEqualToString:kDirectoryViewTypeStudent]) {
+            if(self.selectedScope == DirectoryViewTypeStudent) {
                 url = [self.module propertyForKey:@"studentSearch"];
-            } else if([scopeTitle isEqualToString:kDirectoryViewTypeFaculty]) {
+            } else if(self.selectedScope == DirectoryViewTypeFaculty) {
                 url = [self.module propertyForKey:@"facultySearch"];
             } else {
                  url = [self.module propertyForKey:@"allSearch"];
             }
         } else {
-            if([scopeTitle isEqualToString:kDirectoryViewTypeStudent]) {
+            if(self.selectedScope == DirectoryViewTypeStudent) {
                 url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-studentSearch"];
-            } else if([scopeTitle isEqualToString:kDirectoryViewTypeFaculty]) {
+            } else if(self.selectedScope == DirectoryViewTypeFaculty) {
                url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-facultySearch"];
             } else {
                url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-allSearch"];

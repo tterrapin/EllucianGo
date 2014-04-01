@@ -44,8 +44,6 @@
     }
     
     self.searchedSections = [NSMutableArray new];
-    //self.tabBar.translucent = NO;
-    
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -75,15 +73,23 @@
                     self.selectedIndex = 1;
                 }
                 
+                if (self.planId == nil) {
+                    //disable ability to add items to cart
+                    [self passCartPermissionToSearchController:NO];
+                } else {
+                    [self passCartPermissionToSearchController:YES];
+                }
+                
                 if(self.ineligibleMessage) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
                     [alert show];
+                    
                 }
-
             });
         });
     });
 }
+
 
 - (IBAction)revealMenu:(id)sender
 {
@@ -327,6 +333,7 @@
         self.plannedSections = [plannedSections copy];
             
         [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationPlanDataReloaded object:nil];
+        
     }
 }
 
@@ -431,4 +438,22 @@
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationPlanDataReloaded object:nil];
 }
+
+
+- (void)passCartPermissionToSearchController:(BOOL)permission
+{
+    RegistrationSearchViewController *searchController = nil;
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UISplitViewController *splitController = self.viewControllers[1];
+        UINavigationController *navigationController = splitController.viewControllers[0];
+        searchController = (RegistrationSearchViewController *)navigationController.childViewControllers[0];
+    } else {
+        UINavigationController *navigationController = self.viewControllers[1];
+        searchController = (RegistrationSearchViewController *)navigationController.childViewControllers[0];
+    }
+    
+    searchController.allowAddToCart = permission;
+}
+
 @end

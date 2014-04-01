@@ -21,7 +21,7 @@
 
 static BOOL lock;
 
-+ (void) fetchNotificationsFromURL:(NSString *) notificationsUrl withManagedObjectContext:(NSManagedObjectContext *)managedObjectContext showLocalNotification:(BOOL)showLocalNotification
++ (void) fetchNotificationsFromURL:(NSString *) notificationsUrl withManagedObjectContext:(NSManagedObjectContext *)managedObjectContext showLocalNotification:(BOOL) showLocalNotification fromView:(UIViewController *)view
 {
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = managedObjectContext;
@@ -33,7 +33,7 @@ static BOOL lock;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
         AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:notificationsUrl] fromView:nil];
+        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:notificationsUrl] fromView:view];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSMutableSet *newKeys = [[NSMutableSet alloc] init];
@@ -190,7 +190,7 @@ static BOOL lock;
         BOOL isLoggedIn = [[CurrentUser sharedInstance] isLoggedIn];
         if(isLoggedIn && [module.type isEqualToString:@"notifications"]) {
             NSString *urlString = [NSString stringWithFormat:@"%@/%@", [module propertyForKey:@"notifications"], [[[CurrentUser sharedInstance]  userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-            [NotificationsFetcher fetchNotificationsFromURL:urlString withManagedObjectContext:managedObjectContext showLocalNotification:YES];
+            [NotificationsFetcher fetchNotificationsFromURL:urlString withManagedObjectContext:managedObjectContext showLocalNotification:YES fromView:nil];
         }
     }
 }

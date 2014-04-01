@@ -14,7 +14,7 @@
 
 @interface NotificationsFetcher : NSObject
 
-+ (void) fetchNotificationsFromURL:(NSString *) url withManagedObjectContext:(NSManagedObjectContext *)context showLocalNotification:(BOOL)showLocalNotification;
++ (void) fetchNotificationsFromURL:(NSString *) url withManagedObjectContext:(NSManagedObjectContext *)context showLocalNotification:(BOOL)showLocalNotification fromView:(UIViewController *)view;
 + (void) fetchNotifications:(NSManagedObjectContext *)managedObjectContext;
 + (void) deleteNotification:(Notification *)notification module:(Module *)module;
 @end

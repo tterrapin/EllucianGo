@@ -155,7 +155,7 @@
         UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
         titleLabel.text = [feed valueForKey:@"title"];
         UILabel *contentLabel = (UILabel *)[cell viewWithTag:101];
-        contentLabel.text = [feed valueForKey:@"content"];
+        contentLabel.text = [[feed valueForKey:@"content"] stringByConvertingHTMLToPlainText];
         contentLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         UIImageView * imageView = (UIImageView*)[cell viewWithTag:102];
         
@@ -497,7 +497,7 @@
                         feed.title = [[json objectForKey:@"title"] stringByConvertingHTMLToPlainText];
                     }
                     if([json objectForKey:@"content"] != [NSNull null]) {
-                        feed.content = [[json objectForKey:@"content"]  stringByConvertingHTMLToPlainText];
+                        feed.content = [json objectForKey:@"content"];
                     }
                     
                     if([json objectForKey:@"logo"] != [NSNull null]) {

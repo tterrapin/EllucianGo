@@ -265,7 +265,7 @@ static Notification* requestedNotification;
     NSString *userid = [[CurrentUser sharedInstance] userid];
     if(userid) {
         NSString *urlString = [NSString stringWithFormat:@"%@/%@", [self.module propertyForKey:@"notifications"], [userid stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-        [NotificationsFetcher fetchNotificationsFromURL:urlString withManagedObjectContext:self.module.managedObjectContext showLocalNotification:NO];
+        [NotificationsFetcher fetchNotificationsFromURL:urlString withManagedObjectContext:self.module.managedObjectContext showLocalNotification:NO fromView:self];
     }
     
 }
