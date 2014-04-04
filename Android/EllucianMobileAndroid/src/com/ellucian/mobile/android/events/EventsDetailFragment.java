@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +24,7 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.URLImageParser;
 import com.ellucian.mobile.android.util.Utils;
 
 public class EventsDetailFragment extends EllucianDefaultDetailFragment {
@@ -109,8 +113,10 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         
         TextView contentView = (TextView) rootView.findViewById(R.id.events_detail_content);
         if (args.containsKey(Extra.CONTENT)) {  
-        	contentView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.ALL));
-	        contentView.setText(args.getString(Extra.CONTENT) + "\n");
+	        URLImageParser parser = new URLImageParser(contentView, activity);
+	        Spanned formatedHtml = Html.fromHtml(args.getString(Extra.CONTENT), parser, null);
+	        contentView.setText(formatedHtml, TextView.BufferType.SPANNABLE );
+	        contentView.setMovementMethod(LinkMovementMethod.getInstance());
 	    }else {
         	contentView.setVisibility(View.GONE); 
         }

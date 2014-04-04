@@ -199,7 +199,7 @@
         UILabel *titleLabel = (UILabel *)[cell viewWithTag:100];
         titleLabel.text = [feed valueForKey:@"title"];
         UILabel *contentLabel = (UILabel *)[cell viewWithTag:101];
-        contentLabel.text = [feed valueForKey:@"content"];
+        contentLabel.text = [[feed valueForKey:@"content"] stringByConvertingHTMLToPlainText ];
         contentLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         UILabel *feedNameLabel = (UILabel *)[cell viewWithTag:102];
 
