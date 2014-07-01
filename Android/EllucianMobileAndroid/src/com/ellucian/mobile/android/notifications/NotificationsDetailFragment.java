@@ -123,6 +123,13 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
        
         MenuItem sharedMenuItem = menu.findItem(R.id.share);
         
+        MenuItem deleteMenuItem = menu.findItem(R.id.notifications_delete);
+    	if (getArguments().getInt(Extra.NOTIFICATIONS_STICKY) == 1) {
+    		deleteMenuItem.setVisible(false);
+    	} else {
+    		deleteMenuItem.setVisible(true);
+    	}
+        
         /** Getting the actionprovider associated with the menu item whose id is share */
         ShareActionProvider shareActionProvider = 
         		(ShareActionProvider) sharedMenuItem.getActionProvider();
@@ -166,14 +173,16 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 			sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
 					GoogleAnalyticsConstants.ACTION_BUTTON_PRESS,
 					"Deleting notification", null, getEllucianActivity().moduleName);
-			triggerDeleteNotification();
+			DeleteConfirmDialogFragment deleteConfirmDialogFragment = new DeleteConfirmDialogFragment();
+			deleteConfirmDialogFragment.detailFragment = this;
+			deleteConfirmDialogFragment.show(getFragmentManager(), "RegisterConfirmDialogFragment");
     		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     	}
     }
-    
-    private void triggerDeleteNotification() {
+
+    protected void triggerDeleteNotification() {
     	if (getArguments().getInt(Extra.NOTIFICATIONS_STICKY) == 1) {
     		Toast emptyMessage = Toast.makeText(getActivity(), R.string.notifications_unable_to_delete_message, Toast.LENGTH_LONG);
 			emptyMessage.setGravity(Gravity.CENTER, 0, 0);

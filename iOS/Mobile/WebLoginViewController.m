@@ -12,6 +12,7 @@
 #import "CurrentUser.h"
 #import "NotificationManager.h"
 #import "LoginExecutor.h"
+#import "ModuleRole.h"
 
 @interface WebLoginViewController ()
 
@@ -46,6 +47,29 @@
     if([title isEqualToString:@"Authentication Success"]) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication using web login" withValue:nil forModuleNamed:nil];
         [LoginExecutor getUserInfo];
+        
+        BOOL match = NO;
+        if(self.access) {
+            for(ModuleRole *role in self.access) {
+                if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
+                    match = YES;
+                    break;
+                } else if ([role.role isEqualToString:@"Everyone"]) {
+                    match = YES;
+                    break;
+                }
+            }
+            if(!match) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
+                                                                message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
+            }
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
         
         // register the device if needed

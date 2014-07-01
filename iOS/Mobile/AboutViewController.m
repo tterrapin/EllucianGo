@@ -33,6 +33,11 @@
         self.privacyPolicyLabel.textAlignment = NSTextAlignmentRight;
     }
     
+    self.serverVersion.textColor = [UIColor subheaderTextColor];
+    self.serverVersionLabel.textColor = [UIColor subheaderTextColor];
+    self.clientVersion.textColor = [UIColor subheaderTextColor];
+    self.clientVersionLabel.textColor = [UIColor subheaderTextColor];
+    
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     
     self.backgroundView.backgroundColor = [UIColor accentColor];

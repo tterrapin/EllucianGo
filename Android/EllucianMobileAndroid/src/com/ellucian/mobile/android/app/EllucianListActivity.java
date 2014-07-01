@@ -1,7 +1,5 @@
 package com.ellucian.mobile.android.app;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
 import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -25,21 +23,11 @@ import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
-import com.google.analytics.tracking.android.ExceptionReporter;
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.GAServiceManager;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.Logger.LogLevel;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
 
 public abstract class EllucianListActivity extends ListActivity implements DrawerLayoutActivity {
 	public String moduleId;
 	public String moduleName;
 	public String requestUrl;
-	private GoogleAnalytics gaInstance;
-	private Tracker gaTracker1;
-	private Tracker gaTracker2;
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
 	private ConfigurationUpdateReceiver configReceiver;
 	private SendToSelectionReceiver resetReceiver;
@@ -48,8 +36,6 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
 	
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        configureGoogleAnalytics();
        
         Intent incomingIntent = getIntent();
         if (incomingIntent.hasExtra(Extra.MODULE_ID)) {
@@ -189,26 +175,6 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
         super.onUserInteraction();
         getEllucianApp().touch();
     }
-
-    /**
-     * Create the tracker objects for Google Analytics
-     */
-	private void configureGoogleAnalytics() {
-		gaInstance = GoogleAnalytics.getInstance(this);
-        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
-        String trackerId1 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
-        String trackerId2 = Utils.getStringFromPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2, null);
-        if(trackerId1 != null) {
-			gaTracker1 = gaInstance.getTracker(trackerId1);
-			UncaughtExceptionHandler handler = new ExceptionReporter(
-					gaTracker1, GAServiceManager.getInstance(),
-					Thread.getDefaultUncaughtExceptionHandler(), this);
-			Thread.setDefaultUncaughtExceptionHandler(handler);
-        }
-        if(trackerId2 != null) {
-        	gaTracker2 = gaInstance.getTracker(trackerId2);
-        }
-	}
     
     /**
      * Send event to google analytics
@@ -219,12 +185,11 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
      * @param moduleName
      */
     public void sendEvent(String category, String action, String label, Long value, String moduleName) {
-    	sendEventToTracker1(category, action, label, value, moduleName);
-    	sendEventToTracker2(category, action, label, value, moduleName);
+    	getEllucianApp().sendEvent(category, action, label, value, moduleName);
     }
     
     /**
-     * Send event to google analytics
+     * Send event to google analytics for just tracker 1
      * @param category
      * @param action
      * @param label
@@ -232,18 +197,11 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
      * @param moduleName
      */
     public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
-    	if(gaTracker1 != null) {
-    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
-    		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-        	mb.set(Fields.customDimension(1), configurationName);
-    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
-    		gaTracker1.send(mb.build());
-    	}
+    	getEllucianApp().sendEventToTracker1(category, action, label, value, moduleName);
     }
     
-    
     /**
-     * Send event to google analytics
+     * Send event to google analytics for just tracker 2
      * @param category
      * @param action
      * @param label
@@ -251,22 +209,16 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
      * @param moduleName
      */
     public void sendEventToTracker2(String category, String action, String label, Long value, String moduleName) {
-    	if(gaTracker2 != null) {
-    		MapBuilder mb = MapBuilder.createEvent(category, action, label, value);
-    		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-    		mb.set(Fields.customDimension(1), configurationName);
-    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
-    		gaTracker2.send(mb.build());
-    	}
+    	getEllucianApp().sendEventToTracker2(category, action, label, value, moduleName);
     }
+    
     
     /**
      * Send view to google analytics
      * @param appScreen
      */
     public void sendView(String appScreen, String moduleName) {
-    	sendViewToTracker1(appScreen, moduleName);
-    	sendViewToTracker2(appScreen, moduleName);
+    	getEllucianApp().sendView(appScreen, moduleName);
     }
     
     /**
@@ -274,13 +226,7 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
      * @param appScreen
      */
     public void sendViewToTracker1(String appScreen, String moduleName) {
-    	if(gaTracker1 != null) {
-    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
-    		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-    		mb.set(Fields.customDimension(1), configurationName);
-    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
-			gaTracker1.send(mb.build());
-    	}
+    	getEllucianApp().sendViewToTracker1(appScreen, moduleName);
     }
     
     /**
@@ -288,13 +234,7 @@ public abstract class EllucianListActivity extends ListActivity implements Drawe
      * @param appScreen
      */
     public void sendViewToTracker2(String appScreen, String moduleName) {
-    	if(gaTracker2 != null) {
-    		MapBuilder mb = MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen);
-    		String configurationName = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
-    		mb.set(Fields.customDimension(1), configurationName);
-    		if(moduleName != null) mb.set(Fields.customDimension(2), moduleName);
-			gaTracker2.send(mb.build());
-    	}
+    	getEllucianApp().sendViewToTracker2(appScreen, moduleName);
     }
 }
 

@@ -53,6 +53,8 @@
 		547CED53187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */; };
 		547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */; };
 		5491340C17B16A7A0001CE29 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5491340B17B16A7A0001CE29 /* Images.xcassets */; };
+		5491541118F73C2500731FF4 /* MenuSectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5491541018F73C2500731FF4 /* MenuSectionInfo.m */; };
+		5491541218F73C2500731FF4 /* MenuSectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5491541018F73C2500731FF4 /* MenuSectionInfo.m */; };
 		5493138D185BBD270068084F /* RegistrationCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931382185BBD270068084F /* RegistrationCartViewController.m */; };
 		5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931382185BBD270068084F /* RegistrationCartViewController.m */; };
 		5493138F185BBD270068084F /* RegistrationPlannedSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 54931384185BBD270068084F /* RegistrationPlannedSection.m */; };
@@ -83,6 +85,8 @@
 		54945089175E6182008F488C /* CourseAnnouncementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54945087175E6182008F488C /* CourseAnnouncementsViewController.m */; };
 		54945090175E7C01008F488C /* CourseAnnouncement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5494508F175E7C01008F488C /* CourseAnnouncement.m */; };
 		54945091175E7C01008F488C /* CourseAnnouncement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5494508F175E7C01008F488C /* CourseAnnouncement.m */; };
+		54A1D2E318EF2396008A2261 /* MenuTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A1D2E218EF2396008A2261 /* MenuTableViewHeaderFooterView.m */; };
+		54A1D2E418EF2396008A2261 /* MenuTableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A1D2E218EF2396008A2261 /* MenuTableViewHeaderFooterView.m */; };
 		54A313461805A7CF00D3D481 /* UIScrollView+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A313451805A7CF00D3D481 /* UIScrollView+Size.m */; };
 		54A313471805A7CF00D3D481 /* UIScrollView+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A313451805A7CF00D3D481 /* UIScrollView+Size.m */; };
 		54A4C87117DA4A8700658EA7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8454D3EE15C6E4DA00418BA2 /* Localizable.strings */; };
@@ -111,7 +115,6 @@
 		54BC0FC316FC006B00698FE4 /* FeedCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC216FC006B00698FE4 /* FeedCategory.m */; };
 		54BC0FC616FC006B00698FE4 /* FeedModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC516FC006B00698FE4 /* FeedModule.m */; };
 		54BC0FC916FC015500698FE4 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC816FC015500698FE4 /* Feed.m */; };
-		54BC2C0616F65300004891BF /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0516F65300004891BF /* Module.m */; };
 		54BC2C0916F65300004891BF /* ModuleProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0816F65300004891BF /* ModuleProperty.m */; };
 		54BC2C0F16F789BA004891BF /* DirectoryEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0E16F789BA004891BF /* DirectoryEntryViewController.m */; };
 		54C14727177B6BB000C6CCBD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C14726177B6BB000C6CCBD /* SystemConfiguration.framework */; };
@@ -122,6 +125,8 @@
 		54C14732177DDEDB00C6CCBD /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C14730177DDED400C6CCBD /* MediaPlayer.framework */; };
 		54C5F91D16AD950D00BE8500 /* EmptyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54C5F91C16AD950D00BE8500 /* EmptyTableViewCell.xib */; };
 		54CC12E916D566C200173D7B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CC12E816D566C200173D7B /* MBProgressHUD.m */; };
+		54CC7F291941673F0044C31E /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CC7F281941673F0044C31E /* Module.m */; };
+		54CC7F2A1941673F0044C31E /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CC7F281941673F0044C31E /* Module.m */; };
 		54D1BCF616D41F21005E0DEC /* CourseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D1BCF516D41F21005E0DEC /* CourseDetail.m */; };
 		54D1BCF916D433EF005E0DEC /* CourseMeetingPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D1BCF816D433EF005E0DEC /* CourseMeetingPattern.m */; };
 		54E077A116F2E9520092C9C9 /* MapCampus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E077A016F2E9520092C9C9 /* MapCampus.m */; };
@@ -216,7 +221,6 @@
 		54E40B981728552E00F661A5 /* MapPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B723B316F1C187004738C1 /* MapPOI.m */; };
 		54E40B991728552E00F661A5 /* MapPOIType.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B723B616F1C1F8004738C1 /* MapPOIType.m */; };
 		54E40B9A1728552E00F661A5 /* MapCampus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E077A016F2E9520092C9C9 /* MapCampus.m */; };
-		54E40B9B1728552E00F661A5 /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0516F65300004891BF /* Module.m */; };
 		54E40B9C1728552E00F661A5 /* ModuleProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0816F65300004891BF /* ModuleProperty.m */; };
 		54E40B9E1728552E00F661A5 /* DirectoryEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0E16F789BA004891BF /* DirectoryEntryViewController.m */; };
 		54E40B9F1728552E00F661A5 /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 547B0DD816F95E5E0039669E /* VersionChecker.m */; };
@@ -403,6 +407,8 @@
 		547CED51187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSectionDetailViewController.h; sourceTree = "<group>"; };
 		547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSectionDetailViewController.m; sourceTree = "<group>"; };
 		5491340B17B16A7A0001CE29 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Ellucian Mobile/Images.xcassets"; sourceTree = "<group>"; };
+		5491540F18F73C2500731FF4 /* MenuSectionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuSectionInfo.h; path = Mobile/MenuSectionInfo.h; sourceTree = "<group>"; };
+		5491541018F73C2500731FF4 /* MenuSectionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuSectionInfo.m; path = Mobile/MenuSectionInfo.m; sourceTree = "<group>"; };
 		54931381185BBD270068084F /* RegistrationCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationCartViewController.h; sourceTree = "<group>"; };
 		54931382185BBD270068084F /* RegistrationCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationCartViewController.m; sourceTree = "<group>"; };
 		54931383185BBD270068084F /* RegistrationPlannedSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSection.h; sourceTree = "<group>"; };
@@ -442,6 +448,8 @@
 		54945087175E6182008F488C /* CourseAnnouncementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseAnnouncementsViewController.m; sourceTree = "<group>"; };
 		5494508E175E7C00008F488C /* CourseAnnouncement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseAnnouncement.h; sourceTree = "<group>"; };
 		5494508F175E7C01008F488C /* CourseAnnouncement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseAnnouncement.m; sourceTree = "<group>"; };
+		54A1D2E118EF2396008A2261 /* MenuTableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuTableViewHeaderFooterView.h; path = Mobile/MenuTableViewHeaderFooterView.h; sourceTree = "<group>"; };
+		54A1D2E218EF2396008A2261 /* MenuTableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuTableViewHeaderFooterView.m; path = Mobile/MenuTableViewHeaderFooterView.m; sourceTree = "<group>"; };
 		54A313441805A7CF00D3D481 /* UIScrollView+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Size.h"; sourceTree = "<group>"; };
 		54A313451805A7CF00D3D481 /* UIScrollView+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Size.m"; sourceTree = "<group>"; };
 		54A4C87B17DA6A1C00658EA7 /* PseudoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoButtonView.h; sourceTree = "<group>"; };
@@ -488,8 +496,6 @@
 		54BC0FC516FC006B00698FE4 /* FeedModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedModule.m; sourceTree = "<group>"; };
 		54BC0FC716FC015500698FE4 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
 		54BC0FC816FC015500698FE4 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
-		54BC2C0416F65300004891BF /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
-		54BC2C0516F65300004891BF /* Module.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Module.m; sourceTree = "<group>"; };
 		54BC2C0716F65300004891BF /* ModuleProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleProperty.h; sourceTree = "<group>"; };
 		54BC2C0816F65300004891BF /* ModuleProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleProperty.m; sourceTree = "<group>"; };
 		54BC2C0D16F789BA004891BF /* DirectoryEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEntryViewController.h; sourceTree = "<group>"; };
@@ -505,6 +511,10 @@
 		54C5F91C16AD950D00BE8500 /* EmptyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyTableViewCell.xib; sourceTree = "<group>"; };
 		54CC12E716D566C200173D7B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		54CC12E816D566C200173D7B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		54CC7F26194165650044C31E /* Mobile 3.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mobile 3.5.xcdatamodel"; sourceTree = "<group>"; };
+		54CC7F271941673F0044C31E /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
+		54CC7F281941673F0044C31E /* Module.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Module.m; sourceTree = "<group>"; };
+		54CC7F2B194188280044C31E /* LoginProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginProtocol.h; sourceTree = "<group>"; };
 		54D1BCF416D41F21005E0DEC /* CourseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetail.h; sourceTree = "<group>"; };
 		54D1BCF516D41F21005E0DEC /* CourseDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetail.m; sourceTree = "<group>"; };
 		54D1BCF716D433EF005E0DEC /* CourseMeetingPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseMeetingPattern.h; sourceTree = "<group>"; };
@@ -933,6 +943,10 @@
 				8448902D15EC242C008B2D40 /* MenuViewController.m */,
 				8448902215EC1B97008B2D40 /* SlidingViewController.h */,
 				8448902315EC1B97008B2D40 /* SlidingViewController.m */,
+				54A1D2E118EF2396008A2261 /* MenuTableViewHeaderFooterView.h */,
+				54A1D2E218EF2396008A2261 /* MenuTableViewHeaderFooterView.m */,
+				5491540F18F73C2500731FF4 /* MenuSectionInfo.h */,
+				5491541018F73C2500731FF4 /* MenuSectionInfo.m */,
 			);
 			name = Menu;
 			path = ..;
@@ -941,12 +955,12 @@
 		54F0B9261824279300829E73 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				54CC7F271941673F0044C31E /* Module.h */,
+				54CC7F281941673F0044C31E /* Module.m */,
 				84A11F1F15C88DB8002FC14A /* Module+Attributes.h */,
 				84A11F2015C88DB8002FC14A /* Module+Attributes.m */,
 				84279DCB15C81B2D00DCBC7E /* Module+Create.h */,
 				84279DCC15C81B2D00DCBC7E /* Module+Create.m */,
-				54BC2C0416F65300004891BF /* Module.h */,
-				54BC2C0516F65300004891BF /* Module.m */,
 				54BC2C0716F65300004891BF /* ModuleProperty.h */,
 				54BC2C0816F65300004891BF /* ModuleProperty.m */,
 				54ABAA3B16C1896E00141DD5 /* ModuleRole.h */,
@@ -1385,6 +1399,7 @@
 				54F0327716D59FC000318C7A /* KeychainWrapper.m */,
 				54779E6317737B3F00ABD9F5 /* LoginExecutor.h */,
 				54779E6417737B3F00ABD9F5 /* LoginExecutor.m */,
+				54CC7F2B194188280044C31E /* LoginProtocol.h */,
 				54F0327916D59FC700318C7A /* LoginViewController.h */,
 				54F0327A16D59FCC00318C7A /* LoginViewController.m */,
 				546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */,
@@ -1543,6 +1558,7 @@
 				54E40B3F1728552E00F661A5 /* Module+Create.m in Sources */,
 				54E40B401728552E00F661A5 /* EventsViewController.m in Sources */,
 				54E40B411728552E00F661A5 /* Module+Attributes.m in Sources */,
+				54CC7F2A1941673F0044C31E /* Module.m in Sources */,
 				5447CC8017D669580077FA3F /* DirectoryNavigationController.m in Sources */,
 				547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */,
 				54E40B421728552E00F661A5 /* GradesViewController.m in Sources */,
@@ -1632,6 +1648,7 @@
 				546B3A6D18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */,
 				5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */,
 				54E40B8C1728552E00F661A5 /* RNCryptorEngine.m in Sources */,
+				5491541218F73C2500731FF4 /* MenuSectionInfo.m in Sources */,
 				54E40B8D1728552E00F661A5 /* RNEncryptor.m in Sources */,
 				54E40B8E1728552E00F661A5 /* CourseRoster.m in Sources */,
 				54E40B8F1728552E00F661A5 /* CourseDetailInstructor.m in Sources */,
@@ -1645,7 +1662,6 @@
 				54E40B981728552E00F661A5 /* MapPOI.m in Sources */,
 				54E40B991728552E00F661A5 /* MapPOIType.m in Sources */,
 				54E40B9A1728552E00F661A5 /* MapCampus.m in Sources */,
-				54E40B9B1728552E00F661A5 /* Module.m in Sources */,
 				5453A48317F3299E007F90B6 /* CopyLabel.m in Sources */,
 				54E40B9C1728552E00F661A5 /* ModuleProperty.m in Sources */,
 				54E40B9E1728552E00F661A5 /* DirectoryEntryViewController.m in Sources */,
@@ -1666,6 +1682,7 @@
 				54779E6617737B3F00ABD9F5 /* LoginExecutor.m in Sources */,
 				54C1472F177DDC4600C6CCBD /* VideoViewController.m in Sources */,
 				543051F61782025C0008FA6E /* UIViewController+GoogleAnalyticsTrackerSupport.m in Sources */,
+				54A1D2E418EF2396008A2261 /* MenuTableViewHeaderFooterView.m in Sources */,
 				543051FA178384F00008FA6E /* AudioViewController.m in Sources */,
 				5430520817874C9E0008FA6E /* ImportantNumbersDetailViewController.m in Sources */,
 			);
@@ -1684,6 +1701,7 @@
 				84A11F1415C87518002FC14A /* EventsViewController.m in Sources */,
 				0DDD89E31886545900D1EE3A /* NotificationManager.m in Sources */,
 				84A11F2115C88DB8002FC14A /* Module+Attributes.m in Sources */,
+				54CC7F291941673F0044C31E /* Module.m in Sources */,
 				84D6728C15CA1F7300D89522 /* GradesViewController.m in Sources */,
 				84D6729715CA3DB200D89522 /* GradesCell.m in Sources */,
 				547CED53187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */,
@@ -1773,6 +1791,7 @@
 				546B3A6C18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */,
 				54A8DBEE16CD62C300E20871 /* RNEncryptor.m in Sources */,
 				54EE6E9016CEF69C0060613C /* CourseRoster.m in Sources */,
+				5491541118F73C2500731FF4 /* MenuSectionInfo.m in Sources */,
 				5493138D185BBD270068084F /* RegistrationCartViewController.m in Sources */,
 				54B96B6716D2CCB30055EDCE /* CourseDetailInstructor.m in Sources */,
 				54D1BCF616D41F21005E0DEC /* CourseDetail.m in Sources */,
@@ -1785,7 +1804,6 @@
 				54B723B416F1C187004738C1 /* MapPOI.m in Sources */,
 				54B723B716F1C1F8004738C1 /* MapPOIType.m in Sources */,
 				54E077A116F2E9520092C9C9 /* MapCampus.m in Sources */,
-				54BC2C0616F65300004891BF /* Module.m in Sources */,
 				54BC2C0916F65300004891BF /* ModuleProperty.m in Sources */,
 				54BC2C0F16F789BA004891BF /* DirectoryEntryViewController.m in Sources */,
 				547B0DD916F95E5E0039669E /* VersionChecker.m in Sources */,
@@ -1807,6 +1825,7 @@
 				5453A48217F3299E007F90B6 /* CopyLabel.m in Sources */,
 				54C1472E177DDC4600C6CCBD /* VideoViewController.m in Sources */,
 				543051F51782025C0008FA6E /* UIViewController+GoogleAnalyticsTrackerSupport.m in Sources */,
+				54A1D2E318EF2396008A2261 /* MenuTableViewHeaderFooterView.m in Sources */,
 				543051F9178384F00008FA6E /* AudioViewController.m in Sources */,
 				5430520717874C9E0008FA6E /* ImportantNumbersDetailViewController.m in Sources */,
 			);
@@ -2013,7 +2032,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "Ellucian Mobile";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0C6EF9FF-C062-4DF9-B656-FDCE78694408";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "78CD4433-3B5E-429B-A456-0888CC701B2A";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -2081,11 +2100,12 @@
 			isa = XCVersionGroup;
 			children = (
 				5453A81118B25DB100C1196E /* Mobile 3.xcdatamodel */,
+				54CC7F26194165650044C31E /* Mobile 3.5.xcdatamodel */,
 				54D303CD1758F28900234758 /* Mobile 2.5.xcdatamodel */,
 				54350DA116E593780051B98C /* Mobile 2.xcdatamodel */,
 				844D902F15D42C9B009B3F2D /* Mobile.xcdatamodel */,
 			);
-			currentVersion = 5453A81118B25DB100C1196E /* Mobile 3.xcdatamodel */;
+			currentVersion = 54CC7F26194165650044C31E /* Mobile 3.5.xcdatamodel */;
 			path = Mobile.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

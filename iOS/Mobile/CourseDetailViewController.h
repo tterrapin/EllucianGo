@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIView *meetingPatternsView;
 @property (weak, nonatomic) IBOutlet UIView *facultyView;
+@property (weak, nonatomic) IBOutlet UILabel *facultyLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *facultyLabelView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facultyLabelViewHeightConstraint;

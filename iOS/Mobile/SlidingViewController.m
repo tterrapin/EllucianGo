@@ -482,24 +482,69 @@
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     NSError *error;
-    Module* module;
-    NSArray *modules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    for(NSManagedObject *managedObject in modules) {
-        if([[managedObject valueForKey:@"type"] isEqualToString:@"notifications"]) {
-            module = (Module*)managedObject;
-        }
-    }
 
-    if(!module) {
+    NSArray *modules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"type == %@", @"notifications"];
+    NSArray *modulesArray = [modules filteredArrayUsingPredicate:predicate];
+    Module* module = [modulesArray firstObject];
+
+    if(!module) { //there is no Notifications module defined so start at home screen
         [self showHome];
-    } else {
-        [self.menuViewController showModule:module];
+    } else if (notificationId) { //there's a specific notification to show
+        UIViewController *topViewController = self.topViewController;
+        BOOL notificationsModule = NO;
         
-        if (notificationId) {
-            // display details for notificationId
-            // need to find way to send message to notificationsViewController
-            [NotificationsViewController requestNotificationDetailById:notificationId];
+        //search if the open controller is the notifications module
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if([topViewController isKindOfClass:[UINavigationController class]]) {
+                UINavigationController *navigationController = (UINavigationController *) topViewController;
+                UIViewController *viewController = navigationController.childViewControllers[0];
+                if([viewController respondsToSelector:@selector(module)]) {
+                    Module *module = [viewController valueForKey:@"module"];
+                    if([module.type isEqualToString:@"notifications"]) {
+                        notificationsModule = YES;
+                    }
+                }
+            }
+        } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if([topViewController isKindOfClass:[UISplitViewController class]]) {
+                UISplitViewController *splitController = (UISplitViewController *) topViewController;
+                UIViewController *viewController = splitController.childViewControllers[0];
+                if([viewController isKindOfClass:[UINavigationController class]]) {
+                    UINavigationController *navigationController = (UINavigationController *) viewController;
+                    UIViewController *viewController = navigationController.childViewControllers[0];
+                    if([viewController respondsToSelector:@selector(module)]) {
+                        Module *module = [viewController valueForKey:@"module"];
+                        if([module.type isEqualToString:@"notifications"]) {
+                            notificationsModule = YES;
+                        }
+                    }
+                }
+            }
         }
+        
+        //Notification module already opened, so use it
+        if(notificationsModule) {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                UINavigationController *notificationsNavController = (UINavigationController *)self.topViewController;
+                [notificationsNavController popToRootViewControllerAnimated:YES];
+                NotificationsViewController *notificationsViewController = notificationsNavController.childViewControllers[0];
+                [NotificationsViewController requestNotificationDetailById:notificationId];
+                [notificationsViewController fetchNotifications];
+            } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                UISplitViewController *splitController = (UISplitViewController *) topViewController;
+                UINavigationController *navigationController = (UINavigationController *)splitController.childViewControllers[0];
+                NotificationsViewController *notificationsViewController = (NotificationsViewController *)navigationController.childViewControllers[0];
+                [NotificationsViewController requestNotificationDetailById:notificationId];
+                [notificationsViewController fetchNotifications];
+            }
+        } else { //open Notifications module
+            [self.menuViewController showModule:module];
+            [NotificationsViewController requestNotificationDetailById:notificationId];
+
+        }
+    } else { // not trying to open specific notification, so proceed as normal
+        [self.menuViewController showModule:module];
     }
 }
 

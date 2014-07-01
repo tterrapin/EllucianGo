@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginProtocol.h"
 
-@interface WebLoginViewController : UIViewController<UIWebViewDelegate>
+@interface WebLoginViewController : UIViewController<UIWebViewDelegate, LoginProtocol>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) NSArray *access;
 
 - (IBAction)cancel:(id)sender;
 

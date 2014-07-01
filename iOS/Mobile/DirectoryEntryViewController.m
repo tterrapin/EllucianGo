@@ -38,6 +38,9 @@
     self.separatorAfterDepartmentView.backgroundColor = [UIColor accentColor];
     self.separatorAfterEmailView.backgroundColor = [UIColor accentColor];
     
+    self.nameLabel.textColor = [UIColor subheaderTextColor];
+    self.titleLabel.textColor = [UIColor subheaderTextColor];
+    
     self.nameLabel.text = [self.entry nameOrderedByFirstName:YES];
     self.titleLabel.text = self.entry.title;
     

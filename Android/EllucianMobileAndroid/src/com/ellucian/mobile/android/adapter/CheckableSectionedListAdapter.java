@@ -8,6 +8,7 @@ import android.widget.Adapter;
 import android.widget.CheckBox;
 
 public class CheckableSectionedListAdapter extends SectionedListAdapter {
+	
 	public CheckableSectionedListAdapter(Context context) {
 		super(context);
 	}
@@ -23,6 +24,17 @@ public class CheckableSectionedListAdapter extends SectionedListAdapter {
 			throw new IllegalStateException("Adapter is not compatible, must be of type: CheckableCursorAdapter");
 		}
 		this.sections.add(adapter);
+		this.identifiers.add(null);
+	}
+	
+	@Override
+	public void addSection(String section, String identifier, Adapter adapter) {
+		this.headers.add(section);
+		if (!(adapter instanceof CheckableCursorAdapter)) {
+			throw new IllegalStateException("Adapter is not compatible, must be of type: CheckableCursorAdapter");
+		}
+		this.sections.add(adapter);
+		this.identifiers.add(identifier);
 	}
 
 	public List<Integer> getCheckedPositions() {

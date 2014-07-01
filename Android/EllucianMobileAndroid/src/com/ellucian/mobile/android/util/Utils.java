@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.androidquery.AQuery;
 import com.ellucian.mobile.android.EllucianApplication;
+import com.ellucian.mobile.android.ModuleType;
 
 public class Utils {
 	public static final String DEFAULT_MENU_ICON = "defaultMenuIcon";
@@ -71,6 +72,8 @@ public class Utils {
 	public static final String LOGIN_TYPE = "loginType";
 	public static final String BROWSER_LOGIN_TYPE = "browser";
 	public static final String NATIVE_LOGIN_TYPE = "native";
+	public static final String MENU = "menu";
+	public static final String MENU_HEADER_STATE = "menuHeaderState";
 
 
 	public static boolean isIntentAvailable(Context context, Intent intent) {
@@ -368,5 +371,18 @@ public class Utils {
 			activity.startActivity(intent);
 		}
 		
+	}
+	
+	public static boolean isAuthenticationNeededForType(String type) {
+		List<String> authTypeList = Arrays
+				.asList(ModuleType.AUTHENTICATION_NEEDED);
+		return authTypeList.contains(type);
+	}
+	
+	public static boolean isAuthenticationNeededForSubType(Context context, String subType) {
+		EllucianApplication ellucianApp = (EllucianApplication) context.getApplicationContext();
+		ModuleConfiguration moduleConfig = ellucianApp.findModuleConfig(subType);
+		
+		return moduleConfig != null ? moduleConfig.secure : false;
 	}
 }

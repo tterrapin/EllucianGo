@@ -116,13 +116,6 @@ public class NumberListActivity extends EllucianActivity implements LoaderManage
         startService(serviceIntent); 
         
 	}
-	
-	@Override
-	public void onStart() {
-		Log.d(TAG, "onStart");
-		super.onStart();
-		sendView("Numbers List", moduleName);
-	}
 	 
 	@Override
 	protected void onRestart() {

@@ -1,8 +1,12 @@
 package com.ellucian.mobile.android.login;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.MainActivity;
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.app.EllucianDialogFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
@@ -38,7 +43,8 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	public static final String LOGIN_DIALOG = "login_dialog";
 	public AlertDialog loginDialog;
 	private Intent queuedIntent;
-	
+	private List<String> roles;
+
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
 	private boolean forcedLogin;
 	
@@ -142,6 +148,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 							Toast emptyMessage = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.dialog_sign_in_empty, Toast.LENGTH_LONG);
 							emptyMessage.setGravity(Gravity.CENTER, 0, 0);
 							emptyMessage.show();
+							arg0.setEnabled(true);
 						} else {
 							boolean staySignedInChecked = staySignedIn.isChecked();
 							if(staySignedInChecked) {
@@ -182,19 +189,24 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		clearQueuedIntent();
 		getEllucianActivity().getEllucianApp().removeAppUser();
 		if(forcedLogin) {
-			Activity activity = getActivity();
-			Intent mainIntent = new Intent(activity, MainActivity.class);
-			mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			activity.startActivity(mainIntent);
-			activity.finish();
+			goHome();
 		}
+	}
+
+	private void goHome() {
+		Activity activity = getActivity();
+		Intent mainIntent = new Intent(activity, MainActivity.class);
+		mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		activity.startActivity(mainIntent);
+		activity.finish();
 	}
 	
 	
-	public void queueIntent(Intent intent) {
-		queuedIntent = intent;		
+	public void queueIntent(Intent intent, List<String> roles) {
+		queuedIntent = intent;	
+		this.roles = roles;
 	}
 	
 	private void clearQueuedIntent() {
@@ -205,9 +217,47 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		if (queuedIntent != null) {
 			Intent startedIntent = queuedIntent;
 			queuedIntent = null;
-			startActivity(startedIntent);
-			if(forcedLogin) {
-				getActivity().finish();
+			
+			boolean authorized = false;
+			if(roles != null) {
+				Application application = getActivity().getApplication();
+				
+				List<String> userRoles = new ArrayList<String>();
+				if(application instanceof EllucianApplication) {
+					EllucianApplication ea = (EllucianApplication)application;
+					userRoles = ea.getAppUserRoles();
+				} else {
+					userRoles = new ArrayList<String>();
+					userRoles.add(ModuleMenuAdapter.MODULE_ROLE_EVERYONE);
+				}
+				
+				
+				for(String role : roles) {
+					if(userRoles.contains(role)) {
+						authorized = true;
+					}
+					if(role.equals(ModuleMenuAdapter.MODULE_ROLE_EVERYONE)) {
+						authorized = true;
+					}
+				}
+			} else {
+				authorized = false;
+			}
+			
+			if(authorized) {
+				startActivity(startedIntent);
+				if(forcedLogin) {
+					getActivity().finish();
+				}
+			} else {
+				getActivity().runOnUiThread(new Runnable() {
+				    public void run() {
+						Toast unauthorizedToast = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.unauthorized_feature, Toast.LENGTH_LONG);
+						unauthorizedToast.setGravity(Gravity.CENTER, 0, 0);
+						unauthorizedToast.show();
+				    }
+				});
+				goHome();
 			}
 		}
 	}

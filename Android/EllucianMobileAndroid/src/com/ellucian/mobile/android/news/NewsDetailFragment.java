@@ -168,7 +168,7 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		sendView("Course assignments detail", getEllucianActivity().moduleName);
+		sendView("News detail", getEllucianActivity().moduleName);
 	}
 	
 }

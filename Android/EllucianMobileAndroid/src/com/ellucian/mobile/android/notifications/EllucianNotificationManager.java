@@ -110,6 +110,8 @@ public class EllucianNotificationManager {
 				if (registeredWithMobileServer && deviceId != null) {
 					// successfully registered, write some preference
 					
+					lastRegisterWithGCMTime = System.currentTimeMillis();
+					
 					SharedPreferences.Editor prefEditor = preferences.edit();
 	
 					// save the currentVersion if it changed

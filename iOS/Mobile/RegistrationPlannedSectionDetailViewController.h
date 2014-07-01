@@ -12,7 +12,7 @@
 
 @class Module;
 
-@interface RegistrationPlannedSectionDetailViewController : UIViewController <UIPopoverControllerDelegate, DetailSelectionDelegate, UISplitViewControllerDelegate>
+@interface RegistrationPlannedSectionDetailViewController : UIViewController <UIPopoverControllerDelegate, DetailSelectionDelegate, UISplitViewControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *maskView;
 
@@ -66,5 +66,9 @@
 
 @property (nonatomic, strong) UIPopoverController *masterPopover;
 @property (strong, nonatomic) Module *module;
+
+@property (nonatomic, assign) BOOL allowDeleteFromCart;
+
+-(void) clearView;
 
 @end

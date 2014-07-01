@@ -62,6 +62,9 @@
         {
             cell = [tableView dequeueReusableCellWithIdentifier:@"Registration Message Cell"];
             UILabel *label = (UILabel *)[cell viewWithTag:1];
+            if([AppearanceChanger isRTL]) {
+                label.textAlignment = NSTextAlignmentRight;
+            }
             NSDictionary *selected = [self.importantMessages objectAtIndex:[indexPath row]];
             label.text = [selected objectForKey:@"message"];
             break;
@@ -86,7 +89,13 @@
             titleLabel.text = [selected objectForKey:@"courseTitle"];
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];
             NSString* termId = [selected objectForKey:@"termId"];
-            termLabel.text = [self.delegate termName:termId];;
+            termLabel.text = [self.delegate termName:termId];
+            if([AppearanceChanger isRTL]) {
+                label.textAlignment = NSTextAlignmentRight;
+                courseNameLabel.textAlignment = NSTextAlignmentRight;
+                titleLabel.textAlignment = NSTextAlignmentRight;
+                termLabel.textAlignment = NSTextAlignmentRight;
+            }
             break;
         }
         case 2:
@@ -109,7 +118,13 @@
             titleLabel.text = [selected objectForKey:@"courseTitle"];
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];
             NSString* termId = [selected objectForKey:@"termId"];
-            termLabel.text = [self.delegate termName:termId];;
+            termLabel.text = [self.delegate termName:termId];
+            if([AppearanceChanger isRTL]) {
+                label.textAlignment = NSTextAlignmentRight;
+                courseNameLabel.textAlignment = NSTextAlignmentRight;
+                titleLabel.textAlignment = NSTextAlignmentRight;
+                termLabel.textAlignment = NSTextAlignmentRight;
+            }
             break;
         }
     }
@@ -262,6 +277,9 @@
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [h addSubview:label];
+    if([AppearanceChanger isRTL]) {
+        label.textAlignment = NSTextAlignmentRight;
+    }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         UIEdgeInsets separatorInset = [tableView separatorInset];
@@ -340,7 +358,13 @@
     UILabel *label2 = [[UILabel alloc] init];
     label2.font = [UIFont systemFontOfSize:15.0f];
     label2.translatesAutoresizingMaskIntoConstraints = NO;
+    label2.adjustsFontSizeToFitWidth = YES;
     [h addSubview:label2];
+    
+    if([AppearanceChanger isRTL]) {
+        label.textAlignment = NSTextAlignmentRight;
+        label2.textAlignment = NSTextAlignmentRight;
+    }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         UIEdgeInsets separatorInset = [tableView separatorInset];
@@ -367,6 +391,10 @@
      [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[imageView]-10-[label]-(>=10)-|"
                                              options:0 metrics:nil
                                                views:views]];
+    [h addConstraints:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[imageView]-10-[label2]-(>=10)-|"
+                                             options:0 metrics:nil
+                                               views:views]];
 
     [h addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[label][label2]"
@@ -383,10 +411,10 @@
     
     
     [h addConstraint: [NSLayoutConstraint constraintWithItem:label
-                                                   attribute:NSLayoutAttributeLeft
+                                                   attribute:NSLayoutAttributeLeading
                                                    relatedBy:NSLayoutRelationEqual
                                                       toItem:label2
-                                                   attribute:NSLayoutAttributeLeft
+                                                   attribute:NSLayoutAttributeLeading
                                                   multiplier:1.0
                                                     constant:0]];
     

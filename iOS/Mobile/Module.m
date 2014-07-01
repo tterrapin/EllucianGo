@@ -2,8 +2,8 @@
 //  Module.m
 //  Mobile
 //
-//  Created by jkh on 3/17/13.
-//  Copyright (c) 2013 Ellucian. All rights reserved.
+//  Created by Jason Hocker on 6/5/14.
+//  Copyright (c) 2014 Ellucian Company L.P. and its affiliates. All rights reserved.
 //
 
 #import "Module.h"
@@ -17,9 +17,9 @@
 @dynamic index;
 @dynamic internalKey;
 @dynamic name;
-@dynamic showForGuest;
+@dynamic hideBeforeLogin;
 @dynamic type;
-@dynamic roles;
 @dynamic properties;
+@dynamic roles;
 
 @end

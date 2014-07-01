@@ -74,7 +74,7 @@
         Event *selectedEvent = [self.fetchedResultsController objectAtIndexPath:head];
         
         if (_detailSelectionDelegate && selectedEvent) {
-            [_detailSelectionDelegate selectedDetail:selectedEvent withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:selectedEvent withIndex:head withModule:self.module withController:self];
         }
     }
 
@@ -186,7 +186,7 @@
     {
         Event *selectedEvent = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:selectedEvent withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:selectedEvent withIndex:indexPath withModule:self.module withController:self];
         }
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self performSegueWithIdentifier:@"Show Event Detail" sender:tableView];

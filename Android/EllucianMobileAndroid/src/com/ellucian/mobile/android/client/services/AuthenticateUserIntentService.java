@@ -60,10 +60,12 @@ public class AuthenticateUserIntentService extends IntentService {
 					ArrayList<String> roleList = new ArrayList<String>();
 					if (userInfoJson.has("roles")) {
 						JSONArray roles = userInfoJson.getJSONArray("roles");
-						int rolesLength = roles.length();
-						if (rolesLength > 0) {
-							for (int i = 0; i < rolesLength; i++) {
-								roleList.add((String) roles.get(i));
+						if (roles != null) {
+							int rolesLength = roles.length();
+							if (rolesLength > 0) {
+								for (int i = 0; i < rolesLength; i++) {
+									roleList.add((String) roles.get(i));
+								}
 							}
 						}
 					}

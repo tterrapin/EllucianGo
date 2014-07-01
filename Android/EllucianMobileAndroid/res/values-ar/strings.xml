@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <!-- Main -->
     
@@ -30,6 +30,7 @@
     <string name="menu_search_school_hint">البحث في الجامعات</string>
     <string name="menu_header_applications">التطبيقات</string>
     <string name="menu_header_actions">الإجراءات</string>
+    <string name="menu_header_indicator_description">مؤشر العنوان</string>
     <string name="drawer_open">فتح درج التنقل</string>
     <string name="drawer_close">إغلاق درج التنقل</string>
     
@@ -86,6 +87,8 @@
 	<string name="dialog_go_back">العودة</string>
 	<string name="dialog_security_warning">تحذير أمان</string>
 	<string name="dialog_cert_warning_statement">"هناك مشاكل متعلقة بشهادة الأمان لهذا الموقع."</string>
+	<string name="dialog_field_empty">لا يمكن أن يكون الحقل فارغا.</string>
+	<string name="unauthorized_feature">ليس لديك إذن لاستخدام هذه الخاصية.</string>
 	
     <string name="row_category_label">الفئة:</string>
     <string name="row_contact_label">التواصل مع:</string>
@@ -257,6 +260,7 @@
     <string name="notifications_sticky_marker_image_text">علامة</string>
     <string name="notifications_delete">حذف</string>
     <string name="notifications_unable_to_delete_message">تعذر حذف هذا التنبيه.</string>
+    <string name="notifications_dialog_delete_message">هل أنت متأكد من حذف هذا التنبيه؟</string>
     
     <!-- Numbers -->
     
@@ -283,15 +287,20 @@
     <string name="registration_results_failure_sub">تعذر تسجيل هذه المقررات:</string>
     <string name="registration_dialog_title">اللقب</string>
     <string name="registration_dialog_register_message">هل أنت متأكد أنك تريد تسجيل هذه الشعب؟</string>
-    <string name="registration_dialog_add_to_cart_message">هل أنت متأكد أنك تريد إضافة هذه الشعب إلى سلة التسجيل؟ الشعب التي تضاف إلى سلة التسجيل متاحة لهذه الجلسة فقط.</string>
-    <string name="registration_dialog_variable_credits_message">يرجى ضبط عدد الساعات المعتمدة. \nالنطاق: </string>
+    <string name="registration_dialog_add_to_cart_message">هل أنت متأكد أنك تريد إضافة هذه الشعب إلى سلة التسجيل؟</string>
+    <string name="registration_dialog_remove_message">هل أنت متأكد أنك تريد إزالة الشعب من سلة التسجيل؟</string>
+    <string name="registration_dialog_variable_credits_to_message">أدخل قيمة الساعات المعتمدة للمقرر بين %1$.2f و %2$.2f</string>
+    <string name="registration_dialog_variable_credits_or_message">أدخل %1$.2f أو %2$.2f لقيمة الساعات المعتمدة </string>
+    <string name="registration_dialog_variable_credits_inc_message">أدخل قيمة الساعات المعتمدة للمقرر بين %1$.2f و %2$.2f بتزايد %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">يجب إدخال رقم في النطاق المذكور.</string>
     <string name="registration_dialog_variable_credits_increment_error">يجب استخدام تزايد.</string>
+    <string name="registration_dialog_pin_message">يرجى إدخال الرمز السري لكل من الفصول الدراسية التالية:</string>
     <string name="registration_search_header">قم باختيار فصل دراسي وأدخل الكلمات المفتاحية للمقررات</string>
     <string name="registration_search_field_hint">الكلمات المفتاحية للمقررات</string>
     <string name="registration_add_to_cart">الإضافة إلى سلة التسجيل</string>
     <string name="registration_added_to_cart_success">تمت الإضافة إلى سلة التسجيل.</string>
     <string name="registration_added_to_cart_failed">فشلت الإضافة إلى سلة التسجيل. هناك بيانات مفقودة أو أن الشعبة موجودة مسبقا في سلة التسجيل.</string>
+    <string name="registration_added_to_server_cart_failed">فشل حفظ شعبة واحدة على الأقل في الخادم. هذه البيانات ستبقى لهذه الجلسة الحالية فقط.</string>
     <string name="registration_fill_in_message">يجب اختيار فصل دراسي وإدخال استعلام للبحث.</string>
     <string name="registration_section_id">معرف الشعبة</string>
     <string name="registration_grading">وضع الدرجات</string>
@@ -304,6 +313,8 @@
     <string name="registration_no_plan_eligibility_message">الطالب غير ملتحق.</string>
     <string name="registration_were_sorry">نأسف.</string>
     <string name="registration_ineligible_to_register">غير مؤهل للتسجيل</string>
+    <string name="registration_remove">إزالة</string>
+    
         
 	<!-- Versioning -->
 	<string name="version_upgrade">تحديث</string>

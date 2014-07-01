@@ -60,15 +60,17 @@ public class RegistrationResultsFragment extends EllucianFragment {
 				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);
 				
-				for (Message message : section.messages) {
-					final TextView messageView = (TextView) inflater.inflate(
-							R.layout.registration_message_row, sectionRow, false);
-					messageView.setText(message.message);
-					// text color
-					int statusColor = getResources().getColor(R.color.status_success_text_color);
-					messageView.setTextColor(statusColor);
-					
-					sectionRow.addView(messageView);
+				if (section.messages != null) {
+					for (Message message : section.messages) {
+						final TextView messageView = (TextView) inflater.inflate(
+								R.layout.registration_message_row, sectionRow, false);
+						messageView.setText(message.message);
+						// text color
+						int statusColor = getResources().getColor(R.color.status_success_text_color);
+						messageView.setTextColor(statusColor);
+						
+						sectionRow.addView(messageView);
+					}
 				}
 				
 				successLayout.addView(sectionRow);
@@ -92,15 +94,16 @@ public class RegistrationResultsFragment extends EllucianFragment {
 				}
 				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);
-				
-				for (Message message : section.messages) {
-					final TextView messageView = (TextView) inflater.inflate(
-							R.layout.registration_message_row, sectionRow, false);
-					messageView.setText(message.message);
-					// text color
-					int statusColor = getResources().getColor(R.color.status_error_text_color);
-					messageView.setTextColor(statusColor);
-					sectionRow.addView(messageView);
+				if (section.messages != null) {
+					for (Message message : section.messages) {
+						final TextView messageView = (TextView) inflater.inflate(
+								R.layout.registration_message_row, sectionRow, false);
+						messageView.setText(message.message);
+						// text color
+						int statusColor = getResources().getColor(R.color.status_error_text_color);
+						messageView.setTextColor(statusColor);
+						sectionRow.addView(messageView);
+					}
 				}
 				
 				failureLayout.addView(sectionRow);

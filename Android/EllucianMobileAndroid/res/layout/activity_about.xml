@@ -43,12 +43,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/about_app_version"
-                        android:minWidth="80dp"
+                        android:minWidth="96dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="4dp"
                         android:paddingTop="8dp"
                         android:text="@string/about_app_version"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/about_app_version"
@@ -56,12 +56,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:minWidth="50dp"
+                        android:minWidth="60dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"
                         android:textIsSelectable="true"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/about_server_version_label"
@@ -69,13 +69,13 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/about_app_version_label"
                         android:layout_toLeftOf="@+id/about_app_version"
-                        android:minWidth="80dp"
+                        android:minWidth="96dp"
                         android:paddingBottom="2dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="4dp"
                         android:paddingTop="2dp"
                         android:text="@string/about_server_version"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/about_server_version"
@@ -83,13 +83,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_below="@+id/about_app_version"
-                        android:minWidth="50dp"
+                        android:minWidth="60dp"
                         android:paddingBottom="3dp"
                         android:paddingLeft="4dp"
                         android:paddingRight="8dp"
                         android:paddingTop="2dp"
                         android:textIsSelectable="true"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <TableLayout
@@ -163,7 +163,6 @@
                                 android:id="@+id/about_email_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="E-Mail Address Data Goes Here"
                                 android:textColor="#666666"
                                 android:textSize="@dimen/table_data_text_size" />
                         </LinearLayout>
@@ -203,7 +202,6 @@
                                 android:id="@+id/about_website_url"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Website Url Data Goes Here"
                                 android:textColor="#666666" />
                         </LinearLayout>
 
@@ -258,15 +256,15 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal" >
 			 
-             
-            <LinearLayout 
+            <LinearLayout
                 android:id="@+id/about_powered_by_ellucian_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal"
                 android:gravity="center_vertical|center_horizontal"
-                android:onClick="goToEllucianHome"  >
+                android:onClick="goToEllucianHome"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables" >
                 
                 <TextView
                 	android:layout_width="wrap_content"

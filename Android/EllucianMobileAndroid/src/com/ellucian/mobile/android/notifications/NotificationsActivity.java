@@ -44,13 +44,17 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 	private SimpleCursorAdapter adapter;
 	private NotificationsDatabaseUpdatedReceiver databaseUpdatedReceiver;
 	private boolean resetPosition;
+	private boolean initialLoaderCompleted;
+	private boolean deleteAfterLoad;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.e(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_default_dual_pane);
 		
+		if(!TextUtils.isEmpty(moduleName)) {
+			setTitle(moduleName);
+		}
 		
 		EllucianApplication app = getEllucianApp();
 		if(!app.isUserAuthenticated()) {
@@ -92,8 +96,13 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 		transaction.commit();
 		
 		getLoaderManager().restartLoader(0, null, this);
-		Log.d(TAG, "startingNotifications");
-		getEllucianApp().startNotifications();	
+				
+		// Only want to query server on first load, it might conflict with current database state
+		if (savedInstanceState == null  || !savedInstanceState.containsKey("loaded")) {
+			Log.d(TAG, "startingNotifications");
+			getEllucianApp().startNotifications();
+		} 
+		
 	}
 	
 	@Override
@@ -118,6 +127,12 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
     }
     
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	outState.putBoolean("loaded", true);
+    }
+    
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -132,6 +147,7 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
    	@Override
    	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
    		adapter.swapCursor(cursor);
+   		initialLoaderCompleted = true;
    		createNotifyHandler(mainFragment);
    	}
 
@@ -167,7 +183,12 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 				} else {
 					fragment.setInitialCursorPosition(resetPosition);
 					resetPosition = false;
-				}				
+				}
+				
+				if (deleteAfterLoad) {
+					deleteAfterLoad = false;
+					deleteNotification();
+				}
 			}  			
    		});
    	}
@@ -188,7 +209,15 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == NOTIFICATIONS_DETAIL_REQUEST_CODE && resultCode == RESULT_DELETE) {
-    		deleteNotification();
+    		// Check if the loader is completed updating the adapter, if so delete
+    		// if not set flag to delete after loader is complete
+    		if (initialLoaderCompleted) {
+    			deleteAfterLoad = false;
+    			deleteNotification();   			
+    		} else {
+    			deleteAfterLoad = true;
+    		}
+    		
     	}
     }
     

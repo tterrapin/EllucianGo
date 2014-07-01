@@ -6,6 +6,7 @@
     android:paddingBottom="6dp"
     android:paddingRight="6dp"
     android:paddingTop="6dp"
+    android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables" >
 
     <ImageView
@@ -22,11 +23,47 @@
 
     <TextView
         android:id="@+id/drawer_list_item_label"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor="#fff"
+        android:layout_weight="1"
         android:textSize="@dimen/text_size_large" />
+
+    <ImageView
+        android:id="@+id/drawer_list_item_lock_image"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="13dp"
+        android:alpha="0.40"
+        android:contentDescription="@null"
+        android:visibility="gone" />
+    
+    <TextView
+        android:id="@+id/drawer_list_item_right_text"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="13dp"
+        android:background="@drawable/menu_badge_nine_patch"
+        android:paddingEnd="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingStart="4dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="3dp"
+        android:textAlignment="center"
+        android:contentDescription="@null"
+        android:textSize="14sp"
+        android:textColor="#ff333333"
+        android:visibility="gone" />
 
 </LinearLayout>

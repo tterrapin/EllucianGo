@@ -14,6 +14,11 @@
 	    <!-- The name of the target activity that starts your module -->
 	    <activity>ExampleOneActivity</activity>
 	    
+	    <!-- If this element is set to true then an authenticated user is necessary to open this module. -->
+	    <!-- The login dialog will be shown when clicked in the menu if the user is not logged in. -->
+	    <!-- If this element is either absent or set to false then a user can access the module normally. -->
+	    <secure>true</secure>
+	    
 	    <!-- For intent extras you must set a key attribute along with the value text. These extras will be 
 	     stored as a String, you must parse them as needed in the activity after recieving them in the intent -->
 	    <intent-extra key="extra" >This is a extra</intent-extra>

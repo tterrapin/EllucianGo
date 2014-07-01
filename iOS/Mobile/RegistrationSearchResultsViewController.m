@@ -10,9 +10,12 @@
 #import "RegistrationPlannedSection.h"
 #import "RegistrationTabBarController.h"
 #import "AppearanceChanger.h"
-#import "Module.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "RegistrationPlannedSectionDetailViewController.h"
+#import "Module+Attributes.h"
+#import "CurrentUser.h"
+#import "NSMutableURLRequest+BasicAuthentication.h"
+#import "RegistrationTerm.h"
 
 @interface RegistrationSearchResultsViewController ()
 @property (strong, nonatomic) UIBarButtonItem *addToCartButton;
@@ -31,7 +34,7 @@
     }
     
     [self updateStatusBar];
-    [self sendView:@"Registration search results list" forModuleNamed:self.module.name];
+    [self sendView:@"Registration search results list" forModuleNamed:self.registrationTabController.module.name];
 }
 
 - (void)viewDidLoad
@@ -107,7 +110,11 @@
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
         if(plannedSection.maximumCredits) {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+                line3bLabel.text = [NSString stringWithFormat:@" | %@/%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            } else {
+                line3bLabel.text = [NSString stringWithFormat:@" | %@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            }
         } else if (plannedSection.minimumCredits){
             line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
         } else if (plannedSection.ceus ) {
@@ -115,7 +122,11 @@
         }
     } else {
         if(plannedSection.maximumCredits) {
-            line3Label.text = [NSString stringWithFormat:@"%@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+                line3Label.text = [NSString stringWithFormat:@"%@/%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            } else {
+                line3Label.text = [NSString stringWithFormat:@"%@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            }
         } else if(plannedSection.minimumCredits){
             line3Label.text = [NSString stringWithFormat:@"%@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
         } else if (plannedSection.ceus) {
@@ -166,15 +177,9 @@
 {
     if ( _allowAddToCart ) {
         RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-        if(!plannedSection.selectedForRegistration && [plannedSection minimumCredits] && [plannedSection maximumCredits]) {
-            NSString *title;
-            if(plannedSection.variableCreditIncrement) {
-                title = NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit incrementprompt");
-                title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
-            } else {
-                title = NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt");
-                title = [NSString stringWithFormat:title, plannedSection.minimumCredits, plannedSection.maximumCredits];
-            }
+        if(!plannedSection.selectedForRegistration && [self shouldCheckForVariableCredits:plannedSection]) {
+            NSString *title = [self titleForVariableCredits:plannedSection];
+
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"Credits label for registration") message:title delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
             alert.tag = indexPath.row;
             alert.delegate = self;
@@ -189,9 +194,20 @@
     }
 }
 
+-(BOOL) shouldCheckForVariableCredits:(RegistrationPlannedSection *)plannedSection
+{
+    //Ellucian Mobile 3.5
+    if(plannedSection.variableCreditOperator) {
+        return YES;
+    } else {
+        //Ellucian Mobile 3.0 - legacy version
+        return [plannedSection minimumCredits] && [plannedSection maximumCredits];
+    }
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(alertView.tag == -1) return;
+    //managing variable credits
     NSInteger row = alertView.tag;
     if(buttonIndex == 1) {
         NSString *text = [[alertView textFieldAtIndex:0] text];
@@ -217,19 +233,7 @@
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:alertView.tag];
     NSString *text = [[alertView textFieldAtIndex:0] text];
     if([text length] > 0) {
-        float f = [text floatValue];
-        if( (f >= [plannedSection.minimumCredits floatValue] ) && (f <= [plannedSection.maximumCredits floatValue])) {
-            if(plannedSection.variableCreditIncrement) {
-                float modulo = fmodf(f, [plannedSection.variableCreditIncrement floatValue]);
-                if (modulo == 0) {
-                    return YES;
-                } else {
-                    return NO;
-                }
-            } else {
-                return YES;
-            }
-        }
+        return [self validateEnteredVariableCreditValue:text forPlannedSection:plannedSection];
     }
     return NO;
 }
@@ -261,7 +265,6 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-    //[self performSegueWithIdentifier:@"Show Planned Course Detail" sender:plannedSection];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
@@ -288,11 +291,11 @@
         }
         
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:plannedSection withIndex:indexPath withModule:self.registrationTabController.module withController:self];
         }
     }
     else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+        [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
     }
     
     
@@ -309,24 +312,119 @@
 
 -(void) addToCart:(id)sender
 {
-    [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Add to cart" withValue:nil forModuleNamed:self.module.name];
-    RegistrationTabBarController *tabController = self.registrationTabController;
-    for(RegistrationPlannedSection *course in self.courses) {
-        if(course.selectedForRegistration) {
-            [tabController addSearchedSection:course];
-            course.selectedForRegistration = NO;
-        }
-    }
+    [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Add to cart" withValue:nil forModuleNamed:self.registrationTabController.module.name];
+    [self updateCartRequestToServer];
     [self updateStatusBar];
     [self.tableView reloadData];
+
+}
+
+-(void) updateCartRequestToServer
+{
+    NSMutableArray *termsToRegister = [NSMutableArray new];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Registration", @"message for add to cart title")
-                                                    message:NSLocalizedString(@"Items added to the cart available for this session only.", @"message for add to cart alert that items added to cart available for this session only")
+    BOOL coursesAdded = NO;
+    RegistrationTabBarController *tabController = self.registrationTabController;
+    for(RegistrationTerm *term in tabController.terms) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"termId == %@", term.termId ];
+        NSArray *coursesForTerm  = [self.courses filteredArrayUsingPredicate:predicate];
+        
+        if([coursesForTerm count] > 0) {
+            NSMutableArray *sectionRegistrations = [NSMutableArray new];
+            for(RegistrationPlannedSection *course in self.courses) {
+                if(course.selectedForRegistration) {
+                    if([tabController courseIsInCart:course] || [tabController courseIsRegistered:course]) {
+                        NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"%@-%@ failed to add to cart. Missing data or section already exists in cart.", @"item already in cart error"), course.courseName, course.courseSectionNumber];
+                        [tabController reportError:errorMessage];
+                    } else {
+                        NSString * gradingType = @"Graded";
+                        if (course.isAudit) {
+                            gradingType = @"Audit";
+                        } else if (course.isPassFail) {
+                            gradingType = @"PassFail";
+                        }
+                        NSMutableDictionary *sectionToRegister = [NSMutableDictionary new];
+                        [sectionToRegister setObject:course.sectionId forKey:@"sectionId"];
+                        [sectionToRegister setObject:@"add" forKey:@"action"];
+                        if( course.credits ) {
+                            [sectionToRegister setObject: course.credits forKey:@"credits"];
+                        }
+                        if(course.ceus) {
+                            [sectionToRegister setObject: course.ceus forKey:@"ceus"];
+                        }
+                        [sectionToRegister setObject:gradingType forKey:@"gradingType"];
+                        
+                        [sectionRegistrations addObject:sectionToRegister];
+                        
+                        [tabController addSearchedSection:course];
+  
+                        coursesAdded = YES;
+                    }
+                    course.selectedForRegistration = NO;
+                }
+            }
+            
+            NSMutableDictionary *termToRegister = [NSMutableDictionary new];
+            [termToRegister setObject:term.termId forKey:@"termId"];
+            [termToRegister setObject:sectionRegistrations forKey:@"sections"];
+            
+            [termsToRegister addObject:termToRegister];
+
+        }
+    }
+
+    NSMutableDictionary *postDictionary = [NSMutableDictionary new];
+    [postDictionary setObject:termsToRegister forKey:@"terms"];
+    if(self.registrationTabController.planId) {
+        [postDictionary setObject: self.registrationTabController.planId forKey:@"planId"];
+    }
+
+    NSError *jsonError;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/update-cart", [self.registrationTabController.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    
+    NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+        [urlRequest addAuthenticationHeader];
+    }
+    
+    [urlRequest setHTTPMethod:@"PUT"];
+    [urlRequest setHTTPBody:jsonData];
+    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if(data)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+            
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:data
+                                  options:kNilOptions
+                                  error:&error];
+            BOOL success = [[json objectForKey:@"success"] boolValue];
+            if(!success) {
+                NSArray *messages = [json objectForKey:@"messages"];
+                if([messages count] > 0) {
+                    NSString *message = [messages componentsJoinedByString:@"\n"];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self.registrationTabController reportError:message];
+                    });
+                }
+            }
+        }
+    }];
+    
+    if(coursesAdded) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Registration", @"message for add to cart title")
+                                                    message:NSLocalizedString(@"Course(s) added to cart.", @"message for add to cart alert")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                                           otherButtonTitles:nil];
-    alert.tag = -1;
-    [alert show];
+        alert.tag = -1;
+        [alert show];
+    }
 }
 
 -(RegistrationTabBarController *) registrationTabController
@@ -345,6 +443,82 @@
     }
     [self.navigationController setToolbarHidden:!(count>0) animated:YES];
     self.addToCartButton.title = [NSString stringWithFormat:NSLocalizedString(@"Add To Cart (%d)", @"label for add to cart button in registration search"), count];
+}
+
+
+-(NSString *) titleForVariableCredits:(RegistrationPlannedSection *)plannedSection
+{
+    NSString *title;
+    //Banner
+    if(plannedSection.variableCreditOperator) {
+        if([plannedSection.variableCreditOperator isEqualToString:@"TO"]) {
+            title = [NSString stringWithFormat:NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt"), plannedSection.minimumCredits, plannedSection.maximumCredits];
+        } else if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+            title = [NSString stringWithFormat:NSLocalizedString(@"Enter course credit value %@ or %@", @"text for variable credits prompt with two options"), plannedSection.minimumCredits, plannedSection.maximumCredits];
+        } else if([plannedSection.variableCreditOperator isEqualToString:@"INC"]) {
+            title = [NSString stringWithFormat:NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit increment prompt"), plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
+        }
+    } else {
+        //Colleague
+        if(plannedSection.variableCreditIncrement) {
+            title = [NSString stringWithFormat:NSLocalizedString(@"Enter course credit value between %@ and %@ in increments of %@", @"text for variable credits with credit increment prompt"), plannedSection.minimumCredits, plannedSection.maximumCredits, plannedSection.variableCreditIncrement];
+        } else {
+            title = [NSString stringWithFormat:NSLocalizedString(@"Enter course credit value between %@ and %@", @"text for variable credits prompt"), plannedSection.minimumCredits, plannedSection.maximumCredits];
+        }
+    }
+    
+    return title;
+}
+
+
+-(BOOL)validateEnteredVariableCreditValue:(NSString *) text forPlannedSection: (RegistrationPlannedSection *) plannedSection
+{
+    float f = [text floatValue];
+    if(plannedSection.variableCreditOperator) {
+        if([plannedSection.variableCreditOperator isEqualToString:@"TO"]) {
+            if( (f >= [plannedSection.minimumCredits floatValue] ) && (f <= [plannedSection.maximumCredits floatValue])) {
+                return YES;
+            } else {
+                return NO;
+            }
+
+        } else if ([plannedSection.variableCreditOperator isEqualToString:@"INC"]) {
+            if( (f >= [plannedSection.minimumCredits floatValue] ) && (f <= [plannedSection.maximumCredits floatValue])) {
+                if([plannedSection.variableCreditOperator isEqualToString:@"INC"]) {
+                    float modulo = fmodf(f, [plannedSection.variableCreditIncrement floatValue]);
+                    if (modulo == 0) {
+                        return YES;
+                    } else {
+                        return NO;
+                    }
+                } else {
+                    return YES;
+                }
+            }
+        } else if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+            if( (f == [plannedSection.minimumCredits floatValue] ) || (f == [plannedSection.maximumCredits floatValue])) {
+                return YES;
+            }
+            else {
+                return NO;
+            }
+        }
+    } else {
+        //Colleague
+        if( (f >= [plannedSection.minimumCredits floatValue] ) && (f <= [plannedSection.maximumCredits floatValue])) {
+            if(plannedSection.variableCreditIncrement) {
+                float modulo = fmodf((f - [plannedSection.minimumCredits floatValue]), [plannedSection.variableCreditIncrement floatValue]);
+                if (modulo == 0) {
+                    return YES;
+                } else {
+                    return NO;
+                }
+            } else {
+                return YES;
+            }
+        } return NO;
+    }
+    return NO;
 }
 
 @end

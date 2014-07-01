@@ -14,6 +14,7 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.client.registration.Section;
+import com.ellucian.mobile.android.util.Extra;
 
 public class RegistrationRegisteredListFragment extends EllucianDefaultListFragment {
 	
@@ -64,6 +65,8 @@ public class RegistrationRegisteredListFragment extends EllucianDefaultListFragm
 	@Override
 	public Bundle buildDetailBundle(Object... objects) {
 		Bundle bundle = new Bundle();
+		
+		bundle.putString(Extra.MODULE_NAME, getEllucianActivity().moduleName);
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);

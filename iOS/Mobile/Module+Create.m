@@ -43,7 +43,6 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
 + (void) populateModule:(Module *)module withDictionary:(NSDictionary *) dictionary inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     if([dictionary objectForKey:@"type"] != [NSNull null] ) {
-        module.showForGuest = [NSNumber numberWithBool:YES];
         module.properties = nil;
         for (id key in [dictionary allKeys]) {
             id value = [dictionary objectForKey:key];
@@ -55,13 +54,14 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
             } else if([key isEqualToString:@"icon"]) {
                 module.iconUrl = [dictionary objectForKey:@"icon"];
                 [[ImageCache sharedCache] getImage: module.iconUrl];
-//            } else if([key isEqualToString:@"showGuest"]) {
-//                module.showForGuest = [NSNumber numberWithBool:[[dictionary objectForKey:@"showGuest"] boolValue]];
+            } else if([key isEqualToString:@"hideBeforeLogin"]) {
+                module.hideBeforeLogin = [NSNumber numberWithBool:[[dictionary objectForKey:@"hideBeforeLogin"] boolValue]];
             } else if([key isEqualToString:@"order"]) {
                 module.index = [NSNumber numberWithInt:[value intValue]];
-            } else if([key isEqualToString:@"roles"]) {
+            } else if([key isEqualToString:@"access"]) {
                 module.roles = nil;
-                for(NSString *role in [[dictionary objectForKey:@"roles"] componentsSeparatedByString:@","] ) {
+                NSArray *access = [dictionary objectForKey:@"access"];
+                for(NSString *role in access) {
                     ModuleRole *managedRole = [NSEntityDescription insertNewObjectForEntityForName:@"ModuleRole" inManagedObjectContext:managedObjectContext];
                     managedRole.role = role;
                     managedRole.module = module;
@@ -69,7 +69,7 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
                 }
             } else {
                 if([value isKindOfClass:[NSString class]]) {
-            [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
+                    [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
                 } else if([value isKindOfClass:[NSDictionary class]]) {
                     [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext];
                 }

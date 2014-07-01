@@ -26,11 +26,13 @@
 {
     NSMutableArray *names = [NSMutableArray new];
     for(RegistrationPlannedSectionInstructor *instructor in self.instructors) {
-        if(instructor.firstName) {
+        if(instructor.lastName && instructor.firstName && [instructor.firstName length]) {
             NSString *name = [NSString stringWithFormat:@"%@, %@", instructor.lastName, [instructor.firstName substringToIndex:1]];
             [names addObject:name];
-        } else {
+        } else if (instructor.lastName) {
             [names addObject:instructor.lastName];
+        } else if (instructor.formattedName) {
+            [names addObject:instructor.formattedName];
         }
     }
     if([names count] == 0) return nil;
@@ -62,7 +64,9 @@
 {
     NSMutableSet *types = [NSMutableSet new];
     for(RegistrationPlannedSectionMeetingPattern *mp in self.meetingPatterns) {
-        [types addObject:mp.instructionalMethodCode];
+        if(mp.instructionalMethodCode) {
+            [types addObject:mp.instructionalMethodCode];
+        }
     }
     if([types count] == 0) return nil;
     return [[types allObjects] componentsJoinedByString:@", "];
@@ -121,6 +125,32 @@
     } else if ([_gradingType caseInsensitiveCompare:kPassNoPass] == NSOrderedSame){
         _isPassFail = YES;
     }
+}
+
+-(BOOL) isVariableCredit
+{
+    if(_variableCreditOperator) {
+        return YES;
+    } else if (_minimumCredits && _maximumCredits) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+    
+    if (![object isKindOfClass:[RegistrationPlannedSection class]]) {
+        return NO;
+    }
+    
+    RegistrationPlannedSection *other = (RegistrationPlannedSection *)object;
+    
+    return [self.sectionId isEqualToString:other.sectionId] && [self.termId
+                                                         isEqualToString:other.termId];
 }
 
 @end

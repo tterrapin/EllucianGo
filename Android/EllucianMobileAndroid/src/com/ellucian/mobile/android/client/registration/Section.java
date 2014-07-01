@@ -12,6 +12,9 @@ public class Section implements Parcelable {
 	public static final String GRADING_TYPE_AUDIT = "Audit";
 	public static final String GRADING_TYPE_GRADED = "Graded";
 	public static final String GRADING_TYPE_PASS_FAIL = "PassFail";
+	public static final String VARIABLE_OPERATOR_TO = "TO";
+	public static final String VARIABLE_OPERATOR_OR = "OR";
+	public static final String VARIABLE_OPERATOR_INC = "INC";
 	
 	
 	public String termId;
@@ -30,12 +33,14 @@ public class Section implements Parcelable {
 	public Instructor[] instructors;
 	public MeetingPattern[] meetingPatterns;
 	public String classification;
-	public int minimumCredits;
-	public int maximumCredits;
+	public float minimumCredits;
+	public float maximumCredits;
 	public float variableCreditIncrement;
+	public String variableCreditOperator;
 	public boolean allowPassNoPass;
 	public boolean allowAudit;
 	public boolean onlyPassNoPass;
+	public float selectedCredits = -1;
 	
 	
 	public Section() {
@@ -62,13 +67,14 @@ public class Section implements Parcelable {
 		instructors = in.createTypedArray(Instructor.CREATOR);
 		meetingPatterns = in.createTypedArray(MeetingPattern.CREATOR);
 		classification = in.readString();
-		minimumCredits = in.readInt();
-		maximumCredits = in.readInt();
+		minimumCredits = in.readFloat();
+		maximumCredits = in.readFloat();
 		variableCreditIncrement = in.readFloat();
+		variableCreditOperator = in.readString();
 		allowPassNoPass = in.readInt() == 1 ? true : false;
 		allowAudit = in.readInt() == 1 ? true : false;
 		onlyPassNoPass = in.readInt() == 1 ? true : false;
-		
+		selectedCredits = in.readFloat();
 	}
 
 	@Override
@@ -95,12 +101,14 @@ public class Section implements Parcelable {
 		dest.writeTypedArray(instructors, flags);
 		dest.writeTypedArray(meetingPatterns, flags);
 		dest.writeString(classification);
-		dest.writeInt(minimumCredits);
-		dest.writeInt(maximumCredits);
+		dest.writeFloat(minimumCredits);
+		dest.writeFloat(maximumCredits);
 		dest.writeFloat(variableCreditIncrement);
+		dest.writeString(variableCreditOperator);
 		dest.writeInt(allowPassNoPass ? 1 : 0);
 		dest.writeInt(allowAudit ? 1 : 0);
 		dest.writeInt(onlyPassNoPass ? 1 : 0);
+		dest.writeFloat(selectedCredits);
 		
 	}
 	

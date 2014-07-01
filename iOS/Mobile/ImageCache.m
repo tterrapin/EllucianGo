@@ -92,8 +92,8 @@ static ImageCache *sharedImageCache = nil;
         // Fetch image
         NSData *data = [[NSData alloc] initWithContentsOfURL: imageURL];
         UIImage *image = [[UIImage alloc] initWithData: data];
-        NSURL *fileURL = [NSURL fileURLWithPath:filename];
-        
+        NSURL *fileURL = [NSURL fileURLWithPath:uniquePath];
+
         // Is it PNG or JPG/JPEG?
         // Running the image representation function writes the data from the image to a file
         NSError* error;

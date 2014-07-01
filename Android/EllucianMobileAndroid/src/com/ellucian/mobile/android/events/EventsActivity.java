@@ -451,10 +451,4 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 		resetListPosition = true;
 		getLoaderManager().restartLoader(0, null, this);
 	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		sendView("Events List", moduleName);
-	}
 }

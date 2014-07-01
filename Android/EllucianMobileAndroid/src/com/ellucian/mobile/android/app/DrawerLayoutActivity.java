@@ -3,4 +3,7 @@ package com.ellucian.mobile.android.app;
 
 public interface DrawerLayoutActivity {
 	DrawerLayoutHelper getDrawerLayoutHelper();
+
+	void configureNavigationDrawer();
+	
 }

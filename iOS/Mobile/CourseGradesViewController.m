@@ -57,7 +57,7 @@
     NSEntityDescription *entity = [NSEntityDescription
                                    entityForName:@"Grade" inManagedObjectContext:self.module.managedObjectContext];
     [fetchRequest setEntity:entity];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"course.sectionId == %@", self.sectionId];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"course.sectionId == %@ and course.term.termId == %@", self.sectionId, self.termId];
     NSArray *sortDescriptors = [NSArray arrayWithObject:[[NSSortDescriptor alloc]
                                                          initWithKey:@"lastUpdated" ascending:NO]];
     [fetchRequest setSortDescriptors:sortDescriptors];

@@ -26,27 +26,48 @@
 -(UIView *) noDataView
 {
     if(_noDataView == nil) {
-        _noDataView = [[UIView alloc] initWithFrame:self.view.frame];
-        _noDataView.backgroundColor = [UIColor clearColor];
+        _noDataView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 60.f)];
         
-        self.noMatchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,40)];
-        self.noMatchesLabel.font = [UIFont boldSystemFontOfSize:18];
-        self.noMatchesLabel.minimumScaleFactor = .5f;
-        self.noMatchesLabel.numberOfLines = 1;
-        self.noMatchesLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        self.noMatchesLabel.shadowColor = [UIColor lightTextColor];
-        self.noMatchesLabel.textColor = [UIColor darkGrayColor];
-        self.noMatchesLabel.shadowOffset = CGSizeMake(0, 1);
-        self.noMatchesLabel.backgroundColor = [UIColor whiteColor];
+        UIView *constrainedView = [UIView new];
+        [constrainedView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [_noDataView addSubview:constrainedView];
+        
+        [_noDataView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[constrainedView]|" options:0 metrics:nil views:@{@"constrainedView":constrainedView}]];
+        [_noDataView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[constrainedView]|" options:0 metrics:nil views:@{@"constrainedView":constrainedView}]];
+
+        
+        self.noMatchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,60)];
+        self.noMatchesLabel.font = [UIFont systemFontOfSize:16];
+        self.noMatchesLabel.numberOfLines = 3;
+        self.noMatchesLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         self.noMatchesLabel.textAlignment =  NSTextAlignmentCenter;
         if(self.message) {
             self.noMatchesLabel.text = self.message;
         } else {
             self.noMatchesLabel.text = NSLocalizedString(@"No Data", @"generic message for no data present");
         }
+        constrainedView.backgroundColor = [UIColor whiteColor];
         _noDataView.hidden = YES;
-        [_noDataView addSubview:self.noMatchesLabel];
+        [constrainedView addSubview:self.noMatchesLabel];
+        
+        self.noMatchesLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [constrainedView addSubview:self.noMatchesLabel];
+        
+        [constrainedView addConstraint:[NSLayoutConstraint constraintWithItem:self.noMatchesLabel
+                                                                    attribute:NSLayoutAttributeCenterY
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:constrainedView
+                                                                    attribute:NSLayoutAttributeCenterY
+                                                                   multiplier:1.0
+                                                                     constant:0.0]];
+        [constrainedView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"|-10-[label]-10-|"
+                                                                                 options:NSLayoutFormatAlignAllCenterY metrics:nil
+                                                                                   views:@{@"label":self.noMatchesLabel}]];
+
+        
         [self.tableView insertSubview:_noDataView belowSubview:self.tableView];
+        
+        
     }
     return _noDataView;
 }

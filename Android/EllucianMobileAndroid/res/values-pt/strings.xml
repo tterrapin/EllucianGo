@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <!-- Main -->
     
@@ -30,17 +30,18 @@
     <string name="menu_search_school_hint">Buscar instituições</string>
     <string name="menu_header_applications">Aplicativos</string>
     <string name="menu_header_actions">Ações</string>
+    <string name="menu_header_indicator_description">Indicador de cabeçalho</string>
     <string name="drawer_open">Abrir o Navigation Drawer</string>
     <string name="drawer_close">Fechar o Navigation Drawer</string>
     
     <!-- Configuration and Institutions -->
     
     <string name="title_activity_school_selection">Selecionar uma instituição</string>
-    <string name="no_institutions">Não existem instituições para exibição neste momento.</string>
+    <string name="no_institutions">Não há instituições para exibição neste momento.</string>
     
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
     <string name="school_selection_confirmation">Você selecionou \'%1$s\'. Está correta?</string>  
-    <string name="title_activity_configuration_loading">Carregando a configuração.</string>
+    <string name="title_activity_configuration_loading">Carregando a configuração</string>
     <string name="configuration_loading_failed">Falha ao carregar a configuração.</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="configuration_loading_message">Carregando a configuração. Aguarde&#8230;</string>
@@ -71,28 +72,30 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_sign_in">Entrar</string>
     <string name="dialog_sign_in_title">Entrar</string>
-    <string name="dialog_stay_signed_in">Manter-me conectado</string>
+    <string name="dialog_stay_signed_in">Continuar conectado</string>
     <string name="dialog_username">Nome de usuário</string>
     <string name="dialog_password">Senha</string>
     <string name="dialog_sign_in_empty">Nome de usuário ou senha não podem ficar em branco.</string>
-    <string name="dialog_sign_in_failed">Falha na autenticação. Verifique a conexão de rede e/ou seu nome de usuário e senha. Entre em contato com a equipe de TI da sua instituição para ajuda com o login.</string>
+    <string name="dialog_sign_in_failed">Falha na autenticação. Verifique a conexão de rede e/ou seu nome de usuário e senha. Contate a equipe de TI da sua instituição para ajuda com o login.</string>
     <string name="dialog_signed_in">Você está conectado.</string>
     <string name="dialog_signed_out">Sessão finalizada.</string>
     <string name="dialog_idle_sign_out">Sua sessão expirou porque você ficou muito tempo inativo.</string>
-    <string name="dialog_select_categories">Selecionar categorias</string>
+    <string name="dialog_select_categories">Selecionar as categorias</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">Fazendo nova autenticação, aguarde&#8230;</string>
 	<string name="dialog_continue">Continuar</string>
 	<string name="dialog_go_back">Voltar</string>
 	<string name="dialog_security_warning">Aviso de segurança</string>
-	<string name="dialog_cert_warning_statement">"Existem problemas com o certificado de segurança para este site."</string>
+	<string name="dialog_cert_warning_statement">"Há problemas com o certificado de segurança para este site."</string>
+	<string name="dialog_field_empty">O campo não pode ficar vazio</string>
+	<string name="unauthorized_feature">Você não tem permissão para usar este recurso.</string>
 	
     <string name="row_category_label">Categoria:</string>
     <string name="row_contact_label">Contato:</string>
     <string name="row_email_label">Email:</string>
     <string name="row_date_label">Data:</string>
     <string name="row_due_label">Vencido:</string>
-    <string name="row_location_label">Localização:</string>
+    <string name="row_location_label">Local:</string>
     
     <string name="default_image">Imagem</string>
     <string name="no_data">Dados inexistentes</string>
@@ -180,7 +183,7 @@
     <string name="title_activity_directory_list_student">Diretório do aluno</string>
     <string name="title_activity_directory_list_faculty">Diretório do docente</string>
     <string name="directory">Diretório</string>
-    <string name="directory_search">Para usar o diretório, fazer a buscar acima.</string>
+    <string name="directory_search">Para usar o diretório, faça uma busca.</string>
     <string name="directory_no_results">Nenhum resultado foi encontrado.</string>
     <string name="directory_no_phone">Não é possível adicionar um contato sem o número de telefone.</string>
     <string name="searchable_directory_hint">Buscar no diretório</string>
@@ -202,14 +205,14 @@
     
     <string name="title_activity_grades">Notas</string>
     <string name="grades_last_updated">Última atualização:</string>
-    <string name="no_grades_in_term">Não existem notas para este período</string>
+    <string name="no_grades_in_term">Não há notas para este período</string>
     <string name="grades_no_grades">Não há notas registradas</string>
     
     <!-- Maps -->
     
     <string name="title_activity_maps">Mapas</string>
     <string name="maps_campus_selection_title">Selecionar o campus</string>
-    <string name="maps_get_directions_label">Trajeto</string>
+    <string name="maps_get_directions_label">Itinerários</string>
     <string name="maps_show_details_label">Exibir os detalhes</string>
     <string name="maps_map_view_label">Visualizar mapa</string>
     <string name="maps_satellite_view_label">Visualizar satélite</string>
@@ -254,15 +257,16 @@
     <string name="notifications_device_title">Ellucian GO</string>
     <string name="notifications_device_content">Você tem novas notificações!</string>
     <string name="notifications_no_notifications">Não há notificações para exibição</string>
-    <string name="notifications_sticky_marker_image_text">Marcador</string>
+    <string name="notifications_sticky_marker_image_text">Professor</string>
     <string name="notifications_delete">Excluir</string>
     <string name="notifications_unable_to_delete_message">Não é possível excluir esta notificação.</string>
+    <string name="notifications_dialog_delete_message">Tem certeza de que deseja apagar esta notificação?</string>
     
     <!-- Numbers -->
     
     <string name="title_number_list">Números</string>
     <string name="title_number_detail">Detalhes do número</string>
-    <string name="numbers_no_entries">Não existem números importantes</string>
+    <string name="numbers_no_entries">Não há números importantes</string>
     <string name="searchable_numbers_hint">Buscar números</string>
     <string name="searchable_numbers_label">Buscar números</string>
     
@@ -270,10 +274,10 @@
     
     <string name="title_activity_registration">Matrícula</string>
     <string name="title_activity_registration_detail">Detalhes da matrícula</string>
-    <string name="registration_tab_cart">Meu carrinho</string>
+    <string name="registration_tab_cart">Carrinho</string>
     <string name="registration_tab_search">Buscar</string>
     <string name="registration_tab_registered">Matriculado</string>
-    <string name="registration_register">Matricular</string>
+    <string name="registration_register">Matricular-se</string>
     <string name="registration_credits">Créditos</string>
     <string name="registration_results_important">Crítico</string>
     <string name="registration_results_important_sub">Estes itens podem impedir a matrícula.</string>
@@ -283,18 +287,23 @@
     <string name="registration_results_failure_sub">Não foi possível se matricular nestas disciplinas.</string>
     <string name="registration_dialog_title">Título</string>
     <string name="registration_dialog_register_message">Tem certeza de que deseja se matricular nestas turmas?</string>
-    <string name="registration_dialog_add_to_cart_message">Tem certeza de que deseja adicionar estas turmas no carrinho? Os itens adicionados no seu carrinho são apenas para a sessão atual.</string>
-    <string name="registration_dialog_variable_credits_message">Digite o número de créditos. \nIntervalo: </string>
+    <string name="registration_dialog_add_to_cart_message">Tem certeza de que deseja adicionar estas turmas no carrinho?</string>
+    <string name="registration_dialog_remove_message">Tem certeza de que deseja remover este item do carrinho?</string>
+    <string name="registration_dialog_variable_credits_to_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f</string>
+    <string name="registration_dialog_variable_credits_or_message">Digite o valor do crédito da disciplina %1$.2f ou %2$.2f</string>
+    <string name="registration_dialog_variable_credits_inc_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f com incrementos de %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">Digite o número no intervalo indicado.</string>
     <string name="registration_dialog_variable_credits_increment_error">Use um incremento.</string>
+    <string name="registration_dialog_pin_message">Digite a senha para cada um dos seguintes períodos:</string>
     <string name="registration_search_header">Selecione um período e digite as palavras-chaves da disciplina.</string>
     <string name="registration_search_field_hint">Palavras-chaves da disciplina</string>
     <string name="registration_add_to_cart">Adicionar ao carrinho</string>
     <string name="registration_added_to_cart_success">adicionado ao carrinho.</string>
     <string name="registration_added_to_cart_failed">falha ao adicionar no carrinho. A turma ou dados ausentes já existem no carrinho.</string>
+    <string name="registration_added_to_server_cart_failed">Falha ao salvar uma turma no servidor. Estes dados permanecerão somente para a sessão atual.</string>
     <string name="registration_fill_in_message">Selecione um período e faça uma busca.</string>
     <string name="registration_section_id">ID turma</string>
-    <string name="registration_grading">Classificação</string>
+    <string name="registration_grading">Modo de avaliação</string>
     <string name="registration_ceus">UECs</string>
     <string name="registration_audit">Auditoria</string>
     <string name="registration_graded">Com nota</string>
@@ -304,6 +313,8 @@
     <string name="registration_no_plan_eligibility_message">Não é um aluno matriculado.</string>
     <string name="registration_were_sorry">Desculpe!</string>
     <string name="registration_ineligible_to_register">Matrícula não autorizada</string>
+    <string name="registration_remove">Remover</string>
+    
         
 	<!-- Versioning -->
 	<string name="version_upgrade">Atualizar</string>

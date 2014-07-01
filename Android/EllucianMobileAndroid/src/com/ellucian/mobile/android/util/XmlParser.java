@@ -28,6 +28,8 @@ public class XmlParser {
 	private static final String ACTIVITY = "activity";
 	private static final String INTENT_EXTRA = "intent-extra";
 	private static final String INTENT_FLAG = "intent-flag";
+	private static final String SECURE = "secure";
+	
 	
 	
 	public static ConfigurationProperties createConfigurationPropertiesFromXml(Context context) {
@@ -173,7 +175,10 @@ public class XmlParser {
 							}
 						
 							currentConfigObject.intentFlags.add(flag);
-						}						
+						} else if (currentTagName.equals(SECURE)) {
+							Log.d(TAG, "Setting secure: " + currentText);
+							currentConfigObject.secure = Boolean.parseBoolean(currentText);
+						}					
 					}
 				}
 				
@@ -199,7 +204,7 @@ public class XmlParser {
 	
 	public static boolean isNewConfigStartTag(String tagName) {
 		if (tagName.equals(MODULE_CONFIGURATIONS) || tagName.equals(PACKAGE) || tagName.equals(ACTIVITY) || 
-				tagName.equals(INTENT_EXTRA) || tagName.equals(INTENT_FLAG) ) {
+				tagName.equals(INTENT_EXTRA) || tagName.equals(INTENT_FLAG) || tagName.equals(SECURE) ) {
 			return false;
 		}
 		return true;

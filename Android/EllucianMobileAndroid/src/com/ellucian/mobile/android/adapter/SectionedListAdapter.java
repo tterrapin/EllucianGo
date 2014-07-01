@@ -14,6 +14,7 @@ import com.ellucian.elluciango.R;
 public class SectionedListAdapter extends BaseAdapter {
 	public final ArrayList<Adapter> sections = new ArrayList<Adapter>();
 	public final ArrayAdapter<String> headers;
+	public final ArrayList<String> identifiers = new ArrayList<String>();
 	public final static int TYPE_SECTION_HEADER = 0;
 
 	public SectionedListAdapter(Context context) {
@@ -27,6 +28,17 @@ public class SectionedListAdapter extends BaseAdapter {
 	public void addSection(String section, Adapter adapter) {
 		this.headers.add(section);
 		this.sections.add(adapter);
+		this.identifiers.add(null);
+	}
+	
+	/**
+	 *  Adds an alternate identifier to each section that is can be different then 
+	 *  the displayed title
+	 */
+	public void addSection(String section, String identifier, Adapter adapter) {
+		this.headers.add(section);
+		this.sections.add(adapter);
+		this.identifiers.add(identifier);
 	}
 
 	public Object getItem(int position) {

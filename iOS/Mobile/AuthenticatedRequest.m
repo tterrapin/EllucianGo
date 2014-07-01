@@ -23,6 +23,11 @@
 
 -(NSData *) requestURL:(NSURL *)url fromView:(UIViewController *)viewController
 {
+    return [self requestURL:url fromView:viewController addHTTPHeaderFields:nil];
+}
+
+-(NSData *) requestURL:(NSURL *)url fromView:(UIViewController *)viewController addHTTPHeaderFields:(NSDictionary *)headers
+{
     self.url = url;
     self.request = [NSMutableURLRequest requestWithURL: self.url
                                            cachePolicy: NSURLRequestReloadIgnoringCacheData
@@ -30,6 +35,10 @@
     NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
     if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
         [self.request addAuthenticationHeader];
+    }
+    
+    for(NSString* header in headers){
+        [self.request addValue:[headers objectForKey: header] forHTTPHeaderField:header];
     }
     
     [NSURLConnection connectionWithRequest:self.request delegate:self];
@@ -78,7 +87,6 @@
     } else {
         [self.data appendData:data];
     }
-    NSLog(@"response connection");
 }
 
 - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse

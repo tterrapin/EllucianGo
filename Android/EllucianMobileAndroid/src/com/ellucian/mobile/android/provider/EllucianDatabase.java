@@ -32,6 +32,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampusesColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesPropertiesColumns;
+import com.ellucian.mobile.android.provider.EllucianContract.ModulesRolesColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.News;
 import com.ellucian.mobile.android.provider.EllucianContract.NewsCategories;
 import com.ellucian.mobile.android.provider.EllucianContract.NewsCategoriesColumns;
@@ -42,7 +43,9 @@ import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategoriesCo
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersColumns;
 
 public class EllucianDatabase extends SQLiteOpenHelper {
-	private static final int DB_VERSION = 6;
+	
+	// 7 = Ellucian Mobile 3.5
+	private static final int DB_VERSION = 7;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -125,8 +128,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 	private interface Subquery {
 		String NEWS_BODY = "(new." + News.NEWS_TITLE + "||'; '||new."
 				+ News.NEWS_CONTENT + ")";
-		String EVENTS_BODY = "(new." + Events.EVENTS_TITLE + "||'; '||new."
-				+ Events.EVENTS_DESCRIPTION + "||'; '||new." +
+		String EVENTS_BODY = "(new." + Events.EVENTS_TITLE + "||'; '||IfNull(new."
+				+ Events.EVENTS_DESCRIPTION + ", '')||'; '||new." +
 				Events.EVENTS_LOCATION + ")";
 	}
 
@@ -187,6 +190,13 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ References.MODULES_ID + ", "
 				+ ModulesPropertiesColumns.MODULE_PROPERTIES_NAME + " TEXT NOT NULL, "
 				+ ModulesPropertiesColumns.MODULE_PROPERTIES_VALUE + " TEXT NOT NULL" + ")");
+		
+		db.execSQL("CREATE TABLE " + Tables.MODULES_ROLES + " ("
+				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ ModulesColumns.MODULES_ID + " TEXT NOT NULL "
+				+ References.MODULES_ID + ", "
+				+ ModulesRolesColumns.MODULE_ROLES_NAME + " TEXT NOT NULL " + ")");
+
 
 		db.execSQL("CREATE TABLE " + Tables.GRADE_TERMS + " ("
 				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -625,6 +635,18 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_STICKY + " INTEGER NOT NULL DEFAULT 1 ");
 			db.execSQL("ALTER TABLE " + Tables.NOTIFICATIONS
 					+ " ADD COLUMN " + NotificationsColumns.NOTIFICATIONS_STATUSES + " TEXT ");
+		case 6: //3.0
+			db.execSQL("DROP TRIGGER " + Triggers.EVENTS_SEARCH_INSERT);
+			db.execSQL("CREATE TRIGGER " + Triggers.EVENTS_SEARCH_INSERT
+					+ " AFTER INSERT ON " + Tables.EVENTS + " BEGIN INSERT INTO "
+					+ Qualified.EVENTS_SEARCH + " " + " VALUES(new."
+					+ Events.EVENTS_ID + ", " + Subquery.EVENTS_BODY + ");"
+					+ " END;");
+			db.execSQL("CREATE TABLE " + Tables.MODULES_ROLES + " ("
+					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ ModulesColumns.MODULES_ID + " TEXT NOT NULL "
+					+ References.MODULES_ID + ", "
+					+ ModulesRolesColumns.MODULE_ROLES_NAME + " TEXT NOT NULL " + ")");
 
 		}
 

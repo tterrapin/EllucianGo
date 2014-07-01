@@ -25,8 +25,7 @@
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
-
-@property (nonatomic, strong) NSArray *plannedSections;
+@property (nonatomic, strong) NSMutableArray *plannedSections;
 @property (nonatomic, strong) NSMutableArray *searchedSections;
 
 @end
@@ -64,7 +63,7 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
     
             MBProgressHUD *hud3 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud3.labelText = NSLocalizedString(@"Fetching Registration Plan", @"fetching registration plan message");
+            hud3.labelText = NSLocalizedString(@"Fetching saved course sections", @"Fetching saved course sections message");
 
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [self fetchRegistrationPlans:self];
@@ -82,6 +81,7 @@
                 
                 if(self.ineligibleMessage) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+                    alert.tag = 1;
                     [alert show];
                     
                 }
@@ -116,7 +116,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkRegistrationEligibility:) name:kLoginExecutorSuccess object:nil];
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+    NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -129,7 +130,6 @@
                               options:kNilOptions
                               error:&error];
         BOOL eligible = [[json objectForKey:@"eligible"] boolValue];
-
         if(eligible)
         {
             self.ineligibleMessage = nil;
@@ -140,10 +140,21 @@
             }
             self.ineligibleMessage = [messagesArray componentsJoinedByString:@"\n"];
         }
+        
+        for(NSDictionary *termsDictionary in [json valueForKey:@"terms"]) {
+            NSString *termId = [termsDictionary objectForKey:@"term"];
+            RegistrationTerm *term = [self findTermById:termId];
+            if(term) {
+                term.eligible = [[termsDictionary objectForKey:@"eligible"] boolValue];
+                term.requiresAltPin = [[termsDictionary objectForKey:@"requireAltPin"] boolValue];
+            }
+        }
         return eligible;
         
+    } else {
+        [self reportError:authenticatedRequet.error.localizedDescription];
+        return NO;
     }
-    else return NO;
 }
 
 -(NSDateFormatter *)dateFormatter
@@ -183,7 +194,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRegistrationPlans:) name:kLoginExecutorSuccess object:nil];
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+    NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -197,6 +209,8 @@
                               error:&error];
         
         NSMutableArray *plannedSections = [NSMutableArray new];
+        NSMutableArray *searchedSections = [[NSMutableArray alloc] initWithArray:self.searchedSections];
+
         for(NSDictionary *planJson in [json objectForKey:@"plans"]) {
             self.planId = [planJson objectForKey:@"planId"];
             for(NSDictionary *termJson in [planJson objectForKey:@"terms"]) {
@@ -224,20 +238,16 @@
                     if([plannedSectionJson objectForKey:@"maximumCredits"] != [NSNull null]) {
                         plannedSection.maximumCredits = [plannedSectionJson objectForKey:@"maximumCredits"];
                     }
-                    
-                    if (plannedSection.minimumCredits && plannedSection.maximumCredits) {
-                        plannedSection.isVariableCredit = true;
-                    } else {
-                        plannedSection.isVariableCredit = false;
-                    }
-                    
+
                     if([plannedSectionJson objectForKey:@"variableCreditIncrement"] != [NSNull null]) {
                         plannedSection.variableCreditIncrement = [plannedSectionJson objectForKey:@"variableCreditIncrement"];
+                    }
+                    if([plannedSectionJson objectForKey:@"variableCreditOperator"] != [NSNull null]) {
+                        plannedSection.variableCreditOperator = [plannedSectionJson objectForKey:@"variableCreditOperator"];
                     }
                     if([plannedSectionJson objectForKey:@"ceus"] != [NSNull null]) {
                         plannedSection.ceus = [plannedSectionJson objectForKey:@"ceus"];
                     }
-                    
                     plannedSection.status = [plannedSectionJson objectForKey:@"status"];
                     plannedSection.gradingType = [plannedSectionJson objectForKey:@"gradingType"];
                     
@@ -261,7 +271,9 @@
                     NSMutableArray *meetingPatterns = [NSMutableArray new];
                     for(NSDictionary *meetingPatternJson in [plannedSectionJson objectForKey:@"meetingPatterns"]) {
                         RegistrationPlannedSectionMeetingPattern *meetingPattern = [RegistrationPlannedSectionMeetingPattern new];
-                        meetingPattern.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
+                        if([meetingPatternJson objectForKey:@"instructionalMethodCode"] != [NSNull null]) {
+                            meetingPattern.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
+                        }
                         meetingPattern.startDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"startDate"]];
                         meetingPattern.endDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"endDate"]];
                         
@@ -317,23 +329,38 @@
                     NSMutableArray *instructors = [NSMutableArray new];
                     for(NSDictionary *instructorJson in [plannedSectionJson objectForKey:@"instructors"]) {
                         RegistrationPlannedSectionInstructor *instructor = [RegistrationPlannedSectionInstructor new];
-                        instructor.firstName = [instructorJson objectForKey:@"firstName"];
-                        instructor.lastName = [instructorJson objectForKey:@"lastName"];
-                        instructor.middleInitial = [instructorJson objectForKey:@"middleInitial"];
+                        if([instructorJson objectForKey:@"firstName"] != [NSNull null]) {
+                            instructor.firstName = [instructorJson objectForKey:@"firstName"];
+                        }
+                        if([instructorJson objectForKey:@"lastName"] != [NSNull null]) {
+                            instructor.lastName = [instructorJson objectForKey:@"lastName"];
+                        }
+                        if([instructorJson objectForKey:@"middleInitial"] != [NSNull null]) {
+                            instructor.middleInitial = [instructorJson objectForKey:@"middleInitial"];
+                        }
                         instructor.instructorId = [instructorJson objectForKey:@"instructorId"];
                         instructor.primary = [instructorJson objectForKey:@"primary"];
-                        instructor.formattedName = [instructorJson objectForKey:@"formattedName"];
+                        if([instructorJson objectForKey:@"formattedName"] != [NSNull null]) {
+                            instructor.formattedName = [instructorJson objectForKey:@"formattedName"];
+                        }
                         [instructors addObject:instructor];
                     };
                     plannedSection.instructors = [instructors copy];
                     [plannedSections addObject:plannedSection];
+                    
+                    if([searchedSections containsObject:plannedSection]) {
+                        [searchedSections removeObject:plannedSection];
+                    }
                 }
             }
         }
-        self.plannedSections = [plannedSections copy];
+        self.plannedSections = plannedSections;
+        self.searchedSections = searchedSections;
             
         [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationPlanDataReloaded object:nil];
         
+    } else {
+        [self reportError:authenticatedRequet.error.localizedDescription];
     }
 }
 
@@ -350,14 +377,30 @@
 
 -(void) addSearchedSection:(RegistrationPlannedSection *)section
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sectionId == %@", section.sectionId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sectionId == %@ and termId == %@", section.sectionId, section.termId];
     NSArray *results = [[self sectionsInCart:section.termId ] filteredArrayUsingPredicate:predicate];
-    if([results count] == 0) {
-        [self.searchedSections addObject:section];
+    if([results count] > 0) {
+        for(RegistrationPlannedSection *section in results) {
+            [self removeFromCart:section];
+        }
     }
+    [self.searchedSections addObject:section];
     [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationPlanDataReloaded object:nil];
 }
 
+-(BOOL) courseIsInCart:(RegistrationPlannedSection *)section
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sectionId == %@ and termId == %@", section.sectionId, section.termId];
+    NSArray *results = [[self sectionsInCart:section.termId ] filteredArrayUsingPredicate:predicate];
+    return [results count] > 0;
+}
+
+-(BOOL) courseIsRegistered:(RegistrationPlannedSection *)section
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sectionId == %@ and termId == %@ AND classification == %@", section.sectionId, section.termId, @"registered"];
+    NSArray *results = [self.plannedSections filteredArrayUsingPredicate:predicate];
+    return [results count] > 0;
+}
 
 -(void) fetchTerms
 {
@@ -387,6 +430,8 @@
             term.endDate = [termJson objectForKey:@"endDate"];
         }
         self.terms = [terms copy];
+    } else {
+        [self reportError:authenticatedRequet.error.localizedDescription];
     }
 }
 
@@ -454,6 +499,118 @@
     }
     
     searchController.allowAddToCart = permission;
+}
+
+-(RegistrationTerm *) findTermById:(NSString *) termId
+{
+    RegistrationTerm *term;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"termId == %@", termId];
+    NSArray *filteredArray = [self.terms filteredArrayUsingPredicate:predicate];
+    if ([filteredArray count] > 0) {
+        term = [filteredArray firstObject];
+    }
+    return term;
+}
+
+-(void) reportError:(NSString *)error
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+    alert.tag = 3;
+    [alert show];
+}
+
+-(void) removeSection:(RegistrationPlannedSection *)section
+{
+    if([self.plannedSections containsObject:section]) {
+        [self.plannedSections removeObject:section];
+    }
+    if([self.searchedSections containsObject:section]) {
+        [self.searchedSections removeObject:section];
+    }
+}
+
+-(void) removeFromCart:(RegistrationPlannedSection *) section
+{
+    
+    NSMutableArray *termsToRegister = [NSMutableArray new];
+    
+    NSMutableArray *sectionRegistrations = [NSMutableArray new];
+    
+    NSString * gradingType = @"Graded";
+    if (section.isAudit) {
+        gradingType = @"Audit";
+    } else if (section.isPassFail) {
+        gradingType = @"PassFail";
+    }
+    NSMutableDictionary *sectionToRegister = [NSMutableDictionary new];
+    [sectionToRegister setObject:section.sectionId forKey:@"sectionId"];
+    [sectionToRegister setObject:@"remove" forKey:@"action"];
+    if( section.credits ) {
+        [sectionToRegister setObject: section.credits forKey:@"credits"];
+    }
+    if(section.ceus) {
+        [sectionToRegister setObject: section.ceus forKey:@"ceus"];
+    }
+    [sectionToRegister setObject:gradingType forKey:@"gradingType"];
+    [sectionRegistrations addObject:sectionToRegister];
+    
+    NSMutableDictionary *termToRegister = [NSMutableDictionary new];
+    [termToRegister setObject:section.termId forKey:@"termId"];
+    [termToRegister setObject:sectionRegistrations forKey:@"sections"];
+    [termsToRegister addObject:termToRegister];
+    
+    NSMutableDictionary *postDictionary = [NSMutableDictionary new];
+    [postDictionary setObject:termsToRegister forKey:@"terms"];
+    if(self.planId) {
+        [postDictionary setObject: self.planId forKey:@"planId"];
+    }
+    //this isn't doing what I think
+    [self removeSection:section];
+    
+    NSError *jsonError;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/update-cart", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    
+    NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+        [urlRequest addAuthenticationHeader];
+    }
+    
+    [urlRequest setHTTPMethod:@"PUT"];
+    [urlRequest setHTTPBody:jsonData];
+    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if(data)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+            
+            NSDictionary* json = [NSJSONSerialization
+                                  JSONObjectWithData:data
+                                  options:kNilOptions
+                                  error:&error];
+            BOOL success = [[json objectForKey:@"success"] boolValue];
+            if(!success) {
+                NSArray *messages = [json objectForKey:@"messages"];
+                if([messages count] > 0) {
+                    NSString *message = [messages componentsJoinedByString:@"\n"];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self reportError:message];
+                    });
+                }
+            }
+        }
+        
+    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationItemRemovedFromCart object:nil];
+}
+
+-(BOOL) containsSectionInCart:(RegistrationPlannedSection *) section
+{
+    return [self.plannedSections containsObject:section] ||
+    [self.searchedSections containsObject:section];
 }
 
 @end

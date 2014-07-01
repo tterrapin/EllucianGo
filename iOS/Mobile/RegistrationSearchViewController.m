@@ -113,11 +113,13 @@
 
 - (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    RegistrationTerm *term = [self.terms objectAtIndex:row];
-    self.termTextField.text = term.name;
-    self.termTextField.selectedTextRange = nil;
-    self.selectedTermId = term.termId;
-    [self updateSearchButton: pickerView];
+    if([self.terms count] > row) {
+        RegistrationTerm *term = [self.terms objectAtIndex:row];
+        self.termTextField.text = term.name;
+        self.termTextField.selectedTextRange = nil;
+        self.selectedTermId = term.termId;
+        [self updateSearchButton: pickerView];
+    }
 }
 
 -(NSDateFormatter *)dateFormatter
@@ -169,7 +171,8 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+    NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
+    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -225,16 +228,11 @@
             if([plannedSectionJson objectForKey:@"maximumCredits"] != [NSNull null]) {
                 plannedSection.maximumCredits = [plannedSectionJson objectForKey:@"maximumCredits"];
             }
-            
-            if (plannedSection.minimumCredits && plannedSection.maximumCredits) {
-                plannedSection.isVariableCredit = true;
-            } else {
-                plannedSection.isVariableCredit = false;
-            }
-                
-            
             if([plannedSectionJson objectForKey:@"variableCreditIncrement"] != [NSNull null]) {
                 plannedSection.variableCreditIncrement = [plannedSectionJson objectForKey:@"variableCreditIncrement"];
+            }
+            if([plannedSectionJson objectForKey:@"variableCreditOperator"] != [NSNull null]) {
+                plannedSection.variableCreditOperator = [plannedSectionJson objectForKey:@"variableCreditOperator"];
             }
             if([plannedSectionJson objectForKey:@"ceus"] != [NSNull null]) {
                 plannedSection.ceus = [plannedSectionJson objectForKey:@"ceus"];
@@ -335,6 +333,8 @@
             plannedSection.instructors = [instructors copy];
             [plannedSections addObject:plannedSection];
         }
+    } else {
+        [self.registrationTabController reportError:authenticatedRequet.error.localizedDescription];
     }
     return plannedSections;
 }

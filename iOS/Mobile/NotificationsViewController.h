@@ -15,6 +15,8 @@
 #import "EllucianUITableViewController.h"
 #import "DetailSelectionDelegate.h"
 
+#define kNotificationsViewControllerItemSelected @"NotificationsViewController Item Selected"
+
 @interface NotificationsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) Module *module;
@@ -22,5 +24,9 @@
 @property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
 
 + (void)requestNotificationDetailById:(NSString*) notificationId;
+- (void) selectFirst;
+- (void) selectNext;
+- (void) showDetailForRequestedNotification;
+- (void) fetchNotifications;
 
 @end

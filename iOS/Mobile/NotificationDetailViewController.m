@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) UIBarButtonItem *deleteButtonItem;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (strong, nonatomic) IBOutlet UIView *maskView;
+
 @end
 
 @implementation NotificationDetailViewController
@@ -26,10 +28,18 @@
 {
     [super viewDidLoad];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popToRoot:) name:kNotificationsViewControllerItemSelected object:nil];
+        if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+            self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        }
+    }
+
+    [self overlayDisplay];
+    
     self.navigationController.navigationBar.translucent = NO;
     
     if([AppearanceChanger isRTL]) {
-        self.notificationDescriptionLabel.textAlignment = NSTextAlignmentRight;
         self.notificationTitleLabel.textAlignment = NSTextAlignmentRight;
         self.notificationDateLabel.textAlignment = NSTextAlignmentRight;
     }
@@ -37,11 +47,14 @@
     self.backgroundView.backgroundColor = [UIColor accentColor];
     self.notificationTitleLabel.textColor = [UIColor subheaderTextColor];
     self.notificationDateLabel.textColor = [UIColor subheaderTextColor];
+    [self.notificationDescriptionWebView setDelegate:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.navigationController.toolbarHidden = YES;
     
     if(self.notification) {
         [self refreshUI];
@@ -63,8 +76,9 @@
     if ([[segue identifier] isEqualToString:@"Show Notification Link"]) {
         WebViewController *detailController = (WebViewController *)[segue destinationViewController];
         detailController.loadRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:self.notification.hyperlink]];
-        detailController.title = self.notification.notificationDescription;
+        detailController.title = self.notification.linkLabel;
         detailController.analyticsLabel = self.module.name;
+        self.navigationController.toolbarHidden = YES;
     }
 }
 
@@ -98,11 +112,12 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        
         [NotificationsFetcher deleteNotification:self.notification module:self.module];
+
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.navigationController popViewControllerAnimated:YES];
         }
-
     }
 }
 
@@ -124,6 +139,7 @@
     NSArray *activityItems = [NSArray arrayWithObject:text];
     UIActivityViewController *avc = [[UIActivityViewController alloc]
                                      initWithActivityItems: activityItems applicationActivities:nil];
+    [avc setValue:self.notification.title forKey:@"subject"];
     [avc setCompletionHandler:^(NSString *activityType, BOOL completed) {
         NSString *label = [NSString stringWithFormat:@"Tap Share Icon - %@", activityType];
         [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:label withValue:nil forModuleNamed:self.module.name];
@@ -164,36 +180,39 @@
 
 -(void) markNotificationRead
 {
-    //mark deleted on server
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", [self.module propertyForKey:@"mobilenotifications"], [[[CurrentUser sharedInstance] userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding],
-                           self.notification.notificationId];
-
-    NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
-    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
-        [urlRequest addAuthenticationHeader];
-    }
-    
-    [urlRequest setHTTPMethod:@"POST"];
-    
-    NSError *jsonError;
-    NSDictionary *postDictionary = @{
-                                     @"uuid": self.notification.notificationId,
-                                     @"statuses": @[@"READ"],
-                                     };
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
-    [urlRequest setHTTPBody:jsonData];
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    
-    [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {}];
-    
-    self.notification.read = @YES;
-    NSError *error;
-    if (![self.notification.managedObjectContext save:&error]) {
-        NSLog(@"Could not record read notification: %@", [error userInfo]);
+    if(self.notification.notificationId)
+    {
+        //mark deleted on server
+        NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", [self.module propertyForKey:@"mobilenotifications"], [[[CurrentUser sharedInstance] userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding],
+                               self.notification.notificationId];
+        
+        NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+            [urlRequest addAuthenticationHeader];
+        }
+        
+        [urlRequest setHTTPMethod:@"POST"];
+        
+        NSError *jsonError;
+        NSDictionary *postDictionary = @{
+                                         @"uuid": self.notification.notificationId,
+                                         @"statuses": @[@"READ"],
+                                         };
+        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
+        [urlRequest setHTTPBody:jsonData];
+        
+        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+        
+        [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {}];
+        
+        self.notification.read = @YES;
+        NSError *error;
+        if (![self.notification.managedObjectContext save:&error]) {
+            NSLog(@"Could not record read notification: %@", [error userInfo]);
+        }
     }
 }
 
@@ -201,7 +220,6 @@
 - (void)viewDidLayoutSubviews {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.notificationTitleLabel.preferredMaxLayoutWidth = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width - 20;
-        self.notificationDescriptionLabel.preferredMaxLayoutWidth = self.notificationDescriptionLabel.bounds.size.width;
     });
 }
 
@@ -213,12 +231,15 @@
 }
 
 -(void)selectedDetail:(id)newNotification
+            withIndex:(NSIndexPath *)myIndex
            withModule:(Module*)myModule
+           withController:(id)myController
 {
     if ( [newNotification isKindOfClass:[Notification class]] )
     {
         [self setNotification:newNotification];
         [self setModule:myModule];
+        [self setController:myController];
         
         if (_masterPopover != nil) {
             [_masterPopover dismissPopoverAnimated:YES];
@@ -237,6 +258,13 @@
 
 -(void)refreshUI
 {
+    if(self.maskView != nil)
+    {
+        [self.maskView removeFromSuperview];
+        self.maskView = nil;
+        self.navigationController.toolbarHidden = NO;
+    }
+    
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSMutableArray *items = [[NSMutableArray alloc] initWithObjects:flexibleSpace, nil];
     if(![self.notification.sticky boolValue]) {
@@ -255,19 +283,57 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     self.notificationDateLabel.text = [dateFormatter stringFromDate:self.notification.noticeDate];
-    self.notificationDescriptionLabel.text = self.notification.notificationDescription;
+    [self setDescriptionHtml:self.notification.notificationDescription];
     
+    NSLog(@"hyperlink: %@", self.notification.hyperlink);
     if(self.notification.hyperlink) {
         [self.notificationActionButton setTitle:self.notification.linkLabel forState:UIControlStateNormal];
         self.notificationActionButton.hidden = NO;
+        self.notificationActionButtonHeightConstraint.constant = 43.0;
+        self.notificationActionButtonBottomSpaceConstraint.constant = 10.0;
     } else {
         self.notificationActionButton.hidden = YES;
+        self.notificationActionButtonHeightConstraint.constant = 0.0;
+        self.notificationActionButtonBottomSpaceConstraint.constant = 0.0;
     }
     
     [self.view setNeedsDisplay];
 
     [self markNotificationRead];
     
+}
+
+-(void)setDescriptionHtml:(NSString *) text
+{
+    // Create a div that the content will reside in formatting for RTL if necessary.
+    NSString  *htmlStringwithFont;
+    if ([AppearanceChanger isRTL] ){
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i; direction:rtl;\" >%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, text];
+    }
+    else{
+        htmlStringwithFont = [NSString stringWithFormat:@"<div style=\"font-family: %@; color:%@;font-size: %i\">%@</div>", kAppearanceChangerWebViewSystemFontName, kAppearanceChangerWebViewSystemFontColor, kAppearanceChangerWebViewSystemFontSize, text];
+    }
+    
+    // Replace '\n' characters with <br /> for content that isn't html based to begin with...
+    // One issue is if html text also has \n characters in it. In that case we'll be changing the spacing of the content.
+    htmlStringwithFont = [htmlStringwithFont stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+    
+    // NaTausha Hansen - I added this code with my daddy! :) ;) 8-) 8-o
+    [self.notificationDescriptionWebView loadHTMLString:htmlStringwithFont baseURL:nil];
+}
+
+#pragma mark - UIWebViewDelegate
+
+// Delegate method to launch the URL links in an external browser or app. We don't want to just replace
+// the contents of this webview with the destination of the URL being clicked on.
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    // is not getting called on a touch of the link??
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return false;
+    }
+    return true;
 }
 
 #pragma mark - UISplitViewDelegate methods
@@ -295,6 +361,40 @@
     
     //Nil out the pointer to the popover.
     _masterPopover = nil;
+}
+
+-(void) overlayDisplay
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+        self.navigationController.toolbarHidden = YES;
+        self.maskView = [[UIView alloc] initWithFrame:self.view.bounds];
+        [self.maskView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:self.maskView];
+
+        UILabel *label = [UILabel new];
+        label.font = [UIFont systemFontOfSize:18];
+        label.minimumScaleFactor = .5f;
+        label.textAlignment =  NSTextAlignmentCenter;
+        label.text = NSLocalizedString(@"No Notifications to display", @"message when there are no notifications to display");
+
+        label.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.maskView addSubview:label];
+        
+        NSLayoutConstraint *xCenterConstraint = [NSLayoutConstraint constraintWithItem:self.maskView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:label attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+        [self.view addConstraint:xCenterConstraint];
+        
+        [self.view addConstraints:[NSLayoutConstraint
+                                   constraintsWithVisualFormat:@"V:|-60-[label]"
+                                   options:NSLayoutFormatDirectionLeadingToTrailing
+                                   metrics:nil
+                                   views:NSDictionaryOfVariableBindings(label)]];
+    }
+}
+
+-(void) popToRoot:(id) sender
+{
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 

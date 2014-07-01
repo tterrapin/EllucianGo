@@ -15,10 +15,11 @@
 	        android:id="@+id/eligibility_error_messsage_view"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@drawable/bottom_border_1dp"
 	        android:orientation="vertical"
 	        android:padding="4dp"
-	        android:background="@drawable/bottom_border_1dp" 
-	        android:visibility="gone" >
+	        android:visibility="gone"
+	        tools:ignore="UselessParent" >
 	    
 		    <LinearLayout       
 		        android:layout_width="match_parent"
@@ -91,11 +92,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/ellucian_primary_color"
         android:text="@string/registration_register"
         android:textSize="12sp"
         android:padding="6dp"
-        android:textColor="@color/ellucian_header_text_color"
         android:onClick="onRegisterClicked"
         android:visibility="gone" />
         

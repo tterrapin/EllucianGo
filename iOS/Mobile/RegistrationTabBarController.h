@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 #define kRegistrationPlanDataReloaded @"RegistrationPlanDataReloaded"
+#define kRegistrationItemRemovedFromCart @"RegistrationItemRemovedFromCart"
 
 @class Module;
 @class RegistrationPlannedSection;
+@class RegistrationTerm;
 
-@interface RegistrationTabBarController : UITabBarController
+@interface RegistrationTabBarController : UITabBarController<UIAlertViewDelegate>
 
 @property (strong, nonatomic) Module *module;
 
@@ -22,13 +24,18 @@
 @property (nonatomic, strong) NSString *planId;
 @property (nonatomic, strong) NSArray *terms;
 
-
 - (void)fetchRegistrationPlans:(id)sender;
 -(int) itemsInCartCount;
 -(NSString *)termName:(NSString *)termId;
 -(NSArray *) sectionsInCart:(NSString *) termId;
+-(BOOL) containsSectionInCart:(RegistrationPlannedSection *) section;
 -(NSArray *) registeredSections:(NSString *) termId;
 -(void) addSearchedSection:(RegistrationPlannedSection *)section;
 -(void) removeSearchedSection:(NSString *)sectionId term:(NSString *)termId;
-
+-(RegistrationTerm *) findTermById:(NSString *) termId;
+-(void) reportError:(NSString *)error;
+-(void) removeSection:(RegistrationPlannedSection *)section;
+-(void) removeFromCart:(RegistrationPlannedSection *) section;
+-(BOOL) courseIsInCart:(RegistrationPlannedSection *)section;
+-(BOOL) courseIsRegistered:(RegistrationPlannedSection *)section;
 @end

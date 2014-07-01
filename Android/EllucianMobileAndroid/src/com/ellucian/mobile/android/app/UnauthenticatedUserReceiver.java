@@ -19,7 +19,7 @@ public class UnauthenticatedUserReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent incomingIntent) {
 		LoginDialogFragment loginFragment = new LoginDialogFragment();
-		loginFragment.queueIntent(activity.getIntent());
+		loginFragment.queueIntent(activity.getIntent(), null);
 		loginFragment.forcedLogin(true);
 		loginFragment.show(activity.getFragmentManager(),
 				LoginDialogFragment.LOGIN_DIALOG);

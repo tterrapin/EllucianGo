@@ -1,13 +1,17 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<ExpandableListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/left_drawer"
     android:layout_width="260dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="#313131"
+    android:background="#333333"
     android:choiceMode="singleChoice"
-    android:divider="@drawable/drawer_inset_divider"
+    android:divider="@android:color/transparent"
+    android:childDivider="@drawable/drawer_child_divider"
     android:dividerHeight="1dp"
+    android:groupIndicator="@android:color/transparent" 
     tools:ignore="Overdraw"
     tools:listitem="@android:layout/simple_list_item_1" />
+
+<!-- android:divider="@drawable/drawer_inset_divider" -->
 

@@ -146,12 +146,6 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
     }
     
     @Override
-	protected void onStart() {
-		super.onStart();
-		sendView("News List", moduleName);
-	}
-    
-    @Override
     protected void onPause() {
     	super.onPause();
     	if (filteredCategories != null) {

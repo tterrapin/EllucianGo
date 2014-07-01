@@ -103,6 +103,8 @@ public class NotificationsListFragment extends EllucianDefaultListFragment {
 	public Bundle buildDetailBundle(Cursor cursor) {
 		Bundle bundle = new Bundle();
 		
+		bundle.putString(Extra.MODULE_NAME, getEllucianActivity().moduleName);
+		
 		String id = cursor.getString(cursor.getColumnIndex(Notifications.NOTIFICATIONS_ID));
 		String title = cursor.getString(cursor.getColumnIndex(Notifications.NOTIFICATIONS_TITLE));
 		String details = cursor.getString(cursor.getColumnIndex(Notifications.NOTIFICATIONS_DETAILS));

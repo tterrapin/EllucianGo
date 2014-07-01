@@ -62,7 +62,7 @@ public class BuildingListFragment extends EllucianDefaultListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		sendView("BuildingList", getEllucianActivity().moduleName);
+		sendView("Building List", getEllucianActivity().moduleName);
 	}
 		
 }

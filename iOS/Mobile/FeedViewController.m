@@ -72,7 +72,7 @@
         Feed *selectedFeed = [self.fetchedResultsController objectAtIndexPath:head];
     
         if (_detailSelectionDelegate && selectedFeed) {
-            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:selectedFeed withIndex:head withModule:self.module withController:self];
         }
     }
 }
@@ -245,7 +245,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         Feed *selectedFeed = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:selectedFeed withIndex:indexPath withModule:self.module withController:self];
         }
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self performSegueWithIdentifier:@"Show Feed Detail" sender:tableView];
@@ -385,13 +385,11 @@
         Feed *selectedFeed = [controller objectAtIndexPath:head];
         
         if (_detailSelectionDelegate && selectedFeed) {
-            [_detailSelectionDelegate selectedDetail:selectedFeed withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:selectedFeed withIndex:head withModule:self.module withController:self];
         }
     } else if (_detailSelectionDelegate) {
-        [_detailSelectionDelegate selectedDetail:nil withModule:self.module];
+        [_detailSelectionDelegate selectedDetail:nil withIndex:nil withModule:self.module withController:self];
     }
-    
-    
 }
 #pragma mark - fetch configuration
 

@@ -27,6 +27,7 @@
 @interface RegistrationCartViewController ()
 @property (strong, nonatomic) UIBarButtonItem *registerButton;
 @property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
+@property (nonatomic, strong) NSString *termNeedingPIN;
 @end
 
 @implementation RegistrationCartViewController
@@ -55,6 +56,8 @@
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.registerButton, flexibleItem, nil];
     self.navigationController.navigationBar.translucent = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTable:) name:kRegistrationItemRemovedFromCart object:nil];
 }
 
 #pragma mark - variables from tab
@@ -193,6 +196,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section - 1];
+    if(term.requiresAltPin && !term.userEnteredPIN) {
+        [self promptForPIN:term.termId];
+    }
     NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
     RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
     plannedSection.selectedForRegistration = !plannedSection.selectedForRegistration;
@@ -261,9 +267,12 @@
                 [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
             }
         }
-    
+        if([detailController isKindOfClass:[RegistrationPlannedSectionDetailViewController class]]) {
+            RegistrationPlannedSectionDetailViewController *registrationPlannedSectionDetailViewController = (RegistrationPlannedSectionDetailViewController *) detailController;
+            registrationPlannedSectionDetailViewController.allowDeleteFromCart = YES;
+        }
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:plannedSection withIndex:indexPath withModule:self.module withController:self];
         }
     }
     else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -303,7 +312,7 @@
     int count = [self.registrationTabController itemsInCartCount];
     
     if(!self.registrationTabController.ineligibleMessage && count == 0){
-         [self showNoDataView:NSLocalizedString(@"Registration Cart Empty", @"empty registration cart message")];
+        [self showNoDataView:NSLocalizedString(@"Registration Cart Empty", @"empty registration cart message")];
     } else {
         [self hideNoDataView];
     }
@@ -319,9 +328,7 @@
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
-    }
-    else if ([[segue identifier] isEqualToString:@"Show Planned Course Detail"]) {
-        
+        detailController.allowDeleteFromCart = YES;
     } else if ([[segue identifier] isEqualToString:@"Register"]) {
         NSDictionary *messages = (NSDictionary *)sender;
         id detailController = [segue destinationViewController];
@@ -341,6 +348,13 @@
             NSString *term = [registeredMessage objectForKey:@"termId"];
             RegistrationTabBarController *tab = self.registrationTabController;
             [tab removeSearchedSection:section term:term];
+        }
+        if([[messages objectForKey:@"messages"] count] || [[messages objectForKey:@"failures"] count]) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userEnteredPIN.length > 0"];
+            NSArray *filteredArray = [self.registrationTabController.terms filteredArrayUsingPredicate:predicate];
+            for(RegistrationTerm *term in filteredArray) {
+                term.userEnteredPIN = nil;
+            }
         }
     }
 }
@@ -412,7 +426,7 @@
 
                 if ( course.selectedForRegistration ) {
                     
-                    NSDictionary *sectionToRegister = nil;
+                    NSMutableDictionary *sectionToRegister = [[NSMutableDictionary alloc] init];
                     
                     NSString * action = @"Add";
                     
@@ -423,19 +437,15 @@
                     }
                         
                     if(course.isVariableCredit) {
-                        sectionToRegister = @{
-                                            @"termId": term.termId,
-                                            @"sectionId": course.sectionId,
-                                            @"action": action,
-                                            @"credits": course.credits
-                                        };
-                    } else {
-                        sectionToRegister = @{
-                                          @"termId": term.termId,
-                                          @"sectionId": course.sectionId,
-                                          @"action": action
-                                        };
+                        [sectionToRegister setObject:course.credits forKey:@"credits"];
                     }
+                    if(term.requiresAltPin) {
+                        [sectionToRegister setObject:term.userEnteredPIN forKey:@"altPin"];
+                    }
+                    [sectionToRegister setObject:term.termId forKey:@"termId"];
+                    [sectionToRegister setObject:course.sectionId forKey:@"sectionId"];
+                    [sectionToRegister setObject:action forKey:@"action"];
+
                     
                     [sectionRegistrations addObject:sectionToRegister];
                 }
@@ -467,15 +477,15 @@
         NSURLResponse *response;
         NSData *responseData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
         
-        NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-        NSInteger code = [httpResponse statusCode];
-        NSLog(@"put code: %ld", (long)code);
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
-        BOOL success = YES;
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if(success) {
+        if(responseData) {
+            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
             [self.registrationTabController fetchRegistrationPlans:self];
             [self performSegueWithIdentifier:@"Register" sender:jsonResponse];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+            [alert show];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
     });
 }
@@ -488,6 +498,79 @@
         [_creditsFormatter setMinimumFractionDigits:1];
     }
     return _creditsFormatter;
+}
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section - 1];
+        NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
+        RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
+        [self.registrationTabController removeFromCart:plannedSection];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            UISplitViewController *split = [self.registrationTabController childViewControllers][0];
+            UINavigationController *detailNavController = split.viewControllers[1];
+            UIViewController *detailController = detailNavController.topViewController;
+            if([detailController isKindOfClass:[RegistrationPlannedSectionDetailViewController class]]) {
+                RegistrationPlannedSectionDetailViewController *registrationPlannedSectionDetailViewController = (RegistrationPlannedSectionDetailViewController *) detailController;
+                if(registrationPlannedSectionDetailViewController.registrationPlannedSection == plannedSection) {
+                    [registrationPlannedSectionDetailViewController clearView];
+                }
+            }
+        }
+
+        [self updateStatusBar];
+    }
+}
+
+-(void) refreshTable:(id)sender
+{
+    [self.tableView reloadData];
+    [self updateBadge];
+    [self updateStatusBar];
+}
+
+-(void) promptForPIN:(NSString *)termId;
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIN", @"PIN label for registration") message:NSLocalizedString(@"Enter the registration PIN", @"PIN label for registration") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    alert.tag = -2;
+    alert.delegate = self;
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.placeholder = NSLocalizedString(@"PIN", @"PIN label for registration");
+    alertTextField.secureTextEntry = YES;
+    self.termNeedingPIN = termId;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == -2) {
+        if(buttonIndex == 0) {
+            NSArray *sectionsInCartForTerm = [self.registrationTabController sectionsInCart:self.termNeedingPIN];
+            for(RegistrationPlannedSection *section in sectionsInCartForTerm) {
+                section.selectedForRegistration = NO;
+            }
+            [self refreshTable:self];
+        }
+        if(buttonIndex == 1) {
+            RegistrationTerm *term = [self.registrationTabController findTermById:self.termNeedingPIN];
+            self.termNeedingPIN = nil;
+            term.userEnteredPIN = [[alertView textFieldAtIndex:0] text];
+        }
+    }
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    if(alertView.tag == -2) {
+        NSString *text = [[alertView textFieldAtIndex:0] text];
+        return ([text length] > 0);
+    }
+    return YES;
+    
 }
 
 

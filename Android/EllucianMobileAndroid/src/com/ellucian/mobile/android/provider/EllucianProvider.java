@@ -40,6 +40,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsBuildingsCatego
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
+import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
 import com.ellucian.mobile.android.provider.EllucianContract.News;
 import com.ellucian.mobile.android.provider.EllucianContract.NewsCategories;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
@@ -63,6 +64,8 @@ public class EllucianProvider extends ContentProvider {
 	private static final int MODULES = 100;
 	private static final int MODULESPROPERTIES = 110;
 	private static final int MODULESPORPERTIES_ID = 111;
+	private static final int MODULESROLES = 120;
+	private static final int MODULESROLES_ID = 121;
 	private static final int GRADETERMS = 200;
 	private static final int GRADETERMS_ID = 201;
 	private static final int GRADETERMS_ID_GRADECOURSES = 202;
@@ -123,6 +126,8 @@ public class EllucianProvider extends ContentProvider {
 		matcher.addURI(authority, EllucianContract.PATH_MODULES, MODULES);
 		matcher.addURI(authority, EllucianContract.PATH_MODULESPROPERTIES, MODULESPROPERTIES);
 		matcher.addURI(authority, EllucianContract.PATH_MODULESPROPERTIES+"/*", MODULESPORPERTIES_ID);
+		matcher.addURI(authority, EllucianContract.PATH_MODULESROLES, MODULESROLES);
+		matcher.addURI(authority, EllucianContract.PATH_MODULESROLES+"/*", MODULESROLES_ID);
 		matcher.addURI(authority, EllucianContract.PATH_GRADETERMS, GRADETERMS);
 		matcher.addURI(authority, EllucianContract.PATH_GRADETERMS+"/*", GRADETERMS_ID);
 		matcher.addURI(authority, 
@@ -243,6 +248,10 @@ public class EllucianProvider extends ContentProvider {
 				return ModulesProperties.CONTENT_TYPE;
 			case MODULESPORPERTIES_ID:
 				return ModulesProperties.CONTENT_ITEM_TYPE;
+			case MODULESROLES:
+				return ModulesRoles.CONTENT_TYPE;
+			case MODULESROLES_ID:
+				return ModulesRoles.CONTENT_ITEM_TYPE;
 			case GRADETERMS:
 				return GradeTerms.CONTENT_TYPE;	
 			case GRADETERMS_ID:
@@ -366,6 +375,11 @@ public class EllucianProvider extends ContentProvider {
 				long id = db.insertOrThrow(Tables.MODULES_PROPERTIES, null, values);
 				notifyChange(uri);
 				return ModulesProperties.buildPropertyUri(values.getAsString(Long.toString(id)));
+			}
+			case MODULESROLES: {
+				long id = db.insertOrThrow(Tables.MODULES_ROLES, null, values);
+				notifyChange(uri);
+				return ModulesRoles.buildRoleUri(values.getAsString(Long.toString(id)));
 			}
 			case GRADETERMS:
 				db.insertOrThrow(Tables.GRADE_TERMS, null, values);
@@ -581,6 +595,13 @@ public class EllucianProvider extends ContentProvider {
 				return builder.table(Tables.MODULES_PROPERTIES)
 						.where(ModulesProperties._ID + "=?", id);
 			}
+			case MODULESROLES:
+				return builder.table(Tables.MODULES_ROLES);
+			case MODULESROLES_ID: {
+				final String id = ModulesRoles.getRoleId(uri);
+				return builder.table(Tables.MODULES_ROLES)
+						.where(ModulesRoles._ID + "=?", id);
+			}
 			case GRADETERMS:
 				return builder.table(Tables.GRADE_TERMS);
 			case GRADETERMS_ID: {
@@ -781,6 +802,13 @@ public class EllucianProvider extends ContentProvider {
 			return builder.table(Tables.MODULES_PROPERTIES)
 					.where(ModulesProperties._ID + "=?", id);
 		}	
+		case MODULESROLES:
+			return builder.table(Tables.MODULES_ROLES);
+		case MODULESROLES_ID: {
+			final String id = ModulesRoles.getRoleId(uri);
+			return builder.table(Tables.MODULES_ROLES)
+					.where(ModulesRoles._ID + "=?", id);
+		}
 		case GRADETERMS:
 			return builder.table(Tables.GRADE_TERMS);
 		case GRADETERMS_ID:

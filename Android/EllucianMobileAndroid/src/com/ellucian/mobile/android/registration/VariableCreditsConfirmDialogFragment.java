@@ -55,20 +55,36 @@ public class VariableCreditsConfirmDialogFragment extends EllucianDialogFragment
 		final Section section = args.getParcelable(RegistrationActivity.SECTION);
 		final int position = args.getInt("position");
 		
-		// All float point math is x100 to a whole number to avoid float point math issues
+		final String variableOperator = section.variableCreditOperator;
 		
-		final int intIncrement; 
-		if (section.variableCreditIncrement != 0) {
+		
+		// All float point math is x100 to a whole number to avoid float point math issues
+		final int minCredits = (int) (100 * section.minimumCredits);
+		final int maxCredits = (int) (100 * section.maximumCredits);
+		
+		final int intIncrement;
+		if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_INC) 
+				&& section.variableCreditIncrement != 0) {
 			intIncrement =  (int) (100 * section.variableCreditIncrement);
 		} else {
 			intIncrement = 1; // represents a float point minimum increase of .01
 		}
-		final int minCredits = (int) (100 * section.minimumCredits);
-		final int maxCredits = (int) (100 * section.maximumCredits);
 		
 		// Resetting float to only 2 decimal, will truncate the rest
 		final float floatIncrement = (float) intIncrement / 100; 
 		
+		String titleMessage = "";
+		if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_OR)) {		
+			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_or_message), 
+					(float)section.minimumCredits, (float)section.maximumCredits);			
+		} else if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_INC)) {
+			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_inc_message), 
+					(float)section.minimumCredits, (float)section.maximumCredits, floatIncrement);		
+		} else {
+			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_to_message), 
+					(float)section.minimumCredits, (float)section.maximumCredits);
+		}
+	
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 
 		View layout = registrationActivity.getLayoutInflater().inflate(R.layout.decimal_number_input_dialog_layout, null);
@@ -77,8 +93,7 @@ public class VariableCreditsConfirmDialogFragment extends EllucianDialogFragment
 		final Button okButton = (Button) layout.findViewById(R.id.ok_button);
 		final Button cancelButton = (Button) layout.findViewById(R.id.cancel_button);
 
-		title.setText(getString(R.string.registration_dialog_variable_credits_message) 
-				+ (float)section.minimumCredits + "-" + (float)section.maximumCredits);
+		title.setText(titleMessage);
 
 		okButton.setOnClickListener(new View.OnClickListener() {
 
@@ -86,19 +101,31 @@ public class VariableCreditsConfirmDialogFragment extends EllucianDialogFragment
 			public void onClick(View v) {
 				String value = input.getText().toString().trim();
 
+				Toast emptyToast = Toast.makeText(registrationActivity, 
+						R.string.dialog_field_empty, Toast.LENGTH_SHORT);
+				emptyToast.setGravity(Gravity.CENTER, 0, 0);
+				
 				Toast rangeToast = Toast.makeText(registrationActivity, 
 						R.string.registration_dialog_variable_credits_range_error, Toast.LENGTH_SHORT);
 				rangeToast.setGravity(Gravity.CENTER, 0, 0);
 
 				if (TextUtils.isEmpty(value)) {				
-					rangeToast.show(); 
+					emptyToast.show(); 
 				} else {
 					float floatValue = Float.parseFloat(value);
 					int intValue = (int) (100 * floatValue);
 					// Resetting float to only 2 decimal, will truncate the rest
 					floatValue = (float) intValue / 100;
-
-					if (intValue >= minCredits && intValue <= maxCredits) {
+					
+					if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_OR)) {
+						
+						if (intValue != minCredits && intValue != maxCredits) {
+							rangeToast.show();
+						} else {
+							registrationActivity.onVariableCreditsConfirmOkClicked(section.termId, section.sectionId, floatValue);
+							VariableCreditsConfirmDialogFragment.this.dismiss();
+						}					
+					} else if (intValue >= minCredits && intValue <= maxCredits) {
 
 						if ((intValue - minCredits) % intIncrement == 0) {
 							registrationActivity.onVariableCreditsConfirmOkClicked(section.termId, section.sectionId, floatValue);

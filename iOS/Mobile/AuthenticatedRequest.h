@@ -16,5 +16,5 @@
 @property (nonatomic, strong) NSError *error;
 
 -(NSData *) requestURL:(NSURL *)url fromView:(UIViewController *) controller;
-
+-(NSData *) requestURL:(NSURL *)url fromView:(UIViewController *) controller addHTTPHeaderFields:(NSDictionary *)headers;
 @end

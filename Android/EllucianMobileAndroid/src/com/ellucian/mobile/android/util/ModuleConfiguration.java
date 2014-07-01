@@ -13,6 +13,7 @@ public class ModuleConfiguration {
 	public String activityName;
 	public HashMap<String, String> intentExtras;
 	public List<Integer> intentFlags;
+	public boolean secure;
 	
 	public ModuleConfiguration() {
 		intentExtras = new HashMap<String, String>();

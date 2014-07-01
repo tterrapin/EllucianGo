@@ -1,21 +1,27 @@
 package com.ellucian.mobile.android.adapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.widget.CursorAdapter;
+import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorTreeAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +44,7 @@ import com.ellucian.mobile.android.notifications.NotificationsActivity;
 import com.ellucian.mobile.android.numbers.NumberListActivity;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
+import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
 import com.ellucian.mobile.android.registration.RegistrationActivity;
 import com.ellucian.mobile.android.schoolselector.SchoolSelectionActivity;
 import com.ellucian.mobile.android.util.Extra;
@@ -45,53 +52,406 @@ import com.ellucian.mobile.android.util.ModuleConfiguration;
 import com.ellucian.mobile.android.util.Utils;
 import com.ellucian.mobile.android.webframe.WebframeActivity;
 
-public class ModuleMenuAdapter extends CursorAdapter {
+public class ModuleMenuAdapter extends CursorTreeAdapter {
 	
 	public static final String TAG = ModuleMenuAdapter.class.getSimpleName();
 	public static final String IMAGE_RESOURCE = "imageResource";
 	public static final String EXTERNAL_WEB_BROWSER = "externalWebBrowser";
+	public static final String HEADER_COLLAPSIBLE = "headerCollapsible";
+	public static final String MODULE_ROLE_EVERYONE = "Everyone";
+	
+	private ArrayList<Cursor> childCursorList = new ArrayList<Cursor>();
+	private LayoutInflater inflater;
 
-	public ModuleMenuAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
+		
+	
+	public ModuleMenuAdapter(Context context, Cursor groupCursor, ArrayList<Cursor> childCursorList) {
+		super(groupCursor, context);
+		this.childCursorList = childCursorList;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
+	
+		
+	/**
+	 * Never call this method directly, please access this method through
+	 * EllucianApplication.getModuleMenuAdapter() instead. 
+	 */
+	public static ModuleMenuAdapter buildInstance(Context context) {
+		
+		EllucianApplication ellucianApplicaton = (EllucianApplication) context.getApplicationContext();
+		final ContentResolver contentResolver = context.getContentResolver();
 
-	@Override
-	public int getItemViewType(int position) {
-		Cursor cursor = (Cursor) getItem(position);
-		String type = cursor.getString(cursor
-				.getColumnIndex(Modules.MODULE_TYPE));
-		if (type.equals(ModuleType.HEADER)) {
-			return 1;
+		boolean allowMaps = allowMaps(context);
+		String modulesSelection = "";
+		List<String> modulesSelectionArgs = new ArrayList<String>();
+		List<String> customTypes = ellucianApplicaton.getModuleConfigTypeList();
+		for (int i = 0; i < ModuleType.ALL.length; i++) {
+			String type = ModuleType.ALL[i];
+
+			if (type.equals(ModuleType.MAPS) && !allowMaps) {   
+				continue;
+			}
+
+			if (type.equals(ModuleType.CUSTOM)) {
+				for (int n = 0; n < customTypes.size(); n++) {
+					String customType = customTypes.get(n);
+
+					modulesSelection += " OR ";
+					modulesSelection += "( " + Modules.MODULE_TYPE + " = ?" + " AND " + Modules.MODULE_SUB_TYPE + " = ? )";
+
+					modulesSelectionArgs.add(type);
+					modulesSelectionArgs.add(customType);			
+				}
+			} else {
+				if (modulesSelection.length() > 0) {
+					modulesSelection += " OR ";
+				}
+				modulesSelection += Modules.MODULE_TYPE + " = ?";
+				modulesSelectionArgs.add(type);
+			}	
+		}
+
+		// Pull all the legal modules currently set in the Modules table of the database
+		Cursor modulesCursor = contentResolver.query(Modules.CONTENT_URI,
+				new String[] { BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE,
+				Modules.MODULE_NAME, Modules.MODULES_ICON_URL,
+				Modules.MODULES_ID, Modules.MODULE_SECURE, Modules.MODULE_SHOW_FOR_GUEST }, modulesSelection,
+				modulesSelectionArgs.toArray(new String[modulesSelectionArgs.size()]),
+				Modules.DEFAULT_SORT);
+
+
+		int totalRows = modulesCursor.getCount();
+
+		MatrixCursor headersCursor = new MatrixCursor(new String[] {
+				BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
+				Modules.MODULES_ICON_URL, ModuleMenuAdapter.IMAGE_RESOURCE,
+				Modules.MODULE_SECURE, ModuleMenuAdapter.HEADER_COLLAPSIBLE });
+
+		ArrayList<Cursor> childCursorList = new ArrayList<Cursor>();
+
+		// if no modules skip section and just add the base actions
+		if (totalRows > 0) {
+
+			int typeIndex = modulesCursor.getColumnIndex(Modules.MODULE_TYPE);
+			int subTypeIndex = modulesCursor.getColumnIndex(Modules.MODULE_SUB_TYPE);
+			int nameIndex = modulesCursor.getColumnIndex(Modules.MODULE_NAME);
+			int moduleIdIndex = modulesCursor.getColumnIndex(Modules.MODULES_ID);
+			int iconUrlIndex = modulesCursor.getColumnIndex(Modules.MODULES_ICON_URL);
+			int secureIndex = modulesCursor.getColumnIndex(Modules.MODULE_SECURE);		
+			int showGuestIndex = modulesCursor.getColumnIndex(Modules.MODULE_SHOW_FOR_GUEST);	
+			
+			// holds the current child modules
+			MatrixCursor currentChildCursor = null;
+			
+			String currentHeaderName = "";
+			
+			/*
+			//Get notification count
+			String notificationsCount = null;
+			if (ellucianApplicaton.isUserAuthenticated()) {
+				Cursor notificationsCursor = contentResolver.query(Notifications.CONTENT_URI, 
+						   new String[] { Notifications.NOTIFICATIONS_ID},
+						   Notifications.NOTIFICATIONS_STATUSES + " not like ? or " + Notifications.NOTIFICATIONS_STATUSES + " is null",
+						   new String[]{"%" + Notification.STATUS_READ + "%"},
+						   Notifications.DEFAULT_SORT);
+				int count = notificationsCursor.getCount();
+				if(count > 0) {
+					notificationsCount = "" + count;
+				}
+				notificationsCursor.close();
+			}
+			*/
+
+			// Handle the first row, if no header set at order "1" create default header
+			modulesCursor.moveToFirst();
+			String type = modulesCursor.getString(typeIndex);
+			if (!type.equals(ModuleType.HEADER)) {
+				currentHeaderName = context.getString(R.string.menu_header_applications);
+
+				currentChildCursor = new MatrixCursor(new String[] {
+						BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
+						Modules.MODULES_ICON_URL, Modules.MODULES_ID,
+						Modules.MODULE_SECURE, Modules.MODULE_LOCK, Modules.MODULE_RIGHT_TEXT });
+							
+				// Add the first child to the cursor
+				String subType = modulesCursor.getString(subTypeIndex);
+				String name = modulesCursor.getString(nameIndex);
+				String iconUrl = modulesCursor.getString(iconUrlIndex);
+				String moduleId = modulesCursor.getString(moduleIdIndex);
+				String secure = modulesCursor.getString(secureIndex);
+				int showGuestInt = modulesCursor.getInt(showGuestIndex);
+				boolean showGuest = showGuestInt == 1 ? true : false;
+				List<String> moduleRoles = getModuleRoles(ellucianApplicaton.getContentResolver(), moduleId);
+				boolean lock = ellucianApplicaton.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
+				String rightText = null;
+//				if(type.equals(ModuleType.NOTIFICATIONS)) {
+//					rightText = notificationsCount;
+//				}
+				
+				if (doesModuleShowForUser(ellucianApplicaton, moduleId, showGuest)) {
+					currentChildCursor.addRow(new Object[] { "1", type, subType,
+							name, iconUrl, moduleId, secure, lock, rightText });
+				}
+
+			} else {
+				currentHeaderName = modulesCursor.getString(nameIndex);		
+
+				currentChildCursor = new MatrixCursor(new String[] {
+						BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
+						Modules.MODULES_ICON_URL, Modules.MODULES_ID,
+						Modules.MODULE_SECURE, Modules.MODULE_LOCK, Modules.MODULE_RIGHT_TEXT });
+
+			}
+
+
+			// These variables will be used to keep the correct cursor BaseColumns._ID
+			int currentHeaderRows = headersCursor.getCount();
+			int currentChildRows = currentChildCursor.getCount();
+
+			// After the first row is set go through each module and either put it in the 
+			// headers cursor or the corresponding child cursor
+			while (modulesCursor.moveToNext()) {
+				type = modulesCursor.getString(typeIndex);
+				if (type.equals(ModuleType.HEADER)) {
+
+					// Only had the last header and child cursor if the child is not empty
+					if (currentChildCursor != null && currentChildCursor.getCount() > 0) {
+						
+						headersCursor.addRow(new Object[] { "" + currentHeaderRows++, ModuleType.HEADER, null,
+								currentHeaderName, null, R.drawable.menu_header_endcap, false, 1 });
+						
+						childCursorList.add(currentChildCursor);
+						currentChildCursor = new MatrixCursor(new String[] {
+								BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
+								Modules.MODULES_ICON_URL, Modules.MODULES_ID,
+								Modules.MODULE_SECURE, Modules.MODULE_LOCK, Modules.MODULE_RIGHT_TEXT });
+						currentChildRows = 0;
+					}
+					
+					// reset name for next header
+					currentHeaderName = modulesCursor.getString(nameIndex);			
+
+				} else {
+					// Non-header modules will be transferred from the module cursor to a sub child cursor
+					// to be used by the adapter
+					String subType = modulesCursor.getString(subTypeIndex);
+					String name = modulesCursor.getString(nameIndex);
+					String iconUrl = modulesCursor.getString(iconUrlIndex);
+					String moduleId = modulesCursor.getString(moduleIdIndex);
+					String secure = modulesCursor.getString(secureIndex);
+					int showGuestInt = modulesCursor.getInt(showGuestIndex);
+					boolean showGuest = showGuestInt == 1 ? true : false;
+					List<String> moduleRoles = getModuleRoles(ellucianApplicaton.getContentResolver(), moduleId);
+					boolean lock = ellucianApplicaton.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
+					String rightText = null;
+//					if(type.equals(ModuleType.NOTIFICATIONS)) {
+//						rightText = notificationsCount;
+//					}
+
+					if (doesModuleShowForUser(ellucianApplicaton, moduleId, showGuest)) {
+						currentChildCursor.addRow(new Object[] { "" + currentChildRows++, type, subType,
+								name, iconUrl, moduleId, secure, lock, rightText });
+					}
+
+				}
+			}
+
+			// Add last header and child if the child is not empty
+			if (currentChildCursor != null && currentChildCursor.getCount() > 0) {
+				
+				headersCursor.addRow(new Object[] { "" + currentHeaderRows++, ModuleType.HEADER, null,
+						currentHeaderName, null, R.drawable.menu_header_endcap, false, 1 });
+				childCursorList.add(currentChildCursor);
+			}
+
+		}
+		
+		modulesCursor.close();
+
+		// Add Actions header
+		headersCursor.addRow(new Object[] { "" + totalRows++, ModuleType.HEADER, null,
+				context.getString(R.string.menu_header_actions), null,
+				R.drawable.menu_header_endcap, false, 0 });
+
+		// Add actions child cursor to the childCursorList
+		MatrixCursor actionsCursor = new MatrixCursor(new String[] { BaseColumns._ID,
+				Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
+				Modules.MODULES_ICON_URL, ModuleMenuAdapter.IMAGE_RESOURCE,
+				Modules.MODULE_SECURE, Modules.MODULE_LOCK, Modules.MODULE_RIGHT_TEXT });
+		actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._HOME, null,
+				context.getString(R.string.menu_home), null,
+				R.drawable.menu_home, false, false, null });
+		String aboutIconUrl = Utils.getStringFromPreferences(context,
+				Utils.APPEARANCE, AboutActivity.PREFERENCES_ICON, null);
+		actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._ABOUT, null,
+				context.getString(R.string.menu_about), aboutIconUrl, null,
+				false, false, null });
+		if (((EllucianApplication)context.getApplicationContext()).getConfigurationProperties().allowSwitchSchool) {
+			actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._SWITCH_SCHOOLS, null,
+					context.getString(R.string.menu_switch_school), null,
+					R.drawable.menu_switch_schools, false, false, null });
+		}
+		actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._SIGN_IN, null,
+				context.getString(R.string.menu_sign_in), null,
+				R.drawable.menu_sign_in, false, false, null });
+
+		childCursorList.add(actionsCursor);
+
+		return new ModuleMenuAdapter(context, headersCursor, childCursorList);
+	}
+	
+	private static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
+		boolean showModule = false;
+		if (ellucianApp.isUserAuthenticated()) {
+			List<String> userRoles = ellucianApp.getAppUserRoles();
+			List<String> moduleRoles = getModuleRoles(ellucianApp.getContentResolver(), moduleId);
+		
+			if (moduleRoles != null) {
+				if (moduleRoles.contains(MODULE_ROLE_EVERYONE)) {
+					showModule = true;
+				} else if (userRoles != null) {
+					showModule = doesUserHaveAccessForRole(userRoles, moduleRoles);
+				}
+			}
+		} else if (showGuest) {
+			showModule = true;
+		}
+		return showModule;
+	}
+	
+	public static List<String> getModuleRoles(ContentResolver resolver, String moduleId) {
+		List<String> roles = new ArrayList<String>();
+		Cursor moduleRolesCursor = resolver.query(ModulesRoles.CONTENT_URI,
+				new String[] {ModulesRoles.MODULE_ROLES_NAME }, 
+				Modules.MODULES_ID + " = ?",
+				new String[] {moduleId},
+				ModulesRoles.DEFAULT_SORT);
+		if (moduleRolesCursor != null) {
+			while (moduleRolesCursor.moveToNext()) {
+				roles.add(moduleRolesCursor.getString(
+						moduleRolesCursor.getColumnIndex(ModulesRoles.MODULE_ROLES_NAME)));
+			}
+		}
+		moduleRolesCursor.close();
+		return roles;
+	}
+	
+	private static boolean doesUserHaveAccessForRole(List<String> userRoles, List<String> moduleRoles) {
+		if (userRoles == null || moduleRoles == null) {
+			return false;
+		}
+		for (String userRole : userRoles) {
+			if (moduleRoles.contains(userRole)) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	private static boolean showLock(Context context, String type, String subType, String secureString,
+			List<String> moduleRoles) {
+
+		if (moduleRoles.size() > 0) {
+			if (moduleRoles.size() == 1
+					&& moduleRoles.get(0).equals(MODULE_ROLE_EVERYONE)) {
+				// fallthrough
+			} else {
+				return true;
+			}
+		}
+
+		if (type.equals(ModuleType.WEB) && secureString != null) {
+			return Boolean.parseBoolean(secureString);
+		} else if (type.equals(ModuleType.CUSTOM)) {
+			return Utils.isAuthenticationNeededForSubType(context, subType);
 		} else {
-			return 0;
+			return Utils.isAuthenticationNeededForType(type);
+		}
+	}
+	
+	private static boolean allowMaps(Context context) {
+		// check if google play services is present
+		try {
+			context.getPackageManager().getApplicationInfo(
+					"com.google.android.gms", 0);
+			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+			return false;
 		}
 	}
 
 	@Override
-	public int getViewTypeCount() {
-		return 2;
+	protected Cursor getChildrenCursor(Cursor groupCursor) {
+		int groupPosition = groupCursor.getPosition();
+		return childCursorList.get(groupPosition);	
+	}
+	
+	@Override
+	public void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
+		HeaderViewHolder holder = (HeaderViewHolder) view.getTag();
+
+		String label = cursor.getString(cursor
+				.getColumnIndex(Modules.MODULE_NAME));
+		
+		Drawable endcapDrawable = context.getResources().getDrawable(
+					R.drawable.menu_header_endcap);
+		
+		holder.textView.setText(label);
+		holder.iconView.setImageDrawable(endcapDrawable);
+		
+		int columnIndex = cursor.getColumnIndex(HEADER_COLLAPSIBLE);
+		
+		boolean collapsible = cursor.getInt(columnIndex) == 1 ?
+				true : false;
+		
+		if (collapsible ) {
+			Drawable indicatorDrawable;
+			
+			if (isExpanded) {
+				indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_up);			
+			} else {
+				indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_down);			
+			}
+			
+			holder.indicatorView.setVisibility(View.VISIBLE);
+			holder.indicatorView.setImageDrawable(indicatorDrawable);
+		} else {
+			holder.indicatorView.setVisibility(View.GONE);
+		}
+		
 	}
 
 	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		ViewHolder holder = (ViewHolder) view.getTag();
+	public void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
+		RowViewHolder holder = (RowViewHolder) view.getTag();
+		
 		String label = cursor.getString(cursor
 				.getColumnIndex(Modules.MODULE_NAME));
 		String type = cursor.getString(cursor
 				.getColumnIndex(Modules.MODULE_TYPE));
-		String subType = cursor.getString(cursor
-				.getColumnIndex(Modules.MODULE_SUB_TYPE));
-		int moduleIdIndex = cursor.getColumnIndex(Modules.MODULES_ID);
-		String moduleId = null;
-		if (moduleIdIndex > -1)
-			moduleId = cursor.getString(moduleIdIndex);
+		String rightLabelText = cursor.getString(cursor.getColumnIndex(Modules.MODULE_RIGHT_TEXT));
+		
+		String lockString = cursor.getString(cursor
+				.getColumnIndex(Modules.MODULE_LOCK));
+
+		if ( lockString != null && Boolean.parseBoolean(lockString)) {
+			holder.lockView.setVisibility(View.VISIBLE);
+ 			holder.lockView.setImageDrawable( context.getResources().getDrawable(R.drawable.menu_lock_icon) );
+		} else {
+			holder.lockView.setVisibility(View.GONE);
+		}
+		
+		if(TextUtils.isEmpty(rightLabelText)) {
+			holder.rightTextView.setVisibility(View.GONE);
+		} else {
+			holder.rightTextView.setVisibility(View.VISIBLE);
+			holder.rightTextView.setText(rightLabelText);
+		}
 
 		Drawable drawable = null;
 
-		if (type.equals(ModuleType.HEADER)) {
-			drawable = context.getResources().getDrawable(
-					R.drawable.menu_header_endcap);
-		} else if (type.equals(ModuleType._SIGN_IN)) {
+		if (type.equals(ModuleType._SIGN_IN)) {
 			EllucianApplication ellucianApp = (EllucianApplication) context
 					.getApplicationContext();
 
@@ -115,10 +475,16 @@ public class ModuleMenuAdapter extends CursorAdapter {
 					drawable = context.getResources().getDrawable(res);
 			}
 		} else {
-
-			Intent intent = ModuleMenuAdapter.getIntent(context, type, subType, label, moduleId);
+			
+			boolean typeExists = false;
+			for (String moduleType : ModuleType.ALL_WITH_INTERNAL) {
+				if (type.equals(moduleType)) {
+					typeExists = true;
+					break;
+				}
+			}
 		
-			if (intent != null) {
+			if (typeExists) {
 				view.setVisibility(View.VISIBLE);
 				int iconUrlIndex = cursor
 						.getColumnIndex(Modules.MODULES_ICON_URL);
@@ -141,56 +507,60 @@ public class ModuleMenuAdapter extends CursorAdapter {
 		}
 
 		holder.textView.setText(label);
-		holder.imageView.setImageDrawable(drawable);
+		holder.iconView.setImageDrawable(drawable);
 	}
-
+	
 	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		ViewHolder holder = new ViewHolder();
+	public View newGroupView(Context context, Cursor cursor, boolean isExpanded, ViewGroup parent) {
+		HeaderViewHolder holder = new HeaderViewHolder();
 		View v = null;
 
-		String type = cursor.getString(cursor
-				.getColumnIndex(Modules.MODULE_TYPE));
-
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		if (type.equals(ModuleType.HEADER)) {
-			v = inflater.inflate(R.layout.drawer_list_header_item, parent,
+		v = inflater.inflate(R.layout.drawer_list_header_item, parent,
 					false);
-			holder.textView = (TextView) v
+		holder.textView = (TextView) v
 					.findViewById(R.id.drawer_list_item_label);
-			holder.imageView = (ImageView) v
+		holder.iconView = (ImageView) v
 					.findViewById(R.id.drawer_list_item_image);
-		} else {
-			v = inflater.inflate(R.layout.drawer_list_item, parent, false);
-			holder.textView = (TextView) v
-					.findViewById(R.id.drawer_list_item_label);
-			holder.imageView = (ImageView) v
-					.findViewById(R.id.drawer_list_item_image);
-		}
+		holder.indicatorView = (ImageView) v
+				.findViewById(R.id.drawer_list_indicator);
 
 		v.setTag(holder);
 		return v;
 	}
 
 	@Override
-	public boolean areAllItemsEnabled() {
-		return false;
+	public View newChildView(Context context, Cursor cursor, boolean isLastChild, ViewGroup parent) {
+		RowViewHolder holder = new RowViewHolder();
+		View v = null;
+
+		v = inflater.inflate(R.layout.drawer_list_item, parent, false);
+		holder.textView = (TextView) v
+				.findViewById(R.id.drawer_list_item_label);
+		holder.iconView = (ImageView) v
+				.findViewById(R.id.drawer_list_item_image);
+		holder.rightTextView = (TextView) v.findViewById(R.id.drawer_list_item_right_text);
+		holder.lockView = (ImageView) v.findViewById(R.id.drawer_list_item_lock_image);
+		v.setTag(holder);
+		return v;
 	}
 
 	@Override
-	public boolean isEnabled(int position) {
-		Cursor cursor = (Cursor) getItem(position);
-		String type = cursor.getString(cursor
-				.getColumnIndex(Modules.MODULE_TYPE));
-
-		return !type.equals(ModuleType.HEADER);
+	public boolean areAllItemsEnabled() {
+		return true;
 	}
-
-	private static class ViewHolder {
+		
+	private static class HeaderViewHolder {
+		public ImageView iconView;
 		public TextView textView;
-		public ImageView imageView;
+		public ImageView indicatorView;
+		
+	}
+	
+	private static class RowViewHolder {
+		public ImageView iconView;
+		public TextView textView;
+		public TextView rightTextView;
+		public ImageView lockView;
 	}
 
 	private Drawable getIcon(Context context, String iconUrl) {
@@ -428,7 +798,7 @@ public class ModuleMenuAdapter extends CursorAdapter {
 		
 		if (!TextUtils.isEmpty(subType)) {
 			
-			EllucianApplication ellucianApp = ((EllucianActivity)context).getEllucianApp();	
+			EllucianApplication ellucianApp = (EllucianApplication) context.getApplicationContext();	
 			// Find the module configuration for the custom-type set in the Cloud Application
 			ModuleConfiguration moduleConfig = ellucianApp.findModuleConfig(subType);
 			

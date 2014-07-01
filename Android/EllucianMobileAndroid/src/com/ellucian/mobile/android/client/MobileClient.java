@@ -11,7 +11,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
@@ -93,11 +95,20 @@ public class MobileClient {
 	}
 	
 	public String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
+		return makeServerRequest(requestUrl, returnErrorCodesAsResponse, null);
+	}
+	
+	public String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
 		Log.d(TAG + ".makeServerRequest", "Making request at url: " + requestUrl );
 		
 		HttpURLConnection urlConnection = getConnection(requestUrl);
 	
 		if (urlConnection != null) {
+			if(headers != null) {
+				for(Map.Entry<String, String> entry : headers.entrySet()) {
+					urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+				}
+			}
 			urlConnection.setConnectTimeout(20000);
 			return handleResponse(urlConnection, returnErrorCodesAsResponse);
 		} else {
@@ -106,14 +117,18 @@ public class MobileClient {
 	}
 
 	public String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
+		return makeAuthenticatedServerRequest(requestUrl, returnErrorCodesAsResponse, null);
+	}
+	
+	public String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
 		String loginType = Utils.getStringFromPreferences(application, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
 		if("native".equals(loginType)) {
 			String username = application.getAppUserName();
 			String password = application.getAppUserPassword();
-			return makeBasicAuthenticatedServerRequest(requestUrl, username, password, returnErrorCodesAsResponse);
+			return makeAuthenticatedServerRequest(requestUrl, username, password, null, returnErrorCodesAsResponse, null, headers);
 		} else {
 			//Authentication handled by cookies
-			return makeServerRequest(requestUrl, returnErrorCodesAsResponse);
+			return makeServerRequest(requestUrl, returnErrorCodesAsResponse, headers);
 		}
 
 	}
@@ -123,16 +138,16 @@ public class MobileClient {
 		if("native".equals(loginType)) {
 			String username = application.getAppUserName();
 			String password = application.getAppUserPassword();
-			return makeAuthenticatedServerRequest(requestUrl, username, password, method, returnErrorCodesAsResponse, dataToBeWritten);
+			return makeAuthenticatedServerRequest(requestUrl, username, password, method, returnErrorCodesAsResponse, dataToBeWritten, null);
 		} else {
 			//Authentication handled by cookies
-			return makeAuthenticatedServerRequest(requestUrl, null, null, method, returnErrorCodesAsResponse, dataToBeWritten);
+			return makeAuthenticatedServerRequest(requestUrl, null, null, method, returnErrorCodesAsResponse, dataToBeWritten, null);
 		}
 
 	}
 	
 
-	private String makeAuthenticatedServerRequest(String requestUrl, String username, String password, String method, boolean returnErrorCodesAsResponse, String dataToBeWritten) {
+	private String makeAuthenticatedServerRequest(String requestUrl, String username, String password, String method, boolean returnErrorCodesAsResponse, String dataToBeWritten, Map<String, String> headers) {
 		Log.d(TAG + ".makeAuthenticatedServerPut", "Making request at url: " + requestUrl );
 		
 		HttpURLConnection urlConnection = getConnection(requestUrl);
@@ -148,6 +163,11 @@ public class MobileClient {
 					urlConnection.setRequestMethod(method);
 				} else {
 					urlConnection.setRequestMethod(REQUEST_GET);
+				}
+				if(headers != null) {
+					for(Map.Entry<String, String> entry : headers.entrySet()) {
+						urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+					}
 				}
 				
 				if (!TextUtils.isEmpty(dataToBeWritten)) {
@@ -171,11 +191,6 @@ public class MobileClient {
 		} else {
 			return null;
 		}
-	}
-		
-	private String makeBasicAuthenticatedServerRequest(String requestUrl, String username, String password, boolean returnErrorCodesAsResponse) {
-		return makeAuthenticatedServerRequest(requestUrl, username, password, null, returnErrorCodesAsResponse, null);
-		
 	}
 	
 	private HttpURLConnection getConnection(String requestUrl) {
@@ -276,15 +291,18 @@ public class MobileClient {
         
         return !TextUtils.isEmpty(builder) ? builder.toString() : null;
 	}
-	
 	public <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated) {
+		return getResponseObject(clazz, requestUrl, authenticated, null);
+	}
+	
+	public <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated, Map<String, String> headers) {
 		assert !TextUtils.isEmpty(requestUrl) : "requestUrl can not be empty or null";
 		
 		String jsonString;
 		if (authenticated) {
-			jsonString = makeAuthenticatedServerRequest(requestUrl, false);
+			jsonString = makeAuthenticatedServerRequest(requestUrl, false, headers);
 		} else {
-			jsonString = makeServerRequest(requestUrl, false);
+			jsonString = makeServerRequest(requestUrl, false, headers);
 		}
 		
 		if (!TextUtils.isEmpty(jsonString)) {
@@ -321,7 +339,7 @@ public class MobileClient {
 		Log.d(TAG, "Authenticating User");
 		String authResponse;
 		if(username != null && password != null) {
-			authResponse = makeBasicAuthenticatedServerRequest(requestUrl, username, password, false);
+			authResponse = makeAuthenticatedServerRequest(requestUrl, username, password, null, false, null, null);
 		} else {
 			authResponse = makeAuthenticatedServerRequest(requestUrl, false);
 		}
@@ -544,11 +562,18 @@ public class MobileClient {
 	
 	public CartResponse getCartList(String requestUrl) {
 		Log.d(TAG, "Retrieving Cart List");
-		return getResponseObject(CartResponse.class, requestUrl,  true);
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Accept", "application/vnd.hedtech.v1+json");
+		return getResponseObject(CartResponse.class, requestUrl,  true, headers);
 	}
 	
 	public String putCoursesToRegister(String requestUrl, String dataToBeWritten) {
 		Log.d(TAG, "Registering Courses");
+		return makeAuthenticatedServerRequest(requestUrl, REQUEST_PUT, false, dataToBeWritten);
+	}
+	
+	public String putUpdateServerCart(String requestUrl, String dataToBeWritten) {
+		Log.d(TAG, "Updating server cart");
 		return makeAuthenticatedServerRequest(requestUrl, REQUEST_PUT, false, dataToBeWritten);
 	}
 	
@@ -559,12 +584,16 @@ public class MobileClient {
 	
 	public SearchResponse findSections(String requestUrl) {
 		Log.d(TAG, "Searching for sections");
-		return getResponseObject(SearchResponse.class, requestUrl,  true);
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Accept", "application/vnd.hedtech.v1+json");
+		return getResponseObject(SearchResponse.class, requestUrl,  true, headers);
 	}
 	
 	public EligibilityResponse getEligibility(String requestUrl) {
 		Log.d(TAG, "Retrieveing Eligibility");
-		return getResponseObject(EligibilityResponse.class, requestUrl,  true);
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Accept", "application/vnd.hedtech.v1+json");
+		return getResponseObject(EligibilityResponse.class, requestUrl,  true, headers);
 	}
 	
 	/** Url Utility Methods  */

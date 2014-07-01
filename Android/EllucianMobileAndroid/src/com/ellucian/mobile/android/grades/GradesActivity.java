@@ -65,6 +65,9 @@ public class GradesActivity extends EllucianActivity {
 		super.onCreate(savedInstanceState);
 		Log.d("GradesActivity", "onCreate()");
 		setContentView(R.layout.activity_grades);
+		
+		setTitle(moduleName);
+		
 		// Create the adapter that will return a fragment for each term
 		// of the app.
 		termsPageAdapter = new TermsPagerAdapter(

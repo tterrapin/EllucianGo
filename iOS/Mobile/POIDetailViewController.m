@@ -69,6 +69,9 @@
         }
     }
     self.backgroundView.backgroundColor = [UIColor accentColor];
+    self.nameLabel.textColor = [UIColor subheaderTextColor];
+    self.typeLabel.textColor = [UIColor subheaderTextColor];
+    self.campusLabel.textColor = [UIColor subheaderTextColor];
     if(self.imageUrl) {
         [self.imageView loadImageFromURLString:self.imageUrl];
     } else {

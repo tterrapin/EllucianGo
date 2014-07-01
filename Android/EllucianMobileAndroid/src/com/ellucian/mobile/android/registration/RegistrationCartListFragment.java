@@ -3,6 +3,8 @@
 package com.ellucian.mobile.android.registration;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +23,8 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.client.registration.Section;
+import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	public static final String TAG = RegistrationCartListFragment.class.getSimpleName();
@@ -51,6 +55,10 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		rootView = inflater.inflate(R.layout.fragment_registration_cart_list, container, false);
 		registerButton = (Button) rootView.findViewById(R.id.register);
 		eligibilityErrorView = rootView.findViewById(R.id.eligibility_error_messsage_view);
+		
+		registerButton.setBackgroundColor(Utils.getPrimaryColor(activity));
+		registerButton.setTextColor(Utils.getHeaderTextColor(activity));
+		
 		Bundle bundle = getArguments();
 		if (bundle != null) {
 			int emptyTextResId = bundle.getInt("emptyTextResId");
@@ -96,6 +104,46 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		
 	}
 	
+
+	@Override
+	public void showDetails(int index) {
+		mCurCheckPosition = index;
+
+		if (mDualPane) {
+			//We can display everything in-place with fragments
+
+			EllucianDefaultDetailFragment details = (EllucianDefaultDetailFragment)
+					getFragmentManager().findFragmentById(R.id.frame_extra);
+			if (detailBundle == null) {
+				detailBundle = new Bundle();
+			}
+			detailBundle.putString(RegistrationDetailFragment.REQUESTING_LIST_FRAGMENT, "RegistrationCartListFragment");
+			details = getDetailFragment(detailBundle, index);
+
+			// Execute a transaction, replacing any existing fragment
+			// with this one inside the frame.
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.replace(R.id.frame_extra, details);
+
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.commit();
+
+		} else {
+			// Otherwise we need to launch a new activity to display
+			// the dialog fragment with selected text.
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), getDetailActivityClass());
+			intent.putExtras(detailBundle); 
+			intent.putExtra("index", index);
+			intent = addExtras(intent);
+			// startActivityForResult for RegistrationDetailActivity to handle remove requests
+			intent.putExtra(RegistrationDetailFragment.REQUESTING_LIST_FRAGMENT, "RegistrationCartListFragment");
+			getActivity().startActivityForResult(intent, RegistrationActivity.REGISTRATION_DETAIL_REQUEST_CODE);
+
+		}
+	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -159,6 +207,8 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	@Override
 	public Bundle buildDetailBundle(Object... objects) {
 		Bundle bundle = new Bundle();
+		
+		bundle.putString(Extra.MODULE_NAME, getEllucianActivity().moduleName);
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);

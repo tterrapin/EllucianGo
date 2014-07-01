@@ -2,6 +2,7 @@
 
 package com.ellucian.mobile.android.registration;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.client.registration.Section;
+import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationSearchResultsListFragment extends EllucianDefaultListFragment {
 	
@@ -28,6 +31,12 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	}
 	
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = (RegistrationActivity) activity;
+	}
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_search_results_list, container, false);
@@ -35,13 +44,15 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 		TextView emptyView = (TextView) rootView.findViewById(android.R.id.empty);
 		emptyView.setText(R.string.no_results_found);
 		
+		addToCartButton.setBackgroundColor(Utils.getPrimaryColor(activity));
+		addToCartButton.setTextColor(Utils.getHeaderTextColor(activity));
+		
 		return rootView;
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		activity = (RegistrationActivity) getActivity();
 		
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -105,6 +116,8 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	@Override
 	public Bundle buildDetailBundle(Object... objects) {
 		Bundle bundle = new Bundle();
+		
+		bundle.putString(Extra.MODULE_NAME, getEllucianActivity().moduleName);
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);

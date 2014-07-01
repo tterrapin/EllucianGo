@@ -43,6 +43,27 @@
     
     self.navigationItem.title = [self.module name];
     self.navigationController.navigationBar.translucent = NO;
+    
+    [self checkEmptyList];
+}
+
+-(void) checkEmptyList
+{
+    BOOL empty = YES;
+    for(RegistrationTerm *term in self.registrationTabController.terms) {
+        NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
+        if([plannedSections count] > 0) {
+            empty = NO;
+            break;
+        }
+        
+    }
+
+    if(empty){
+        [self showNoDataView:NSLocalizedString(@"No registered classes for open terms.", @"No registered classes for open terms message")];
+    } else {
+        [self hideNoDataView];
+    }
 }
 
 #pragma mark - variables from tab
@@ -158,7 +179,8 @@
         }
         
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:plannedSection withModule:self.module];
+            [_detailSelectionDelegate selectedDetail:plannedSection withIndex:indexPath withModule:self.module withController:self];
+
         }
     }
     else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -219,6 +241,7 @@
 -(void) reloadData:(id)sender
 {
     [self.tableView reloadData];
+    [self checkEmptyList];
 }
 
 @end

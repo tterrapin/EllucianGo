@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeViewController.h"
+#import "LoginProtocol.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController<LoginProtocol>
 
 @property (nonatomic, strong) NSData *receivedData;
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
@@ -17,8 +18,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UISwitch *rememberUserSwitch;
-//@property (strong, nonatomic) NSSet *rolesForNextModule;
+@property (nonatomic, strong) NSArray *access;
 @property (weak, nonatomic) IBOutlet UILabel *rememberMeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *contactInstitutionLabel;
 
 
 - (IBAction)signInCanceled:(id)sender;

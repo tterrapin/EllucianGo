@@ -41,6 +41,10 @@
     self.sectionTitleLabel.text = nil;
     self.dateLabel.text = nil;
     
+    self.facultyLabel.textColor = [UIColor subheaderTextColor];
+    self.sectionTitleLabel.textColor = [UIColor subheaderTextColor];
+    self.dateLabel.textColor = [UIColor subheaderTextColor];
+    
     if([AppearanceChanger isRTL]) {
         self.sectionTitleLabel.textAlignment = NSTextAlignmentRight;
     }
@@ -147,7 +151,13 @@
             
             //mp:time
              NSString *days = [NSString stringWithFormat:@"%@: ",  [daysOfClass componentsJoinedByString:@", "]];
-            NSString *line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+            NSString *line1;
+            if(mp.instructionalMethodCode) {
+                line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+            } else {
+                line1 = [NSString stringWithFormat:@"%@ %@ - %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
+            }
+           
 
             NSMutableAttributedString *attributedLine1 =[[NSMutableAttributedString alloc]initWithString:line1];
             [attributedLine1 addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:14.0f] range:NSMakeRange(0, [days length])];

@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
+import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.courses.Instructor;
 import com.ellucian.mobile.android.client.courses.MeetingPattern;
 import com.ellucian.mobile.android.client.registration.Section;
@@ -29,6 +33,7 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = RegistrationDetailFragment.class.getSimpleName();
+	public static final String REQUESTING_LIST_FRAGMENT = "requestingListFragment";
 	
 	private View rootView;
 	private Activity activity;
@@ -46,6 +51,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		
 		defaultTimeParserFormat = new SimpleDateFormat("HH:mm'Z'", Locale.US);
 		defaultTimeParserFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -114,10 +120,13 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			}
 			
 			TextView creditsView = (TextView)rootView.findViewById(R.id.credits);
-			if (section.credits != 0) {
+			if (section.selectedCredits != -1) {
+				creditsView.setText(getString(R.string.label_credits) + ": " + section.selectedCredits);
+			} else if (section.credits != 0) {
 				creditsView.setText(getString(R.string.label_credits) + ": " + section.credits);				
-			} else if (section.minimumCredits != 0) {
-				String creditsText = getString(R.string.label_credits) + ": " + (float)section.minimumCredits;
+			} else if (!TextUtils.isEmpty(section.variableCreditOperator) && section.variableCreditOperator.equals(Section.VARIABLE_OPERATOR_OR)
+					|| section.minimumCredits != 0) {
+				String creditsText = getString(R.string.label_credits) + ": " + section.minimumCredits;
 				if (section.maximumCredits != 0) {
 					creditsText += "-" + (float)section.maximumCredits;
 				}
@@ -299,6 +308,41 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 		super.onStart();
 		sendView("Registration Section Detail", getEllucianActivity().moduleName);
 	}
+	
+	@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		Bundle args = getArguments();
+		if (args.containsKey(REQUESTING_LIST_FRAGMENT) && 
+				args.getString(REQUESTING_LIST_FRAGMENT).equals("RegistrationCartListFragment")) {
+			inflater.inflate(R.menu.registration_detail, menu);
+		}        
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case R.id.registration_remove:
+			sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+					GoogleAnalyticsConstants.ACTION_BUTTON_PRESS,
+					"Removing from cart", null, getEllucianActivity().moduleName);
+			RemoveFromCartConfirmDialogFragment removeFromCartConfirmDialogFragment = new RemoveFromCartConfirmDialogFragment();
+			removeFromCartConfirmDialogFragment.detailFragment = this;
+			removeFromCartConfirmDialogFragment.show(getFragmentManager(), "RemoveFromCartConfirmDialogFragment");
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    }
+
+    protected void triggerRemoveItemFromCart() {
+    	Activity activity = getActivity();
+    	if (activity instanceof RegistrationActivity) {
+    		((RegistrationActivity)activity).removeItemFromCart();
+    	} else if (getActivity() instanceof RegistrationDetailActivity) {
+    		((RegistrationDetailActivity)activity).removeItemFromCart();
+    	}
+
+    }
 	
 }
 

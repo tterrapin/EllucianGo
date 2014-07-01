@@ -3,6 +3,7 @@ package com.ellucian.mobile.android.client.configuration;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +18,7 @@ import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
 import com.ellucian.mobile.android.directory.DirectoryCategoriesFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
+import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
 
 public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONObject>{
 	@SuppressWarnings("unused")
@@ -61,13 +63,18 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 					subType = moduleObject.getString("custom-type");
 				}
 				
+				boolean hideBeforeLogin = false;
+				if (moduleObject.has("hideBeforeLogin")) {
+					hideBeforeLogin = moduleObject.getBoolean("hideBeforeLogin");
+				}
+				
 				batch.add(ContentProviderOperation
 						.newInsert(Modules.CONTENT_URI)
 						.withValue(Modules.MODULES_ID, moduleId)
 						.withValue(Modules.MODULES_ICON_URL, icon)
 						.withValue(Modules.MODULE_ORDER, index)
 						.withValue(Modules.MODULE_NAME,name)
-			//			.withValue(MApps.M_APPS_SHOW_FOR_GUEST, guest)
+						.withValue(Modules.MODULE_SHOW_FOR_GUEST, hideBeforeLogin ? 0 : 1)
 						.withValue(Modules.MODULE_TYPE, type)
 						.withValue(Modules.MODULE_SUB_TYPE, subType)
 						.withValue(Modules.MODULE_SECURE, secure)
@@ -84,6 +91,20 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 									.withValue(Modules.MODULES_ID, moduleId)
 									.withValue(ModulesProperties.MODULE_PROPERTIES_NAME, urlKey)
 									.withValue(ModulesProperties.MODULE_PROPERTIES_VALUE, urlValue)
+									.build());
+						}
+					}
+				}
+				if(moduleObject.has("access")) {
+					JSONArray rolesArray = moduleObject.getJSONArray("access");
+					
+					for (int i = 0; i < rolesArray.length(); i++) {
+						String roleValue = (String) rolesArray.get(i);
+						if(!TextUtils.isEmpty(roleValue)) {
+							batch.add(ContentProviderOperation
+									.newInsert(ModulesRoles.CONTENT_URI)
+									.withValue(Modules.MODULES_ID, moduleId)
+									.withValue(ModulesRoles.MODULE_ROLES_NAME, roleValue)
 									.build());
 						}
 					}
@@ -150,11 +171,6 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 				}
 								
 			}
-				/*
-				 * if(value.has("roles")) { String[] roles =
-				 * value.getString("roles").split(","); for(String role : roles) {
-				 * module.addRole(role); } }
-				 */
 			
 		
 		} catch (JSONException e){

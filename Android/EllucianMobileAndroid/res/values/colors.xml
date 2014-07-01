@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="header_color">#EED5B7</color>
-	<color name="block_column_1">#ff0fabff</color>
-    <color name="block_column_2">#ffdf1831</color>
-    <color name="block_column_3">#ff009939</color>
     <color name="content_msg_color">#999999</color>
     <color name="list_description_text_color">#666666</color>
     <color name="list_category_text_color">#4d4d4d</color>
     <color name="detail_date_text_color">#666666</color>
-    <color name="detail_content_text_color">#000000</color>
     <color name="ellucian_primary_color">#331640</color>
     <color name="ellucian_header_text_color">#FFFFFF</color>
     <color name="status_error_text_color">#ED1C24</color>

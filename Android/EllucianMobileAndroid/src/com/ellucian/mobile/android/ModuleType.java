@@ -18,17 +18,22 @@ public interface ModuleType {
 	public static final String VIDEO = "video";
 	public static final String WEB = "web";
 	public static final String CUSTOM = "custom";
+	
+	// internal
+		public static final String _HOME = "_home";
+		public static final String _ABOUT = "_about";
+		public static final String _SWITCH_SCHOOLS = "_switch_schools";
+		public static final String _SIGN_IN = "_sign_in";
 
 	public static final String[] AUTHENTICATION_NEEDED = new String[] {
-			COURSES, DIRECTORY, GRADES, NOTIFICATIONS, REGISTRATION };
+			COURSES, DIRECTORY, GRADES, NOTIFICATIONS, REGISTRATION, CUSTOM };
 
 	public static final String[] ALL = new String[] { ABOUT, AUDIO, COURSES,
 			DIRECTORY, EVENTS, FEED, GRADES, HEADER, MAPS, NOTIFICATIONS,
 			NUMBERS, REGISTRATION, VIDEO, WEB, CUSTOM };
-
-	// internal
-	public static final String _HOME = "_home";
-	public static final String _ABOUT = "_about";
-	public static final String _SWITCH_SCHOOLS = "_switch_schools";
-	public static final String _SIGN_IN = "_sign_in";
+	
+	public static final String[] ALL_WITH_INTERNAL = new String[] { ABOUT, AUDIO, COURSES,
+		DIRECTORY, EVENTS, FEED, GRADES, HEADER, MAPS, NOTIFICATIONS, NUMBERS, REGISTRATION, 
+		VIDEO, WEB, CUSTOM, _HOME, _ABOUT, _SWITCH_SCHOOLS, _SIGN_IN };
+	
 }

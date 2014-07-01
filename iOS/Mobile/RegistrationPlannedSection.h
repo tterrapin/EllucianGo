@@ -34,9 +34,10 @@
 @property (nonatomic, strong) NSNumber *minimumCredits;
 @property (nonatomic, strong) NSNumber *maximumCredits;
 @property (nonatomic, strong) NSNumber *variableCreditIncrement;
+@property (nonatomic, strong) NSString *variableCreditOperator;
 
 @property (nonatomic, assign) BOOL selectedForRegistration;
-@property (nonatomic, assign) BOOL isVariableCredit;
+@property (nonatomic, readonly) BOOL isVariableCredit;
 
 
 @property (nonatomic, assign) BOOL isPassFail;

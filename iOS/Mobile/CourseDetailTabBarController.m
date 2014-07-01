@@ -212,7 +212,9 @@
                         }
                         for(NSDictionary *meetingPatternJson in [jsonSections objectForKey:@"meetingPatterns"]) {
                             CourseMeetingPattern *mp = [NSEntityDescription insertNewObjectForEntityForName:@"CourseMeetingPattern" inManagedObjectContext:importContext];
-                            mp.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
+                            if([meetingPatternJson objectForKey:@"instructionalMethodCode"] != [NSNull null]) {
+                                mp.instructionalMethodCode = [meetingPatternJson objectForKey:@"instructionalMethodCode"];
+                            }
                             mp.startDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"startDate"]];
                             mp.endDate =  [self.dateFormatter dateFromString:[meetingPatternJson objectForKey:@"endDate"]];
                             

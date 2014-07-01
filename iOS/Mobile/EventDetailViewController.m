@@ -238,8 +238,7 @@
     }
 }
 
--(void)selectedDetail:(id)newEvent
-          withModule:(Module*)myModule
+- (void)selectedDetail:(id)newEvent withIndex:(NSIndexPath*)myIndex withModule:(Module*)myModule withController:(id)myController
 {
     if ( [newEvent isKindOfClass:[Event class]] )
     {

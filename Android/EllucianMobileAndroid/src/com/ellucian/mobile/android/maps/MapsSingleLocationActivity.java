@@ -73,15 +73,19 @@ public class MapsSingleLocationActivity extends EllucianActivity
 				//java.lang.IllegalArgumentException: no providers found for criteria
 			}
 		}
-		if (map != null)
+		if (map != null) {
 			map.setLocationSource(this);
+			map.setIndoorEnabled(true);
+		}
 
 	}
 
 	@Override
 	protected void onPause() {
-		if (map != null)
+		if (map != null) {
 			map.setLocationSource(null);
+			map.setIndoorEnabled(false);
+		}
 		if (locMgr != null)
 			locMgr.removeUpdates(this);
 

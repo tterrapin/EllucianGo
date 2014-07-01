@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.ellucian.mobile.android.EllucianApplication;
+
 public class MainAuthenticationReceiver extends BroadcastReceiver {
 	
 	private DrawerLayoutActivity activity;
@@ -14,10 +16,9 @@ public class MainAuthenticationReceiver extends BroadcastReceiver {
 	}
 
 	@Override
-	public void onReceive(Context context, Intent incomingIntent) {	
-		DrawerLayoutHelper drawerLayoutHelper = activity.getDrawerLayoutHelper();
-		if(drawerLayoutHelper != null) {
-			drawerLayoutHelper.invalidateItems();
-		}
+	public void onReceive(Context context, Intent incomingIntent) {
+		EllucianApplication ellucianApp = (EllucianApplication) context.getApplicationContext();
+		ellucianApp.resetModuleMenuAdapter();
+		activity.configureNavigationDrawer();
 	}		
 }

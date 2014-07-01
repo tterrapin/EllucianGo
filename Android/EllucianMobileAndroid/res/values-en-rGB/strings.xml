@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <!-- Main -->
     
@@ -30,6 +30,7 @@
     <string name="menu_search_school_hint">Search universities</string>
     <string name="menu_header_applications">Applications</string>
     <string name="menu_header_actions">Actions</string>
+    <string name="menu_header_indicator_description">Header Indicator</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     
@@ -43,7 +44,7 @@
     <string name="title_activity_configuration_loading">Configuration Loading</string>
     <string name="configuration_loading_failed">Configuration loading failed</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">Loading Configuration. Please wait&#8230;</string>
+    <string name="configuration_loading_message">Loading Configuration. Please wait…</string>
     <string name="configuration_loading_missing_config">"Unable to download the configuration from that link."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -81,11 +82,13 @@
     <string name="dialog_idle_sign_out">You have been idle too long and have been Signed Out.</string>
     <string name="dialog_select_categories">Select Categories</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">Re-authenticating, please wait&#8230;</string>
+    <string name="dialog_re_authenticate">Re-authenticating, please wait…</string>
 	<string name="dialog_continue">Continue</string>
 	<string name="dialog_go_back">Go Back</string>
 	<string name="dialog_security_warning">Security warning</string>
 	<string name="dialog_cert_warning_statement">"There are problems with the security certificate for this site."</string>
+	<string name="dialog_field_empty">Field cannot be empty</string>
+	<string name="unauthorized_feature">You do not have permission to use this feature.</string>
 	
     <string name="row_category_label">Category:</string>
     <string name="row_contact_label">Contact:</string>
@@ -110,7 +113,7 @@
     <string name="all_day_event">All Day Event</string>
     <string name="title_activity_default_detail">Details</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">Loading&#8230;</string>
+    <string name="loading_message">Loading…</string>
 	
     <!-- About -->
     
@@ -159,7 +162,7 @@
     <string name="course_grades">Grades</string>
     <string name="course_roster">Roster</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">More&#8230;</string>
+    <string name="course_more">More…</string>
     <string name="course_assignments">Assignments</string>
     <string name="course_announcements">Announcements</string>
     <string name="course_events">Events</string>
@@ -257,6 +260,7 @@
     <string name="notifications_sticky_marker_image_text">Marker</string>
     <string name="notifications_delete">Delete</string>
     <string name="notifications_unable_to_delete_message">Unable to delete this notification.</string>
+    <string name="notifications_dialog_delete_message">Are you sure you want to delete this notification?</string>
     
     <!-- Numbers -->
     
@@ -270,7 +274,7 @@
     
     <string name="title_activity_registration">Registration</string>
     <string name="title_activity_registration_detail">Registration Detail</string>
-    <string name="registration_tab_cart">My Cart</string>
+    <string name="registration_tab_cart">Cart</string>
     <string name="registration_tab_search">Search</string>
     <string name="registration_tab_registered">Registered</string>
     <string name="registration_register">Register</string>
@@ -283,15 +287,20 @@
     <string name="registration_results_failure_sub">We couldn\'t register these courses.</string>
     <string name="registration_dialog_title">Title</string>
     <string name="registration_dialog_register_message">Are you sure you want to register these sections?</string>
-    <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart? Any items added to your cart are only for the current session.</string>
-    <string name="registration_dialog_variable_credits_message">Please set the number of credits. \nRange: </string>
+    <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart?</string>
+    <string name="registration_dialog_remove_message">Are you sure you want to remove this item from the cart?</string>
+    <string name="registration_dialog_variable_credits_to_message">Enter course credit value between %1$.2f and %2$.2f</string>
+    <string name="registration_dialog_variable_credits_or_message">Enter course credit value of either %1$.2f or %2$.2f</string>
+    <string name="registration_dialog_variable_credits_inc_message">Enter course credit value between %1$.2f and %2$.2f in increments of %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">A number in the range indicated must be entered.</string>
     <string name="registration_dialog_variable_credits_increment_error">increment must be used.</string>
+    <string name="registration_dialog_pin_message">Please enter a PIN for each of the following terms:</string>
     <string name="registration_search_header">Select a Term and enter Course Keywords.</string>
     <string name="registration_search_field_hint">Course Keywords</string>
     <string name="registration_add_to_cart">Add To Cart</string>
     <string name="registration_added_to_cart_success">added to cart.</string>
     <string name="registration_added_to_cart_failed">failed to add to cart. Missing data or section already exists in cart.</string>
+    <string name="registration_added_to_server_cart_failed">At least one section failed to save to server. This data may only stay for the current session.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
     <string name="registration_grading">Grading</string>
@@ -304,6 +313,8 @@
     <string name="registration_no_plan_eligibility_message">Not an enroled student.</string>
     <string name="registration_were_sorry">We\'re sorry</string>
     <string name="registration_ineligible_to_register">Ineligible for Registration</string>
+    <string name="registration_remove">Remove</string>
+    
         
 	<!-- Versioning -->
 	<string name="version_upgrade">Upgrade</string>

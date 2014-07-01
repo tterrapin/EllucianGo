@@ -61,7 +61,7 @@ public class NumberListFragment extends EllucianDefaultExpandableListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		sendView("Number List", getEllucianActivity().moduleName);
+		sendView("Numbers List", getEllucianActivity().moduleName);
 	}
 
 }

@@ -6,159 +6,104 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
-import android.provider.BaseColumns;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.ModuleType;
-import com.ellucian.mobile.android.about.AboutActivity;
 import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
 import com.ellucian.mobile.android.login.LoginDialogFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
+import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.Logger.LogLevel;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
 
 public class DrawerLayoutHelper {
-
-	public DrawerLayout drawerLayout;
-	public ListView drawerList;
-	public ActionBarDrawerToggle drawerToggle;
+	
+	public static final String TAG = DrawerLayoutHelper.class.getSimpleName();
+	
 	private Activity activity;
+	public DrawerLayout drawerLayout;
+	public final ExpandableListView drawerList;
+	public ActionBarDrawerToggle drawerToggle;
+	
 	private BackgroundAuthenticationReceiver backgroundAuthenticationReceiver;
 	private DrawerLayoutHelper.DrawerListener listener;
+	private static NotificationsContentObserver contentObserver;
 	
 	public static interface DrawerListener {
 		abstract void onDrawerOpened();
 		abstract void onDrawerClosed();
 	}
 
-	public DrawerLayoutHelper(final Activity activity) {
+	public DrawerLayoutHelper(final Activity activity, ModuleMenuAdapter menuAdapter) {
 		this.activity = activity;
-
-		boolean allowMaps = allowMaps(activity);
-		String selection = "";
-		List<String> selectionArgs = new ArrayList<String>();
-		List<String> customTypes = ((EllucianActivity)activity).getEllucianApp().getModuleConfigTypeList();
-		for (int i = 0; i < ModuleType.ALL.length; i++) {
-			String type = ModuleType.ALL[i];
-			
-			if (type.equals(ModuleType.MAPS) && !allowMaps) {
-				continue;
-			}
-			
-			if (type.equals(ModuleType.CUSTOM)) {
-				for (int n = 0; n < customTypes.size(); n++) {
-					String customType = customTypes.get(n);
-
-					selection += " OR ";
-					selection += "( " + Modules.MODULE_TYPE + " = ?" + " AND " + Modules.MODULE_SUB_TYPE + " = ? )";
-
-					selectionArgs.add(type);
-					selectionArgs.add(customType);			
-				}
-			} else {
-				if (selection.length() > 0) {
-					selection += " OR ";
-				}
-				selection += Modules.MODULE_TYPE + " = ?";
-				selectionArgs.add(type);
-			}	
-		}
-
+		
+		EllucianApplication ellucianApplicaton = (EllucianApplication) activity.getApplicationContext();
+		contentObserver = new NotificationsContentObserver(new Handler(Looper.getMainLooper()), ellucianApplicaton);
 		final ContentResolver contentResolver = activity.getContentResolver();
-		Cursor modulesCursor = contentResolver.query(Modules.CONTENT_URI,
-				new String[] { BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE,
-						Modules.MODULE_NAME, Modules.MODULES_ICON_URL,
-						Modules.MODULES_ID, Modules.MODULE_SECURE }, selection,
-				selectionArgs.toArray(new String[selectionArgs.size()]),
-				Modules.DEFAULT_SORT);
-
-		modulesCursor.moveToFirst();
-		int rows = modulesCursor.getCount();
-
-		modulesCursor.moveToFirst();
-		int typeIndex = modulesCursor.getColumnIndex(Modules.MODULE_TYPE);
-
-		MatrixCursor firstRow = new MatrixCursor(new String[] {
-				BaseColumns._ID, Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
-				Modules.MODULES_ICON_URL, ModuleMenuAdapter.IMAGE_RESOURCE,
-				Modules.MODULE_SECURE });
-
-		if (rows > 0) {
-			String type = modulesCursor.getString(typeIndex);
-			if (!type.equals(ModuleType.HEADER)) {
-				firstRow.addRow(new Object[] { "0", ModuleType.HEADER, null,
-						activity.getString(R.string.menu_header_applications),
-						null, R.drawable.menu_header_endcap, false });
-			}
-		}
-
-		MatrixCursor actions = new MatrixCursor(new String[] { BaseColumns._ID,
-				Modules.MODULE_TYPE, Modules.MODULE_SUB_TYPE, Modules.MODULE_NAME,
-				Modules.MODULES_ICON_URL, ModuleMenuAdapter.IMAGE_RESOURCE,
-				Modules.MODULE_SECURE });
-		actions.addRow(new Object[] { "" + rows++, ModuleType.HEADER, null,
-				activity.getString(R.string.menu_header_actions), null,
-				R.drawable.menu_header_endcap, false });
-		actions.addRow(new Object[] { "" + rows++, ModuleType._HOME, null,
-				activity.getString(R.string.menu_home), null,
-				R.drawable.menu_home, false });
-		String aboutIconUrl = Utils.getStringFromPreferences(activity,
-				Utils.APPEARANCE, AboutActivity.PREFERENCES_ICON, null);
-		actions.addRow(new Object[] { "" + rows++, ModuleType._ABOUT, null,
-				activity.getString(R.string.menu_about), aboutIconUrl, null,
-				false });
-		if (((EllucianActivity)activity).getConfigurationProperties().allowSwitchSchool) {
-			actions.addRow(new Object[] { "" + rows++, ModuleType._SWITCH_SCHOOLS, null,
-					activity.getString(R.string.menu_switch_school), null,
-					R.drawable.menu_switch_schools, false });
-		}
-		actions.addRow(new Object[] { "" + rows++, ModuleType._SIGN_IN, null,
-				activity.getString(R.string.menu_sign_in), null,
-				R.drawable.menu_sign_in, false });
-
-		Cursor[] cursors = { firstRow, modulesCursor, actions };
-		final Cursor extendedCursor = new MergeCursor(cursors);
+		contentResolver.registerContentObserver (Notifications.CONTENT_URI, true, contentObserver);
 
 		drawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
-		drawerList = (ListView) activity.findViewById(R.id.left_drawer);
+		drawerList = (ExpandableListView) activity.findViewById(R.id.left_drawer);
 
 		if (drawerLayout != null && drawerList != null) {
 
 			drawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 					GravityCompat.START);
-			drawerList.setAdapter(new ModuleMenuAdapter(activity,
-					extendedCursor, 0));
+			drawerList.setAdapter(menuAdapter);
+			
+			drawerList.setOnChildClickListener(new MenuChildClickListener());
+			
+			drawerList.setOnGroupClickListener(new MenuGroupClickListener());
+			
+			// Only expand groups that are not on the collapsed list
+			String headersString = Utils.getStringFromPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, "");
+			if (!TextUtils.isEmpty(headersString)) {
+				String[] headerArray = headersString.split(",");
+				ArrayList<String> headerList = new ArrayList<String> (Arrays.asList(headerArray));
+				for (int i = 0; i < drawerList.getExpandableListAdapter().getGroupCount(); i++) {
+					View groupView = drawerList.getExpandableListAdapter().getGroupView(i, false, null, drawerList);
+					TextView labelView = (TextView) groupView.findViewById(R.id.drawer_list_item_label);
+					String headerLabel = labelView.getText().toString();
 
-			drawerList.setOnItemClickListener(new MenuItemClickListener());
+					if (!headerList.contains(headerLabel)) {
+						drawerList.expandGroup(i);
+					}
+				}					
+
+			} else {
+				for (int i = 0; i < drawerList.getExpandableListAdapter().getGroupCount(); i++) {
+					drawerList.expandGroup(i);
+				}
+			}
 
 			final ActionBar actionBar = activity.getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
@@ -189,10 +134,13 @@ public class DrawerLayoutHelper {
 				public void onDrawerSlide(View drawerView, float slideOffset) {
 					super.onDrawerSlide(drawerView, slideOffset);
 					if (slideOffset == 1f) {
-						sendEventGoogleAnalytics(activity,
-								GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+						Application application = activity.getApplication();
+						if(application instanceof EllucianApplication) {
+							EllucianApplication ellucianApplication = (EllucianApplication)application;
+							ellucianApplication.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
 								GoogleAnalyticsConstants.ACTION_BUTTON_PRESS,
-								"Menu Tray Opened (Android)", null);
+								"Menu Tray Opened (Android)", null, null);
+						}
 					}
 				}
 
@@ -211,17 +159,6 @@ public class DrawerLayoutHelper {
 
 			};
 			drawerLayout.setDrawerListener(drawerToggle);
-		}
-	}
-
-	private boolean allowMaps(Context context) {
-		// check if google play services is present
-		try {
-			context.getPackageManager().getApplicationInfo(
-					"com.google.android.gms", 0);
-			return true;
-		} catch (PackageManager.NameNotFoundException e) {
-			return false;
 		}
 	}
 
@@ -246,42 +183,120 @@ public class DrawerLayoutHelper {
 		drawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	private void sendEventGoogleAnalytics(final Activity activity,
-			String category, String action, String label, Long value) {
-		GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(activity);
-		gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
-		String trackerId1 = Utils.getStringFromPreferences(activity,
-				Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
-		Tracker gaTracker1;
-		if (trackerId1 != null) {
-			gaTracker1 = gaInstance.getTracker(trackerId1);
-			gaTracker1.send(MapBuilder
-				    .createEvent(category, action, label, value).build());
+	public void invalidateItems() {
+		((ModuleMenuAdapter) drawerList.getExpandableListAdapter()).notifyDataSetChanged();
+	}
+
+	
+
+	private void showLoginDialog() {
+		LoginDialogFragment loginFragment = new LoginDialogFragment();
+		loginFragment.show(activity.getFragmentManager(),
+				LoginDialogFragment.LOGIN_DIALOG);
+
+	}
+	
+	public void setDrawerListener(DrawerLayoutHelper.DrawerListener listener) {
+		this.listener = listener;
+	}
+	
+	public boolean isDrawerOpen() {
+		return drawerLayout.isDrawerOpen(drawerList);
+	}
+	
+	public void openDrawer() {
+		drawerLayout.openDrawer(drawerList);
+	}
+	
+	public void closeDrawer() {
+		drawerLayout.closeDrawer(drawerList);
+	}
+
+	
+	public class MenuGroupClickListener implements OnGroupClickListener {
+	
+		@Override
+		public boolean onGroupClick(ExpandableListView parent, View v,
+				int groupPosition, long id) {
+				TextView labelView = (TextView) v.findViewById(R.id.drawer_list_item_label);
+				String label = labelView.getText().toString();
+				
+				// Only handle non Actions group clicks
+				if (!label.equals(activity.getString(R.string.menu_header_actions))) {
+					if (parent.isGroupExpanded(groupPosition)) {
+						addMenuHeaderToCollapsedList(label);
+						parent.collapseGroup(groupPosition);
+					} else {
+						removeMenuHeaderToCollapsedList(label);
+						parent.expandGroup(groupPosition);
+					}
+				}
+
+			return true;
+		}
+		
+		private void addMenuHeaderToCollapsedList(String headerLabel) {
+			
+			if (!isMenuHeaderInCollapsedList(headerLabel)) {
+				String headersString = Utils.getStringFromPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, "");
+				if (!TextUtils.isEmpty(headersString)) {
+					headersString += "," + headerLabel;					
+				} else {
+					headersString = headerLabel;
+				}
+				Log.d(TAG, "Udapted collapsed headers string: " + headersString);
+				Utils.addStringToPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, headersString);	
+			} 
+				
+		}
+		
+		private boolean removeMenuHeaderToCollapsedList(String headerLabel) {
+			
+			String headersString = Utils.getStringFromPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, "");
+			if (!TextUtils.isEmpty(headersString)) {
+				String[] headerArray = headersString.split(",");
+				ArrayList<String> headerList = new ArrayList<String> (Arrays.asList(headerArray));
+				int index = headerList.indexOf(headerLabel);
+				if (index != -1) {
+					headerList.remove(index);
+					String newHeadersString = TextUtils.join(",", headerList);
+					Log.d(TAG, "Udapted collapsed headers string: " + newHeadersString);
+					Utils.addStringToPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, newHeadersString);
+					return true;
+				}
+			}		
+			return false;
+			
+		}
+		
+		private boolean isMenuHeaderInCollapsedList(String headerLabel) {
+			String headersString = Utils.getStringFromPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, "");
+			if (!TextUtils.isEmpty(headersString)) {
+				String[] headerArray = headersString.split(",");
+				ArrayList<String> headerList = new ArrayList<String> (Arrays.asList(headerArray));
+				if (headerList.contains(headerLabel)) {
+					return true;
+				}			
+			}		
+			return false;
 		}
 	}
-
-	public boolean isAuthenticationNeededForType(String type) {
-		List<String> authTypeList = Arrays
-				.asList(ModuleType.AUTHENTICATION_NEEDED);
-		return authTypeList.contains(type);
-	}
-
-	public void invalidateItems() {
-		((ModuleMenuAdapter) drawerList.getAdapter()).notifyDataSetChanged();
-	}
-
-	public class MenuItemClickListener implements OnItemClickListener {
+	
+	public class MenuChildClickListener implements OnChildClickListener {
 
 		private static final long AUTH_REFRESH_TIME = 30 * 60 * 1000; // 30
 																		// Minutes
-
+		
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			drawerList.setItemChecked(position, true);
+		public boolean onChildClick(ExpandableListView parent, View view, int groupPosition,
+				int childPosition, long id) {
+			
+			long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
+			int flatPosition = parent.getFlatListPosition(packedPosition);
+			
 			drawerLayout.closeDrawer(drawerList);
 
-			Cursor modulesCursor = (Cursor) parent.getItemAtPosition(position);
+			Cursor modulesCursor = (Cursor) parent.getItemAtPosition(flatPosition);
 
 			String label = modulesCursor.getString(modulesCursor
 					.getColumnIndex(Modules.MODULE_NAME));
@@ -297,24 +312,36 @@ public class DrawerLayoutHelper {
 
 			String secureString = modulesCursor.getString(modulesCursor
 					.getColumnIndex(Modules.MODULE_SECURE));
+			
+			EllucianApplication ellucianApp = (EllucianApplication) activity
+					.getApplication();
 
 			boolean secure = false;
-			if (type.equals(ModuleType.WEB) && secureString != null) {
+			
+			List<String> roles = null;
+			if(moduleId != null) {
+				 roles = ModuleMenuAdapter.getModuleRoles(activity.getContentResolver(), moduleId);
+			}
+			if (roles != null && roles.size() > 0 && !(roles.size() == 1 && roles.get(0).equals(ModuleMenuAdapter.MODULE_ROLE_EVERYONE))) {
+				secure = true;
+			} else if (type.equals(ModuleType.WEB) && secureString != null) {
 				secure = Boolean.parseBoolean(secureString);
+			} else if (type.equals(ModuleType.CUSTOM)) {
+				secure = Utils.isAuthenticationNeededForSubType(activity, subType);
 			} else {
-				secure = isAuthenticationNeededForType(type);
+				secure = Utils.isAuthenticationNeededForType(type);
 			}
 
 			if (secure) {
-				EllucianApplication ellucianApp = (EllucianApplication) activity
-						.getApplication();
-
+				
 				Intent intent = ModuleMenuAdapter.getIntent(activity, type, subType,
 						label, moduleId);
 
 				if (!ellucianApp.isUserAuthenticated()) {
+
+					
 					LoginDialogFragment loginFragment = new LoginDialogFragment();
-					loginFragment.queueIntent(intent);
+					loginFragment.queueIntent(intent, roles);
 					loginFragment.show(activity.getFragmentManager(),
 							LoginDialogFragment.LOGIN_DIALOG);
 				} else if (type.equals(ModuleType.WEB)) {
@@ -362,19 +389,14 @@ public class DrawerLayoutHelper {
 				}
 			} else if (type.equals(ModuleType._SIGN_IN)) {
 
-				EllucianApplication ellucianApp = (EllucianApplication) activity
-						.getApplication();
-
 				if (ellucianApp.isUserAuthenticated()) {
-					sendEventGoogleAnalytics(activity,
-							GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
-							GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
-							"Menu-Click Sign Out", null);
+					ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+								GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
+								"Menu-Click Sign Out", null, null);
 				} else {
-					sendEventGoogleAnalytics(activity,
-							GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+					ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
 							GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
-							"Menu-Click Sign In", null);
+							"Menu-Click Sign In", null, null);
 				}
 
 				if (ellucianApp.isUserAuthenticated()) {
@@ -392,6 +414,10 @@ public class DrawerLayoutHelper {
 							ModuleType._HOME, null,
 							activity.getString(R.string.menu_home), null);
 					if (intent != null) {
+						// Make sure to reset the menu adapter so the navigation drawer will 
+						// display correctly for a non-authenticated user
+						ellucianApp.resetModuleMenuAdapter();
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 						activity.startActivity(intent);
 					}
 
@@ -407,32 +433,11 @@ public class DrawerLayoutHelper {
 				if (intent != null) {
 					activity.startActivity(intent);
 				}
-			}
-		}
-	}
-
-	private void showLoginDialog() {
-		LoginDialogFragment loginFragment = new LoginDialogFragment();
-		loginFragment.show(activity.getFragmentManager(),
-				LoginDialogFragment.LOGIN_DIALOG);
-
+			}					
+			return true;
+		}																	
 	}
 	
-	public void setDrawerListener(DrawerLayoutHelper.DrawerListener listener) {
-		this.listener = listener;
-	}
-	
-	public boolean isDrawerOpen() {
-		return drawerLayout.isDrawerOpen(drawerList);
-	}
-	
-	public void openDrawer() {
-		drawerLayout.openDrawer(drawerList);
-	}
-	
-	public void closeDrawer() {
-		drawerLayout.closeDrawer(drawerList);
-	}
 	public class BackgroundAuthenticationReceiver extends BroadcastReceiver {
 
 		private Intent queuedIntent;
@@ -459,6 +464,29 @@ public class DrawerLayoutHelper {
 
 		public void setQueuedIntent(Intent intent) {
 			queuedIntent = intent;
+		}
+	}
+	
+	private class NotificationsContentObserver extends ContentObserver {
+
+		private EllucianApplication application;
+
+		public NotificationsContentObserver(Handler handler,
+				EllucianApplication application) {
+			super(handler);
+			this.application = application;
+		}
+
+		@Override
+		public void onChange(boolean selfChange) {
+			onChange(selfChange, null);
+		}
+
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			super.onChange(selfChange);
+			activity.getContentResolver().unregisterContentObserver(this);
+			application.resetModuleMenuAdapter();
 		}
 	}
 }

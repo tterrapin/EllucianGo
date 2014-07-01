@@ -164,7 +164,7 @@
     }
 }
 
--(void)selectedDetail:(id)newFeed withModule:(Module*)myModule
+-(void)selectedDetail:(id)newFeed withIndex:(NSIndexPath*)myIndex withModule:(Module*)myModule withController:(id)myController
 {
     if ( [newFeed isKindOfClass:[Feed class]] )
     {

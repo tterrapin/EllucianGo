@@ -253,7 +253,10 @@ public class ConfigurationUpdateService extends IntentService {
 
 						}
 					}
-
+					// Clears the menu adapter so the app knows to recreate it with the new
+					// configuration changes
+					ellucianApp.resetModuleMenuAdapter();
+					
 					success = true;
 				}
 			}
@@ -565,6 +568,9 @@ public class ConfigurationUpdateService extends IntentService {
 			}
 			Utils.addStringToPreferences(this, Utils.SECURITY,
 					Utils.LOGIN_URL, loginUrl);
+		} else {
+			Utils.addStringToPreferences(this, Utils.SECURITY,
+					Utils.LOGIN_TYPE, "native");
 		}
 
 		/** Adding Notification Info **/

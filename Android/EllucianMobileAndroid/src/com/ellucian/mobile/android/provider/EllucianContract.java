@@ -28,11 +28,17 @@ public class EllucianContract {
 		String MODULE_TYPE = "module_type";
 		String MODULE_SECURE ="module_secure";
 		String MODULE_SUB_TYPE = "module_sub_type";
+		String MODULE_LOCK = "module_lock"; //pseudo column not in database
+		String MODULE_RIGHT_TEXT = "module_right_text"; //pseudo column not in database
 	}
 	
 	interface ModulesPropertiesColumns {
 		String MODULE_PROPERTIES_NAME = "moduleurl_name";
 		String MODULE_PROPERTIES_VALUE = "moduleurl_url";
+	}
+	
+	interface ModulesRolesColumns {
+		String MODULE_ROLES_NAME = "moduleroles_name";
 	}
 
 	interface GradeTermsColumns {
@@ -277,6 +283,25 @@ public class EllucianContract {
         }
         
 		public static String getPropertyId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	static final String PATH_MODULESROLES = "modules_roles";
+	public static class ModulesRoles implements ModulesRolesColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MODULESROLES).build();
+		
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ellucian.module_roles";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.module_roles";
+		
+		public static final String DEFAULT_SORT = ModulesRolesColumns.MODULE_ROLES_NAME + " ASC";
+		
+        public static Uri buildRoleUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).build();
+        }
+        
+		public static String getRoleId(Uri uri) {
 			return uri.getPathSegments().get(1);
 		}
 	}

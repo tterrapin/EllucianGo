@@ -2,7 +2,7 @@
     android:id="@+id/drawer_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:background="#1A1A1A"
     android:paddingTop = "5dp"
     android:paddingBottom = "7dp" >
 
@@ -17,19 +17,35 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="7dp"
         android:contentDescription="@null"
-        android:visibility="gone"
-         />
-
-    <TextView
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:id="@+id/drawer_list_item_label"
+        android:visibility="gone" />
+    
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textSize="@dimen/text_size_large"
-        android:textColor="#ffc44d" />
+    	android:layout_height="wrap_content"
+    	android:layout_marginLeft="13dp"
+		android:layout_marginStart="13dp"  >
+        
+     	<TextView
+		     android:id="@+id/drawer_list_item_label"
+		     android:layout_width="0dp"
+		     android:layout_height="wrap_content"
+		     android:layout_weight="5"
+		     android:gravity="center_vertical"
+		     android:textStyle="bold"
+		     android:textAppearance="?android:attr/textAppearanceListItemSmall"
+		     android:textSize="@dimen/text_size_large"
+		     android:textColor="#B3B3B3" />
+		 
+ 		<ImageView
+		     android:id="@+id/drawer_list_indicator"
+		     android:layout_width="0dp"
+		     android:layout_height="wrap_content"
+		     android:layout_weight="1"
+		     android:layout_gravity="center_vertical"
+		     android:contentDescription="@string/menu_header_indicator_description" />
+	        
+    </LinearLayout>
+
+    
         
 </LinearLayout>

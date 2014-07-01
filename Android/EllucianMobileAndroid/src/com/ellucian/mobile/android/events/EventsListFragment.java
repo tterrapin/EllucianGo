@@ -84,7 +84,7 @@ public class EventsListFragment extends EllucianDefaultListFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		sendView("News list", getEllucianActivity().moduleName);
+		sendView("Events List", getEllucianActivity().moduleName);
 	}
 
 }

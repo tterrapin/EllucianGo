@@ -14,5 +14,8 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *startDate;
 @property (nonatomic, strong) NSString *endDate;
+@property (nonatomic, assign) BOOL eligible;
+@property (nonatomic, assign) BOOL requiresAltPin;
+@property (nonatomic, strong) NSString *userEnteredPIN;
 
 @end

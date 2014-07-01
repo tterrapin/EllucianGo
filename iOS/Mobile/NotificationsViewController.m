@@ -15,7 +15,9 @@
 @interface NotificationsViewController ()
 
 @property (nonatomic, strong) UIView *nomatchesView;
-@property (nonatomic, assign) NSUInteger rowCount;
+@property (nonatomic, assign) NSUInteger rowIndex;
+@property (nonatomic, assign) BOOL inDelete;
+@property (nonatomic, assign) BOOL addingInitial;
 @end
 
 static NSString* requestedNotificationId;
@@ -34,9 +36,9 @@ static Notification* requestedNotification;
 	}
     
     self.title = self.module.name;
-
+    
     if([CurrentUser sharedInstance].isLoggedIn) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !requestedNotificationId)
         {
             [self selectFirst];
         }
@@ -44,6 +46,13 @@ static Notification* requestedNotification;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchNotifications:) name:kLoginExecutorSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(abort:) name:kSignInReturnToHomeNotification object:nil];
+}
+
+-(void) abort:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+    self.fetchedResultsController = nil;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -69,11 +78,11 @@ static Notification* requestedNotification;
     [fetchRequest setEntity:entity];
     
     NSSortDescriptor *sortSticky = [[NSSortDescriptor alloc]
-                              initWithKey:@"sticky" ascending:NO];
+                                    initWithKey:@"sticky" ascending:NO];
     NSSortDescriptor *sortDate = [[NSSortDescriptor alloc]
-                              initWithKey:@"noticeDate" ascending:NO];
+                                  initWithKey:@"noticeDate" ascending:NO];
     NSSortDescriptor *sortTitle = [[NSSortDescriptor alloc]
-                              initWithKey:@"title" ascending:YES];
+                                   initWithKey:@"title" ascending:YES];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortSticky, sortDate, sortTitle, nil]];
     
     [fetchRequest setFetchBatchSize:20];
@@ -117,7 +126,8 @@ static Notification* requestedNotification;
     {
         Notification *selectedNotification = [self.fetchedResultsController objectAtIndexPath:indexPath];
         if (_detailSelectionDelegate) {
-            [_detailSelectionDelegate selectedDetail:selectedNotification withModule:self.module];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationsViewControllerItemSelected object:nil];
+            [_detailSelectionDelegate selectedDetail:selectedNotification withIndex:indexPath withModule:self.module withController:self];
         }
     } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionList_Select withLabel:@"Select Notification" withValue:nil forModuleNamed:self.module.name];
@@ -132,6 +142,8 @@ static Notification* requestedNotification;
 
 - (void)showDetailForRequestedNotification
 {
+    NSInteger i = 0;
+    
     if (requestedNotificationId) {
         NSArray* notifications = [self.fetchedResultsController fetchedObjects];
         Notification* notification = nil;
@@ -141,6 +153,7 @@ static Notification* requestedNotification;
                 notification = testNotification;
                 break;
             }
+            i++;
         }
         
         if (notification) {
@@ -149,7 +162,9 @@ static Notification* requestedNotification;
             if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
             {
                 if (_detailSelectionDelegate) {
-                    [_detailSelectionDelegate selectedDetail:notification withModule:self.module];
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+                    [_detailSelectionDelegate selectedDetail:notification withIndex:indexPath withModule:self.module withController:self];
                 }
             } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
                 requestedNotification = notification;
@@ -171,29 +186,37 @@ static Notification* requestedNotification;
         textLabel.font = [UIFont boldSystemFontOfSize:20.0f];
     }
     UIImageView *stickyImageView = (UIImageView *)[cell viewWithTag:2];
+    UIColor *stickyColor = [UIColor clearColor];
     if([notification.sticky boolValue]) {
-        stickyImageView.backgroundColor = [UIColor colorWithRed:241/255.0f green:90/255.0f blue:36/255.0f alpha:1.0f];
-    } else {
-        stickyImageView.backgroundColor = [UIColor clearColor];
+        stickyColor = [UIColor colorWithRed:241/255.0f green:90/255.0f blue:36/255.0f alpha:1.0f];;
     }
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    // Create a 1 by 1 pixel context
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    [stickyColor setFill];
+    UIRectFill(rect);   // Fill it with your color
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    stickyImageView.image = image;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:@"Notification Cell"];
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
-
+    
 }
 
 #pragma mark fetched results controller delegate methods
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    id sectionInfo = [[_fetchedResultsController sections] objectAtIndex:0];
-    _rowCount = [sectionInfo numberOfObjects];
-
+    self.rowIndex = [[self.tableView indexPathForSelectedRow] row];
+    if(![[self.tableView indexPathForSelectedRow] row] && !requestedNotificationId) {
+        _addingInitial = YES;
+    }
     [self.tableView beginUpdates];
 }
 
@@ -210,6 +233,7 @@ static Notification* requestedNotification;
             
         case NSFetchedResultsChangeDelete:
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            _inDelete = YES;
             break;
             
         case NSFetchedResultsChangeUpdate:
@@ -243,11 +267,14 @@ static Notification* requestedNotification;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
-    if(_rowCount == 0) {
+    if(_inDelete) {
+        [self selectNext];
+    }
+    _inDelete = NO;
+    if(_addingInitial) {
         [self selectFirst];
     }
-    id sectionInfo = [[_fetchedResultsController sections] objectAtIndex:0];
-    _rowCount = [sectionInfo numberOfObjects];
+    _addingInitial = NO;
     
     // data loaded attempt to show requested notification
     if (requestedNotificationId) {
@@ -260,7 +287,7 @@ static Notification* requestedNotification;
 {
     [self fetchNotifications];
 }
-     
+
 - (void) fetchNotifications {
     NSString *userid = [[CurrentUser sharedInstance] userid];
     if(userid) {
@@ -276,7 +303,7 @@ static Notification* requestedNotification;
     if ([[segue identifier] isEqualToString:@"Show Notification Detail"])
     {
         Notification* notification = nil;
-
+        
         if (requestedNotification) {
             notification = requestedNotification;
             
@@ -287,7 +314,7 @@ static Notification* requestedNotification;
             NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
             notification = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         }
-
+        
         NotificationDetailViewController *detailController = [segue destinationViewController];
         detailController.notification = notification;
         detailController.module = self.module;
@@ -321,24 +348,51 @@ static Notification* requestedNotification;
     self.navigationItem.rightBarButtonItem = nil;
 }
 
--(void) dismissRow:(id) sender
+- (void) dismissRow:(id) sender
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
     [cell setEditing:NO animated:YES];
     [self.tableView reloadData];
 }
 
--(void) selectFirst
+- (void) selectFirst
 {
-    if ([self.fetchedResultsController.fetchedObjects count] > 0 ) {
+    if ( [self.fetchedResultsController.fetchedObjects count] > 0 ) {
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        Notification *selectedEvent = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        Notification *selectedNotification = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        if (_detailSelectionDelegate && selectedEvent) {
-            [_detailSelectionDelegate selectedDetail:selectedEvent withModule:self.module];
+        if ( _detailSelectionDelegate && selectedNotification ) {
+            [_detailSelectionDelegate selectedDetail:selectedNotification withIndex:indexPath withModule:self.module withController:self];
+        }
+        
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+    }
+}
+
+- (void) selectNext
+{
+    
+    id sectionInfo = [[_fetchedResultsController sections] objectAtIndex:0];
+    NSUInteger rowCount = [sectionInfo numberOfObjects];
+    if(rowCount == 0) {
+        [_detailSelectionDelegate overlayDisplay];
+    } else  {
+        NSIndexPath *indexPath = nil;
+        if (self.rowIndex >= rowCount) {
+            indexPath = [NSIndexPath indexPathForRow:(rowCount - 1) inSection:0];
+        } else {
+            indexPath = [NSIndexPath indexPathForRow:self.rowIndex inSection:0];
+        }
+        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
+        
+        Notification *selectedNotification = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        if ( _detailSelectionDelegate && selectedNotification ) {
+            [_detailSelectionDelegate selectedDetail:selectedNotification withIndex:indexPath withModule:self.module withController:self];
         }
     }
 }
+
 
 @end

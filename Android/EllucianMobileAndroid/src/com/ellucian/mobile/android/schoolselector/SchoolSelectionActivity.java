@@ -10,11 +10,6 @@ import android.widget.SearchView.OnQueryTextListener;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
-import com.ellucian.mobile.android.util.Utils;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.Tracker;
-import com.google.analytics.tracking.android.Logger.LogLevel;
 
 public class SchoolSelectionActivity extends EllucianActivity implements OnQueryTextListener {
 	private SchoolSelectionFragment fragment = null;
@@ -44,15 +39,7 @@ public class SchoolSelectionActivity extends EllucianActivity implements OnQuery
 		searchView.setOnSearchClickListener( new SearchView.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(SchoolSelectionActivity.this);
-		        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
-		        String trackerId1 = Utils.getStringFromPreferences(SchoolSelectionActivity.this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
-		        Tracker gaTracker1;
-				if(trackerId1 != null) {
-		        	gaTracker1 = gaInstance.getTracker(trackerId1);
-		        	gaTracker1.send(MapBuilder
-						    .createEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null).build());
-		        }
+                sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null, null);
 			}
 		});
 		

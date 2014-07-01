@@ -44,15 +44,21 @@
 	        
 	        <TextView
 	            android:id="@+id/instructor"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" />
-	        
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:singleLine="true"
+	            android:ellipsize="end"
+        		android:maxLines="1" />
+	        	        
 	        <TextView
 		        android:id="@+id/instructor_credits_separator"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:maxLines="1"
 		        android:text="@string/line_speparator"
-		        android:textStyle="bold"
+		        android:textStyle="bold"		   
 		        android:paddingLeft="4dp"
 	            android:paddingStart="4dp" 
 		        android:paddingRight="4dp"
@@ -61,7 +67,10 @@
 	        <TextView
 		        android:id="@+id/credits"
 		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content" />
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0"
+		        android:ellipsize="none"
+		        android:maxLines="1" />
 				
 	    </LinearLayout>
 	    
@@ -71,25 +80,12 @@
 	        android:orientation="horizontal"  >
 	        
 	        <TextView
-	            android:id="@+id/meetings"
+	            android:id="@+id/meetings_and_type"
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" />
-	        
-	        <TextView
-		        android:id="@+id/meetings_type_separator"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/line_speparator"
-		        android:textStyle="bold"
-		        android:paddingLeft="4dp"
-	            android:paddingStart="4dp" 		       
-	            android:paddingRight="4dp"
-	            android:paddingEnd="4dp" />
-	         
-	        <TextView
-		        android:id="@+id/type"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content" />
+	            android:layout_height="wrap_content"
+	            android:singleLine="true"
+	            android:ellipsize="end"
+        		android:maxLines="1"  />
 			
 	    </LinearLayout>
 

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
     <!-- Main -->
     
@@ -30,6 +30,7 @@
     <string name="menu_search_school_hint">Rechercher établissement</string>
     <string name="menu_header_applications">Applications</string>
     <string name="menu_header_actions">Actions</string>
+    <string name="menu_header_indicator_description">Indicateur d\'en-tête </string>
     <string name="drawer_open">Ouvrir tiroir de navigation</string>
     <string name="drawer_close">Fermer tiroir de navigation</string>
     
@@ -75,7 +76,7 @@
     <string name="dialog_username">Nom d\'utilisateur</string>
     <string name="dialog_password">Mot de passe</string>
     <string name="dialog_sign_in_empty">Nom d\'utilisateur et mot de passe doivent être renseignés.</string>
-    <string name="dialog_sign_in_failed">Échec de connexion. Veuillez vérifier votre connexion réseau et/ou vos nom d\'utilisateur et mot de passe. Contactez votre département d\'informatique si vous avez besoin d\'aide.</string>
+    <string name="dialog_sign_in_failed">Échec de connexion. Veuillez vérifier votre connexion réseau et/ou vos nom d\'utilisateur et mot de passe. Contactez votre département d\'informatique si vous avez besoin d\'aide pour vous connecter.</string>
     <string name="dialog_signed_in">Vous êtes connecté.</string>
     <string name="dialog_signed_out">Vous êtes déconnecté.</string>
     <string name="dialog_idle_sign_out">Vous êtes resté trop longtemps inactif et avez été déconnecté.</string>
@@ -86,6 +87,8 @@
 	<string name="dialog_go_back">Revenir</string>
 	<string name="dialog_security_warning">Avertissement de sécurité</string>
 	<string name="dialog_cert_warning_statement">"Le certificat de sécurité pour ce site présente des problèmes."</string>
+	<string name="dialog_field_empty">Champ ne peut pas être vide</string>
+	<string name="unauthorized_feature">Vous n\'êtes pas autorisé à utiliser cette fonctionnalité.</string>
 	
     <string name="row_category_label">Catégorie:</string>
     <string name="row_contact_label">Contact:</string>
@@ -257,6 +260,7 @@
     <string name="notifications_sticky_marker_image_text">Balise</string>
     <string name="notifications_delete">Supprimer</string>
     <string name="notifications_unable_to_delete_message">Impossible de supprimer cette notification.</string>
+    <string name="notifications_dialog_delete_message">Voulez-vous vraiment supprimer cette notification?</string>
     
     <!-- Numbers -->
     
@@ -270,7 +274,7 @@
     
     <string name="title_activity_registration">Inscription</string>
     <string name="title_activity_registration_detail">Détail d\'inscription</string>
-    <string name="registration_tab_cart">Mon panier</string>
+    <string name="registration_tab_cart">Panier</string>
     <string name="registration_tab_search">Recherche</string>
     <string name="registration_tab_registered">Inscrit</string>
     <string name="registration_register">S\'inscrire</string>
@@ -283,15 +287,20 @@
     <string name="registration_results_failure_sub">Inscription à ces enseignements impossible:</string>
     <string name="registration_dialog_title">Titre</string>
     <string name="registration_dialog_register_message">Voulez-vous vraiment vous inscrire à ces UP? </string>
-    <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier?  Tout élément est ajouté à votre panier uniquement pour la session actuelle.</string>
-    <string name="registration_dialog_variable_credits_message">Veuillez définir le nombre de crédits. \nFourchette: </string>
+    <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier? </string>
+    <string name="registration_dialog_remove_message">Voulez-vous vraiment supprimer cet élément du panier? </string>
+    <string name="registration_dialog_variable_credits_to_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f</string>
+    <string name="registration_dialog_variable_credits_or_message">Saisir valeur de crédits d\'enseignements de %1$.2f ou %2$.2f</string>
+    <string name="registration_dialog_variable_credits_inc_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f en incréments de %3$.2f </string>
     <string name="registration_dialog_variable_credits_range_error">Saisir un nombre dans la fourchette indiquée.</string>
     <string name="registration_dialog_variable_credits_increment_error">Utiliser un incrément.</string>
+    <string name="registration_dialog_pin_message">Saisir un code confidentiel pour chacun des semestres suivants:</string>
     <string name="registration_search_header">Sélectionner semestre et saisir mots-clés enseignement.</string>
     <string name="registration_search_field_hint">Mots-clés enseignement</string>
     <string name="registration_add_to_cart">Ajouter au panier</string>
     <string name="registration_added_to_cart_success">ajouté(s) au panier.</string>
     <string name="registration_added_to_cart_failed">non ajouté(s) au panier. Données manquantes ou UP existe déjà dans le panier.</string>
+    <string name="registration_added_to_server_cart_failed">Au moins une UP n\'a pas été enregistrée sur le serveur. Ces données ne peuvent rester que pour la session en cours.</string>
     <string name="registration_fill_in_message">Sélectionner un semestre et saisir une recherche.</string>
     <string name="registration_section_id">ID d\'UP</string>
     <string name="registration_grading">Notation</string>
@@ -304,6 +313,8 @@
     <string name="registration_no_plan_eligibility_message">Étudiant non inscrit.</string>
     <string name="registration_were_sorry">Désolé.</string>
     <string name="registration_ineligible_to_register">Non admissible</string>
+    <string name="registration_remove">Supprimer</string>
+    
         
 	<!-- Versioning -->
 	<string name="version_upgrade">Mise à niveau</string>

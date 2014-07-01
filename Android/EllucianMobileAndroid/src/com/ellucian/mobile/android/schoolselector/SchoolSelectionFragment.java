@@ -25,18 +25,12 @@ import android.widget.ListView;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.FilteredAdapter;
 import com.ellucian.mobile.android.app.EllucianFragment;
+import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.client.configurationlist.Configuration;
 import com.ellucian.mobile.android.client.configurationlist.ConfigurationListResponse;
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Utils;
-
-import com.google.analytics.tracking.android.Fields;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
-import com.google.analytics.tracking.android.Tracker;
-import com.google.analytics.tracking.android.Logger.LogLevel;
 
 public class SchoolSelectionFragment extends EllucianFragment {
 
@@ -97,18 +91,9 @@ public class SchoolSelectionFragment extends EllucianFragment {
 			//setSupportProgressBarIndeterminateVisibility (false);
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
-				public void onItemClick(AdapterView<?> list, View v, int position, long id) {
-					
-					GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(SchoolSelectionFragment.this.activity);
-			        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
-			        String trackerId1 = Utils.getStringFromPreferences(SchoolSelectionFragment.this.activity, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
-			        Tracker gaTracker1;
-					if(trackerId1 != null) {
-			        	gaTracker1 = gaInstance.getTracker(trackerId1);
-			        	gaTracker1.send(MapBuilder
-							    .createEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Choose Institution", null).build());
-			        }
-					
+				public void onItemClick(AdapterView<?> list, View v, int position, long id) {					
+					getEllucianActivity().sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Choose Institution", null, null);
+
 					final Configuration configuration = (Configuration) listView.getAdapter().getItem(position);
 					Intent intent = new Intent(getActivity(), ConfigurationLoadingActivity.class);
 					intent.putExtra(Utils.CONFIGURATION_URL,  configuration.configurationUrl);
@@ -198,15 +183,7 @@ public class SchoolSelectionFragment extends EllucianFragment {
 			super.onPostExecute(configurationList);
 			
 			//Google Analytics - need to wait for the tracker id to use before logging, which is why its here and not onStart
-			GoogleAnalytics gaInstance = GoogleAnalytics.getInstance(activity);
-	        gaInstance.getLogger().setLogLevel(LogLevel.VERBOSE); 
-	        String trackerId1 = Utils.getStringFromPreferences(activity, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1, null);
-	        Tracker gaTracker1;
-			if(trackerId1 != null) {
-	        	gaTracker1 = gaInstance.getTracker(trackerId1);
-	        	String appScreen = "Show Institution List";
-				gaTracker1.send(MapBuilder.createAppView().set(Fields.SCREEN_NAME, appScreen).build());
-	        }
+            getEllucianActivity().sendViewToTracker1("Show Institution List", null);
 
 			if (configurationList != null && !configurationList.isEmpty()) {
 				adapter = getAdapter(activity, android.R.layout.simple_list_item_1, configurationList);

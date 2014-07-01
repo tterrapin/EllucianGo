@@ -166,9 +166,15 @@ public class MainActivity extends EllucianActivity {
 	public void handleSignIn() {
 		if (getEllucianApp().isUserAuthenticated()) {
 			// Sign Out
-
+			
+			EllucianApplication ellucianApp = getEllucianApp();
 			// This also removes saved users
-			getEllucianApp().removeAppUser();
+			ellucianApp.removeAppUser();
+			
+			// Make sure to reset the menu adapter so the navigation drawer will 
+			// display correctly for a non-authenticated user
+			ellucianApp.resetModuleMenuAdapter();
+			configureNavigationDrawer();
 			
 			Toast signOutMessage = Toast.makeText(this, R.string.dialog_signed_out, Toast.LENGTH_LONG);
 			signOutMessage.setGravity(Gravity.CENTER, 0, 0);

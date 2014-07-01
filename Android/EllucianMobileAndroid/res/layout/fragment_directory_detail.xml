@@ -5,12 +5,6 @@
         android:layout_height="match_parent" >
 		
 	    <!-- All View are View.GONE to start and must be set to visible -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:orientation="vertical" >
 			
             <!-- 
             <ImageView
@@ -27,6 +21,7 @@
 	        <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/white"
                 style="@style/aboutTable" >
 
                 <!-- 1. NAME -->
@@ -426,6 +421,6 @@
 				</TableRow>       
             </TableLayout>
             
-        </LinearLayout>
+
     </ScrollView>
 

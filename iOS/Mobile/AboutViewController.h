@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *serverVersion;
 @property (strong, nonatomic) IBOutlet UILabel *clientVersion;
+@property (weak, nonatomic) IBOutlet UILabel *clientVersionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *serverVersionLabel;
 
 @property (strong, nonatomic) IBOutlet UITextView *contactTextView;
 

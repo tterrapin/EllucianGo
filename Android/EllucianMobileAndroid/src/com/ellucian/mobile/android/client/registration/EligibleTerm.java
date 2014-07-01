@@ -2,8 +2,12 @@
 package com.ellucian.mobile.android.client.registration;
 
 public class EligibleTerm {
-	public String termId;
-	public boolean addAllowed;
-	public String addMessage;
-	public String addCheckAgainOn;
+	public String term;
+	public String description;
+	public boolean eligible;
+	public boolean requireAltPin;
+	public boolean requireStudyPathKeySeqNum;
+	public TimeTicket[] timeTickets;
+	public StudyPath[] studyPaths;
+	public String[] messages;
 }

@@ -14,6 +14,7 @@
 #import "CourseDetailInstructor.h"
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "CourseDetail.h"
+#import "RegistrationTabBarController.h"
 
 @interface RegistrationPlannedSectionDetailViewController ()
 @property (strong, nonatomic) NSOrderedSet *meetingPatterns;
@@ -23,13 +24,16 @@
 @property (nonatomic, strong) NSDateFormatter *displayDateFormatter;
 @property (nonatomic, strong) NSDateFormatter *displayTimeFormatter;
 @property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
+@property (strong, nonatomic) UIBarButtonItem *deleteButtonItem;
 @end
 
 @implementation RegistrationPlannedSectionDetailViewController
 
--(void) viewDidAppear:(BOOL)animated
+
+-(void) viewWillDisappear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -37,6 +41,7 @@
     [super viewWillAppear:animated];
     [self adjustContraintsAccordingToContent];
     [self sendView:@"Registration Section Detail" forModuleNamed:self.module.name];
+    [self showToolbar];
 }
 
 - (void)viewDidLoad
@@ -60,6 +65,8 @@
         if([AppearanceChanger isRTL]) {
             self.courseSectionNumberLabel.textAlignment = NSTextAlignmentRight;
             self.courseNameLabel.textAlignment = NSTextAlignmentRight;
+            self.descriptionContent.textAlignment = NSTextAlignmentRight;
+            self.meetingDateLabel.textAlignment = NSTextAlignmentRight;
         }
         self.courseSectionNumberLabel.text = [NSString stringWithFormat:@"%@-%@", self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
         self.courseNameLabel.text = self.registrationPlannedSection.sectionTitle;
@@ -84,9 +91,14 @@
         //self.creditsLabel.text = @"Credits:";
         if ( self.registrationPlannedSection.credits ) {
             //self.creditsLabel.text = @"Credits:";
-            if ( self.registrationPlannedSection.isVariableCredit ) {
-                NSString *creditRange = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
-                self.creditsContent.text = creditRange;
+            if([self.registrationTabController containsSectionInCart:self.registrationPlannedSection]) {
+                self.creditsContent.text = [NSString stringWithFormat:@"%@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits ]];
+            } else if ( self.registrationPlannedSection.isVariableCredit ) {
+                if([self.registrationPlannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+                    self.creditsContent.text = [NSString stringWithFormat:@"%@ / %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                } else {
+                    self.creditsContent.text = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                }
             } else {
                 self.creditsContent.text = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits];
             }
@@ -111,6 +123,7 @@
         [self extractFacultyContentForPhone];
         
         self.descriptionContent.text = self.registrationPlannedSection.courseDescription;
+        self.descriptionLabel.hidden = self.registrationPlannedSection.courseDescription == nil;
         [self adjustContraintsAccordingToContent];
         
         self.titleBackgroundView.backgroundColor = [UIColor accentColor];
@@ -125,9 +138,13 @@
 
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    //if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self adjustContraintsAccordingToContent];
-    //}
+    [self adjustContraintsAccordingToContent];
+    if(self.maskView)
+    {
+        [self.maskView removeFromSuperview];
+        self.maskView = nil;
+        [self clearView];
+    }
 }
 
 -(void) extractFacultyContentForPhone
@@ -377,7 +394,12 @@
         
         //mp:time
         NSString *days = [NSString stringWithFormat:@"%@: ",  [daysOfClass componentsJoinedByString:@", "]];
-        NSString *line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+        NSString *line1;
+        if(mp.instructionalMethodCode) {
+            line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+        } else {
+            line1 = [NSString stringWithFormat:@"%@ %@ - %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
+        }
 
         NSMutableAttributedString *attributedLine1 =[[NSMutableAttributedString alloc]initWithString:line1];
         [attributedLine1 addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:fontSize+2.0f] range:NSMakeRange(0, [days length])];
@@ -594,7 +616,7 @@
     }
 }
 
--(void)selectedDetail:(id)newSection withModule:(Module*)myModule
+-(void)selectedDetail:(id)newSection withIndex:(NSIndexPath*)myIndex withModule:(Module*)myModule withController:(id)myController
 {
     if ( [newSection isKindOfClass:[RegistrationPlannedSection class]] )
     {
@@ -604,6 +626,8 @@
         if (_masterPopover != nil) {
             [_masterPopover dismissPopoverAnimated:YES];
         }
+        
+        [self showToolbar];
     }
 }
 
@@ -631,6 +655,8 @@
     if([AppearanceChanger isRTL]) {
         self.courseSectionNumberLabel.textAlignment = NSTextAlignmentRight;
         self.courseNameLabel.textAlignment = NSTextAlignmentRight;
+        self.descriptionContent.textAlignment = NSTextAlignmentRight;
+        self.meetingDateLabel.textAlignment = NSTextAlignmentRight;
     }
     
     self.courseSectionNumberLabel.text = [NSString stringWithFormat:@"%@-%@", self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
@@ -656,11 +682,16 @@
     
     if ( self.registrationPlannedSection.credits ) {
         //self.creditsLabel.text = @"Credits:";
-        if ( self.registrationPlannedSection.isVariableCredit ) {
-            NSString *creditRange = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
-            self.creditsContent.text = creditRange;
+        if(self.registrationPlannedSection.selectedForRegistration) {
+            self.creditsContent.text = [NSString stringWithFormat:@"%@", self.registrationPlannedSection.credits ];
+        } else if ( self.registrationPlannedSection.isVariableCredit ) {
+            if([self.registrationPlannedSection.variableCreditOperator isEqualToString:@"OR"]) {
+                self.creditsContent.text = [NSString stringWithFormat:@"%@ / %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+            } else {
+                self.creditsContent.text = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+            }
         } else {
-                self.creditsContent.text = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits];
+            self.creditsContent.text = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits];
         }
     } else if ( self.registrationPlannedSection.ceus ) {
         NSString * ceusText = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.ceus];
@@ -678,9 +709,9 @@
     
     //self.facultyLabel.text = @"Faculty";
     [self extractFacultyContentForPad];
-    
-    //self.descriptionLabel.text = @"Description";
+
     self.descriptionContent.text = self.registrationPlannedSection.courseDescription;
+    self.descriptionLabel.hidden = self.registrationPlannedSection.courseDescription == nil;
     
     self.titleBackgroundView.backgroundColor = [UIColor accentColor];
     [self adjustContraintsAccordingToContent];
@@ -709,5 +740,61 @@
     //Nil out the pointer to the popover.
     _masterPopover = nil;
 }
+
+-(void) showToolbar
+{
+    if(_allowDeleteFromCart) {
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteFromCart:)];
+        self.toolbarItems = [[NSArray alloc] initWithObjects:flexibleSpace, self.deleteButtonItem, flexibleSpace, nil];
+        [self.navigationController setToolbarHidden:NO];
+    }
+}
+
+- (IBAction) deleteFromCart:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove button")
+                                                    otherButtonTitles:nil];
+    
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [actionSheet showFromBarButtonItem:self.deleteButtonItem animated:YES];
+    } else {
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        
+        [self.registrationTabController removeFromCart:self.registrationPlannedSection];
+
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            [self clearView];
+        }
+    }
+}
+
+-(RegistrationTabBarController *) registrationTabController
+{
+    return  (RegistrationTabBarController *)[self tabBarController];
+}
+
+-(void) clearView
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        
+        self.maskView = [[UIView alloc] initWithFrame:self.view.bounds];
+        [self.maskView setBackgroundColor:[UIColor whiteColor]];
+        [self.view addSubview:self.maskView];
+        [self.navigationController setToolbarHidden:YES];
+    }
+}
+
+
 
 @end

@@ -10,7 +10,9 @@
 @class Module;
 @protocol DetailSelectionDelegate <NSObject>
 @required
--(void)selectedDetail:(id)newDetail withModule:(Module *)myModule;
+- (void)selectedDetail:(id)newDetail withIndex:(NSIndexPath *)myIndex withModule:(Module *)myModule withController:(id)myController;
+
 @optional
 - (void)dismissMasterPopover;
+- (void)overlayDisplay;
 @end

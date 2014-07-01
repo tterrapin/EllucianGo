@@ -68,6 +68,7 @@
 
     self.view.backgroundColor = [UIColor accentColor];
     self.rememberMeLabel.textColor = [UIColor subheaderTextColor];
+    self.contactInstitutionLabel.textColor = [UIColor subheaderTextColor];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.url = [defaults objectForKey:@"login-url"];
@@ -122,12 +123,15 @@
 
     if (responseStatusCode == LOGIN_SUCCESS )
     {
-        /*
-        BOOL match = self.rolesForNextModule.count == 0;
-        if(self.rolesForNextModule) {
-            for(ModuleRole *role in self.rolesForNextModule) {
-                if([roles containsObject:role.role]) {
+        BOOL match = NO;
+        if(self.access) {
+            for(ModuleRole *role in self.access) {
+                if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
                     match = YES;
+                    break;
+                } else if ([role.role isEqualToString:@"Everyone"]) {
+                    match = YES;
+                    break;
                 }
             }
             if(!match) {
@@ -141,7 +145,6 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
             }
         }
-        */
         [self dismissViewControllerAnimated:YES completion: nil];
     }
     else //display an alert

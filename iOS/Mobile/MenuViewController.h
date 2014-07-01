@@ -14,9 +14,10 @@
 #import "SegmentsController.h"
 #import "CoursesTabBarViewController.h"
 #import "HomeViewController.h"
+#import "MenuTableViewHeaderFooterView.h"
+#import "MenuSectionInfo.h"
 
-
-@interface MenuViewController : UIViewController<UIAlertViewDelegate, UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
+@interface MenuViewController : UIViewController<UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource,UIGestureRecognizerDelegate, SectionHeaderViewDelegate>
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
