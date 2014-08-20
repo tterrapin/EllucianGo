@@ -1,15 +1,22 @@
 package com.ellucian.mobile.android.webframe;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 
@@ -25,6 +32,8 @@ public class WebframeActivity extends EllucianActivity {
 	private SecurityDialogFragment securityDialogFragment;
 	private SslErrorHandler handler;
 	
+	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,10 +43,57 @@ public class WebframeActivity extends EllucianActivity {
 			this.setTitle(moduleName);	
 		}
 		
-	}
+		webView = new WebView(this);
+		FrameLayout layout = (FrameLayout) findViewById(R.id.web_frame);
+		layout.addView(webView);
+		
+		if (savedInstanceState != null) {
+			webView.restoreState(savedInstanceState);
+		} else {			
+			webView.setWebChromeClient(new WebChromeClient());
+			webView.setWebViewClient(new WebViewClient() {
 	
-	protected void setWebView(WebView webView) {
-		this.webView = webView;
+			    @Override
+			    public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
+			    	handleError(handler);
+			    }
+			    
+			    @Override
+				public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				    if( url.startsWith("http:") || url.startsWith("https:") ) {
+				        return false;
+				    }
+	
+				    // Otherwise allow the OS to handle it
+				    sendToExternalBrowser(url);
+				    return true;
+				}
+			});
+	
+			WebSettings webSettings = webView.getSettings();
+			webSettings.setJavaScriptEnabled(true);
+			//webSettings.setBuiltInZoomControls(true); //removed because of bug http://code.google.com/p/android/issues/detail?id=15694
+			webSettings.setUseWideViewPort(true);
+			
+			//Enable HTML 5 local storage
+			String databasePath = webView.getContext().getDir("databases", 
+	                Context.MODE_PRIVATE).getPath(); 
+			webSettings.setDatabaseEnabled(true);
+			webSettings.setDatabasePath(databasePath); //deprecated, but needed for earlier than API 19
+			webSettings.setDomStorageEnabled(true);
+			
+			Log.d("WebframeActivity", "Making request at: " + requestUrl);
+
+			webView.loadUrl(requestUrl);
+
+		}
+		
+	}	
+
+
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		webView.saveState(outState);
 	}
 	
 	@Override
@@ -52,21 +108,6 @@ public class WebframeActivity extends EllucianActivity {
 	    return super.onKeyDown(keyCode, event);
 	}
 	
-	// This is to ensure no problems with multiple Webframe modules
-	// Remove from parent to prevent "Error: WebView.destroy() called while still attached "
-	// http://stackoverflow.com/questions/11995270/error-webview-destroy-called-while-still-attached
-	@Override
-	public void onDestroy() {
-		if (webView != null) {
-			ViewGroup parent = (ViewGroup) webView.getParent();
-			if (parent != null) {
-				parent.removeView(webView);
-			}
-			webView.removeAllViews();
-			webView.destroy();
-		}
-		super.onDestroy();
-	}
 	
 	protected void handleError(SslErrorHandler handler) {
 		this.handler = handler;
@@ -131,5 +172,16 @@ public class WebframeActivity extends EllucianActivity {
         
         return super.onCreateOptionsMenu(menu);
     }
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		sendView("Display web frame", moduleName);
+	}
+	
+	private void sendToExternalBrowser(String url) {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+	    startActivity( intent );
+	}
 	 
 }

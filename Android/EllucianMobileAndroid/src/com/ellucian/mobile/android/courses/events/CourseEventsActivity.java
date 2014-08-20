@@ -85,14 +85,28 @@ public class CourseEventsActivity extends EllucianDefaultDualPaneActivity {
 					Date startDate = CalendarUtils.parseFromUTC(startDateString);
 					
 					if (allDay) {
-						output = CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate);
-						output +=  " " + getString(R.string.all_day_event);
-					} else {
-						output = CalendarUtils.getDefaultDateTimeString(CourseEventsActivity.this, startDate);
-						if (!TextUtils.isEmpty(endDateString)) {
-							Date endDate = CalendarUtils.parseFromUTC(endDateString);
-							output += " - " + CalendarUtils.getDefaultDateTimeString(CourseEventsActivity.this, endDate);
+						output = getString(R.string.date_all_day_event_format, 
+									CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate));
+					} else if (!TextUtils.isEmpty(endDateString)) {
+						Date endDate = CalendarUtils.parseFromUTC(endDateString);
+						if (CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate)
+								.equals(CalendarUtils.getDefaultDateString(CourseEventsActivity.this, endDate))) {
+							
+							output = getString(R.string.date_time_to_time_format, 
+									CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate),
+									CalendarUtils.getDefaultTimeString(CourseEventsActivity.this, startDate),
+									CalendarUtils.getDefaultTimeString(CourseEventsActivity.this, endDate));
+						} else {
+							output = getString(R.string.date_time_to_date_time_format, 
+									CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate),
+									CalendarUtils.getDefaultTimeString(CourseEventsActivity.this, startDate),
+									CalendarUtils.getDefaultDateString(CourseEventsActivity.this, endDate),
+									CalendarUtils.getDefaultTimeString(CourseEventsActivity.this, endDate));
 						}
+					} else {
+						output = getString(R.string.date_time_format, 
+									CalendarUtils.getDefaultDateString(CourseEventsActivity.this, startDate),
+									CalendarUtils.getDefaultTimeString(CourseEventsActivity.this, startDate));
 					}
 				} else {
 					output = getString(R.string.unavailable);

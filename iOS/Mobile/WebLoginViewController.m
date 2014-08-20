@@ -30,6 +30,7 @@
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     self.webView.delegate = self;
     self.webView.scalesPageToFit = YES;
+    self.navigationController.navigationBar.translucent = NO;
     [self.webView loadRequest:request];
 }
 
@@ -59,6 +60,9 @@
                     break;
                 }
             }
+            if([self.access count] == 0) { //upgrades from 3.0 or earlier
+                match = YES;
+            }
             if(!match) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
                                                                 message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
@@ -81,6 +85,19 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self webViewDidFinishLoad:self.webView];
+    
+    if(error.code == NSURLErrorCancelled) {
+        return; // this is Error -999
+    } else {
+        
+        NSString *titleString = NSLocalizedString(@"Error Loading Page", @"title when error loading webpage");
+        NSString *messageString = [error localizedFailureReason] ? [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"WebView loading error", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"WebView loading error (description failure)"), [error  localizedDescription], [error localizedFailureReason]] : [error localizedDescription];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleString
+                                                            message:messageString delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 - (IBAction)cancel:(id)sender {

@@ -38,7 +38,7 @@ public class EligibilityDialogFragment extends EllucianDialogFragment {
 		builder.setTitle(R.string.registration_ineligible_to_register);
 		Log.d(TAG, "Setting message: " + message);
 		builder.setMessage(message)
-			.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                 	dialog.cancel(); 
 

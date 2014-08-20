@@ -7,4 +7,5 @@ public class ConfigurationProperties {
 	public String defaultConfigurationUrl;
 	public boolean enableVersionChecking;
 	public boolean allowSwitchSchool;
+	public String gcmSenderId;
 }

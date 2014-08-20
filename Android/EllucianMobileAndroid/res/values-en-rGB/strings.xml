@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
 
     <!-- Main -->
     
@@ -44,7 +46,7 @@
     <string name="title_activity_configuration_loading">Configuration Loading</string>
     <string name="configuration_loading_failed">Configuration loading failed</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">Loading Configuration. Please wait…</string>
+    <string name="configuration_loading_message">Loading Configuration. Please wait&#8230;</string>
     <string name="configuration_loading_missing_config">"Unable to download the configuration from that link."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -67,9 +69,25 @@
     <string name="label_credits">Credits</string>
     <string name="label_meeting_information">Meeting Information</string>
     <string name="label_open">Open</string>
-    
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_ok">OK</string>
+    <string name="label_date">Date</string>
+    <string name="label_location">Location:</string>
+       
+    <string name="label_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
+	</string>	
+	<string name="label_string_content_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>: <xliff:g id="content" example="John Smith">%2$s</xliff:g>
+	</string>	
+	<string name="label_integer_content_format">
+	    <xliff:g id="label" example="Room">%1$s</xliff:g>: <xliff:g id="content" example="201">%2$d</xliff:g>
+	</string>	
+	<string name="label_float_content_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="content" example="3.00">%2$.2f</xliff:g>
+	</string>
+	<string name="label_with_count_format">
+	    <xliff:g id="label" example="Cart">%1$s</xliff:g> (<xliff:g id="count" example="5">%2$d</xliff:g>)
+	</string>
+
     <string name="dialog_sign_in">Sign In</string>
     <string name="dialog_sign_in_title">Sign In</string>
     <string name="dialog_stay_signed_in">Stay signed in</string>
@@ -82,7 +100,7 @@
     <string name="dialog_idle_sign_out">You have been idle too long and have been Signed Out.</string>
     <string name="dialog_select_categories">Select Categories</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">Re-authenticating, please wait…</string>
+    <string name="dialog_re_authenticate">Re-authenticating, please wait&#8230;</string>
 	<string name="dialog_continue">Continue</string>
 	<string name="dialog_go_back">Go Back</string>
 	<string name="dialog_security_warning">Security warning</string>
@@ -113,7 +131,46 @@
     <string name="all_day_event">All Day Event</string>
     <string name="title_activity_default_detail">Details</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">Loading…</string>
+    <string name="loading_message">Loading&#8230;</string>
+
+    <string name="date_to_date_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> - <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g>
+	</string>
+	<string name="date_all_day_event_format">
+	    <xliff:g id="startDate" example="10-8-14">%s</xliff:g> All Day Event
+	</string>
+	<string name="date_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="time" example="11:00 AM">%2$s</xliff:g>
+	</string>
+	<string name="date_time_to_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="time_to_time_format">
+	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
+	</string>
+	
+	<string name="default_first_last_name_format">
+	    <xliff:g id="firstName" example="John">%1$s</xliff:g> <xliff:g id="lastName" example="Smith">%2$s</xliff:g>
+	</string>
+	<string name="default_last_name_first_initial_format">
+	    <xliff:g id="lastName" example="Smith">%1$s</xliff:g>, <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_title_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
+	</string>
+	<string name="default_building_and_room_format">
+	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_and_times_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_times_and_type_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	
 	
     <!-- About -->
     
@@ -162,7 +219,7 @@
     <string name="course_grades">Grades</string>
     <string name="course_roster">Roster</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">More…</string>
+    <string name="course_more">More&#8230;</string>
     <string name="course_assignments">Assignments</string>
     <string name="course_announcements">Announcements</string>
     <string name="course_events">Events</string>
@@ -173,7 +230,6 @@
     <string name="course_assignments_none_assigned">None assigned</string>
     <string name="label_left_button">Left Button</string>
 	<string name="label_right_button">Right Button</string>
-    
 
     <!-- Directory -->
     
@@ -293,13 +349,13 @@
     <string name="registration_dialog_variable_credits_or_message">Enter course credit value of either %1$.2f or %2$.2f</string>
     <string name="registration_dialog_variable_credits_inc_message">Enter course credit value between %1$.2f and %2$.2f in increments of %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">A number in the range indicated must be entered.</string>
-    <string name="registration_dialog_variable_credits_increment_error">increment must be used.</string>
+    <string name="registration_dialog_variable_credits_increment_error_format">
+        <xliff:g id="increment" example=".25">%1$.2f</xliff:g> increment must be used.
+    </string>
     <string name="registration_dialog_pin_message">Please enter a PIN for each of the following terms:</string>
-    <string name="registration_search_header">Select a Term and enter Course Keywords.</string>
-    <string name="registration_search_field_hint">Course Keywords</string>
+    <string name="registration_search_header">Select a Term and enter Search criteria</string>
+    <string name="registration_search_field_hint">Search criteria</string>
     <string name="registration_add_to_cart">Add To Cart</string>
-    <string name="registration_added_to_cart_success">added to cart.</string>
-    <string name="registration_added_to_cart_failed">failed to add to cart. Missing data or section already exists in cart.</string>
     <string name="registration_added_to_server_cart_failed">At least one section failed to save to server. This data may only stay for the current session.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
@@ -314,6 +370,28 @@
     <string name="registration_were_sorry">We\'re sorry</string>
     <string name="registration_ineligible_to_register">Ineligible for Registration</string>
     <string name="registration_remove">Remove</string>
+    
+    <string name="registration_added_to_cart_success_format">
+	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> added to cart.
+	</string>
+    <string name="registration_added_to_cart_failed_format">
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> failed to add to cart. Missing data or section already exists in cart.
+    </string>
+    <string name="registration_row_credits_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
+	</string>
+	<string name="registration_row_credits_with_type_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> | <xliff:g id="creditType" example="Audit">%3$s</xliff:g>
+	</string>
+    <string name="registration_row_credits_min_max_format">
+	    <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_with_ceus_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_min_max_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
+	</string>
     
         
 	<!-- Versioning -->

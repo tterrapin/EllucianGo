@@ -39,7 +39,9 @@ public class CourseOverviewActivity extends EllucianActivity  {
 	    Bundle incomingExtras = getIntent().getExtras();
 		String courseName = incomingExtras.getString(Extra.COURSES_NAME);
 		String sectionNumber = incomingExtras.getString(Extra.COURSES_SECTION_NUMBER);
-		setTitle(courseName+"-"+sectionNumber);
+		setTitle(getString(R.string.default_course_section_format,
+						courseName, 
+						sectionNumber));
 	    // Determine if the roster is shown
 	    courseId = incomingExtras.getString(Extra.COURSES_COURSE_ID);
 	    boolean isInstructor = incomingExtras.getBoolean(Extra.COURSES_IS_INSTRUCTOR);		

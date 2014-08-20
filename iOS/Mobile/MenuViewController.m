@@ -408,14 +408,14 @@
     if(currentUser && [currentUser isLoggedIn ]) {
         NSSet *roles = currentUser.roles;
         NSMutableArray *parr = [NSMutableArray array];
-//        [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
+        [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
         [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", @"Everyone"] ];
         for(NSString *role in roles) {
             [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
         }
         fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
     } else {
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"hideBeforeLogin == %@", [NSNumber numberWithBool:NO]];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(hideBeforeLogin == %@) || (hideBeforeLogin = nil)", [NSNumber numberWithBool:NO]];
     }
     
     NSError *error;
@@ -710,6 +710,9 @@
                 match = YES;
                 break;
             }
+        }
+        if([module.roles count] == 0) { //upgrades from 3.0 or earlier
+            match = YES;
         }
         if(!match) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied",@"access denied error message")

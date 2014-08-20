@@ -395,6 +395,17 @@
 		546B0E4A1734617D00C62730 /* Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configuration.m; sourceTree = "<group>"; };
 		546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebLoginViewController.h; path = Mobile/WebLoginViewController.h; sourceTree = "<group>"; };
 		546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebLoginViewController.m; path = Mobile/WebLoginViewController.m; sourceTree = "<group>"; };
+		546FE10C19745C6B000F2A79 /* LoginProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginProtocol.h; path = Mobile/LoginProtocol.h; sourceTree = "<group>"; };
+		546FE10D19745E0A000F2A79 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		546FE10E19745E0A000F2A79 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		546FE10F19745E0A000F2A79 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		546FE11019745E0A000F2A79 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		546FE11119745E0A000F2A79 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		546FE11219745E0A000F2A79 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		546FE11319745E0A000F2A79 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		546FE11419745E0A000F2A79 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		546FE11519745E0A000F2A79 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		546FE11619745E0A000F2A79 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		54704BE517B53E4E002D7C1C /* Base */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		54711CAD187CAA5B000DC9DC /* RegistrationSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationSearchViewController.h; sourceTree = "<group>"; };
 		54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationSearchViewController.m; sourceTree = "<group>"; };
@@ -514,7 +525,6 @@
 		54CC7F26194165650044C31E /* Mobile 3.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mobile 3.5.xcdatamodel"; sourceTree = "<group>"; };
 		54CC7F271941673F0044C31E /* Module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Module.h; sourceTree = "<group>"; };
 		54CC7F281941673F0044C31E /* Module.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Module.m; sourceTree = "<group>"; };
-		54CC7F2B194188280044C31E /* LoginProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginProtocol.h; sourceTree = "<group>"; };
 		54D1BCF416D41F21005E0DEC /* CourseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetail.h; sourceTree = "<group>"; };
 		54D1BCF516D41F21005E0DEC /* CourseDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetail.m; sourceTree = "<group>"; };
 		54D1BCF716D433EF005E0DEC /* CourseMeetingPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseMeetingPattern.h; sourceTree = "<group>"; };
@@ -549,12 +559,6 @@
 		54F3DD5117618B9700CEDE57 /* CourseAssignmentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseAssignmentDetailViewController.h; sourceTree = "<group>"; };
 		54F3DD5417618BE600CEDE57 /* CourseAssignmentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseAssignmentDetailViewController.m; sourceTree = "<group>"; };
 		54FD398118ADB8FD00F0BC1D /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		54FD398418ADB91000F0BC1D /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
-		54FD398518ADB91000F0BC1D /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
-		54FD398618ADB91000F0BC1D /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
-		54FD398718ADB91000F0BC1D /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
-		54FD398818ADB91000F0BC1D /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
-		54FD398918ADB91000F0BC1D /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		54FD398A18ADBA7F00F0BC1D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		8400A7471608F6D700EFD0BE /* CalendarViewEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewEvent.h; sourceTree = "<group>"; };
 		8400A7481608F6D700EFD0BE /* CalendarViewEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewEvent.m; sourceTree = "<group>"; };
@@ -865,12 +869,16 @@
 		54C1471A177B6AD800C6CCBD /* Google Analytics Library */ = {
 			isa = PBXGroup;
 			children = (
-				54FD398418ADB91000F0BC1D /* GAI.h */,
-				54FD398518ADB91000F0BC1D /* GAIDictionaryBuilder.h */,
-				54FD398618ADB91000F0BC1D /* GAIFields.h */,
-				54FD398718ADB91000F0BC1D /* GAILogger.h */,
-				54FD398818ADB91000F0BC1D /* GAITrackedViewController.h */,
-				54FD398918ADB91000F0BC1D /* GAITracker.h */,
+				546FE10D19745E0A000F2A79 /* GAI.h */,
+				546FE10E19745E0A000F2A79 /* GAIDictionaryBuilder.h */,
+				546FE10F19745E0A000F2A79 /* GAIEcommerceFields.h */,
+				546FE11019745E0A000F2A79 /* GAIEcommerceProduct.h */,
+				546FE11119745E0A000F2A79 /* GAIEcommerceProductAction.h */,
+				546FE11219745E0A000F2A79 /* GAIEcommercePromotion.h */,
+				546FE11319745E0A000F2A79 /* GAIFields.h */,
+				546FE11419745E0A000F2A79 /* GAILogger.h */,
+				546FE11519745E0A000F2A79 /* GAITrackedViewController.h */,
+				546FE11619745E0A000F2A79 /* GAITracker.h */,
 				54FD398118ADB8FD00F0BC1D /* libGoogleAnalyticsServices.a */,
 			);
 			name = "Google Analytics Library";
@@ -1399,7 +1407,7 @@
 				54F0327716D59FC000318C7A /* KeychainWrapper.m */,
 				54779E6317737B3F00ABD9F5 /* LoginExecutor.h */,
 				54779E6417737B3F00ABD9F5 /* LoginExecutor.m */,
-				54CC7F2B194188280044C31E /* LoginProtocol.h */,
+				546FE10C19745C6B000F2A79 /* LoginProtocol.h */,
 				54F0327916D59FC700318C7A /* LoginViewController.h */,
 				54F0327A16D59FCC00318C7A /* LoginViewController.m */,
 				546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */,

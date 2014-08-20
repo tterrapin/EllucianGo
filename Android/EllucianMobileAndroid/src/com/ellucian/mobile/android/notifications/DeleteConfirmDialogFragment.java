@@ -25,13 +25,13 @@ public class DeleteConfirmDialogFragment extends EllucianDialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		
 		builder.setMessage(R.string.notifications_dialog_delete_message)
-			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                 	dialog.cancel(); 
 
                 }
             })
-            .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                 	detailFragment.triggerDeleteNotification();
                 }

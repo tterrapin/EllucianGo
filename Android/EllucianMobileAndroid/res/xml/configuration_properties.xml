@@ -10,6 +10,8 @@
     
     <enable-version-checking>true</enable-version-checking>
     
-    <allow-switch-school>true</allow-switch-school>   
+    <allow-switch-school>true</allow-switch-school>
+    
+    <gcm-sender-id>170166633464</gcm-sender-id>
     
 </configuration-properties>

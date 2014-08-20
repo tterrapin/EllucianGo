@@ -89,8 +89,7 @@
     }
     
     UILabel *line1aLabel = (UILabel *)[cell viewWithTag:1];
-    line1aLabel.text = [NSString stringWithFormat:@"%@-%@", plannedSection.courseName, plannedSection.courseSectionNumber];
-    UILabel *line1bLabel = (UILabel *)[cell viewWithTag:6];
+    line1aLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), plannedSection.courseName, plannedSection.courseSectionNumber];    UILabel *line1bLabel = (UILabel *)[cell viewWithTag:6];
     if(plannedSection.instructionalMethod) {
         line1bLabel.text = [NSString stringWithFormat:@"(%@)", plannedSection.instructionalMethod];
     } else
@@ -107,26 +106,26 @@
     NSString *ceus = [self.creditsFormatter stringFromNumber:plannedSection.ceus];
     NSString *gradingType = @"";
     if (plannedSection.isAudit) {
-        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"Audit", @"Audit label for registration")];
+        gradingType = [NSString stringWithFormat: @"%@", NSLocalizedString(@"| Audit", @"Audit label for registration")];
     }
     else if (plannedSection.isPassFail) {
-        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"P/F", @"PassFail abbrev label for registration cart")];
+        gradingType = [NSString stringWithFormat: @"%@", NSLocalizedString(@"| P/F", @"PassFail abbrev label for registration cart")];
     }
     
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
         if (credits){
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ Credits %@", @"| credits and Credits label and grading type for registration"), credits, gradingType ];
         }
         else if (ceus) {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ CEUs %@", @"| ceus and CEUs label and grading type for registration"), ceus, gradingType ];
         }
     } else {
         if (credits) {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Credits %@", @"credits and Credits label and grading type for registration"), credits, gradingType];
         }
         else if (ceus) {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ CEUs %@", @"ceus and CEUs label and grading type for registration"), ceus, gradingType];
         }
         line3bLabel.text = nil;
         

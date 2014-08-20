@@ -1,11 +1,11 @@
 package com.ellucian.mobile.android.app;
 
 import android.app.Activity;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,14 +110,21 @@ public class EllucianDefaultDetailFragment extends EllucianFragment {
 			location = args.getString(Extra.LOCATION);
 		}
 
-		if (!TextUtils.isEmpty(title)) { titleView.setText(title); }
+		if (!TextUtils.isEmpty(title)) { 
+			titleView.setText(title); 
+		}
 		if (!TextUtils.isEmpty(dateLabel)) { 
 			dateLabelView.setText(dateLabel); 
 		} else {
 			dateLabelView.setVisibility(View.GONE);
 		}
-		if (!TextUtils.isEmpty(date)) { dateView.setText(date); }
-		if (!TextUtils.isEmpty(content)) { contentView.setText(content); }
+		if (!TextUtils.isEmpty(date)) { 
+			dateView.setText(date); 
+		}
+		if (!TextUtils.isEmpty(content)) {
+			contentView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.ALL));
+			contentView.setText(content); 	
+		}
 		if (!TextUtils.isEmpty(location)) {
 			locationView.setText(location); 
 		} else {

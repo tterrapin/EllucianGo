@@ -49,7 +49,7 @@
         [categoryValues addObject:value.name];
     }
     if ( [self.itemCategory count] > 0 ) {
-        self.categoryValue.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+        self.categoryValue.text = [NSString stringWithFormat:NSLocalizedString(@"Category: %@", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
     } else {
         self.categoryValue.text = @"";
     }
@@ -58,7 +58,11 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     self.dateLabel.text = [dateFormatter stringFromDate:self.itemPostDateTime];
-    [self setDescriptionText:self.itemContent];
+    if(self.itemLink) {
+        [self setDescriptionText:[NSString stringWithFormat: @"%@<br><br>%@",self.itemContent, self.itemLink]];
+    } else {
+        [self setDescriptionText:self.itemContent];
+    }
     if(self.itemImageUrl) {
         [self.imageView loadImageFromURLString: self.itemImageUrl];
 
@@ -194,6 +198,13 @@
     _itemTitle = _feed.title;
     _itemContent = _feed.content;
     _itemLink = [_feed.link stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    if(_itemLink) {
+        [self setDescriptionText:[NSString stringWithFormat: @"%@<br><br>%@", _feed.content, _itemLink]];
+    } else {
+        [self setDescriptionText: _feed.content];
+    }
+
     _itemPostDateTime = _feed.postDateTime;
     _itemCategory = _feed.category;
     
@@ -211,7 +222,7 @@
         [categoryValues addObject:value.name];
     }
     if ( [_itemCategory count] > 0 ) {
-        self.categoryValue.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+        self.categoryValue.text = [NSString stringWithFormat:NSLocalizedString(@"Category: %@", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
     } else {
         self.categoryValue.text = @"";
     }
@@ -220,7 +231,7 @@
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     self.dateLabel.text = [dateFormatter stringFromDate:self.itemPostDateTime];
-    [self setDescriptionText:self.itemContent];
+
     if(self.itemImageUrl) {
         self.imageHeightConstraint.constant = 120;
         self.imageWidthConstraint.constant = 120;

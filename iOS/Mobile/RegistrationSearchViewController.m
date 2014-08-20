@@ -45,7 +45,6 @@
 -(void) viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor accentColor];
     self.searchTextField.delegate = self;
     
     self.termTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Registration Search Term Picker Image"]];
@@ -386,6 +385,7 @@
         RegistrationSearchResultsViewController *resultsViewController = (RegistrationSearchResultsViewController *)detailController;
         resultsViewController.allowAddToCart = self.allowAddToCart;
         resultsViewController.courses  = sender;
+        resultsViewController.module = self.module;
     }
 }
 

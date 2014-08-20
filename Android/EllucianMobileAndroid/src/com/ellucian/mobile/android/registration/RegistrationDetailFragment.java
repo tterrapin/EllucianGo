@@ -79,7 +79,9 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			if (!TextUtils.isEmpty(section.courseName)) {
 				String title = section.courseName;
 				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
-					title += "-" + section.courseSectionNumber;
+					title = getString(R.string.default_course_section_format,
+									section.courseName,
+									section.courseSectionNumber);
 				}
 				courseTitleView.setTextColor(subheaderTextColor);
 				courseTitleView.setText(title);				
@@ -109,47 +111,72 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				}
 		    	
 		    	datesView.setTextColor(subheaderTextColor);
-		    	datesView.setText(startDate + " - " + endDate);
+		    	datesView.setText(getString(R.string.date_to_date_format, 
+		    							startDate, 
+		    							endDate));
 			} else {
 				datesView.setVisibility(View.GONE);
 			}
 			
 			TextView sectionIdView = (TextView)rootView.findViewById(R.id.section_id);
 			if (!TextUtils.isEmpty(section.sectionId)) {		
-				sectionIdView.setText(getString(R.string.registration_section_id) + ": " + section.sectionId);
+				sectionIdView.setText(getString(R.string.label_string_content_format,
+										getString(R.string.registration_section_id),
+										section.sectionId));
 			}
 			
 			TextView creditsView = (TextView)rootView.findViewById(R.id.credits);
+			String creditsText = "";
 			if (section.selectedCredits != -1) {
-				creditsView.setText(getString(R.string.label_credits) + ": " + section.selectedCredits);
+				creditsText = getString(R.string.label_float_content_format, 
+									getString(R.string.label_credits),
+									section.selectedCredits);
+
 			} else if (section.credits != 0) {
-				creditsView.setText(getString(R.string.label_credits) + ": " + section.credits);				
+				creditsText = getString(R.string.label_float_content_format, 
+								getString(R.string.label_credits),
+								section.credits);				
 			} else if (!TextUtils.isEmpty(section.variableCreditOperator) && section.variableCreditOperator.equals(Section.VARIABLE_OPERATOR_OR)
 					|| section.minimumCredits != 0) {
-				String creditsText = getString(R.string.label_credits) + ": " + section.minimumCredits;
+
 				if (section.maximumCredits != 0) {
-					creditsText += "-" + (float)section.maximumCredits;
+					creditsText = getString(R.string.registration_label_credits_min_max_format, 
+									getString(R.string.label_credits),
+									section.minimumCredits,
+									section.maximumCredits);
+				} else {
+					creditsText = getString(R.string.label_float_content_format, 
+									getString(R.string.label_credits),
+									section.minimumCredits);
 				}
-				creditsText += " " + getString(R.string.registration_credits);
-				creditsView.setText(creditsText);
+
 			} else if (section.ceus != 0){
-				creditsView.setText(getString(R.string.label_credits) + ": "  + section.ceus + " " 
-						+ getString(R.string.registration_ceus));
+				creditsText = getString(R.string.registration_label_credits_with_ceus_format, 
+								getString(R.string.label_credits),
+								section.ceus,
+								getString(R.string.registration_ceus));
 			} else {
 				// Only want to display zero in last possible case to avoid not showing the correct alternative
-				creditsView.setText(getString(R.string.label_credits) + ": 0");
+				creditsText = getString(R.string.label_float_content_format, 
+								getString(R.string.label_credits),
+								0f);
 			}
+			creditsView.setText(creditsText);
 			
 			TextView gradingTypeView = (TextView) rootView.findViewById(R.id.grading_type);
 			
-			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_GRADED)) {				
-				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_graded));
-			
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_GRADED)) {			
+				gradingTypeView.setText(getString(R.string.label_string_content_format, 
+											getString(R.string.registration_grading),
+											getString(R.string.registration_graded)));			
 			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
-				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_audit));
-				
+				gradingTypeView.setText(getString(R.string.label_string_content_format, 
+											getString(R.string.registration_grading),
+											getString(R.string.registration_audit)));				
 			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
-				gradingTypeView.setText(getString(R.string.registration_grading) + ": " + getString(R.string.registration_pass_fail));
+				gradingTypeView.setText(getString(R.string.label_string_content_format, 
+											getString(R.string.registration_grading),
+											getString(R.string.registration_pass_fail)));
 			} else {
 				gradingTypeView.setVisibility(View.GONE);
 			}
@@ -160,19 +187,19 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				int meetingCount = 0;
 				for (MeetingPattern pattern : section.meetingPatterns) {
 					
-					String meetingsString = "";
+					String meetingsDaysString = "";
 
 					if (pattern.daysOfWeek != null && pattern.daysOfWeek.length != 0) {
 						
 						for (int dayNumber : pattern.daysOfWeek) {
 
-							if (!TextUtils.isEmpty(meetingsString)) {
-								meetingsString += ", ";
+							if (!TextUtils.isEmpty(meetingsDaysString)) {
+								meetingsDaysString += ", ";
 							}
 							// Adding 1 to number to make the Calendar constants 
-							meetingsString += CalendarUtils.getDayShortName(dayNumber);
+							meetingsDaysString += CalendarUtils.getDayShortName(dayNumber);
 						}
-						meetingsString += ": ";
+						meetingsDaysString += ": ";
 					}
 					
 					Date startTimeDate = null;
@@ -211,18 +238,28 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 						Log.e(TAG, "ParseException: ", e);
 					}
 					
-					
+					String meetingTimesString = "";
 					if (!TextUtils.isEmpty(displayStartTime)) {
-						meetingsString += displayStartTime;
+						
 						if (!TextUtils.isEmpty(displayEndTime)) {
-							meetingsString += " - " + displayEndTime;
+							meetingTimesString = getString(R.string.time_to_time_format,
+														displayStartTime,
+														displayEndTime);
+						} else {
+							meetingTimesString = displayStartTime;
 						}
+						
 					}
 					
-					if (!TextUtils.isEmpty(meetingsString)) {
+					if (!TextUtils.isEmpty(meetingsDaysString)) {
 						View rowLayout = activity.getLayoutInflater().inflate(R.layout.registration_meeting_row, meetingLayout, false);
-						TextView meetingView = (TextView) rowLayout.findViewById(R.id.meeting);
-						meetingView.setText(meetingsString);
+						TextView daysView = (TextView) rowLayout.findViewById(R.id.meeting_days);
+						daysView.setText(meetingsDaysString);
+						
+						if (!TextUtils.isEmpty(meetingTimesString)) {
+							TextView timesView = (TextView) rowLayout.findViewById(R.id.meeting_times);
+							timesView.setText(meetingTimesString);
+						}
 						
 						if (!TextUtils.isEmpty(pattern.instructionalMethodCode)) {
 							TextView typeView = (TextView) rowLayout.findViewById(R.id.type);
@@ -232,15 +269,15 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 						TextView locationView = (TextView) rowLayout.findViewById(R.id.building_room);
 						String locationString = "";
 						if (!TextUtils.isEmpty(pattern.building)) {
-							locationString += pattern.building;
-						} 
-						
-						if (!TextUtils.isEmpty(pattern.room)) {
-							if (!TextUtils.isEmpty(locationString)) {
-								locationString += ", ";
+							if (!TextUtils.isEmpty(pattern.room)) {								
+								locationString = getString(R.string.default_building_and_room_format,
+														pattern.building,
+														pattern.room);
+							} else {
+								locationString = pattern.building;
 							}
-							locationString += pattern.room;
-						}
+						} 
+												
 						if (!TextUtils.isEmpty(locationString)) {
 							locationView.setText(locationString);
 							// Show underline of text

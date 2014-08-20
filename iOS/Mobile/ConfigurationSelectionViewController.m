@@ -192,7 +192,7 @@
                         NSString *trackingId1 = [[json objectForKey:@"analytics"] objectForKey:@"ellucian"];
                         if(trackingId1) {
                             id tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
-                            GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createAppView];
+                            GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createScreenView];
                             [builder set:@"Show Institution List" forKey:kGAIScreenName];
                             NSMutableDictionary *buildDictionary = [builder build];
                             [tracker1 send:buildDictionary];

@@ -118,8 +118,7 @@
     UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:2];
     descriptionLabel.text = event.eventDescription;
     UILabel *datesLabel = (UILabel *)[cell viewWithTag:3];
-    datesLabel.text = [NSString stringWithFormat:@"%@ - %@", [self.datetimeOutputFormatter stringFromDate:event.startDate], [self.datetimeOutputFormatter stringFromDate:event.endDate]];
-    
+    datesLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course event start - end date", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course event start - end date"), [self.datetimeOutputFormatter stringFromDate:event.startDate], [self.datetimeOutputFormatter stringFromDate:event.endDate]];
     return cell;
 }
 

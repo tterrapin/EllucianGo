@@ -41,10 +41,15 @@ public class ConfigurationUpdateReceiver extends BroadcastReceiver {
 		} else {
 			if (!refresh) {
 				Log.d(tag, "logoutUser flag is set");
+				
+				EllucianApplication application = (EllucianApplication) activity.getApplicationContext();
 				// Logging out any user
-				if(activity.getApplication() instanceof EllucianApplication) {
-					((EllucianApplication) activity.getApplication()).removeAppUser();
-				}
+				application.removeAppUser();
+				
+				// Make sure to reset the menu adapter so the navigation drawer will 
+				// display correctly for a non-authenticated user
+                application.resetModuleMenuAdapter();
+
 				Log.d(tag, "Starting MainActivity");
 				Intent mainIntent = new Intent(activity, MainActivity.class);
 				mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -36,6 +36,7 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 		try {
 			batch.add(ContentProviderOperation.newDelete(Modules.CONTENT_URI).build());
 			batch.add(ContentProviderOperation.newDelete(ModulesProperties.CONTENT_URI).build());
+			batch.add(ContentProviderOperation.newDelete(ModulesRoles.CONTENT_URI).build());
 			
 			Iterator<?> iter = mApps.keys();
 			while (iter.hasNext()) {
@@ -169,6 +170,17 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 						}
 					}
 				}
+				
+				if (type.equals(ModuleType.REGISTRATION)) {;
+				if (moduleObject.has("planningTool") && moduleObject.getString("planningTool").equals("true")) {
+					batch.add(ContentProviderOperation
+							.newInsert(ModulesProperties.CONTENT_URI)
+							.withValue(Modules.MODULES_ID, moduleId)
+							.withValue(ModulesProperties.MODULE_PROPERTIES_NAME, ModuleMenuAdapter.PLANNING_TOOL)
+							.withValue(ModulesProperties.MODULE_PROPERTIES_VALUE, "true")
+							.build());
+				}	
+			}
 								
 			}
 			

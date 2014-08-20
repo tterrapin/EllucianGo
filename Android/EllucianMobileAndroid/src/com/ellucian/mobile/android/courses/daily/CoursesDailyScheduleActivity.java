@@ -280,14 +280,22 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 							Log.d(TAG, "reduced end datetime to today");
 						}
 						
-						String title = meeting.courseName + "-" + meeting.courseSectionNumber + " " + meeting.sectionTitle;
-						title += "\n" + timeFormatter.format(start) + " - " + timeFormatter.format(end);
+						String title = getString(R.string.default_course_section_title_format,
+											meeting.courseName,
+											meeting.courseSectionNumber,
+											meeting.sectionTitle);
+						title += "\n" + getString(R.string.time_to_time_format, 
+											timeFormatter.format(start),
+											timeFormatter.format(end));
 						
 						if (!TextUtils.isEmpty(meeting.building)) {
-							title += "\n";
-							title += meeting.building;
+							
 							if (!TextUtils.isEmpty(meeting.room)) {
-								title += ", " + meeting.room;
+								title += "\n" + getString(R.string.default_building_and_room_format,
+													meeting.building, 
+													meeting.room);
+							} else {
+								title += "\n" + meeting.building;
 							}
 						}
 						

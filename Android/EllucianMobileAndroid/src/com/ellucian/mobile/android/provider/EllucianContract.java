@@ -174,6 +174,7 @@ public class EllucianContract {
 		String PATTERN_END_TIME = "coursepatterns_end_time";
 		String PATTERN_LOCATION = "coursepatterns_location";
 		String PATTERN_ROOM = "coursepatterns_room";
+		String PATTERN_INSTRUCTIONAL_METHOD = "coursepatterns_instructional_method";
 	}
 	
 	interface CourseMeetingsColumns {

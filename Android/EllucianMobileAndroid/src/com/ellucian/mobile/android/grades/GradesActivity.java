@@ -364,16 +364,26 @@ public class GradesActivity extends EllucianActivity {
 					do {
 						String title = cursor.getString(cursor
 								.getColumnIndex(GradesCourses.COURSE_TITLE));
-						String desc = cursor.getString(cursor
+						String courseName = cursor.getString(cursor
 								.getColumnIndex(GradesCourses.COURSE_DESCRIPTION));
 						String courseId = cursor.getString(cursor
 								.getColumnIndex(GradesCourses.COURSE_ID));
 						String sectionNumber = cursor.getString(cursor
 								.getColumnIndex(GradesCourses.COURSE_SECTION));
-						if(desc != null && courseId != null) { //sql statement may return a term with no courses
-							String label = desc;
-							if(sectionNumber != null) label += "-" + sectionNumber;
-							if(title != null) label += "-" + title;
+						if(courseName != null && courseId != null) { //sql statement may return a term with no courses
+							String label = "";
+							
+							if(title != null) {
+								label = getString(R.string.default_course_section_title_format,
+												courseName,
+												sectionNumber,
+												title);
+							} else {
+								label = getString(R.string.default_course_section_format,
+												courseName,
+												sectionNumber);
+							}
+							
 							courses.add(new CourseModel(courseId, label, null));
 						}
 					} while (cursor.moveToNext());

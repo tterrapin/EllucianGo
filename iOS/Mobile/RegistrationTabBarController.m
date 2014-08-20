@@ -20,6 +20,7 @@
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "RegistrationPlannedSectionInstructor.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
+#import "Module+Attributes.h"
 
 @interface RegistrationTabBarController ()
 
@@ -188,9 +189,12 @@
 - (void)fetchRegistrationPlans:(id)sender
 {
     NSError *error;
-
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/plans", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString* planningTool = [self.module propertyForKey:@"planningTool"];
+    if(planningTool) {
+        urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRegistrationPlans:) name:kLoginExecutorSuccess object:nil];
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
@@ -571,6 +575,10 @@
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/update-cart", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString* planningTool = [self.module propertyForKey:@"planningTool"];
+    if(planningTool) {
+        urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
+    }
     
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

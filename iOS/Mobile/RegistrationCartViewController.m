@@ -109,7 +109,7 @@
     }
     
     UILabel *line1aLabel = (UILabel *)[cell viewWithTag:1];
-    line1aLabel.text = [NSString stringWithFormat:@"%@-%@", plannedSection.courseName, plannedSection.courseSectionNumber];
+    line1aLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), plannedSection.courseName, plannedSection.courseSectionNumber];
     UILabel *line1bLabel = (UILabel *)[cell viewWithTag:6];
     if(plannedSection.instructionalMethod) {
         line1bLabel.text = [NSString stringWithFormat:@"(%@)", plannedSection.instructionalMethod];
@@ -127,26 +127,26 @@
     NSString *ceus = [self.creditsFormatter stringFromNumber:plannedSection.ceus];
     NSString *gradingType = @"";
     if (plannedSection.isAudit) {
-        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"Audit", @"Audit label for registration")];        
+        gradingType = [NSString stringWithFormat: @"%@", NSLocalizedString(@"| Audit", @"Audit label for registration")];
     }
     else if (plannedSection.isPassFail) {
-        gradingType = [NSString stringWithFormat: @"| %@", NSLocalizedString(@"P/F", @"PassFail abbrev label for registration cart")];
+        gradingType = [NSString stringWithFormat: @"%@", NSLocalizedString(@"| P/F", @"PassFail abbrev label for registration cart")];
     }
 
     
     if(faculty) {
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
         if (credits)
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ Credits %@", @"| credits and Credits label and grading type for registration"), credits, gradingType ];
         else if (ceus) {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ CEUs %@", @"| ceus and CEUs label and grading type for registration"), ceus, gradingType ];
         }
     } else {
         if (credits) {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", credits, NSLocalizedString(@"Credits", @"Credits label for registration"), gradingType ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Credits %@", @"credits and Credits label and grading type for registration"), credits, gradingType];
         }
         else if (ceus) {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration"), gradingType ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ CEUs %@", @"ceus and CEUs label and grading type for registration"), ceus, gradingType];
         }
         line3bLabel.text = nil;
     }
@@ -158,7 +158,7 @@
     }
     
     UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:100];
-    if(plannedSection.selectedForRegistration) {
+    if(plannedSection.selectedInCart) {
         checkmarkImageView.image = [UIImage imageNamed:@"Registration Checkmark"];
     } else {
         checkmarkImageView.image = [UIImage imageNamed:@"Registration Circle"];
@@ -201,7 +201,7 @@
     }
     NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
     RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
-    plannedSection.selectedForRegistration = !plannedSection.selectedForRegistration;
+    plannedSection.selectedInCart = !plannedSection.selectedInCart;
     [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self updateStatusBar];
 }
@@ -267,10 +267,6 @@
                 [masterController setValue:detailController forKey:@"detailSelectionDelegate"];
             }
         }
-        if([detailController isKindOfClass:[RegistrationPlannedSectionDetailViewController class]]) {
-            RegistrationPlannedSectionDetailViewController *registrationPlannedSectionDetailViewController = (RegistrationPlannedSectionDetailViewController *) detailController;
-            registrationPlannedSectionDetailViewController.allowDeleteFromCart = YES;
-        }
         if (_detailSelectionDelegate) {
             [_detailSelectionDelegate selectedDetail:plannedSection withIndex:indexPath withModule:self.module withController:self];
         }
@@ -328,7 +324,6 @@
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
-        detailController.allowDeleteFromCart = YES;
     } else if ([[segue identifier] isEqualToString:@"Register"]) {
         NSDictionary *messages = (NSDictionary *)sender;
         id detailController = [segue destinationViewController];
@@ -389,7 +384,7 @@
     for(RegistrationTerm *term in self.self.registrationTabController.terms) {
         NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
         for(RegistrationPlannedSection *course in plannedSections) {
-            if(course.selectedForRegistration) {
+            if(course.selectedInCart) {
                 count++;
             }
         }
@@ -424,7 +419,7 @@
             NSArray *plannedSections = [self.registrationTabController sectionsInCart:term.termId];
             for(RegistrationPlannedSection *course in plannedSections) {
 
-                if ( course.selectedForRegistration ) {
+                if ( course.selectedInCart ) {
                     
                     NSMutableDictionary *sectionToRegister = [[NSMutableDictionary alloc] init];
                     
@@ -461,6 +456,10 @@
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
         
         NSString *urlString = [NSString stringWithFormat:@"%@/%@/register-sections", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSString* planningTool = [self.module propertyForKey:@"planningTool"];
+        if(planningTool) {
+            urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
+        }
         
         NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
         //[urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -475,8 +474,11 @@
         [urlRequest setHTTPBody:jsonData];
         NSError *error;
         NSURLResponse *response;
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
         
+        NSDate *startDate = [NSDate date];
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+        NSTimeInterval elapsedTimeInterval = [[NSDate date] timeIntervalSinceDate:startDate];
+        [self sendUserTimingWithCategory:@"Registration" withTimeInterval:elapsedTimeInterval withName:@"Registration" withLabel:nil forModuleNamed:self.module.name];
         if(responseData) {
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
             [self.registrationTabController fetchRegistrationPlans:self];
@@ -551,7 +553,7 @@
         if(buttonIndex == 0) {
             NSArray *sectionsInCartForTerm = [self.registrationTabController sectionsInCart:self.termNeedingPIN];
             for(RegistrationPlannedSection *section in sectionsInCartForTerm) {
-                section.selectedForRegistration = NO;
+                section.selectedInCart = NO;
             }
             [self refreshTable:self];
         }

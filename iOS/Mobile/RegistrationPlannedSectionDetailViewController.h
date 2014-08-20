@@ -66,8 +66,9 @@
 
 @property (nonatomic, strong) UIPopoverController *masterPopover;
 @property (strong, nonatomic) Module *module;
-
-@property (nonatomic, assign) BOOL allowDeleteFromCart;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButtonItem;
+@property (weak, nonatomic) IBOutlet UIToolbar *deleteFromCartToolbar;
+- (IBAction)deleteFromCart:(id)sender;
 
 -(void) clearView;
 

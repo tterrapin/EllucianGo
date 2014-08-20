@@ -44,6 +44,7 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.CheckableCursorAdapter;
 import com.ellucian.mobile.android.adapter.CheckableCursorAdapter.OnCheckBoxClickedListener;
 import com.ellucian.mobile.android.adapter.CheckableSectionedListAdapter;
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.adapter.SectionedListAdapter;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
@@ -101,7 +102,7 @@ public class RegistrationActivity extends EllucianActivity {
 	private CheckEligibilityTask eligibilityTask;
 	private RegisterReceiver registerReceivcer;
 	private CartUpdateReceiver cartUpdateReceiver;
-	
+	private long startTime;
 	
 	protected SearchSectionTask searchTask;
 	protected SearchResponse currentResults;
@@ -413,7 +414,9 @@ public class RegistrationActivity extends EllucianActivity {
 	// Get the updated text for the Cart Tab showing the number of items currently in the cart
 	private String getCurrentCartText() {
 		if (cartAdapter != null && cartAdapter.getCountWithoutHeaders() > 0) {
-			return getString(R.string.registration_tab_cart) + " (" + cartAdapter.getCountWithoutHeaders() +")";
+			return getString(R.string.label_with_count_format,
+					getString(R.string.registration_tab_cart),
+					cartAdapter.getCountWithoutHeaders());
 		} else {
 			return getString(R.string.registration_tab_cart);
 		}
@@ -679,7 +682,10 @@ public class RegistrationActivity extends EllucianActivity {
 			
 			Intent registerIntent = new Intent(this, RegisterService.class);
 			registerIntent.putExtra(Extra.REQUEST_URL, requestUrl);
+			registerIntent.putExtra(ModuleMenuAdapter.PLANNING_TOOL, 
+					getIntent().getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false));
 			registerIntent.putExtra(RegisterService.PLAN_TO_REGISTER, planInJson);
+			startTime = System.currentTimeMillis();
 			startService(registerIntent);
 			setProgressBarIndeterminateVisibility(true);
 		} else {
@@ -810,11 +816,11 @@ public class RegistrationActivity extends EllucianActivity {
 
 			Section section = findSectionInResults(termId, sectionId);
 			if (addSectionToCart(section)) {
-				successMessage += section.courseName + "-" + section.courseSectionNumber + " " + getString(R.string.registration_added_to_cart_success) + "\n\n";
+				successMessage += getString(R.string.registration_added_to_cart_success_format, section.courseName, section.courseSectionNumber) + "\n\n";
 				// create list of sections for updating server cart info
 				updateServerList.add(section);
 			} else {
-				successMessage += section.courseName + "-" + section.courseSectionNumber +  " " + getString(R.string.registration_added_to_cart_failed) + "\n\n";
+				successMessage += getString(R.string.registration_added_to_cart_failed_format, section.courseName, section.courseSectionNumber) + "\n\n";
 			}
 		}
 		if (currentCart != null && adapter.getCheckedPositions().size() > 0) {
@@ -993,7 +999,7 @@ public class RegistrationActivity extends EllucianActivity {
 					currentCartSection.credits = section.credits;
 				}
 				
-				if (!TextUtils.isEmpty(section.gradingType)) {
+				if (TextUtils.isEmpty(section.gradingType)) {
 					Log.d(TAG, "gradingType emtpy using default");
 					currentCartSection.gradingType = Section.GRADING_TYPE_GRADED;
 				} else {
@@ -1010,6 +1016,8 @@ public class RegistrationActivity extends EllucianActivity {
 		
 		Intent updateServerCartIntent = new Intent(this, RegistrationCartUpdateService.class);
 		updateServerCartIntent.putExtra(Extra.REQUEST_URL, requestUrl);
+		updateServerCartIntent.putExtra(ModuleMenuAdapter.PLANNING_TOOL, 
+				getIntent().getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false));
 		updateServerCartIntent.putExtra(RegistrationCartUpdateService.SECTIONS_TO_UPDATE, updateCartJson);
 		startService(updateServerCartIntent);
 		
@@ -1191,10 +1199,11 @@ public class RegistrationActivity extends EllucianActivity {
 		@Override
 		protected CartResponse doInBackground(String... params) {		
 			String requestUrl = params[0];
+			boolean planningTool = getIntent().getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false);
 			
 			MobileClient client = new MobileClient(RegistrationActivity.this);
 			requestUrl = client.addUserToUrl(requestUrl);
-			requestUrl += "/plans";
+			requestUrl += "/plans?planningTool=" + planningTool;
 
 			CartResponse response = client.getCartList(requestUrl);		
 			return response;
@@ -1247,6 +1256,8 @@ public class RegistrationActivity extends EllucianActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+
+			RegistrationActivity.this.sendUserTiming("Registration", System.currentTimeMillis()-startTime, "Registration", "Registration", moduleName);
 			
 			String result = intent.getStringExtra(RegisterService.REGISTRATION_RESULT);
 			
@@ -1505,7 +1516,9 @@ public class RegistrationActivity extends EllucianActivity {
 		if (!TextUtils.isEmpty(section.courseName)) {
 			String titleString = section.courseName;
 			if (!TextUtils.isEmpty(section.courseSectionNumber)) {
-				titleString += "-" + section.courseSectionNumber;
+				titleString = getString(R.string.default_course_section_format,
+									section.courseName,
+									section.courseSectionNumber);
 			}
 			TextView courseNameView = (TextView) view.findViewById(R.id.course_name);
 			courseNameView.setText(titleString);
@@ -1525,9 +1538,13 @@ public class RegistrationActivity extends EllucianActivity {
 				}
 			
 				if (!TextUtils.isEmpty(instructor.lastName)) {
-					String shortName = instructor.lastName;
+					String shortName = "";
 					if (!TextUtils.isEmpty(instructor.firstName)) {
-						shortName += ", " + instructor.firstName.charAt(0);
+						shortName += getString(R.string.default_last_name_first_initial_format,
+											instructor.lastName,
+											instructor.firstName.charAt(0));
+					} else {
+						shortName = instructor.lastName;
 					}
 					instructorNames += shortName;
 				} else if (!TextUtils.isEmpty(instructor.formattedName)) {
@@ -1545,41 +1562,80 @@ public class RegistrationActivity extends EllucianActivity {
 		String creditsString = "";
 
 		if (section.selectedCredits != -1) {
-			creditsString = "" + section.selectedCredits + " " + getString(R.string.registration_credits);
+
 			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
-				creditsString += " | " + getString(R.string.registration_audit);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									section.selectedCredits,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_audit));
 			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
-				creditsString += " | " + getString(R.string.registration_pass_fail_abbrev);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									section.selectedCredits,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_pass_fail_abbrev));
+			} else {
+				creditsString = getString(R.string.registration_row_credits_format, 
+									section.selectedCredits,
+									getString(R.string.registration_credits));
 			}
 			
 		} else if (section.credits != 0) {
-			creditsString = "" + section.credits + " " + getString(R.string.registration_credits);
+			
 			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
-				creditsString += " | " + getString(R.string.registration_audit);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									section.credits,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_audit));
 			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
-				creditsString += " | " + getString(R.string.registration_pass_fail_abbrev);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									section.credits,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_pass_fail_abbrev));
+			} else {
+				creditsString = getString(R.string.registration_row_credits_format, 
+									section.credits,
+									getString(R.string.registration_credits));
 			}
 		
 		} else if ((!TextUtils.isEmpty(section.variableCreditOperator) && section.variableCreditOperator.equals(Section.VARIABLE_OPERATOR_OR)) 
 				|| section.minimumCredits != 0){
-			creditsString = "" + section.minimumCredits;
+
 			if (section.maximumCredits != 0) {
-				creditsString += "-" + section.maximumCredits;
+				creditsString = getString(R.string.registration_row_credits_min_max_format,
+									section.minimumCredits,
+									section.maximumCredits,
+									getString(R.string.registration_credits));
+			} else {
+				creditsString = getString(R.string.registration_row_credits_format, 
+						section.minimumCredits,
+						getString(R.string.registration_credits));
 			}
-			creditsString += " " + getString(R.string.registration_credits);
 			
 		} else if (section.ceus != 0){
-			creditsString = "" + section.ceus + " " + getString(R.string.registration_ceus);
+			creditsString = getString(R.string.registration_row_credits_format, 
+					section.ceus,
+					getString(R.string.registration_ceus));
 		} else {
 			// Only want to display zero in last possible case to avoid not showing the correct alternative
-			creditsString = "0 " + getString(R.string.registration_credits);
 			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
-				creditsString += " | " + getString(R.string.registration_audit);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									0f,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_audit));
 			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_PASS_FAIL)) {
-				creditsString += " | " + getString(R.string.registration_pass_fail_abbrev);
+				creditsString = getString(R.string.registration_row_credits_with_type_format, 
+									0f,
+									getString(R.string.registration_credits), 
+									getString(R.string.registration_pass_fail_abbrev));
+			} else {
+				creditsString = getString(R.string.registration_row_credits_format, 
+									0f,
+									getString(R.string.registration_credits));
 			}
 		}
 		creditsView.setText(creditsString);
+		
+		
 
 		TextView meetingsTypeView = (TextView) view.findViewById(R.id.meetings_and_type);
 		if (section.meetingPatterns != null && section.meetingPatterns.length != 0) {
@@ -1603,10 +1659,8 @@ public class RegistrationActivity extends EllucianActivity {
 						// Adding 1 to number to make the Calendar constants 
 						daysString += CalendarUtils.getDayShortName(dayNumber);
 					}
-					daysString += ": ";
-				}
-				
-				meetingsString += daysString;
+
+				}				
 				
 				Date startTimeDate = null;
 				Date endTimeDate = null;
@@ -1645,16 +1699,24 @@ public class RegistrationActivity extends EllucianActivity {
 				}
 	
 				if (!TextUtils.isEmpty(displayStartTime)) {
-					meetingsString += displayStartTime;
-					if (!TextUtils.isEmpty(displayEndTime)) {
-						meetingsString += " - " + displayEndTime;
+					
+					if (!TextUtils.isEmpty(pattern.instructionalMethodCode)) {
+						meetingsString += getString(R.string.default_meeting_days_times_and_type_format,
+												daysString,
+												displayStartTime,
+												displayEndTime,
+												pattern.instructionalMethodCode);
+					} else {
+						meetingsString += getString(R.string.default_meeting_days_and_times_format,
+												daysString,
+												displayStartTime,
+												displayEndTime);
 					}
+										
+				} else {
+					meetingsString += daysString;
 				}
 
-				if (!TextUtils.isEmpty(pattern.instructionalMethodCode)) {
-					meetingsString += " | " + pattern.instructionalMethodCode;
-				}
-		
 			}
 			
 			if (!TextUtils.isEmpty(meetingsString)) {

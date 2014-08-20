@@ -353,7 +353,9 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
 					nameList = new String[entries.length];
 					for (int i = 0; i < entries.length; i++) {
 						Entry entry = entries[i];
-						String displayName = entry.firstName + " " + entry.lastName;
+						String displayName = getString(R.string.default_first_last_name_format,
+													entry.firstName, 
+													entry.lastName);
 						nameList[i] = displayName;
 					}
 				} else {

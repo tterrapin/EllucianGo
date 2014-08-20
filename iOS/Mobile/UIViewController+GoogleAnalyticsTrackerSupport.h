@@ -54,4 +54,20 @@
 - (void)sendEventToTracker1WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
 - (void)sendEventToTracker2WithCategory:(NSString *)category withAction:(NSString *)action withLabel:(NSString *)label withValue:(NSNumber *)value forModuleNamed:(NSString *) moduleName;
 
+
+- (void)sendUserTimingWithCategory:(NSString *)category
+                  withTimeInterval:(NSTimeInterval)time
+                          withName:(NSString *)name
+                         withLabel:(NSString *)label
+                    forModuleNamed:(NSString *)moduleName;
+- (void)sendUserTimingToTracker1WithCategory:(NSString *)category
+                            withTimeInterval:(NSTimeInterval)time
+                                    withName:(NSString *)name
+                                   withLabel:(NSString *)label
+                              forModuleNamed:(NSString *)moduleName;
+- (void)sendUserTimingToTracker2WithCategory:(NSString *)category
+                            withTimeInterval:(NSTimeInterval)time
+                                    withName:(NSString *)name
+                                   withLabel:(NSString *)label
+                              forModuleNamed:(NSString *)moduleName;
 @end

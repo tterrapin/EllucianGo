@@ -84,7 +84,7 @@
     }
     
     UILabel *line1aLabel = (UILabel *)[cell viewWithTag:1];
-    line1aLabel.text = [NSString stringWithFormat:@"%@-%@", plannedSection.courseName, plannedSection.courseSectionNumber];
+    line1aLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), plannedSection.courseName, plannedSection.courseSectionNumber];
     UILabel *line1bLabel = (UILabel *)[cell viewWithTag:6];
     if(plannedSection.instructionalMethod) {
         line1bLabel.text = [NSString stringWithFormat:@"(%@)", plannedSection.instructionalMethod];
@@ -111,26 +111,26 @@
         line3Label.text = [NSString stringWithFormat:@"%@", faculty];
         if(plannedSection.maximumCredits) {
             if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
-                line3bLabel.text = [NSString stringWithFormat:@" | %@/%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+                line3bLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration divider min or max Credits", @"Localizable", [NSBundle mainBundle], @" | %@/%@ Credits", @"registration divider min or max Credits"), minCredits, maxCredits];
             } else {
-                line3bLabel.text = [NSString stringWithFormat:@" | %@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+                line3bLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration divider min to max Credits", @"Localizable", [NSBundle mainBundle], @" | %@-%@ Credits", @"registration divider min to max Credits"), minCredits, maxCredits];
             }
         } else if (plannedSection.minimumCredits){
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ Credits", @"divider Credits label for registration") , minCredits];
         } else if (plannedSection.ceus ) {
-            line3bLabel.text = [NSString stringWithFormat:@" | %@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration") ];
+            line3bLabel.text = [NSString stringWithFormat:NSLocalizedString(@" | %@ CEUs", @"divider CEUs label for registration"), ceus ];
         }
     } else {
         if(plannedSection.maximumCredits) {
             if([plannedSection.variableCreditOperator isEqualToString:@"OR"]) {
-                line3Label.text = [NSString stringWithFormat:@"%@/%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+                line3Label.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration min or max Credits", @"Localizable", [NSBundle mainBundle], @"%@/%@ Credits", @"registration min or max Credits"), minCredits, maxCredits];
             } else {
-                line3Label.text = [NSString stringWithFormat:@"%@-%@ %@", minCredits, maxCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+                line3Label.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration min to max Credits", @"Localizable", [NSBundle mainBundle], @"%@-%@ Credits", @"registration min to max Credits"), minCredits, maxCredits];
             }
         } else if(plannedSection.minimumCredits){
-            line3Label.text = [NSString stringWithFormat:@"%@ %@", minCredits, NSLocalizedString(@"Credits", @"Credits label for registration") ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Credits", @"Credits label for registration") , minCredits];
         } else if (plannedSection.ceus) {
-            line3Label.text = [NSString stringWithFormat:@"%@ %@", ceus, NSLocalizedString(@"CEUs", @"CEUs label for registration") ];
+            line3Label.text = [NSString stringWithFormat:NSLocalizedString(@"%@ CEUs", @"CEUs label for registration"), ceus ];
         }
         line3bLabel.text = nil;
     }
@@ -142,7 +142,7 @@
     }
     
     UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:100];
-    if(plannedSection.selectedForRegistration) {
+    if(plannedSection.selectedInSearchResults) {
         checkmarkImageView.image = [UIImage imageNamed:@"Registration Checkmark"];
     } else {
         checkmarkImageView.image = [UIImage imageNamed:@"Registration Circle"];
@@ -177,7 +177,7 @@
 {
     if ( _allowAddToCart ) {
         RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-        if(!plannedSection.selectedForRegistration && [self shouldCheckForVariableCredits:plannedSection]) {
+        if(!plannedSection.selectedInSearchResults && [self shouldCheckForVariableCredits:plannedSection]) {
             NSString *title = [self titleForVariableCredits:plannedSection];
 
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Credits", @"Credits label for registration") message:title delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
@@ -221,7 +221,7 @@
 -(void)tableView:(UITableView *)tableView addSectionToCart:(NSIndexPath *)indexPath
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
-    plannedSection.selectedForRegistration = !plannedSection.selectedForRegistration;
+    plannedSection.selectedInSearchResults = !plannedSection.selectedInSearchResults;
     [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self updateStatusBar];
     
@@ -332,9 +332,9 @@
         if([coursesForTerm count] > 0) {
             NSMutableArray *sectionRegistrations = [NSMutableArray new];
             for(RegistrationPlannedSection *course in self.courses) {
-                if(course.selectedForRegistration) {
+                if(course.selectedInSearchResults) {
                     if([tabController courseIsInCart:course] || [tabController courseIsRegistered:course]) {
-                        NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"%@-%@ failed to add to cart. Missing data or section already exists in cart.", @"item already in cart error"), course.courseName, course.courseSectionNumber];
+                        NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"%@-%@ failed to add to cart. Section is already registered or exists in the cart.", @"item already in cart error"), course.courseName, course.courseSectionNumber];
                         [tabController reportError:errorMessage];
                     } else {
                         NSString * gradingType = @"Graded";
@@ -360,7 +360,7 @@
   
                         coursesAdded = YES;
                     }
-                    course.selectedForRegistration = NO;
+                    course.selectedInSearchResults = NO;
                 }
             }
             
@@ -383,6 +383,10 @@
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/update-cart", [self.registrationTabController.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString* planningTool = [self.module propertyForKey:@"planningTool"];
+    if(planningTool) {
+        urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
+    }
     
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -436,7 +440,7 @@
 {
     int count = 0;
     for(RegistrationPlannedSection *course in self.courses) {
-        if(course.selectedForRegistration) {
+        if(course.selectedInSearchResults) {
             count++;
         }
         

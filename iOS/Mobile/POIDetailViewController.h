@@ -33,7 +33,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *campusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet PseudoButtonView *addressView;
+@property (weak, nonatomic) IBOutlet PseudoButtonView *directionsView;
 @property (weak, nonatomic) IBOutlet AsynchronousImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *directionsLabel;
 
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;

@@ -126,8 +126,7 @@
     
     //date
     if(courseDetail.firstMeetingDate && courseDetail.lastMeetingDate) {
-        NSString *dates = [NSString stringWithFormat:@"%@ - %@", [self.displayDateFormatter stringFromDate:courseDetail.firstMeetingDate], [self.displayDateFormatter stringFromDate:courseDetail.lastMeetingDate]];
-        self.dateLabel.text = dates;
+        NSString *dates = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course first meeting - last meeting", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course first meeting - last meeting"), [self.displayDateFormatter stringFromDate:courseDetail.firstMeetingDate], [self.displayDateFormatter stringFromDate:courseDetail.lastMeetingDate]];        self.dateLabel.text = dates;
     }
     
     //meeting patterns
@@ -150,12 +149,12 @@
             }
             
             //mp:time
-             NSString *days = [NSString stringWithFormat:@"%@: ",  [daysOfClass componentsJoinedByString:@", "]];
+            NSString *days = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days:", @"Localizable", [NSBundle mainBundle], @"%@: ", @"days:"), [daysOfClass componentsJoinedByString:@", "]];
             NSString *line1;
             if(mp.instructionalMethodCode) {
-                line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+                line1 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days start - end method", @"Localizable", [NSBundle mainBundle], @"%@ %@ - %@ %@", @"days start - end method"), days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
             } else {
-                line1 = [NSString stringWithFormat:@"%@ %@ - %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
+                line1 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days start - end", @"Localizable", [NSBundle mainBundle], @"%@ %@ - %@", @"days start - end"), days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
             }
            
 

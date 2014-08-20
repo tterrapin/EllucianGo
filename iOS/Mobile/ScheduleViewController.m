@@ -167,8 +167,8 @@
             }
         }
     }
-    CourseSection *course = [term.sections objectAtIndex:[indexPath row]]; //TODO
-    cell.courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", course.courseName, course.courseSectionNumber];
+    CourseSection *course = [term.sections objectAtIndex:[indexPath row]];
+    cell.courseNameLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), course.courseName, course.courseSectionNumber];
     cell.sectionTitleLabel.text = course.sectionTitle;
     return cell;
  
@@ -211,7 +211,7 @@
                 [vc setValue:course.term.termId forKey:@"termId"];
             }
             if([vc respondsToSelector:@selector(setCourseNameAndSectionNumber:)]) {
-                NSString *courseNameAndSectionNumber = [NSString stringWithFormat:@"%@-%@", course.courseName, course.courseSectionNumber ];
+                NSString *courseNameAndSectionNumber = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), course.courseName, course.courseSectionNumber];
                 [vc setValue:courseNameAndSectionNumber forKey:@"courseNameAndSectionNumber"];
             }
 

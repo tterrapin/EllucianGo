@@ -21,6 +21,28 @@
 	        android:id="@+id/course_details_meeting_row_times"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" />
+	    
+	    <TextView
+		        android:id="@+id/course_details_meeting_row_type_separator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:singleLine="true"
+	    		android:ellipsize="end"
+        		android:maxLines="1"
+		        android:text="@string/line_speparator"
+		        android:textStyle="bold"		   
+		        android:paddingLeft="4dp"
+	            android:paddingStart="4dp" 
+		        android:paddingRight="4dp"
+	            android:paddingEnd="4dp" />
+	    
+	    <TextView 
+	        android:id="@+id/course_details_meeting_row_type"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:singleLine="true"
+	    	android:ellipsize="end"
+        	android:maxLines="1"  />
     
     </LinearLayout>
     

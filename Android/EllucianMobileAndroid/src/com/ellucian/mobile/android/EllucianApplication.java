@@ -423,6 +423,66 @@ public class EllucianApplication extends Application {
 	}
 	
 	/**
+	 * Send timing to google analytics
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTiming(String category, long value, String name, String label, String moduleName) {
+		sendUserTimingToTracker1(category, value, name, label, moduleName);
+		sendUserTimingToTracker2(category, value, name, label, moduleName);
+	}
+
+	/**
+	 * Send timing to google analytics for just tracker 1
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTimingToTracker1(String category, long value, String name, String label, String moduleName) {
+		sendUserTimingToTracker(getTracker1(), category, value, name, label, moduleName);
+	}
+
+	/**
+	 * Send timing to google analytics for just tracker 2
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTimingToTracker2(String category, long value, String name, String label, String moduleName) {
+		sendUserTimingToTracker(getTracker2(), category, value, name, label, moduleName);
+	}
+
+	/**
+	 * Send timing to google analytics
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTimingToTracker(Tracker tracker, String category, long value, String name, String label,
+			String moduleName) {
+		if (tracker != null) {
+			String configurationName = Utils.getStringFromPreferences(this,
+					Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
+			HitBuilders.TimingBuilder timingBuilder = new HitBuilders.TimingBuilder();
+			timingBuilder.setCategory(category).setValue(value).setVariable(name).setLabel(label);
+			timingBuilder.setCustomDimension(1, configurationName);
+			if (moduleName != null)
+				timingBuilder.setCustomDimension(2, moduleName);
+			tracker.send(timingBuilder.build());
+		}
+	}
+	
+	
+	/**
 	 * Application will only manage one menu adapter at a time.
 	 * Typically ModuleMenuAdapter.buildInstance() will only be called once on app creation
 	 * and when a new configuration is requested.

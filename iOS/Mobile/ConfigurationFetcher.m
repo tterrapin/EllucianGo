@@ -110,7 +110,11 @@
         
         NSDictionary *security = [json objectForKey:@"security"];
         [defaults setObject:[security objectForKey:@"url"] forKey:@"login-url"];
-        if(security[@"cas"]) {
+        if(security[@"web"]) {
+            NSDictionary *cas = [security objectForKey:@"web"];
+            [defaults setObject:@"browser" forKey:@"login-authenticationType"];
+            [defaults setObject:[cas objectForKey:@"loginUrl"] forKey:@"login-web-url"];
+        } else if(security[@"cas"]) {
             NSDictionary *cas = [security objectForKey:@"cas"];
             [defaults setObject:[cas objectForKey:@"loginType"] forKey:@"login-authenticationType"];
             [defaults setObject:[cas objectForKey:@"loginUrl"] forKey:@"login-web-url"];

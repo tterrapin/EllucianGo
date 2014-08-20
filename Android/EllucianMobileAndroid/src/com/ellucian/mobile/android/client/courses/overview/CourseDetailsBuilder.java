@@ -107,6 +107,7 @@ public class CourseDetailsBuilder extends ContentProviderOperationBuilder<Course
 							.withValue(CoursePatterns.PATTERN_LOCATION, pattern.building)
 							.withValue(MapsBuildings.BUILDING_BUILDING_ID, pattern.buildingId)
 							.withValue(MapsCampuses.CAMPUS_ID, pattern.campusId)
+							.withValue(CoursePatterns.PATTERN_INSTRUCTIONAL_METHOD, pattern.instructionalMethodCode)
 							.build());
 					
 					batch.add(ContentProviderOperation

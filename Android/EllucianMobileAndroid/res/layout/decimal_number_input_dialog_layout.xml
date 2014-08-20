@@ -33,14 +33,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/dialog_cancel" />
+            android:text="@android:string/cancel" />
     
     	<Button 
 	        android:id="@+id/ok_button"
 	         android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:text="@string/dialog_ok" />
+	        android:text="@android:string/ok" />
         
     </LinearLayout>
         

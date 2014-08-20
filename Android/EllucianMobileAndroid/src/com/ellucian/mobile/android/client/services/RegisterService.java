@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Extra;
 
@@ -25,9 +26,10 @@ public class RegisterService extends IntentService {
 		String planInJson = intent.getStringExtra(PLAN_TO_REGISTER);
 		
 		String requestUrl = intent.getStringExtra(Extra.REQUEST_URL);
+		boolean planningTool = intent.getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false);
 		MobileClient client = new MobileClient(this);
 		requestUrl = client.addUserToUrl(requestUrl);
-		requestUrl += "/register-sections";
+		requestUrl += "/register-sections?planningTool=" + planningTool;
 		
 		String response = client.putCoursesToRegister(requestUrl, planInJson);
 		

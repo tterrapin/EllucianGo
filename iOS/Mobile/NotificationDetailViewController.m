@@ -133,7 +133,7 @@
     
     NSString *text = self.notification.notificationDescription;
     if(self.notification.hyperlink) {
-        text = [NSString stringWithFormat:@"%@ %@", self.notification.notificationDescription, self.notification.hyperlink];
+        text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"notification detail with hyperlink", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"notification detail with hyperlink"), self.notification.notificationDescription, self.notification.hyperlink];
     }
     
     NSArray *activityItems = [NSArray arrayWithObject:text];

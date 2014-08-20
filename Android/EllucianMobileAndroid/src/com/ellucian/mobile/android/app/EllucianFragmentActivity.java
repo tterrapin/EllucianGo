@@ -29,6 +29,7 @@ import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+@Deprecated
 public abstract class EllucianFragmentActivity extends FragmentActivity implements DrawerLayoutActivity {
 	public String moduleId;
 	public String moduleName;
@@ -125,7 +126,7 @@ public abstract class EllucianFragmentActivity extends FragmentActivity implemen
 		mainAuthenticationReceiver = new MainAuthenticationReceiver(this);
 		lbm.registerReceiver(mainAuthenticationReceiver, new IntentFilter(AuthenticateUserIntentService.ACTION_UPDATE_MAIN));
 		
-		unauthenticatedUserReceiver = new UnauthenticatedUserReceiver(this);
+		unauthenticatedUserReceiver = new UnauthenticatedUserReceiver(this, moduleId);
 		lbm.registerReceiver(unauthenticatedUserReceiver, new IntentFilter(MobileClient.ACTION_UNAUTHENTICATED_USER));
 	}
 
@@ -248,6 +249,42 @@ public abstract class EllucianFragmentActivity extends FragmentActivity implemen
     public void sendViewToTracker2(String appScreen, String moduleName) {
     	getEllucianApp().sendViewToTracker2(appScreen, moduleName);
     }
+    
+	/**
+	 * Send timing to google analytics
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTiming(String category, long value, String name, String label, String moduleName) {
+		getEllucianApp().sendUserTiming(category, value, name, label, moduleName);
+	}
+
+	/**
+	 * Send timing to google analytics for just tracker 1
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTimingToTracker1(String category, long value, String name, String label, String moduleName) {
+		getEllucianApp().sendUserTimingToTracker1(category, value, name, label, moduleName);
+	}
+
+	/**
+	 * Send timing to google analytics for just tracker 2
+	 * @param category
+	 * @param value
+	 * @param name
+	 * @param label
+	 * @param moduleName
+	 */
+	public void sendUserTimingToTracker2(String category, long value, String name, String label, String moduleName) {
+		getEllucianApp().sendUserTimingToTracker2(category, value, name, label, moduleName);
+	}
     
 	/**
 	 * Called to process touch screen events. At the very least your

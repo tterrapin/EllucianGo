@@ -22,6 +22,7 @@ public class XmlParser {
 	private static final String DEFAULT_CONFIGURATION_URL = "default-configuration-url";
 	private static final String ENABLE_VERSION_CHECKING = "enable-version-checking";
 	private static final String ALLOW_SWITCH_SCHOOL = "allow-switch-school";
+	private static final String GCM_SENDER_ID = "gcm-sender-id";
 
 	private static final String MODULE_CONFIGURATIONS = "module-configurations";
 	private static final String PACKAGE = "package";
@@ -78,7 +79,11 @@ public class XmlParser {
 						} else if (currentTagName.equals(ALLOW_SWITCH_SCHOOL)) {
 							Log.d(TAG, "Setting " + ALLOW_SWITCH_SCHOOL + ": " + currentText);
 							configPropertiesObject.allowSwitchSchool = Boolean.parseBoolean(currentText);
-						}						
+							
+						} else if (currentTagName.equals(GCM_SENDER_ID)) {
+							Log.d(TAG, "Setting " + GCM_SENDER_ID + ": " + currentText);
+							configPropertiesObject.gcmSenderId = currentText;
+						}					
 					}
 				}
 				

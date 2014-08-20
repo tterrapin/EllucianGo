@@ -156,6 +156,8 @@ public class CourseDetailsFragment extends EllucianFragment implements
 						.getColumnIndex(CoursePatterns.PATTERN_ROOM));
 				final String buildingId = cursor.getString(cursor
 						.getColumnIndex(MapsBuildings.BUILDING_BUILDING_ID));
+				final String instructionalMethod = cursor.getString(cursor
+						.getColumnIndex(CoursePatterns.PATTERN_INSTRUCTIONAL_METHOD));
 				@SuppressWarnings("unused")
 				final String campusId = cursor.getString(cursor
 						.getColumnIndex(MapsCampuses.CAMPUS_ID));
@@ -223,24 +225,42 @@ public class CourseDetailsFragment extends EllucianFragment implements
 						.findViewById(R.id.course_details_meeting_row_times);
 				if (!TextUtils.isEmpty(displayStartTime)) {
 					timeView.setTextColor(subheaderTextColor);
-					timeView.setText(displayStartTime + " - " + displayEndTime);
+					timeView.setText(getString(R.string.time_to_time_format, 
+										displayStartTime, 
+										displayEndTime));
 				} else {
 					timeView.setVisibility(View.GONE);
+				}
+				
+				final TextView typeSeparator = (TextView) meetingRow
+						.findViewById(R.id.course_details_meeting_row_type_separator);
+				final TextView typeView = (TextView) meetingRow
+						.findViewById(R.id.course_details_meeting_row_type);
+				if (!TextUtils.isEmpty(instructionalMethod)) {
+					typeView.setTextColor(subheaderTextColor);
+					typeView.setText(instructionalMethod);
+					typeSeparator.setTextColor(subheaderTextColor);
+				} else {
+					typeSeparator.setVisibility(View.GONE);
+					typeView.setVisibility(View.GONE);
 				}
 				final TextView locationView = (TextView) meetingRow
 						.findViewById(R.id.course_details_meeting_row_location);
 				locationView.setTextColor(subheaderTextColor);
 				String locationString = "";
 				if (!TextUtils.isEmpty(location)) {
-					locationString += location;
+									
+					if (!TextUtils.isEmpty(room)) {
+				
+						locationString = getString(R.string.default_building_and_room_format,
+												location,
+												room);
+					} else {
+						locationString = location;
+					}
 				} 
 				
-				if (!TextUtils.isEmpty(room)) {
-					if (!TextUtils.isEmpty(locationString)) {
-						locationString += ", ";
-					}
-					locationString += room;
-				}
+				
 				if (!TextUtils.isEmpty(locationString)) {
 					locationView.setText(locationString);
 					// Show underline of text
@@ -351,7 +371,9 @@ public class CourseDetailsFragment extends EllucianFragment implements
 			Log.e("CourseDetailsFragment", e.getMessage());
 		}
     	
-    	datesTextView.setText(startDate + " - " + endDate);
+    	datesTextView.setText(getString(R.string.date_to_date_format,
+    							startDate,
+    							endDate));
     	
     }
 

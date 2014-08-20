@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
 
     <!-- Main -->
     
@@ -44,7 +46,7 @@
     <string name="title_activity_configuration_loading">جاري تحميل التهيئة.</string>
     <string name="configuration_loading_failed">فشل تحميل التهيئة</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="configuration_loading_message">جاري تحميل التهيئة. يرجى الانتظار</string>
+    <string name="configuration_loading_message">جاري تحميل التهيئة. يرجى الانتظار&#8230;</string>
     <string name="configuration_loading_missing_config">"تعذر تحميل التهيئة من ذلك الرابط."</string> 
     
     <!-- General Defaults, Dialogs, and Rows -->
@@ -67,9 +69,25 @@
     <string name="label_credits">الساعات المعتمدة</string>
     <string name="label_meeting_information">معلومات المحاضرة</string>
     <string name="label_open">فتح</string>
-    
-    <string name="dialog_cancel">إلغاء</string>
-    <string name="dialog_ok">موافق</string>
+    <string name="label_date">التاريخ</string>
+    <string name="label_location">المكان</string>
+       
+    <string name="label_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
+	</string>	
+	<string name="label_string_content_format">
+	    <xliff:g id="content" example="John Smith">%2$s</xliff:g> :<xliff:g id="label" example="Name">%1$s</xliff:g>
+	</string>	
+	<string name="label_integer_content_format">
+	    <xliff:g id="content" example="201">%2$d</xliff:g> :<xliff:g id="label" example="Room">%1$s</xliff:g>
+	</string>	
+	<string name="label_float_content_format">
+	    <xliff:g id="content" example="3.00">%2$.2f</xliff:g> :<xliff:g id="label" example="Credits">%1$s</xliff:g>
+	</string>
+	<string name="label_with_count_format">
+	    (<xliff:g id="count" example="5">%2$d</xliff:g>) <xliff:g id="label" example="Cart">%1$s</xliff:g>
+	</string>
+
     <string name="dialog_sign_in">تسجيل الدخول</string>
     <string name="dialog_sign_in_title">تسجيل الدخول</string>
     <string name="dialog_stay_signed_in">الإبقاء متصلا</string>
@@ -82,7 +100,7 @@
     <string name="dialog_idle_sign_out">لقد تم تسجيل خروجك بسبب خمول النشاط لفترة طويلة.</string>
     <string name="dialog_select_categories">اختيار الفئات</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار</string>
+    <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار&#8230;</string>
 	<string name="dialog_continue">المتابعة</string>
 	<string name="dialog_go_back">العودة</string>
 	<string name="dialog_security_warning">تحذير أمان</string>
@@ -113,7 +131,49 @@
     <string name="all_day_event">الفعالية طوال اليوم</string>
     <string name="title_activity_default_detail">التفاصيل</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="loading_message">جاري التحميل</string>
+    <string name="loading_message">جاري التحميل&#8230;</string>
+
+    <string name="date_to_date_format">
+	    <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g> - <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g>
+	</string>
+	<string name="date_all_day_event_format">
+	    <xliff:g id="startDate" example="10-8-14">%s</xliff:g> الفعالية طوال اليوم
+	</string>
+	<string name="date_time_format">
+	    <xliff:g id="time" example="11:00 AM">%2$s</xliff:g> <xliff:g id="date" example="10-8-14">%1$s</xliff:g> 
+	</string>
+	<string name="date_time_to_date_time_format">
+	     <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g> <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> - <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g>
+	</string>
+	<string name="date_time_to_time_format">
+	    <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> - <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> <xliff:g id="date" example="10-8-14">%1$s</xliff:g>
+	</string>
+	<string name="time_to_time_format">
+	    <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g> - <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g>
+	</string>
+	
+	<string name="default_first_last_name_format">
+	     <xliff:g id="lastName" example="Smith">%2$s</xliff:g> <xliff:g id="firstName" example="John">%1$s</xliff:g>
+	</string>
+	<string name="default_last_name_first_initial_format">
+	    <xliff:g id="lastName" example="Smith">%1$s</xliff:g>، <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_format">
+	    <xliff:g id="sectionNumber" example="01">%2$s</xliff:g>-<xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>
+	</string>
+	<string name="default_course_section_title_format">
+	     <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g> <xliff:g id="sectionNumber" example="01">%2$s</xliff:g>-<xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>
+	</string>
+	<string name="default_building_and_room_format">
+	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>، <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_and_times_format">
+	     <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> - <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> :<xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_times_and_type_format">
+	    <xliff:g id="meetingType" example="Lab">%4$s</xliff:g> | <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> - <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> :<xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>
+	</string>
+	
 	
     <!-- About -->
     
@@ -162,7 +222,7 @@
     <string name="course_grades">الدرجات</string>
     <string name="course_roster">القائمة</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
-    <string name="course_more">المزيد</string>
+    <string name="course_more">المزيد&#8230;</string>
     <string name="course_assignments">الواجبات</string>
     <string name="course_announcements">الإعلانات</string>
     <string name="course_events">الفعاليات</string>
@@ -173,7 +233,6 @@
     <string name="course_assignments_none_assigned">لم يتم أي تخصيص</string>
     <string name="label_left_button">الزر الأيسر</string>
 	<string name="label_right_button">الزر الأيمن</string>
-    
 
     <!-- Directory -->
     
@@ -293,13 +352,13 @@
     <string name="registration_dialog_variable_credits_or_message">أدخل %1$.2f أو %2$.2f لقيمة الساعات المعتمدة </string>
     <string name="registration_dialog_variable_credits_inc_message">أدخل قيمة الساعات المعتمدة للمقرر بين %1$.2f و %2$.2f بتزايد %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">يجب إدخال رقم في النطاق المذكور.</string>
-    <string name="registration_dialog_variable_credits_increment_error">يجب استخدام تزايد.</string>
+    <string name="registration_dialog_variable_credits_increment_error_format">
+        <xliff:g id="increment" example=".25">%1$.2f</xliff:g> يجب استخدام تزايد.
+    </string>
     <string name="registration_dialog_pin_message">يرجى إدخال الرمز السري لكل من الفصول الدراسية التالية:</string>
-    <string name="registration_search_header">قم باختيار فصل دراسي وأدخل الكلمات المفتاحية للمقررات</string>
-    <string name="registration_search_field_hint">الكلمات المفتاحية للمقررات</string>
+    <string name="registration_search_header">قم باختيار فصل دراسي وأدخل معايير البحث</string>
+    <string name="registration_search_field_hint">معايير البحث</string>
     <string name="registration_add_to_cart">الإضافة إلى سلة التسجيل</string>
-    <string name="registration_added_to_cart_success">تمت الإضافة إلى سلة التسجيل.</string>
-    <string name="registration_added_to_cart_failed">فشلت الإضافة إلى سلة التسجيل. هناك بيانات مفقودة أو أن الشعبة موجودة مسبقا في سلة التسجيل.</string>
     <string name="registration_added_to_server_cart_failed">فشل حفظ شعبة واحدة على الأقل في الخادم. هذه البيانات ستبقى لهذه الجلسة الحالية فقط.</string>
     <string name="registration_fill_in_message">يجب اختيار فصل دراسي وإدخال استعلام للبحث.</string>
     <string name="registration_section_id">معرف الشعبة</string>
@@ -314,6 +373,28 @@
     <string name="registration_were_sorry">نأسف.</string>
     <string name="registration_ineligible_to_register">غير مؤهل للتسجيل</string>
     <string name="registration_remove">إزالة</string>
+    
+    <string name="registration_added_to_cart_success_format">
+	    <xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g>-<xliff:g id="courseName" example="HIST-205">%1$s</xliff:g> تمت الإضافة إلى سلة التسجيل.
+	</string>
+    <string name="registration_added_to_cart_failed_format">
+        <xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g>-<xliff:g id="courseName" example="HIST-205">%1$s</xliff:g> فشلت الإضافة إلى سلة التسجيل. هناك بيانات مفقودة أو أن الشعبة موجودة مسبقا في سلة التسجيل.
+    </string>
+    <string name="registration_row_credits_format">
+	    <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> <xliff:g id="credits" example="3.0">%1$.2f</xliff:g>
+	</string>
+	<string name="registration_row_credits_with_type_format">
+	     <xliff:g id="creditType" example="Audit">%3$s</xliff:g> | <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> <xliff:g id="credits" example="3.0">%1$.2f</xliff:g>
+	</string>
+    <string name="registration_row_credits_min_max_format">
+	    <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g> <xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> - <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>
+	</string>
+	<string name="registration_label_credits_with_ceus_format">
+	    <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g> <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> :<xliff:g id="label" example="Credits">%1$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_min_max_format">
+	    <xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>-<xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g> :<xliff:g id="label" example="Credits">%1$s</xliff:g>
+	</string>
     
         
 	<!-- Versioning -->

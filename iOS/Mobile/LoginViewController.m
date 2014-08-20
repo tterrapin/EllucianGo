@@ -134,6 +134,9 @@
                     break;
                 }
             }
+            if([self.access count] == 0) { //upgrades from 3.0 or earlier
+                match = YES;
+            }
             if(!match) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
                                                                 message:NSLocalizedString(@"You do not have permission to use this feature.", nil)

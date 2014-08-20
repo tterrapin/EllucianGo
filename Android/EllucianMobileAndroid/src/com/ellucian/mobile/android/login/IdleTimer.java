@@ -34,11 +34,15 @@ public class IdleTimer extends Thread {
             }
             if(idle > period) {
                 idle = 0;
-                if(context instanceof EllucianApplication) {
-                	EllucianApplication application = (EllucianApplication)context;
-                	application.sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_TIMEOUT, "Password Timeout", null, null);
-                	application.removeAppUser();
-                }
+                EllucianApplication application = (EllucianApplication) context.getApplicationContext();
+
+                application.sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_TIMEOUT, "Password Timeout", null, null);
+                application.removeAppUser();
+                
+                // Make sure to reset the menu adapter so the navigation drawer will 
+				// display correctly for a non-authenticated user
+                application.resetModuleMenuAdapter();
+                
                 Intent mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

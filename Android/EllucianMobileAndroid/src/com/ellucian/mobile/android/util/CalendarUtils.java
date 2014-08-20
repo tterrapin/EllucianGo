@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.ellucian.elluciango.R;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,7 +17,6 @@ import android.util.Log;
 public class CalendarUtils {
 	// indices follow the Calendar constants... example Calendar.SUNDAY
 	
-	private static final DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
 	private static SimpleDateFormat UTCFormat;// = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	static {
@@ -24,11 +25,13 @@ public class CalendarUtils {
 	}
 	
 	public static String getDayShortName(int dayId) {
+		DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
 		String[] dayNames = symbols.getShortWeekdays();
 		return dayNames[dayId];
 	}
 	
 	public static String getDayName(int dayId) {
+		DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
 		String[] dayNames = symbols.getWeekdays();
 		return dayNames[dayId];
 	}
@@ -37,10 +40,10 @@ public class CalendarUtils {
 		String output;
 		// get the short form of the date
 		DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(context);
-		output = dateFormatter.format(date);
-		// now append on the time portion
 		DateFormat timeFormatter = android.text.format.DateFormat.getTimeFormat(context);
-		output += " " + timeFormatter.format(date); 
+		output = context.getString(R.string.date_time_format, 
+							dateFormatter.format(date), 
+							timeFormatter.format(date));
 		return output;
 	}
 	

@@ -55,7 +55,9 @@ public class RegistrationResultsFragment extends EllucianFragment {
 				
 				String courseName = section.courseName;
 				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
-					courseName += "-" + section.courseSectionNumber;
+					courseName = getString(R.string.default_course_section_format,
+										section.courseName,
+										section.courseSectionNumber);
 				}
 				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);
@@ -90,7 +92,9 @@ public class RegistrationResultsFragment extends EllucianFragment {
 				
 				String courseName = section.courseName;
 				if (!TextUtils.isEmpty(section.courseSectionNumber)) {
-					courseName += "-" + section.courseSectionNumber;
+					courseName = getString(R.string.default_course_section_format,
+										section.courseName,
+										section.courseSectionNumber);
 				}
 				((TextView)sectionRow.findViewById(R.id.course_name)).setText(courseName);
 				((TextView)sectionRow.findViewById(R.id.course_title)).setText(section.courseTitle);

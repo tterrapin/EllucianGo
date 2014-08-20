@@ -199,7 +199,7 @@ public class MobileClient {
 		try {
 			url = new URL(requestUrl);
 			urlConnection = (HttpURLConnection) url.openConnection();
-			
+			urlConnection.setInstanceFollowRedirects(false);
 		} catch (MalformedURLException e) {
 			Log.e(TAG, "MalformedURLException", e);
 		} catch (IOException e) {

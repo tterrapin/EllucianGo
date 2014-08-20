@@ -98,7 +98,9 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 		
 		if (show) {
 			if (numberShown > 0) {
-				addToCartButton.setText(getString(R.string.registration_add_to_cart)  + " (" + numberShown + ")");
+				addToCartButton.setText(getString(R.string.label_with_count_format, 
+											getString(R.string.registration_add_to_cart),
+											numberShown));
 			}
 			if (!addToCartButton.isShown()) {
 				addToCartButton.setVisibility(View.VISIBLE);

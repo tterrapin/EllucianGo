@@ -568,6 +568,19 @@ public class ConfigurationUpdateService extends IntentService {
 			}
 			Utils.addStringToPreferences(this, Utils.SECURITY,
 					Utils.LOGIN_URL, loginUrl);
+			
+		} else if (security.has("web")) {
+			JSONObject web = security.getJSONObject("web");
+
+			Utils.addStringToPreferences(this, Utils.SECURITY,
+					Utils.LOGIN_TYPE, Utils.BROWSER_LOGIN_TYPE);
+			String loginUrl = null;
+			if (web.has("loginUrl")) {
+				loginUrl = web.getString("loginUrl");
+			}
+			Utils.addStringToPreferences(this, Utils.SECURITY,
+					Utils.LOGIN_URL, loginUrl);
+			
 		} else {
 			Utils.addStringToPreferences(this, Utils.SECURITY,
 					Utils.LOGIN_TYPE, "native");

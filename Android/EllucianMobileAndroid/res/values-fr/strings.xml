@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
 
     <!-- Main -->
     
@@ -30,14 +32,14 @@
     <string name="menu_search_school_hint">Rechercher établissement</string>
     <string name="menu_header_applications">Applications</string>
     <string name="menu_header_actions">Actions</string>
-    <string name="menu_header_indicator_description">Indicateur d\'en-tête </string>
+    <string name="menu_header_indicator_description">Indicateur d\'en-tête</string>
     <string name="drawer_open">Ouvrir tiroir de navigation</string>
     <string name="drawer_close">Fermer tiroir de navigation</string>
     
     <!-- Configuration and Institutions -->
     
     <string name="title_activity_school_selection">Choisir établissement</string>
-    <string name="no_institutions">Aucune institution à afficher actuellement.</string>
+    <string name="no_institutions">Aucun établissement à afficher actuellement.</string>
     
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
     <string name="school_selection_confirmation">Vous avez sélectionné \'%1$s\'. Est-ce exact?</string>  
@@ -58,7 +60,7 @@
     <string name="label_website">Site Web</string>
     <string name="label_type">Type</string>
     <string name="label_description">Description</string>
-    <string name="label_department">Département</string>
+    <string name="label_department">Domaine</string>
     <string name="label_office">Bureau</string>
     <string name="label_room">Salle</string>
     <string name="label_campus">Campus</string>
@@ -67,9 +69,25 @@
     <string name="label_credits">Crédits</string>
     <string name="label_meeting_information">Informations de réunion</string>
     <string name="label_open">Ouvrir</string>
-    
-    <string name="dialog_cancel">Annuler</string>
-    <string name="dialog_ok">OK</string>
+    <string name="label_date">Date</string>
+    <string name="label_location">Position</string>
+       
+    <string name="label_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
+	</string>	
+	<string name="label_string_content_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>: <xliff:g id="content" example="John Smith">%2$s</xliff:g>
+	</string>	
+	<string name="label_integer_content_format">
+	    <xliff:g id="label" example="Room">%1$s</xliff:g>: <xliff:g id="content" example="201">%2$d</xliff:g>
+	</string>	
+	<string name="label_float_content_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="content" example="3.00">%2$.2f</xliff:g>
+	</string>
+	<string name="label_with_count_format">
+	    <xliff:g id="label" example="Cart">%1$s</xliff:g> (<xliff:g id="count" example="5">%2$d</xliff:g>)
+	</string>
+
     <string name="dialog_sign_in">Connexion</string>
     <string name="dialog_sign_in_title">Connexion</string>
     <string name="dialog_stay_signed_in">Rester connecté</string>
@@ -114,6 +132,45 @@
     <string name="title_activity_default_detail">Détails</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="loading_message">Chargement en cours&#8230;</string>
+
+    <string name="date_to_date_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> - <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g>
+	</string>
+	<string name="date_all_day_event_format">
+	    <xliff:g id="startDate" example="10-8-14">%s</xliff:g> Événement sur toute la journée
+	</string>
+	<string name="date_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="time" example="11:00 AM">%2$s</xliff:g>
+	</string>
+	<string name="date_time_to_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="time_to_time_format">
+	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
+	</string>
+	
+	<string name="default_first_last_name_format">
+	    <xliff:g id="firstName" example="John">%1$s</xliff:g> <xliff:g id="lastName" example="Smith">%2$s</xliff:g>
+	</string>
+	<string name="default_last_name_first_initial_format">
+	    <xliff:g id="lastName" example="Smith">%1$s</xliff:g>, <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_title_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
+	</string>
+	<string name="default_building_and_room_format">
+	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_and_times_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_times_and_type_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	
 	
     <!-- About -->
     
@@ -173,7 +230,6 @@
     <string name="course_assignments_none_assigned">non définie</string>
     <string name="label_left_button">Bouton gauche</string>
 	<string name="label_right_button">Bouton droit</string>
-    
 
     <!-- Directory -->
     
@@ -255,7 +311,7 @@
     <string name="notifications_detail_date_posted">Date de publication:</string>
     <string name="notifications_detail_link_action">Agir</string>
     <string name="notifications_device_title">Ellucian GO</string>
-    <string name="notifications_device_content">Vous avez de nouvelles notifications !</string>
+    <string name="notifications_device_content">Vous avez de nouvelles notifications!</string>
     <string name="notifications_no_notifications">Aucune notification à afficher</string>
     <string name="notifications_sticky_marker_image_text">Balise</string>
     <string name="notifications_delete">Supprimer</string>
@@ -286,20 +342,20 @@
     <string name="registration_results_warning">Désolé.</string>
     <string name="registration_results_failure_sub">Inscription à ces enseignements impossible:</string>
     <string name="registration_dialog_title">Titre</string>
-    <string name="registration_dialog_register_message">Voulez-vous vraiment vous inscrire à ces UP? </string>
-    <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier? </string>
-    <string name="registration_dialog_remove_message">Voulez-vous vraiment supprimer cet élément du panier? </string>
+    <string name="registration_dialog_register_message">Voulez-vous vraiment vous inscrire à ces UP?</string>
+    <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier?</string>
+    <string name="registration_dialog_remove_message">Voulez-vous vraiment supprimer cet élément du panier?</string>
     <string name="registration_dialog_variable_credits_to_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f</string>
     <string name="registration_dialog_variable_credits_or_message">Saisir valeur de crédits d\'enseignements de %1$.2f ou %2$.2f</string>
-    <string name="registration_dialog_variable_credits_inc_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f en incréments de %3$.2f </string>
+    <string name="registration_dialog_variable_credits_inc_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f en incréments de %3$.2f</string>
     <string name="registration_dialog_variable_credits_range_error">Saisir un nombre dans la fourchette indiquée.</string>
-    <string name="registration_dialog_variable_credits_increment_error">Utiliser un incrément.</string>
+    <string name="registration_dialog_variable_credits_increment_error_format">
+        <xliff:g id="increment" example=".25">%1$.2f</xliff:g> Utiliser un incrément.
+    </string>
     <string name="registration_dialog_pin_message">Saisir un code confidentiel pour chacun des semestres suivants:</string>
-    <string name="registration_search_header">Sélectionner semestre et saisir mots-clés enseignement.</string>
-    <string name="registration_search_field_hint">Mots-clés enseignement</string>
+    <string name="registration_search_header">Sélectionner semestre et saisir critères de recherche.</string>
+    <string name="registration_search_field_hint">Critères de recherche</string>
     <string name="registration_add_to_cart">Ajouter au panier</string>
-    <string name="registration_added_to_cart_success">ajouté(s) au panier.</string>
-    <string name="registration_added_to_cart_failed">non ajouté(s) au panier. Données manquantes ou UP existe déjà dans le panier.</string>
     <string name="registration_added_to_server_cart_failed">Au moins une UP n\'a pas été enregistrée sur le serveur. Ces données ne peuvent rester que pour la session en cours.</string>
     <string name="registration_fill_in_message">Sélectionner un semestre et saisir une recherche.</string>
     <string name="registration_section_id">ID d\'UP</string>
@@ -314,6 +370,28 @@
     <string name="registration_were_sorry">Désolé.</string>
     <string name="registration_ineligible_to_register">Non admissible</string>
     <string name="registration_remove">Supprimer</string>
+    
+    <string name="registration_added_to_cart_success_format">
+	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> ajouté(s) au panier.
+	</string>
+    <string name="registration_added_to_cart_failed_format">
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> non ajouté(s) au panier. Données manquantes ou UP existe déjà dans le panier.
+    </string>
+    <string name="registration_row_credits_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
+	</string>
+	<string name="registration_row_credits_with_type_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> | <xliff:g id="creditType" example="Audit">%3$s</xliff:g>
+	</string>
+    <string name="registration_row_credits_min_max_format">
+	    <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_with_ceus_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_min_max_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
+	</string>
     
         
 	<!-- Versioning -->

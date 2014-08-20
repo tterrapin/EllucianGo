@@ -36,14 +36,13 @@
 @property (nonatomic, strong) NSNumber *variableCreditIncrement;
 @property (nonatomic, strong) NSString *variableCreditOperator;
 
-@property (nonatomic, assign) BOOL selectedForRegistration;
+@property (nonatomic, assign) BOOL selectedInCart;
+@property (nonatomic, assign) BOOL selectedInSearchResults;
 @property (nonatomic, readonly) BOOL isVariableCredit;
-
 
 @property (nonatomic, assign) BOOL isPassFail;
 @property (nonatomic, assign) BOOL isGraded;
 @property (nonatomic, assign) BOOL isAudit;
-
 
 -(NSString *)facultyNames;
 -(NSString *)meetingPatternDescription;

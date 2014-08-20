@@ -67,7 +67,7 @@
         MapPOI *building = [results lastObject];
         if(building) {
             if(!self.address) {
-                self.address = [NSString stringWithFormat:@"%@/%@", building.name, building.address];
+                self.address = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"building name/address", @"Localizable", [NSBundle mainBundle], @"%@/%@", @"building name/address"), building.name, building.address];
             }
 
             if([building.latitude doubleValue] != 0 && [building.longitude doubleValue] != 0) {
@@ -93,9 +93,9 @@
     
     if(self.phone || self.phoneExtension) {
         if(self.phone && self.phoneExtension) {
-            self.phoneLabel.text = [NSString stringWithFormat:@"%@ %@ %@",self.phone, NSLocalizedString(@"ext.", @"phone extension"), self.phoneExtension];
+            self.phoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ ext. %@", @"phone number with phone extension"),self.phone, self.phoneExtension];
         } else if(self.phoneExtension) {
-            self.phoneLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ext.", @"phone extension"), self.phoneExtension];
+            self.phoneLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ext. %@", @"phone extension"), self.phoneExtension];
         } else {
             self.phoneLabel.text = self.phone;
         }
@@ -208,7 +208,7 @@
     [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"Call Phone Number" withValue:nil forModuleNamed:self.module.name];
     NSString *phone = [[self.phone componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"() -"]] componentsJoinedByString: @""];
     if(self.phoneExtension) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@;ext=%@",phone, self.phoneExtension]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@;%@",phone, self.phoneExtension]]];
     } else {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phone]]];
     }

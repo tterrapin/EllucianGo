@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Extra;
 
@@ -25,9 +26,11 @@ public class RegistrationCartUpdateService extends IntentService {
 		String sectionsInJson = intent.getStringExtra(SECTIONS_TO_UPDATE);
 		
 		String requestUrl = intent.getStringExtra(Extra.REQUEST_URL);
+		boolean planningTool = intent.getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false);
+		
 		MobileClient client = new MobileClient(this);
 		requestUrl = client.addUserToUrl(requestUrl);
-		requestUrl += "/update-cart";
+		requestUrl += "/update-cart?planningTool=" + planningTool;
 		
 		String response = client.putUpdateServerCart(requestUrl, sectionsInJson);
 		

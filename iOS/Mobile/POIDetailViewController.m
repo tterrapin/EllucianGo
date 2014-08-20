@@ -40,7 +40,7 @@
         MapPOI *building = [results lastObject];
         if(building) {
             if(!self.address) {
-                self.address = [NSString stringWithFormat:@"%@/%@", building.name, building.address];
+                self.address = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"building name/address", @"Localizable", [NSBundle mainBundle], @"%@/%@", @"building name/address"), building.name, building.address];
             }
             if(!self.imageUrl) {
                 self.imageUrl = building.imageUrl;
@@ -78,23 +78,31 @@
         self.imageHeightConstraint.constant = 0;
     }
     
-    if(self.address || self.location) {
-        [self.addressView setAction:@selector(tapDirections:) withTarget:self];
-        if(self.address){
-            self.addressLabel.text = self.address;
-        }
-        if(self.address || !(self.location.coordinate.latitude == 0 && self.location.coordinate.longitude == 0)) {
-            self.addressLabel.text = NSLocalizedString(@"Get Directions", @"User can get directions for this location");
-
-        }
+    if([self.address length] == 0) {
+        self.address = nil;
+    }
+    
+    if(self.address) {
+        [self.addressView setAction:@selector(tapAddress:) withTarget:self];
+        self.addressLabel.text = self.address;
     } else {
         [[self.addressView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        self.separatorAfterAddressHeightConstraint.constant = 0;
         [self.addressView addConstraints:
          [NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(0)]"
                                                  options:0 metrics:nil
                                                    views:@{@"view":self.addressView}]];
         self.addressLabel.text = nil;
+    }
+    if((self.location && !(self.location.coordinate.latitude == 0 && self.location.coordinate.longitude == 0)) || self.address) {
+        [self.directionsView setAction:@selector(tapDirections:) withTarget:self];
+        self.directionsLabel.text = NSLocalizedString(@"Get Directions", @"User can get directions for this location");
+    } else {
+        [[self.directionsView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [self.directionsView addConstraints:
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(0)]"
+                                                 options:0 metrics:nil
+                                                   views:@{@"view":self.directionsView}]];
+        self.directionsLabel.text = nil;
     }
     if(self.description && self.additionalServices) {
         NSString *text = [NSString stringWithFormat:@"%@\n%@", self.description, self.additionalServices];
@@ -122,33 +130,16 @@
     [self.scrollView invalidateIntrinsicContentSize];
 }
 
--(void)showGetDirections
+-(void) openPointOnAppleMaps:(CLLocationCoordinate2D) coordinate
 {
-    [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"Get Directions" withValue:nil forModuleNamed:self.module.name];
-        CLLocationCoordinate2D coordinate = self.location.coordinate;
-        if(coordinate.latitude == 0 && coordinate.longitude == 0) {
-            // perform geocode
-            CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-            
-            [geocoder geocodeAddressString:self.address completionHandler:^(NSArray *placemarks, NSError *error) {
-                dispatch_async(dispatch_get_main_queue(),^ {
-                    if (placemarks.count == 0) {
-                        UIAlertView *alert = [[UIAlertView alloc] init];
-                        alert.title = NSLocalizedString(@"Unknown address", @"error message when address cannot be used for getting directions");
-                        [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK")];
-                        [alert show];
-                    } else {
-                        CLPlacemark* placemark = [placemarks objectAtIndex:0];
-                        [self openPointOnAppleMaps:placemark.location.coordinate];
-                    }
-                });
-            }];
-        } else {
-            [self openPointOnAppleMaps:coordinate];
-        }
+    MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
+    MKMapItem *destinationLocItem = [[MKMapItem alloc] initWithPlacemark:place];
+    destinationLocItem.name = self.name;
+    NSArray *mapItemsArray = [NSArray arrayWithObjects:destinationLocItem, nil];
+    [MKMapItem openMapsWithItems:mapItemsArray launchOptions:nil];
 }
 
--(void) openPointOnAppleMaps:(CLLocationCoordinate2D) coordinate
+-(void) openDirectionsOnAppleMaps:(CLLocationCoordinate2D) coordinate
 {
     MKMapItem *currentLocationItem = [MKMapItem mapItemForCurrentLocation];
     MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
@@ -159,9 +150,61 @@
     [MKMapItem openMapsWithItems:mapItemsArray launchOptions:dictForDirections];
 }
 
+-(void)tapAddress:(id)sender
+{
+    CLLocationCoordinate2D coordinate = self.location.coordinate;
+    
+    if(!self.location || (coordinate.latitude == 0 && coordinate.longitude == 0)) {
+        // perform geocode
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+
+        [geocoder geocodeAddressString:self.address completionHandler:^(NSArray *placemarks, NSError *error) {
+
+            dispatch_async(dispatch_get_main_queue(),^ {
+                if (placemarks.count == 0) {
+                    UIAlertView *alert = [[UIAlertView alloc] init];
+                    alert.title = NSLocalizedString(@"Unknown address", @"error message when address cannot be used for getting directions");
+                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK")];
+                    [alert show];
+                } else {
+                    CLPlacemark* placemark = [placemarks objectAtIndex:0];
+                    [self openPointOnAppleMaps:placemark.location.coordinate];
+                }
+            });
+        }];
+    } else {
+        [self openPointOnAppleMaps:coordinate];
+    }
+    
+}
+
 -(void)tapDirections:(id)sender
 {
-    [self showGetDirections];
+    [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"Get Directions" withValue:nil forModuleNamed:self.module.name];
+    
+    CLLocationCoordinate2D coordinate = self.location.coordinate;
+    
+    if(!self.location || (coordinate.latitude == 0 && coordinate.longitude == 0)) {
+        // perform geocode
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        
+        [geocoder geocodeAddressString:self.address completionHandler:^(NSArray *placemarks, NSError *error) {
+            
+            dispatch_async(dispatch_get_main_queue(),^ {
+                if (placemarks.count == 0) {
+                    UIAlertView *alert = [[UIAlertView alloc] init];
+                    alert.title = NSLocalizedString(@"Unknown address", @"error message when address cannot be used for getting directions");
+                    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK")];
+                    [alert show];
+                } else {
+                    CLPlacemark* placemark = [placemarks objectAtIndex:0];
+                    [self openDirectionsOnAppleMaps:placemark.location.coordinate];
+                }
+            });
+        }];
+    } else {
+        [self openDirectionsOnAppleMaps:coordinate];
+    }
 }
 
 -(void) fetchBuilding

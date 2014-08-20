@@ -175,7 +175,9 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		if (show) {
 		
 			if (numberShown > 0) {
-				registerButton.setText(getString(R.string.registration_register) + " (" + numberShown + ")");
+				registerButton.setText(getString(R.string.label_with_count_format, 
+											getString(R.string.registration_register),
+											numberShown));
 			}
 			if (!registerButton.isShown()) {				
 				registerButton.setVisibility(View.VISIBLE);

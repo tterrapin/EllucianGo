@@ -48,6 +48,12 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
 	private boolean forcedLogin;
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
+	}
+	
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		String loginType = Utils.getStringFromPreferences(getActivity(), Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
 		if(loginType.equals(Utils.NATIVE_LOGIN_TYPE)) {
@@ -240,6 +246,9 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 						authorized = true;
 					}
 				}
+				if(roles.size() == 0) { //3.0 upgrade compatibility
+					authorized = true;
+				}
 			} else {
 				authorized = false;
 			}
@@ -338,6 +347,14 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	public void forcedLogin(boolean b) {
 		this.forcedLogin = b;
 		this.setCancelable(false);
+	}
+	
+	@Override
+	public void onDestroyView() {
+		// Trick to keep dialog open on rotate
+		if (getDialog() != null && getRetainInstance())
+			getDialog().setDismissMessage(null);
+		super.onDestroyView();
 	}
 	
 }

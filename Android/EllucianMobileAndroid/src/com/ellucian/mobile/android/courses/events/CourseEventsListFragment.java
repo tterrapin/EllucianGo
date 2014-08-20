@@ -2,6 +2,7 @@ package com.ellucian.mobile.android.courses.events;
 
 import java.util.Date;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,19 +38,37 @@ public class CourseEventsListFragment extends EllucianDefaultListFragment {
 			Date startDate = CalendarUtils.parseFromUTC(startDateString);
 			bundle.putLong(Extra.START, startDate.getTime());
 			
+			Activity activity = getActivity();
+			
 			if (allDay) {
-				output = CalendarUtils.getDefaultDateString(getActivity(), startDate);
-				output +=  " " + getString(R.string.all_day_event);
+				output = getString(R.string.date_all_day_event_format, 
+							CalendarUtils.getDefaultDateString(activity, startDate));
 				bundle.putLong(Extra.END, -1);
-			} else {
-				output = CalendarUtils.getDefaultDateTimeString(getActivity(), startDate);
-				if (!TextUtils.isEmpty(endDateString)) {
-					Date endDate = CalendarUtils.parseFromUTC(endDateString);
-					output += " - " + CalendarUtils.getDefaultDateTimeString(getActivity(), endDate);
-					bundle.putLong(Extra.END, endDate.getTime());
+			} else if (!TextUtils.isEmpty(endDateString)) {
+				Date endDate = CalendarUtils.parseFromUTC(endDateString);
+
+				if (CalendarUtils.getDefaultDateString(activity, startDate)
+						.equals(CalendarUtils.getDefaultDateString(activity, endDate))) {
+					
+					output = getString(R.string.date_time_to_time_format, 
+							CalendarUtils.getDefaultDateString(activity, startDate),
+							CalendarUtils.getDefaultTimeString(activity, startDate),
+							CalendarUtils.getDefaultTimeString(activity, endDate));
 				} else {
-					bundle.putLong(Extra.END, -1);
+					output = getString(R.string.date_time_to_date_time_format, 
+							CalendarUtils.getDefaultDateString(activity, startDate),
+							CalendarUtils.getDefaultTimeString(activity, startDate),
+							CalendarUtils.getDefaultDateString(activity, endDate),
+							CalendarUtils.getDefaultTimeString(activity, endDate));
 				}
+				
+				
+				bundle.putLong(Extra.END, endDate.getTime());
+			} else {
+				output = getString(R.string.date_time_format, 
+							CalendarUtils.getDefaultDateString(activity, startDate),
+							CalendarUtils.getDefaultTimeString(activity, startDate));
+				bundle.putLong(Extra.END, -1);
 			}
 		} else {
 			output = getString(R.string.unavailable);

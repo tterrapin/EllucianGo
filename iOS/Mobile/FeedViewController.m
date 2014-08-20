@@ -190,7 +190,7 @@
         for(FeedCategory* value in feed.category) {
             [categoryValues addObject:value.name];
         }
-        feedNameLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+        feedNameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Category: %@", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
         return cell;
         
     } else {
@@ -207,7 +207,7 @@
         for(FeedCategory* value in feed.category) {
             [categoryValues addObject:value.name];
         }
-        feedNameLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+        feedNameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Category: %@", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
         
         return cell;
     }

@@ -418,8 +418,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	
 	NSArray *weekdaySymbols = [formatter shortWeekdaySymbols];
 	
-	return [NSString stringWithFormat:@"%@ %@",
-			[weekdaySymbols objectAtIndex:[components weekday] - 1], [formatter stringFromDate:_day]];
+	return [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"day of week date", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"day of week date"), [weekdaySymbols objectAtIndex:[components weekday] - 1], [formatter stringFromDate:_day]];
 }
 
 + (NSArray *) hourLabels

@@ -131,22 +131,22 @@
                         NSString *sectionTitle = [meetingJson objectForKey:@"sectionTitle"];
                         NSString *courseName = [meetingJson objectForKey:@"courseName"];
                         NSString *courseSectionNumber = [meetingJson objectForKey:@"courseSectionNumber"];
-                        event.line1 = [NSString stringWithFormat:@"%@-%@ - %@", courseName, courseSectionNumber, sectionTitle];
+                        event.line1 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course calendar course name-course section - title", @"Localizable", [NSBundle mainBundle], @"%@-%@ - %@", @"course calendar course name-course section - title"), courseName, courseSectionNumber, sectionTitle];
                         NSDate *startDate = [dateFormatterISO8601 dateFromString:[meetingJson objectForKey:@"start"]];
                         NSDate *endDate = [dateFormatterISO8601 dateFromString:[meetingJson objectForKey:@"end"]];
                         NSString *startLabel = [timeFormatter stringFromDate:startDate];
                         NSString *endLabel = [timeFormatter stringFromDate:endDate];
                         if([meetingJson objectForKey:@"building"] != [NSNull null] && [meetingJson objectForKey:@"room"] != [NSNull null]) {
-                            event.line3 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
+                            event.line3 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course event start - end date", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course event start - end date"), startLabel, endLabel];
                             event.line2 = [NSString stringWithFormat:NSLocalizedString(@"%@, Room %@", @"label - building name, room number"), [meetingJson objectForKey:@"building"], [meetingJson objectForKey:@"room"]];
                         } else if([meetingJson objectForKey:@"building"] != [NSNull null]) {
-                            event.line3 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
+                            event.line3 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course event start - end date", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course event start - end date"), startLabel, endLabel];
                             event.line2 = [meetingJson objectForKey:@"building"];
                         } else  if([meetingJson objectForKey:@"room"] != [NSNull null]) {
-                            event.line3 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
+                            event.line3 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course event start - end date", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course event start - end date"), startLabel, endLabel];
                             event.line2 = [NSString stringWithFormat:NSLocalizedString(@"Room %@", @"label - room number"), [meetingJson objectForKey:@"room"]];
                         } else {
-                            event.line2 = [NSString stringWithFormat:@"%@ - %@", startLabel, endLabel];
+                            event.line2 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course event start - end date", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course event start - end date"), startLabel, endLabel];
                         }
                         
                         event.start = startDate;

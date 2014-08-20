@@ -27,7 +27,7 @@
     NSMutableArray *names = [NSMutableArray new];
     for(RegistrationPlannedSectionInstructor *instructor in self.instructors) {
         if(instructor.lastName && instructor.firstName && [instructor.firstName length]) {
-            NSString *name = [NSString stringWithFormat:@"%@, %@", instructor.lastName, [instructor.firstName substringToIndex:1]];
+            NSString *name = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"faculty last name, first initial", @"Localizable", [NSBundle mainBundle], @"%@, %@", @"faculty last name, first initial"), instructor.lastName, [instructor.firstName substringToIndex:1]];
             [names addObject:name];
         } else if (instructor.lastName) {
             [names addObject:instructor.lastName];
@@ -52,8 +52,7 @@
             [daysOfClass addObject:[localizedDays objectAtIndex:value]];
         }
 
-        NSString *line = [NSString stringWithFormat:@"%@: %@ - %@", [daysOfClass componentsJoinedByString:@", "], [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
-
+        NSString *line = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course days: start time - end", @"Localizable", [NSBundle mainBundle], @"%@: %@ - %@", @"course days: start time - end"), [daysOfClass componentsJoinedByString:@", "], [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
         [patterns addObject:line];
     }
     if([patterns count] == 0) return nil;

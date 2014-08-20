@@ -156,16 +156,16 @@
     
     if([event.allDay boolValue] == YES) {
         if(event.location) {
-            contentLabel.text = [NSString stringWithFormat:@"%@, %@", NSLocalizedString(@"All Day", @"label for all day event"), event.location];
+            contentLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), event.location];
         } else {
             contentLabel.text = [NSString stringWithFormat:@"%@", NSLocalizedString(@"All Day", @"label for all day event")];
         }
     } else if(event.location && event.endDate) {
-        contentLabel.text = [NSString stringWithFormat:@"%@ - %@, %@", [self.timeFormatter stringFromDate:event.startDate], [self.timeFormatter stringFromDate:event.endDate], event.location];
+        contentLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"event start - end, location", @"Localizable", [NSBundle mainBundle], @"%@ - %@, %@", @"event start - end, location"), [self.timeFormatter stringFromDate:event.startDate], [self.timeFormatter stringFromDate:event.endDate], event.location];
     } else if(event.location) {
-        contentLabel.text = [NSString stringWithFormat:@"%@, %@", [self.timeFormatter stringFromDate:event.startDate], event.location];
+        contentLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"event start, location", @"Localizable", [NSBundle mainBundle], @"%@, %@", @"event start, location"), [self.timeFormatter stringFromDate:event.startDate], event.location];
     } else if(event.endDate) {
-        contentLabel.text = [NSString stringWithFormat:@"%@ - %@", [self.timeFormatter stringFromDate:event.startDate], [self.timeFormatter stringFromDate:event.endDate]];
+        contentLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"event start - end", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"event start - end"), [self.timeFormatter stringFromDate:event.startDate], [self.timeFormatter stringFromDate:event.endDate]];
     } else {
         contentLabel.text = [NSString stringWithFormat:@"%@", [self.timeFormatter stringFromDate:event.startDate]];
     }
@@ -174,7 +174,7 @@
     for(EventCategory* value in event.category) {
         [categoryValues addObject:value.name];
     }
-    categoryLabel.text = [NSString stringWithFormat:@"%@: %@", NSLocalizedString(@"Category", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
+    categoryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Category: %@", "label for the categories"), [categoryValues componentsJoinedByString:@", "]];
 
         
     return cell;

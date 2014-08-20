@@ -209,7 +209,7 @@
         
         UILabel* courseNameLabel = [UILabel new];
         if(course.courseSectionNumber) {
-            courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", course.courseName, course.courseSectionNumber];
+            courseNameLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), course.courseName, course.courseSectionNumber];
         } else {
             courseNameLabel.text = course.courseName;
         }

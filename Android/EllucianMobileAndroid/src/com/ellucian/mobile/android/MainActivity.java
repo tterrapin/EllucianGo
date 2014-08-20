@@ -171,15 +171,17 @@ public class MainActivity extends EllucianActivity {
 			// This also removes saved users
 			ellucianApp.removeAppUser();
 			
-			// Make sure to reset the menu adapter so the navigation drawer will 
-			// display correctly for a non-authenticated user
-			ellucianApp.resetModuleMenuAdapter();
-			configureNavigationDrawer();
-			
 			Toast signOutMessage = Toast.makeText(this, R.string.dialog_signed_out, Toast.LENGTH_LONG);
 			signOutMessage.setGravity(Gravity.CENTER, 0, 0);
 			signOutMessage.show();
 			signInButton.setText(R.string.main_sign_in);
+			
+			
+			// Reset back stack and menu
+			ellucianApp.resetModuleMenuAdapter();
+			Intent newIntent = new Intent(this, this.getClass());
+			newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(newIntent);
 		} else {
 			// Sign In
 			showLoginDialog();

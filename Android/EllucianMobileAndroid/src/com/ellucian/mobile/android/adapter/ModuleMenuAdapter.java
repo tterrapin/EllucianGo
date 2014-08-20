@@ -57,6 +57,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 	public static final String TAG = ModuleMenuAdapter.class.getSimpleName();
 	public static final String IMAGE_RESOURCE = "imageResource";
 	public static final String EXTERNAL_WEB_BROWSER = "externalWebBrowser";
+	public static final String PLANNING_TOOL = "planningTool";
 	public static final String HEADER_COLLAPSIBLE = "headerCollapsible";
 	public static final String MODULE_ROLE_EVERYONE = "Everyone";
 	
@@ -302,10 +303,14 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 	
 	private static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
 		boolean showModule = false;
+		
+		List<String> moduleRoles = getModuleRoles(ellucianApp.getContentResolver(), moduleId);
+		if(moduleRoles.size() == 0) { //3.0 upgrade compatibility
+			return true;
+		}
 		if (ellucianApp.isUserAuthenticated()) {
 			List<String> userRoles = ellucianApp.getAppUserRoles();
-			List<String> moduleRoles = getModuleRoles(ellucianApp.getContentResolver(), moduleId);
-		
+
 			if (moduleRoles != null) {
 				if (moduleRoles.contains(MODULE_ROLE_EVERYONE)) {
 					showModule = true;
@@ -743,6 +748,10 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 			String requestUrl = moduleProperties.get("registration");
 			if (!TextUtils.isEmpty(requestUrl)) {
 				intent.putExtra(Extra.REQUEST_URL, requestUrl);
+			}
+			
+			if (moduleProperties.containsKey(PLANNING_TOOL) && moduleProperties.get(PLANNING_TOOL).equals("true")) {
+				intent.putExtra(PLANNING_TOOL, true);
 			}
 			
 			return intent;

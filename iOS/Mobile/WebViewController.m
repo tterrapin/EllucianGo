@@ -194,7 +194,7 @@
     } else {
     
         NSString *titleString = NSLocalizedString(@"Error Loading Page", @"title when error loading webpage");
-        NSString *messageString = [error localizedFailureReason] ? [NSString stringWithFormat:@"%@ %@", [error  localizedDescription], [error localizedFailureReason]] : [error localizedDescription];
+        NSString *messageString = [error localizedFailureReason] ? [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"WebView loading error", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"WebView loading error (description failure)"), [error  localizedDescription], [error localizedFailureReason]] : [error localizedDescription];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:titleString
                                                         message:messageString delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];

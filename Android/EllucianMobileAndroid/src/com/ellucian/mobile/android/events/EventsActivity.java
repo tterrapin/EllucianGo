@@ -355,18 +355,20 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 	}
 	
 	public String getEventDateFormatedString(Date start, Date end, boolean allDay) {
-		String output;
-		// get the short form of the date
-		output = getDefaultDateFormatedString(start);
-		output += " ";
-		if (allDay == false) {
-			// now append on the time portion
-			output += getDefaultTimeFormatedString(start); 
-			if (end != null) {
-				output += " - " + getDefaultTimeFormatedString(end);
-			}
+		String output = "";
+
+		if (allDay) {
+			output = getString(R.string.date_all_day_event_format,
+						getDefaultDateFormatedString(start));
+		} else if (end != null) {
+			output = getString(R.string.date_time_to_time_format,
+						getDefaultDateFormatedString(start),
+						getDefaultTimeFormatedString(start),
+						getDefaultTimeFormatedString(end));
 		} else {
-			output += getString(R.string.all_day_event);
+			output = getString(R.string.date_time_format,
+						getDefaultDateFormatedString(start),
+						getDefaultTimeFormatedString(start));
 		}
 		return output;
 	}

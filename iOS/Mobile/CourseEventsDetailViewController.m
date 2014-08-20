@@ -50,14 +50,14 @@
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     
     if(self.allDay) {
-        self.startDateLabel.text = [NSString stringWithFormat:@"%@, %@", [dateFormatter stringFromDate:self.startDate], NSLocalizedString(@"All Day", @"label for all day event")];
+        self.startDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:self.startDate]];
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         // now build a NSDate object for the next day
         NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
         [offsetComponents setDay:-1];
         NSDate *nextDate = [calendar dateByAddingComponents:offsetComponents toDate:self.endDate options:0];
         
-        self.endDateLabel.text = [NSString stringWithFormat:@"%@, %@", [dateFormatter stringFromDate:nextDate], NSLocalizedString(@"All Day", @"label for all day event")];
+        self.endDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:nextDate]];
     } else {
         self.startDateLabel.text = [datetimeFormatter stringFromDate:self.startDate];
         self.endDateLabel.text = [datetimeFormatter stringFromDate:self.endDate];
@@ -177,8 +177,18 @@
 -(IBAction)share:(id)sender {
     
     NSString* eventDate = [self.dateFormatterShare stringFromDate:self.startDate];
-    
-    NSString *text = [NSString stringWithFormat:@"%@ - %@", self.titleLabel.text, eventDate];
+
+    NSString *text = @"";
+    if (eventDate && self.location) {
+        text = [NSString stringWithFormat:@"%@\n%@\n%@\n%@", self.titleLabel.text, eventDate, self.location, self.eventDescription];
+    } else if (eventDate) {
+        text = [NSString stringWithFormat:@"%@\n%@\n%@", self.titleLabel.text, eventDate, self.eventDescription];
+    } else if (self.location) {
+        text = [NSString stringWithFormat:@"%@\n%@\n%@", self.titleLabel.text, self.location, self.eventDescription];
+    } else {
+        text = [NSString stringWithFormat:@"%@\n%@", self.titleLabel.text, self.eventDescription];
+    }
+
     NSArray *activityItems = [NSArray arrayWithObjects:text, nil];
     
     UIActivityViewController *avc = [[UIActivityViewController alloc]

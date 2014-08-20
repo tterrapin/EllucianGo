@@ -195,12 +195,12 @@ public class EllucianProvider extends ContentProvider {
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		Log.v(this.getClass().getSimpleName(), "delete(uri=" + uri + ")");
 	
-		if(uri == EllucianContract.BASE_CONTENT_URI) {
+		if(uri.equals( EllucianContract.BASE_CONTENT_URI) ) {
 			deleteDatabase();
 			notifyChange(uri);
 			return 1;
 		}
-		if(uri == EllucianContract.SECURED_CONTENT_URI) {
+		if(uri.equals( EllucianContract.SECURED_CONTENT_URI )) {
 			deleteSecuredRecordsFromDatabase();
 			notifyChange(uri);
 			return 1;

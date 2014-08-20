@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSDateFormatter *displayDateFormatter;
 @property (nonatomic, strong) NSDateFormatter *displayTimeFormatter;
 @property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
-@property (strong, nonatomic) UIBarButtonItem *deleteButtonItem;
+
 @end
 
 @implementation RegistrationPlannedSectionDetailViewController
@@ -41,7 +41,6 @@
     [super viewWillAppear:animated];
     [self adjustContraintsAccordingToContent];
     [self sendView:@"Registration Section Detail" forModuleNamed:self.module.name];
-    [self showToolbar];
 }
 
 - (void)viewDidLoad
@@ -56,6 +55,13 @@
         
     }
     
+    if(self.deleteFromCartToolbar) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+            UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
+            [self.deleteFromCartToolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        }
+    }
+    
     [self.scrollView invalidateIntrinsicContentSize];
     
     self.navigationController.navigationBar.translucent = NO;
@@ -68,7 +74,7 @@
             self.descriptionContent.textAlignment = NSTextAlignmentRight;
             self.meetingDateLabel.textAlignment = NSTextAlignmentRight;
         }
-        self.courseSectionNumberLabel.text = [NSString stringWithFormat:@"%@-%@", self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
+        self.courseSectionNumberLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
         self.courseNameLabel.text = self.registrationPlannedSection.sectionTitle;
         
         if (self.registrationPlannedSection.isPassFail){
@@ -80,7 +86,7 @@
         }
     
         if(self.registrationPlannedSection.firstMeetingDate && self.registrationPlannedSection.lastMeetingDate) {
-            NSString *dates = [NSString stringWithFormat:@"%@ - %@", [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.firstMeetingDate], [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.lastMeetingDate]];
+            NSString *dates = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course first meeting - last meeting", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course first meeting - last meeting"), [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.firstMeetingDate], [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.lastMeetingDate]];
             self.meetingDateLabel.text = dates;
         } else {
             self.meetingDateLabel.text = @"";
@@ -95,9 +101,9 @@
                 self.creditsContent.text = [NSString stringWithFormat:@"%@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits ]];
             } else if ( self.registrationPlannedSection.isVariableCredit ) {
                 if([self.registrationPlannedSection.variableCreditOperator isEqualToString:@"OR"]) {
-                    self.creditsContent.text = [NSString stringWithFormat:@"%@ / %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                    self.creditsContent.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration planned section detail variable credits (or)", @"Localizable", [NSBundle mainBundle], @"%@ / %@", @"registration planned section detail variable credits (or)"), [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
                 } else {
-                    self.creditsContent.text = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                    self.creditsContent.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration planned section detail variable credits (to)", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"registration planned section detail variable credits (to)"), [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
                 }
             } else {
                 self.creditsContent.text = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits];
@@ -107,11 +113,10 @@
             NSString * ceusText = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.ceus];
             
             if ([self.registrationPlannedSection.ceus doubleValue] > 1.0 ){
-                self.creditsContent.text = [NSString stringWithFormat:@"%@ %@", ceusText, NSLocalizedString(@"CEUs", @"CEUs label for registration")];
-
+                self.creditsContent.text = [NSString stringWithFormat:NSLocalizedString(@"%@ CEUs", @"CEUs label for registration"), ceusText];
             }
             else if ([self.registrationPlannedSection.ceus doubleValue] <= 1.0 ){
-                self.creditsContent.text = [NSString stringWithFormat:@"%@ %@", ceusText, NSLocalizedString(@"CEU", @"CEU (singular) label for registration")];
+                self.creditsContent.text = [NSString stringWithFormat:NSLocalizedString(@"%@ CEU", @"CEU (singular) label for registration"), ceusText];
             }
         }
         
@@ -393,12 +398,13 @@
         }
         
         //mp:time
-        NSString *days = [NSString stringWithFormat:@"%@: ",  [daysOfClass componentsJoinedByString:@", "]];
+        NSString *days = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days:", @"Localizable", [NSBundle mainBundle], @"%@: ", @"days:"), [daysOfClass componentsJoinedByString:@", "]];
         NSString *line1;
         if(mp.instructionalMethodCode) {
-            line1 = [NSString stringWithFormat:@"%@ %@ - %@ %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+            line1 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days start - end method", @"Localizable", [NSBundle mainBundle], @"%@ %@ - %@ %@", @"days start - end method"), days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime], mp.instructionalMethodCode];
+
         } else {
-            line1 = [NSString stringWithFormat:@"%@ %@ - %@", days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
+            line1 = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"days start - end", @"Localizable", [NSBundle mainBundle], @"%@ %@ - %@", @"days start - end"), days, [self.displayTimeFormatter stringFromDate: mp.startTime], [self.displayTimeFormatter stringFromDate:mp.endTime]];
         }
 
         NSMutableAttributedString *attributedLine1 =[[NSMutableAttributedString alloc]initWithString:line1];
@@ -626,8 +632,6 @@
         if (_masterPopover != nil) {
             [_masterPopover dismissPopoverAnimated:YES];
         }
-        
-        [self showToolbar];
     }
 }
 
@@ -659,7 +663,7 @@
         self.meetingDateLabel.textAlignment = NSTextAlignmentRight;
     }
     
-    self.courseSectionNumberLabel.text = [NSString stringWithFormat:@"%@-%@", self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
+    self.courseSectionNumberLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), self.registrationPlannedSection.courseName, self.registrationPlannedSection.courseSectionNumber];
     self.courseNameLabel.text = self.registrationPlannedSection.sectionTitle;
     
     //self.sectionLabel.text = @"Section ID:";
@@ -674,7 +678,7 @@
     }
     
     if(self.registrationPlannedSection.firstMeetingDate && self.registrationPlannedSection.lastMeetingDate) {
-        NSString *dates = [NSString stringWithFormat:@"%@ - %@", [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.firstMeetingDate], [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.lastMeetingDate]];
+        NSString *dates = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course first meeting - last meeting", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"course first meeting - last meeting"), [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.firstMeetingDate], [self.displayDateFormatter stringFromDate:self.registrationPlannedSection.lastMeetingDate]];
         self.meetingDateLabel.text = dates;
     } else {
         self.meetingDateLabel.text = @"";
@@ -682,13 +686,13 @@
     
     if ( self.registrationPlannedSection.credits ) {
         //self.creditsLabel.text = @"Credits:";
-        if(self.registrationPlannedSection.selectedForRegistration) {
+        if(self.registrationPlannedSection.selectedInCart) {
             self.creditsContent.text = [NSString stringWithFormat:@"%@", self.registrationPlannedSection.credits ];
         } else if ( self.registrationPlannedSection.isVariableCredit ) {
             if([self.registrationPlannedSection.variableCreditOperator isEqualToString:@"OR"]) {
-                self.creditsContent.text = [NSString stringWithFormat:@"%@ / %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                self.creditsContent.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration planned section detail variable credits (or)", @"Localizable", [NSBundle mainBundle], @"%@ / %@", @"registration planned section detail variable credits (or)"), [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
             } else {
-                self.creditsContent.text = [NSString stringWithFormat:@"%@ - %@", [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
+                self.creditsContent.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration planned section detail variable credits (to)", @"Localizable", [NSBundle mainBundle], @"%@ - %@", @"registration planned section detail variable credits (to)"), [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.minimumCredits], [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.maximumCredits]];
             }
         } else {
             self.creditsContent.text = [self.creditsFormatter stringFromNumber:self.registrationPlannedSection.credits];
@@ -739,16 +743,6 @@
 {
     //Nil out the pointer to the popover.
     _masterPopover = nil;
-}
-
--(void) showToolbar
-{
-    if(_allowDeleteFromCart) {
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteFromCart:)];
-        self.toolbarItems = [[NSArray alloc] initWithObjects:flexibleSpace, self.deleteButtonItem, flexibleSpace, nil];
-        [self.navigationController setToolbarHidden:NO];
-    }
 }
 
 - (IBAction) deleteFromCart:(id)sender {

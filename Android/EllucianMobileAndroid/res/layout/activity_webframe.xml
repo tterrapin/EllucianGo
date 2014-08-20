@@ -2,18 +2,11 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <LinearLayout
+	
+    <FrameLayout 
+    	android:id="@+id/web_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <fragment
-            android:id="@+id/webframe_fragment"
-            android:name="com.ellucian.mobile.android.webframe.WebframeFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+       	android:layout_height="match_parent"  />
 
     <include layout="@layout/drawer_list" />
 

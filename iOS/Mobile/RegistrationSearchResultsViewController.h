@@ -13,6 +13,8 @@
 @class Module;
 @interface RegistrationSearchResultsViewController : EllucianUITableViewController<UITableViewDataSource, UITableViewDelegate, UISplitViewControllerDelegate, UIAlertViewDelegate>
 
+@property (strong, nonatomic) Module *module;
+
 @property (nonatomic, strong) NSMutableArray *courses;
 @property (nonatomic, assign) id<DetailSelectionDelegate> detailSelectionDelegate;
 @property (nonatomic, assign) BOOL  allowAddToCart;

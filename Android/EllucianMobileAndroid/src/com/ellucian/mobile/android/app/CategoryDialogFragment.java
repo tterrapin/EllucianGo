@@ -80,7 +80,7 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 			                   }			                   
 			               }
         		})		        
-               .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+               .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
 	                	ArrayList<String> filteredCategoriesList = new ArrayList<String>();
 	               		for (int i = 0; i < currentCategories.length; i++) {

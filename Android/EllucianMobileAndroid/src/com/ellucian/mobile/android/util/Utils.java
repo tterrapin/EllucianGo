@@ -3,6 +3,7 @@ package com.ellucian.mobile.android.util;
 import java.util.Arrays;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -16,9 +17,11 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
 
 import com.androidquery.AQuery;
 import com.ellucian.mobile.android.EllucianApplication;
@@ -122,8 +125,13 @@ public class Utils {
 
 	private static int getColor(Context context, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(APPEARANCE, Context.MODE_PRIVATE);
-		String color = preferences.getString(key, "#000000");//"#331640");
-	    return Color.parseColor(color);
+		String color = preferences.getString(key, "#000000");
+		try {
+			int colorValue = Color.parseColor(color);
+			return colorValue;
+		} catch (IllegalArgumentException e) {
+			return Color.TRANSPARENT;
+		}
 	}
 		
 	public static String getStringFromPreferences(Context context, String fileName, String key, String defaultString) {		
@@ -385,4 +393,13 @@ public class Utils {
 		
 		return moduleConfig != null ? moduleConfig.secure : false;
 	}
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	public static boolean isSystemLayoutDirectionRtl() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return TextUtils.getLayoutDirectionFromLocale(null)
+                    == View.LAYOUT_DIRECTION_RTL;
+        }
+        return false;
+    }
 }

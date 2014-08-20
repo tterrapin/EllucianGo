@@ -1,15 +1,16 @@
 package com.ellucian.mobile.android.notifications;
 
 import java.io.IOException;
+
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Utils;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -25,10 +26,11 @@ public class EllucianNotificationManager {
 	private static String REGISTERED_DEVICE_ID_KEY = "deviceId";
 	private static String REGISTERED_APP_VERSION_KEY = "registeredAppVersion";
 	private static String REGISTERED_USER_ID_KEY = "registeredUserId";
-	private static String GCM_SENDER_ID = "170166633464";
+	private static String GCM_SENDER_ID;
 	
 	public EllucianNotificationManager(EllucianApplication ellucianApplication) {
 		this.ellucianApplication = ellucianApplication;
+		GCM_SENDER_ID = ellucianApplication.getConfigurationProperties().gcmSenderId;
 	}
 	
 	public boolean isPlayServicesAvailable() {
@@ -76,8 +78,14 @@ public class EllucianNotificationManager {
 			// if the version changed or if it has been at least a day since last fetch of device id, then fetch it
 			if (isPlayServicesAvailable() && (userIdChanged || versionChanged || timeTofetch) ){
 				Log.d(TAG, "Starting task to register with GCM and Mobile Server");
-				GcmRegisterTask gcmRegisterTask = new GcmRegisterTask();
-				gcmRegisterTask.execute(preferences, (Boolean) versionChanged, currentVersion, (Boolean) userIdChanged, currentUserId);
+				
+				if (!TextUtils.isEmpty(GCM_SENDER_ID)) {
+					GcmRegisterTask gcmRegisterTask = new GcmRegisterTask();
+    				gcmRegisterTask.execute(preferences, (Boolean) versionChanged, currentVersion, (Boolean) userIdChanged, currentUserId);
+    				
+    			} else {
+    				Log.e(TAG, "GCM_SENDER_ID was not properly set! Cannot start register task. Please check the configuration_properties.xml");
+    			}
 			}
 		}
 	}

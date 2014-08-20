@@ -137,10 +137,14 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         // Adding date and location to the body of the email
         String text = "";
         if (!TextUtils.isEmpty(date)) {
-        	text += getString(R.string.row_date_label) + " " + date + "\n\n";
+        	text += getString(R.string.label_string_content_format, 
+        				getString(R.string.label_date),
+        				date) + "\n\n";
         }
         if (!TextUtils.isEmpty(location)) {
-        	text += getString(R.string.row_location_label) + " " + location + "\n\n";
+        	text += getString(R.string.label_string_content_format, 
+    				getString(R.string.label_location),
+    				location) + "\n\n";
         }
         text += content;
         

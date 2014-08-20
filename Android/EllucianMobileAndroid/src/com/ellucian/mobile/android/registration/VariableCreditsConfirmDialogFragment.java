@@ -75,13 +75,13 @@ public class VariableCreditsConfirmDialogFragment extends EllucianDialogFragment
 		
 		String titleMessage = "";
 		if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_OR)) {		
-			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_or_message), 
+			titleMessage = getString(R.string.registration_dialog_variable_credits_or_message, 
 					(float)section.minimumCredits, (float)section.maximumCredits);			
 		} else if (!TextUtils.isEmpty(variableOperator) && variableOperator.equals(Section.VARIABLE_OPERATOR_INC)) {
-			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_inc_message), 
+			titleMessage = getString(R.string.registration_dialog_variable_credits_inc_message, 
 					(float)section.minimumCredits, (float)section.maximumCredits, floatIncrement);		
 		} else {
-			titleMessage = String.format(getString(R.string.registration_dialog_variable_credits_to_message), 
+			titleMessage = getString(R.string.registration_dialog_variable_credits_to_message, 
 					(float)section.minimumCredits, (float)section.maximumCredits);
 		}
 	
@@ -131,8 +131,8 @@ public class VariableCreditsConfirmDialogFragment extends EllucianDialogFragment
 							registrationActivity.onVariableCreditsConfirmOkClicked(section.termId, section.sectionId, floatValue);
 							VariableCreditsConfirmDialogFragment.this.dismiss();
 						} else {
-							Toast incrementToast = Toast.makeText(registrationActivity, floatIncrement + " " 
-									+ getString(R.string.registration_dialog_variable_credits_increment_error),
+							Toast incrementToast = Toast.makeText(registrationActivity,
+									getString(R.string.registration_dialog_variable_credits_increment_error_format, floatIncrement),
 									Toast.LENGTH_SHORT);
 							incrementToast.setGravity(Gravity.CENTER, 0, 0);
 							incrementToast.show();

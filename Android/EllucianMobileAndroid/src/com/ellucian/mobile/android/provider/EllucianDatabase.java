@@ -45,7 +45,8 @@ import com.ellucian.mobile.android.provider.EllucianContract.NumbersColumns;
 public class EllucianDatabase extends SQLiteOpenHelper {
 	
 	// 7 = Ellucian Mobile 3.5
-	private static final int DB_VERSION = 7;
+	// 8 = Ellucian Mobile 3.6
+	private static final int DB_VERSION = 8;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -393,7 +394,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ CoursePatternsColumns.PATTERN_END_TIME + " TEXT, "
 				+ CoursePatternsColumns.PATTERN_ROOM + " TEXT, "
 				+ MapsBuildingsColumns.BUILDING_BUILDING_ID + " TEXT, "
-				+ MapsCampusesColumns.CAMPUS_ID + " TEXT "
+				+ MapsCampusesColumns.CAMPUS_ID + " TEXT, "
+				+ CoursePatternsColumns.PATTERN_INSTRUCTIONAL_METHOD + " TEXT "
 				+ ")");
 
 		db.execSQL("CREATE TABLE " + Tables.COURSE_MEETINGS + " ("
@@ -647,6 +649,10 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 					+ ModulesColumns.MODULES_ID + " TEXT NOT NULL "
 					+ References.MODULES_ID + ", "
 					+ ModulesRolesColumns.MODULE_ROLES_NAME + " TEXT NOT NULL " + ")");
+		case 7: //3.5
+			db.execSQL("ALTER TABLE " + Tables.COURSE_PATTERNS					
+					+ " ADD COLUMN " + CoursePatternsColumns.PATTERN_INSTRUCTIONAL_METHOD + " TEXT ");
+
 
 		}
 

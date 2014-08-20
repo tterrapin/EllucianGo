@@ -10,7 +10,12 @@
     	android:orientation="horizontal" >
     
 	    <TextView
-	        android:id="@+id/meeting"
+	        android:id="@+id/meeting_days"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	    
+	    <TextView
+	        android:id="@+id/meeting_times"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" />
 	    

@@ -84,7 +84,7 @@
             if([message length] > 0) message = [NSString stringWithFormat:@"! %@", message];
             label.text = message;
             UILabel *courseNameLabel = (UILabel *)[cell viewWithTag:1];
-            courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", [selected objectForKey:@"courseName"], [selected objectForKey:@"courseSectionNumber"]];
+            courseNameLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), [selected objectForKey:@"courseName"], [selected objectForKey:@"courseSectionNumber"]];
             UILabel *titleLabel = (UILabel *)[cell viewWithTag:2];
             titleLabel.text = [selected objectForKey:@"courseTitle"];
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];
@@ -113,7 +113,7 @@
             if([message length] > 0) message = [NSString stringWithFormat:@"! %@", message];
             label.text = message;
             UILabel *courseNameLabel = (UILabel *)[cell viewWithTag:1];
-            courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", [selected objectForKey:@"courseName"], [selected objectForKey:@"courseSectionNumber"]];
+            courseNameLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), [selected objectForKey:@"courseName"], [selected objectForKey:@"courseSectionNumber"]];
             UILabel *titleLabel = (UILabel *)[cell viewWithTag:2];
             titleLabel.text = [selected objectForKey:@"courseTitle"];
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];

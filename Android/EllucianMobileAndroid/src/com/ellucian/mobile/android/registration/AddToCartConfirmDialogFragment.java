@@ -31,13 +31,13 @@ public class AddToCartConfirmDialogFragment extends EllucianDialogFragment {
 		
 		//builder.setTitle(R.string.registraion_dialog_title)
 		builder.setMessage(R.string.registration_dialog_add_to_cart_message)
-			.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                 	dialog.cancel(); 
 
                 }
             })
-            .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                 	registrationActivity.onAddToCartConfirmOkClicked();
                 }
