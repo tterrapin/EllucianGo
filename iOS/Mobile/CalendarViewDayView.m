@@ -115,10 +115,11 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	self.allDayGridView.frame = CGRectMake(0, 0,
 										   CGRectGetWidth(self.bounds),
 										   ALL_DAY_VIEW_EMPTY_SPACE);
+    CGFloat fontHeight = [@"A" sizeWithAttributes: @{NSFontAttributeName: self.boldFont}].height;
 	self.gridView.frame = CGRectMake(CGRectGetMinX(self.allDayGridView.bounds),
 									 CGRectGetMaxY(self.allDayGridView.bounds),
 									 CGRectGetWidth(self.bounds),
-									 [@"A" sizeWithFont:self.boldFont].height * SPACE_BETWEEN_HOUR_LABELS * HOURS_IN_DAY);
+									 fontHeight * SPACE_BETWEEN_HOUR_LABELS * HOURS_IN_DAY);
 	self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds),
 											 CGRectGetHeight(self.allDayGridView.bounds) + CGRectGetHeight(self.gridView.bounds));
     
@@ -143,7 +144,8 @@ static const unsigned int ARROW_RIGHT                    = 1;
 		allDayGridView.backgroundColor = [UIColor whiteColor]; //change for UX?
  		allDayGridView.dayView = self;
 		allDayGridView.textFont = self.boldFont;
-		allDayGridView.eventHeight = MAX([@"A" sizeWithFont:self.regularFont].height * 2.f, MINIMUM_ALL_DAY_HEIGHT);
+        CGFloat fontHeight = [@"A" sizeWithAttributes: @{NSFontAttributeName: self.regularFont}].height;
+		allDayGridView.eventHeight = MAX(fontHeight * 2.f, MINIMUM_ALL_DAY_HEIGHT);
 	}
 	return allDayGridView;
 }
@@ -294,103 +296,13 @@ static const unsigned int ARROW_RIGHT                    = 1;
 }
 
 - (IBAction)showDatePickerForiPad:(id)sender {
-    
-    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 350, 260)];
-    
-    CGRect frame = CGRectMake(0, 0, 300, 44);
-    
-    UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:frame];
-    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
-    NSMutableArray *barItems = [[NSMutableArray alloc] init];
-    
-    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [barItems addObject:flexSpace];
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionPickerDone:)];
-    [barItems addObject:doneButton];
-    [pickerToolbar setItems:barItems animated:YES];
-    pickerToolbar.translucent = NO;
-    
-    [masterView addSubview:pickerToolbar];
-    
-    CGRect datePickerFrame = CGRectMake(0, 40, 300, 216);
-    self.datePicker = [[UIDatePicker alloc] initWithFrame:datePickerFrame];
-    self.datePicker.datePickerMode = UIDatePickerModeDate;
-    [self.datePicker setDate:self.day animated:NO];
-    [masterView addSubview:self.datePicker];
-    
-
-    if (self.superview.window != nil) {
-        UIViewController* popoverContent = [[UIViewController alloc] init];
-            
-        popoverContent.view = masterView;
-            
-        self.popoverController = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
-            
-        [self.popoverController setPopoverContentSize:CGSizeMake(300, 264) animated:NO];
-        [self.popoverController presentPopoverFromRect:_datePickerButton.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    }
+    [self showDatePicker:sender];
 }
 
 - (IBAction)showDatePicker:(id)sender {
-    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 260)];
-    
-    CGRect frame = CGRectMake(0, 0, self.frame.size.width, 44);
-    UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:frame];
-    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
-    NSMutableArray *barItems = [[NSMutableArray alloc] init];
-    
-    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(actionPickerCancel:)];
-    [barItems addObject:cancelBtn];
-    
-    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [barItems addObject:flexSpace];
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(actionPickerDone:)];
-    [barItems addObject:doneButton];
-    [pickerToolbar setItems:barItems animated:YES];
-    pickerToolbar.translucent = NO;
-    
-    [masterView addSubview:pickerToolbar];
-    
-    CGRect datePickerFrame = CGRectMake(0, 40, self.frame.size.width, 216);
-    self.datePicker = [[UIDatePicker alloc] initWithFrame:datePickerFrame];
-    self.datePicker.datePickerMode = UIDatePickerModeDate;
-    [self.datePicker setDate:self.day animated:NO];
-    [masterView addSubview:self.datePicker];
-    
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:nil];
-    [self.actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
-    [self.actionSheet addSubview:masterView];
-    UITabBarController *tabBarController;
-    for (UIView* next = [self superview]; next; next = next.superview)
-    {
-        UIResponder* nextResponder = [next nextResponder];
-            
-        if ([nextResponder isKindOfClass:[UITabBarController class]])
-        {
-            tabBarController = (UITabBarController*)nextResponder;
-            break;
-        }
-    }
-        
-    [self.actionSheet showFromTabBar:tabBarController.tabBar];
-        
-    self.actionSheet.bounds = CGRectMake(0, 0, self.frame.size.width,380); //self.frame.size.width, self.frame.size.height);
-}
 
-- (IBAction)actionPickerDone:(id)sender {
-    [ self.actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    self.day = self.datePicker.date;
-    self.datePicker = nil;
-    self.actionSheet = nil;
-    [self dismissPopover];
-}
-
-- (IBAction)actionPickerCancel:(id)sender {
-    [ self.actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    self.actionSheet = nil;
-    self.datePicker = nil;
+    self.datePicker = [[CalendarActionSheetDatePicker alloc] initWithDate:self.day target:self action:@selector(dateWasSelected:element:) origin:sender];
+    [self.datePicker showActionSheetPicker];
 }
 
 - (NSDate *)nextDayFromDate:(NSDate *)date {
@@ -444,20 +356,6 @@ static const unsigned int ARROW_RIGHT                    = 1;
     }
     return hours;
 }
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    [self dismissPopover];
-}
-
-- (void)dismissPopover
-{
-    if ( self.popoverController )
-    {
-        [self.popoverController dismissPopoverAnimated:YES];
-        self.popoverController = nil;
-    }
-}
-
 
 @end
 

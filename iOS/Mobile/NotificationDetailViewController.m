@@ -30,9 +30,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popToRoot:) name:kNotificationsViewControllerItemSelected object:nil];
-        if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-            self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-        }
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
 
     [self overlayDisplay];
@@ -219,7 +217,7 @@
 //http://stackoverflow.com/a/13616052/1588409
 - (void)viewDidLayoutSubviews {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.notificationTitleLabel.preferredMaxLayoutWidth = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width - 20;
+        self.notificationTitleLabel.preferredMaxLayoutWidth = [AppearanceChanger currentScreenBoundsDependOnOrientation].width- 20;
     });
 }
 

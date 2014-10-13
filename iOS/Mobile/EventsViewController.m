@@ -30,6 +30,10 @@
 
 @implementation EventsViewController
 
+- (void) awakeFromNib{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -41,6 +45,7 @@
         detailController.eventModule = self.eventModule;
         detailController.hiddenCategories = self.hiddenCategories;
         detailController.module = self.module;
+        detailController.delegate = self;
     } else if ([[segue identifier] isEqualToString:@"Show Event Detail"])
     {
         UITableView *tableView = sender;
@@ -66,7 +71,7 @@
     
     self.title = self.module.name;
     [self fetchEvents];
-
+    [self reloadData];
     
     if ([self.fetchedResultsController.fetchedObjects count] > 0 ) {
         
@@ -85,13 +90,6 @@
     [super viewDidAppear:animated];
 
     [self sendView:@"Events List" forModuleNamed:self.module.name];
-    
-    [self readEventModule];
-    _fetchedResultsController = nil;
-    NSError *error;
-    [self.fetchedResultsController performFetch:&error];
-    [self.tableView reloadData];
-
 }
 
 #pragma mark - Table View
@@ -328,6 +326,18 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     UITableView *tableView = [self tableViewForFetchedResultsController:controller];
     [tableView endUpdates];
+    
+    if ([controller.fetchedObjects count] > 0 ) {
+        
+        NSIndexPath * head = [NSIndexPath indexPathForRow:0 inSection:0];
+        Event *selectedEvent = [controller objectAtIndexPath:head];
+        
+        if (_detailSelectionDelegate && selectedEvent) {
+            [_detailSelectionDelegate selectedDetail:selectedEvent withIndex:head withModule:self.module withController:self];
+        }
+    } else if (_detailSelectionDelegate) {
+        [_detailSelectionDelegate selectedDetail:nil withIndex:nil withModule:self.module withController:self];
+    }
 }
 
 #pragma mark - fetch configuration
@@ -618,6 +628,11 @@
         [self.tableView insertSubview:self.searchDisplayController.searchBar aboveSubview:self.tableView];
     }
     return;
+}
+
+-(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end

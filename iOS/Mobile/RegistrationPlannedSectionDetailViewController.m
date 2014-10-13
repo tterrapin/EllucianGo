@@ -56,10 +56,8 @@
     }
     
     if(self.deleteFromCartToolbar) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
-            [self.deleteFromCartToolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-        }
+        UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
+        [self.deleteFromCartToolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
     }
     
     [self.scrollView invalidateIntrinsicContentSize];
@@ -555,7 +553,7 @@
             self.creditLabelConstraint.constant = 40;
         }
     } else {
-        self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+        self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
         CGSize trialSize = CGSizeMake(self.widthConstraint.constant-20.0f, 1.0f);
         newSize = [self.descriptionContent sizeThatFits:trialSize];
     }
@@ -756,7 +754,7 @@
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [actionSheet showFromBarButtonItem:self.deleteButtonItem animated:YES];
     } else {
-        [actionSheet showFromToolbar:self.navigationController.toolbar];
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
 }
 

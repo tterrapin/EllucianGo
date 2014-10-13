@@ -17,7 +17,7 @@
 
 #define kNotificationsViewControllerItemSelected @"NotificationsViewController Item Selected"
 
-@interface NotificationsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate>
+@interface NotificationsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) Module *module;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;

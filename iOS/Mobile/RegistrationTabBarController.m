@@ -36,12 +36,11 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        UITabBarItem *tabBarItem0 = self.tabBar.items[0];
-        tabBarItem0.selectedImage = [UIImage imageNamed:@"Registration Cart Selected"];
-        UITabBarItem *tabBarItem2 = self.tabBar.items[2];
-        tabBarItem2.selectedImage = [UIImage imageNamed:@"Registration Registered Tab Image Selected"];
-    }
+
+    UITabBarItem *tabBarItem0 = self.tabBar.items[0];
+    tabBarItem0.selectedImage = [UIImage imageNamed:@"Registration Cart Selected"];
+    UITabBarItem *tabBarItem2 = self.tabBar.items[2];
+    tabBarItem2.selectedImage = [UIImage imageNamed:@"Registration Registered Tab Image Selected"];
     
     self.searchedSections = [NSMutableArray new];
 }

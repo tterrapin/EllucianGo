@@ -332,7 +332,7 @@
                                                  options:0 metrics:nil
                                                    views:@{@"headerLabel":headerLabel}]];
         [h.contentView addConstraints:
-         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerLabel]|"
+         [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[headerLabel]"
                                                  options:0 metrics:nil
                                                    views:@{@"headerLabel":headerLabel}]];
         
@@ -343,6 +343,11 @@
     headerLabel.text = term.name;
     
     return h;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 36.0f;
 }
 
 -(IBAction)chooseTermButtonTapped:(id)sender

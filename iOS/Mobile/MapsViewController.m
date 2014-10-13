@@ -23,19 +23,26 @@
 @property (strong, nonatomic) NSArray *campuses;
 @property (strong, nonatomic) MapCampus *selectedCampus;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
 @implementation MapsViewController
-@synthesize zoomWithCurrentLocationButton = _zoomWithCurrentLocationButton;
-@synthesize campusSelectionButton = _campusSelectionButton;
-@synthesize buildingsButton = _buildingsButton;
-@synthesize mapView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    if(!self.locationManager) {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    }
+    
+    self.zoomWithCurrentLocationButton.enabled = NO;
+    
+    self.mapView.delegate = self;
+    
     self.title = self.module.name;
     self.navigationController.navigationBar.translucent = NO;
     self.searchDisplayController.searchBar.translucent = NO;
@@ -57,7 +64,23 @@
 {
     [super viewDidAppear:animated];
     [self sendView:@"Map of campus" forModuleNamed:self.module.name];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuOpened:) name:kSlidingViewOpenMenuAppearsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuClosed:) name:kSlidingViewTopResetNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+
+    [self startTrackingLocation];
 }
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.mapView.showsUserLocation = NO;
+    [self.locationManager stopUpdatingLocation];
+}
+
 
 - (IBAction)campusSelector:(id)sender {
 
@@ -114,11 +137,11 @@
     self.selectedCampus = campus;
     self.title = campus.name;
     //copy your annotations to an array
-    NSMutableArray *annotationsToRemove = [[NSMutableArray alloc] initWithArray: mapView.annotations];
+    NSMutableArray *annotationsToRemove = [[NSMutableArray alloc] initWithArray: self.mapView.annotations];
     //Remove the object userlocation
-    [annotationsToRemove removeObject: mapView.userLocation];
+    [annotationsToRemove removeObject: self.mapView.userLocation];
     //Remove all annotations in the array from the mapView
-    [mapView removeAnnotations: annotationsToRemove];
+    [self.mapView removeAnnotations: annotationsToRemove];
     
     CLLocationCoordinate2D locationCenter;
     locationCenter.latitude = [campus.centerLatitude doubleValue];
@@ -135,7 +158,7 @@
     
     for(MapPOI *poi in campus.points) {
         MapPinAnnotation *annotation = [[MapPinAnnotation alloc] initWithMapPOI:poi];
-        [mapView addAnnotation:annotation];
+        [self.mapView addAnnotation:annotation];
     }
 }
 
@@ -147,7 +170,7 @@
 	if ([annotation isKindOfClass:[MapPinAnnotation class]]) {
 		// try to dequeue an existing pin view first
 		static NSString* pinAnnotationIdentifier = @"PinAnnotationIdentifier";
-		MKPinAnnotationView* pinView = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:pinAnnotationIdentifier ];
+		MKPinAnnotationView* pinView = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:pinAnnotationIdentifier ];
 		if (!pinView) {
 			// If an existing pin view was not available, create one
 			MKPinAnnotationView* customPinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pinAnnotationIdentifier];
@@ -196,7 +219,7 @@
         vc.types = [types copy];
         vc.location = [[CLLocation alloc] initWithLatitude:[poi.latitude doubleValue] longitude:[poi.longitude doubleValue]];
         vc.address = poi.address;
-        vc.description = poi.description_;
+        vc.poiDescription = poi.description_;
         vc.additionalServices = poi.additionalServices;
         vc.buildingId = poi.buildingId;
         vc.campusName = poi.campus.name;
@@ -218,12 +241,11 @@
     return YES;
 }
 
-
 - (IBAction)showMyLocation:(id)sender {
     
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"Geolocate user" withValue:nil forModuleNamed:self.module.name];
     
-    MKUserLocation *userLocation = mapView.userLocation;
+    MKUserLocation *userLocation = self.mapView.userLocation;
     
     float maxNorth = MAX([self.selectedCampus.centerLatitude floatValue] + [self.selectedCampus.spanLatitude floatValue], userLocation.location.coordinate.latitude);
     float maxSouth = MIN([self.selectedCampus.centerLatitude floatValue] - [self.selectedCampus.spanLatitude floatValue], userLocation.location.coordinate.latitude);
@@ -458,6 +480,9 @@
             
             }
             [self showCampus:self.selectedCampus];
+        } else {
+            MapCampus *campus = [self.campuses firstObject];
+            [self showCampus:campus];
         }
     } else if ([self.campuses count] == 1) {
         self.campusSelectionButton.enabled = YES;
@@ -468,8 +493,6 @@
         self.campusSelectionButton.enabled = NO;
         self.buildingsButton.enabled = NO;
     }
-    
-    self.zoomWithCurrentLocationButton.enabled  = ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized);
     
 }
 
@@ -498,6 +521,7 @@
 
 -(void)didReceiveMemoryWarning
 {
+    [super didReceiveMemoryWarning];
     self.searchFetchRequest = nil;
 }
 
@@ -551,6 +575,52 @@
 -(void) menuClosed:(id)sender
 {
     self.mapView.scrollEnabled = YES;
+}
+
+- (void)startTrackingLocation
+{
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
+    }
+    else if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
+        [self.locationManager startUpdatingLocation];
+        self.zoomWithCurrentLocationButton.enabled = YES;
+        self.mapView.showsUserLocation = YES;
+    } else if (status == kCLAuthorizationStatusDenied) {
+        self.zoomWithCurrentLocationButton.enabled = NO;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    switch (status) {
+        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            [self startTrackingLocation];
+            self.zoomWithCurrentLocationButton.enabled = YES;
+            self.mapView.showsUserLocation = YES;
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+                [self.locationManager requestWhenInUseAuthorization];
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+-(void) didBecomeActive:(id)sender
+{
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
+        self.zoomWithCurrentLocationButton.enabled = YES;
+    } else if (status == kCLAuthorizationStatusDenied) {
+        self.zoomWithCurrentLocationButton.enabled = NO;
+    }
+
 }
 
 @end

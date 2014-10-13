@@ -15,7 +15,8 @@
 @interface EventsViewController : EllucianSectionedUITableViewController<NSFetchedResultsControllerDelegate,
     UISearchBarDelegate,
     UISearchDisplayDelegate,
-    EventsFilterDelegate>
+    EventsFilterDelegate, UISplitViewControllerDelegate
+    >
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSFetchedResultsController *searchFetchedResultsController;

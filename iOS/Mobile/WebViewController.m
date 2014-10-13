@@ -35,8 +35,6 @@
     [super viewDidAppear:animated];
 
     [self sendView:@"Display web frame" forModuleNamed:self.analyticsLabel];
-
-    self.webView.backgroundColor = [UIColor underPageBackgroundColor];
     
     CurrentUser *user = [CurrentUser sharedInstance];
     

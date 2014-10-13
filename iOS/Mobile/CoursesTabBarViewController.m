@@ -16,9 +16,8 @@
 
 -(void) viewDidLoad
 {
-    if([self.tabBar respondsToSelector:@selector(setTranslucent:)]) {
-        self.tabBar.translucent = NO;
-    }
+    [super viewDidLoad];
+    self.tabBar.translucent = NO;
 }
 
 @end

@@ -13,7 +13,7 @@
 #import "Map.h"
 #import "MapPOI.h"
 
-@interface MapsViewController : UIViewController<MKMapViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource>
+@interface MapsViewController : UIViewController<MKMapViewDelegate, UIActionSheetDelegate, UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, CLLocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) Module *module;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *campusSelectionButton;

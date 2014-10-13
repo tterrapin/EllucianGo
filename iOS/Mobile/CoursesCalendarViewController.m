@@ -80,22 +80,11 @@
     
     if(userid) {
 
-        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
-        NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
-        
         NSDate *startDate = [self.date dateByAddingTimeInterval: -86400.0];
         NSDate *endDate = [self.date dateByAddingTimeInterval: (86400.0*7.0)];
         NSString *startFormattedString = [dateFormatter stringFromDate:startDate];
         NSString *endFormattedString = [dateFormatter stringFromDate:endDate];
         NSString *thisFormattedDate = [dateFormatter stringFromDate:date];
-        
-        NSDate *firstDate = [self.date dateByAddingTimeInterval: -86400.0];
-        firstDate = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
-        NSDate *secondDate = [firstDate dateByAddingTimeInterval: 86400.0];
-        NSPredicate *firstPredicate = [NSPredicate predicateWithFormat:@"start > %@", firstDate];
-        NSPredicate *secondPredicate = [NSPredicate predicateWithFormat:@"start < %@", secondDate];
-        
-        NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:firstPredicate, secondPredicate, nil]];
         
         if(![self.fetchedDates containsObject:thisFormattedDate]) {
             NSString *urlString = [NSString stringWithFormat:@"%@/%@?start=%@&end=%@", [self.module propertyForKey:@"daily"], [[[CurrentUser sharedInstance] userid] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [startFormattedString  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding],
@@ -164,8 +153,8 @@
             }
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }
-        
-        NSSet *results = [self.cachedData filteredSetUsingPredicate:predicate];
+
+        NSSet *results = self.cachedData;
         return results;
     }
     

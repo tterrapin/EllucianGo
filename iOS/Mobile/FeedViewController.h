@@ -15,7 +15,7 @@
 #import "EllucianSectionedUITableViewController.h"
 #import "DetailSelectionDelegate.h"
 
-@interface FeedViewController : EllucianSectionedUITableViewController<NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, FeedFilterDelegate,UIGestureRecognizerDelegate>
+@interface FeedViewController : EllucianSectionedUITableViewController<NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, FeedFilterDelegate,UIGestureRecognizerDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSFetchedResultsController *searchFetchedResultsController;

@@ -25,6 +25,11 @@ static Notification* requestedNotification;
 
 @implementation NotificationsViewController
 
+- (void) awakeFromNib{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -261,6 +266,10 @@ static Notification* requestedNotification;
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
+        case NSFetchedResultsChangeMove:
+            break;
+        case NSFetchedResultsChangeUpdate:
+            break;
     }
 }
 
@@ -392,6 +401,11 @@ static Notification* requestedNotification;
             [_detailSelectionDelegate selectedDetail:selectedNotification withIndex:indexPath withModule:self.module withController:self];
         }
     }
+}
+
+-(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 

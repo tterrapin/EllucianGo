@@ -776,9 +776,7 @@
     {
         buttonImage = [[ImageCache sharedCache] getCachedImage: menuImageName];
         buttonImage=[UIImage imageWithCGImage:[buttonImage CGImage] scale:2.0 orientation:UIImageOrientationUp];
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        }
+        buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     
     if ([newTopViewController isKindOfClass:[UINavigationController class]]) {
@@ -791,9 +789,8 @@
     } else if ([newTopViewController isKindOfClass:[UITabBarController class]]) {
         UITabBarController *tab = (UITabBarController *) newTopViewController;
         
-        if([newTopViewController respondsToSelector:@selector(setTranslucent:)]) {
-            tab.tabBar.translucent = NO;
-        }
+        tab.tabBar.translucent = NO;
+        
         for(UIViewController *tabbedController in tab.viewControllers) {
             
             if ([tabbedController isKindOfClass:[UISplitViewController class]]) {

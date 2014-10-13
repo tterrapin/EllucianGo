@@ -52,6 +52,10 @@
                 break;
             case AVKeyValueStatusCancelled:
                 break;
+            case AVKeyValueStatusUnknown:
+                break;
+            case AVKeyValueStatusLoading:
+                break;
         }
     }];
     

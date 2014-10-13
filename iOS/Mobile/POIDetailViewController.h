@@ -21,7 +21,7 @@
 @property (strong, nonatomic) NSArray *types;
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) NSString *address;
-@property (strong, nonatomic) NSString *description;
+@property (strong, nonatomic) NSString *poiDescription;
 @property (strong, nonatomic) NSString *additionalServices;
 @property (strong, nonatomic) NSString *buildingId;
 @property (strong, nonatomic) NSString *campusName;

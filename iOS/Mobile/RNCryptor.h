@@ -5,17 +5,17 @@
 //
 //  This code is licensed under the MIT License:
 //
-//  Permission is hereby granted, free of charge, to any person obtaining a
+//  Permission is hereby granted, free of charge, to any person obtaining a 
 //  copy of this software and associated documentation files (the "Software"),
 //  to deal in the Software without restriction, including without limitation
 //  the rights to use, copy, modify, merge, publish, distribute, sublicense,
 //  and/or sell copies of the Software, and to permit persons to whom the
 //  Software is furnished to do so, subject to the following conditions:
-//
+//  
 //  The above copyright notice and this permission notice shall be included in
 //  all copies or substantial portions of the Software.
 //
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 //  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 //  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
 //  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -34,23 +34,24 @@ extern const uint8_t kRNCryptorFileVersion;
 
 typedef struct _RNCryptorKeyDerivationSettings
 {
-    size_t keySize;
-    size_t saltSize;
-    CCPBKDFAlgorithm PBKDFAlgorithm;
-    CCPseudoRandomAlgorithm PRF;
-    uint rounds;
+  size_t keySize;
+  size_t saltSize;
+  CCPBKDFAlgorithm PBKDFAlgorithm;
+  CCPseudoRandomAlgorithm PRF;
+  uint rounds;
+  BOOL hasV2Password; // See Issue #77. V2 incorrectly handled multi-byte characters.
 } RNCryptorKeyDerivationSettings;
 
 typedef struct _RNCryptorSettings
 {
-    CCAlgorithm algorithm;
-    size_t blockSize;
-    size_t IVSize;
-    CCOptions options;
-    CCHmacAlgorithm HMACAlgorithm;
-    size_t HMACLength;
-    RNCryptorKeyDerivationSettings keySettings;
-    RNCryptorKeyDerivationSettings HMACKeySettings;
+  CCAlgorithm algorithm;
+  size_t blockSize;
+  size_t IVSize;
+  CCOptions options;
+  CCHmacAlgorithm HMACAlgorithm;
+  size_t HMACLength;
+  RNCryptorKeyDerivationSettings keySettings;
+  RNCryptorKeyDerivationSettings HMACKeySettings;
 } RNCryptorSettings;
 
 static const RNCryptorSettings kRNCryptorAES256Settings = {
@@ -60,7 +61,7 @@ static const RNCryptorSettings kRNCryptorAES256Settings = {
     .options = kCCOptionPKCS7Padding,
     .HMACAlgorithm = kCCHmacAlgSHA256,
     .HMACLength = CC_SHA256_DIGEST_LENGTH,
-    
+
     .keySettings = {
         .keySize = kCCKeySizeAES256,
         .saltSize = 8,
@@ -68,7 +69,7 @@ static const RNCryptorSettings kRNCryptorAES256Settings = {
         .PRF = kCCPRFHmacAlgSHA1,
         .rounds = 10000
     },
-    
+
     .HMACKeySettings = {
         .keySize = kCCKeySizeAES256,
         .saltSize = 8,
@@ -80,14 +81,14 @@ static const RNCryptorSettings kRNCryptorAES256Settings = {
 
 enum _RNCryptorOptions
 {
-    kRNCryptorOptionHasPassword = 1 << 0,
+  kRNCryptorOptionHasPassword = 1 << 0,
 };
 typedef uint8_t RNCryptorOptions;
 
 enum
 {
-    kRNCryptorHMACMismatch = 1,
-    kRNCryptorUnknownHeader = 2,
+  kRNCryptorHMACMismatch = 1,
+  kRNCryptorUnknownHeader = 2,
 };
 
 @class RNCryptor;
@@ -114,20 +115,20 @@ typedef void (^RNCryptorHandler)(RNCryptor *cryptor, NSData *data);
 - (void)finish;
 
 /** Generate key given a password and salt using a PBKDF
- *
- * @param password Password to use for PBKDF
- * @param salt Salt for password
- * @param keySettings Settings for the derivation (RNCryptorKeyDerivationSettings)
- * @returns Key
- * @throws if settings are illegal
- */
+*
+* @param password Password to use for PBKDF
+* @param salt Salt for password
+* @param keySettings Settings for the derivation (RNCryptorKeyDerivationSettings)
+* @returns Key
+* @throws if settings are illegal
+*/
 + (NSData *)keyForPassword:(NSString *)password salt:(NSData *)salt settings:(RNCryptorKeyDerivationSettings)keySettings;
 
 /** Generate random data
- *
- * @param length Length of data to generate
- * @returns random data
- */
+*
+* @param length Length of data to generate
+* @returns random data
+*/
 + (NSData *)randomDataOfLength:(size_t)length;
 
 @end

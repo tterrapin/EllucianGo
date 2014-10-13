@@ -145,9 +145,6 @@
                                                  options:0 metrics:nil
                                                    views:@{@"view":self.directionsView}]];
     }
-    
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -155,14 +152,8 @@
     [super viewDidAppear:animated];
     [self sendView:@"Important Number Detail" forModuleNamed:self.module.name];
     
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
 }
-
-//- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-//{
-//    self.userLocation = newLocation;
-//    [self.locationManager stopUpdatingLocation];
-//}
 
 -(void)showGetDirections
 {
@@ -194,11 +185,10 @@
 
 -(void) openPointOnAppleMaps:(CLLocationCoordinate2D) coordinate
 {
-    MKMapItem *currentLocationItem = [MKMapItem mapItemForCurrentLocation];
     MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
-    MKMapItem *destinamtionLocItem = [[MKMapItem alloc] initWithPlacemark:place];
-    destinamtionLocItem.name = self.name;
-    NSArray *mapItemsArray = [NSArray arrayWithObjects:currentLocationItem, destinamtionLocItem, nil];
+    MKMapItem *destinationLocItem = [[MKMapItem alloc] initWithPlacemark:place];
+    destinationLocItem.name = self.name;
+    NSArray *mapItemsArray = [NSArray arrayWithObject:destinationLocItem];
     NSDictionary *dictForDirections = [NSDictionary dictionaryWithObject:MKLaunchOptionsDirectionsModeDriving forKey:MKLaunchOptionsDirectionsModeKey];
     [MKMapItem openMapsWithItems:mapItemsArray launchOptions:dictForDirections];
 }
@@ -278,13 +268,9 @@
     }
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:toInterfaceOrientation].width;
-}
-
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     [self.scrollView setContentOffset:CGPointZero animated:YES];
 }
 

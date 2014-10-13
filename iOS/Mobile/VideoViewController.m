@@ -9,6 +9,8 @@
 #import "VideoViewController.h"
 #import "AppearanceChanger.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "MBProgressHUD.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface VideoViewController ()
 
@@ -19,7 +21,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"Loading", @"loading message while waiting for data to load");
+    [self.mediaPlayOverlay setHidden:YES];
+
     self.navigationController.navigationBar.translucent = NO;
     
     self.title = self.module.name;
@@ -29,23 +35,35 @@
         [self.label setHidden:YES];
     }
     self.playBackgroundView.backgroundColor = [UIColor primaryColor];
-    
     NSString *urlString = [self.module propertyForKey:@"video"];
     NSURL *fileURL = [NSURL URLWithString:urlString];
-    
+
     self.moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL];
     
-    UIImage *thumbnail = [self.moviePlayerViewController.moviePlayer thumbnailImageAtTime:0.0
-                                               timeOption:MPMovieTimeOptionNearestKeyFrame];
-    [self.moviePlayerViewController.moviePlayer stop];
-    
-    self.imageView.image = thumbnail;
-    
-    self.imageView.userInteractionEnabled = YES;
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playMovie:)];
-    tapRecognizer.numberOfTapsRequired = 1;
-    [self.imageView addGestureRecognizer:tapRecognizer];
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+
+
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:fileURL options:nil];
+        AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        generate.appliesPreferredTrackTransform = YES;
+        NSError *error = NULL;
+        CMTime time = CMTimeMake(0, 600);
+        CGImageRef imageRef = [generate copyCGImageAtTime:time actualTime:NULL error:&error];
+        UIImage *image = [[UIImage alloc] initWithCGImage:imageRef];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(image) {
+
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    [self.mediaPlayOverlay setHidden:NO];
+                    [self.imageView setImage:image];
+                    self.imageView.userInteractionEnabled = YES;
+        
+                    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(playMovie:)];
+                    tapRecognizer.numberOfTapsRequired = 1;
+                    [self.imageView addGestureRecognizer:tapRecognizer];
+                }
+        });
+    });
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -60,7 +78,5 @@
     [self.moviePlayerViewController.moviePlayer prepareToPlay];
     [self presentMoviePlayerViewControllerAnimated:self.moviePlayerViewController];
 }
-
-
 
 @end

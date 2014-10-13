@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet AsynchronousImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIView *playBackgroundView;
 @property (weak, nonatomic) IBOutlet UIView *textBackgroundView;
+@property (weak, nonatomic) IBOutlet UIImageView *mediaPlayOverlay;
 
 - (IBAction)playMovie:(id)sender;
 

@@ -110,17 +110,10 @@
     
     [self closePopover];
     
-    if ([self.eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)])
-    {
-        [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
-         {
-             [self performSelectorOnMainThread:@selector(addEventToCalendar) withObject:nil waitUntilDone:YES];
-         }];
-    }
-    else
-    {
-        [self addEventToCalendar];
-    }
+    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error)
+     {
+         [self performSelectorOnMainThread:@selector(addEventToCalendar) withObject:nil waitUntilDone:YES];
+     }];
 }
 
 -(void) addEventToCalendar

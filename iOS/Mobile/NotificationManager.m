@@ -22,17 +22,15 @@
     
     // if notification url is defined and user is logged in
     if (user && [user isLoggedIn] && notificationRegistrationUrl) {
-        // check if user change since last registered
-        NSString* currentUserId = [user userid];
-        NSString* registeredUserId = [defaults stringForKey:@"registered-user-id"];
-        BOOL userIdChanged = registeredUserId == NULL || ![currentUserId isEqualToString:registeredUserId];
         
-        // no need to register if user hasn't changed
-        if (YES || userIdChanged) {
-            // register for PUSH notifications, results in didRegisterForRemoteNotificationsWithError or
-            // didFailToRegisterForRemoteNotificationsWithError called on AppDelegate
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-                (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+        // register for PUSH notifications, results in didRegisterForRemoteNotificationsWithError or
+        // didFailToRegisterForRemoteNotificationsWithError called on AppDelegate
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) { //iOS 8
+            UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        } else { //iOS 7 old way
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
         }
     }
 }

@@ -31,13 +31,9 @@
     
     UINavigationController *navBarController = self.moreNavigationController;
     navBarController.navigationBar.translucent = NO;
-    if([self.searchDisplayController.searchBar respondsToSelector:@selector(setBarTintColor:)]) {
-        navBarController.navigationBar.barTintColor = [UIColor primaryColor];
-    }
+    navBarController.navigationBar.barTintColor = [UIColor primaryColor];
     
-    if([self.tabBar respondsToSelector:@selector(setTranslucent:)]) {
-        self.tabBar.translucent = NO;
-    }
+    self.tabBar.translucent = NO;
     
     self.originalViewControllers = [[NSArray alloc] initWithArray:self.viewControllers];
     [self renderTabs];
@@ -93,9 +89,7 @@
     
     UINavigationController *navBarController = self.moreNavigationController;
     navBarController.navigationBar.translucent = NO;
-    if([self.searchDisplayController.searchBar respondsToSelector:@selector(setBarTintColor:)]) {
-        navBarController.navigationBar.barTintColor = [UIColor primaryColor];
-    }
+    navBarController.navigationBar.barTintColor = [UIColor primaryColor];
 }
 
 -(NSDateFormatter *)dateFormatter

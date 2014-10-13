@@ -51,8 +51,8 @@
             if(!self.name) {
                 self.name = building.name;
             }
-            if(!self.description) {
-                self.description = building.description_;
+            if(!self.poiDescription) {
+                self.poiDescription = building.description_;
             }
             if(!self.additionalServices) {
                 self.additionalServices = building.additionalServices;
@@ -104,17 +104,16 @@
                                                    views:@{@"view":self.directionsView}]];
         self.directionsLabel.text = nil;
     }
-    if(self.description && self.additionalServices) {
-        NSString *text = [NSString stringWithFormat:@"%@\n%@", self.description, self.additionalServices];
+    if(self.poiDescription && self.additionalServices) {
+        NSString *text = [NSString stringWithFormat:@"%@\n%@", self.poiDescription, self.additionalServices];
         self.descriptionTextView.text = text;
     }
-    else if(self.description) {
-        self.descriptionTextView.text = self.description;
+    else if(self.poiDescription) {
+        self.descriptionTextView.text = self.poiDescription;
     }
     else if(self.additionalServices) {
         self.descriptionTextView.text = self.additionalServices;
     }
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
     self.descriptionTextViewHeightConstraint.constant = self.descriptionTextView.contentSize.height;
     [self.scrollView invalidateIntrinsicContentSize];
     [self.descriptionTextView invalidateIntrinsicContentSize];
@@ -125,7 +124,7 @@
 {
     [super viewDidAppear:animated];
     [self sendView:@"Building Detail" forModuleNamed:self.module.name];
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     self.descriptionTextViewHeightConstraint.constant = self.descriptionTextView.contentSize.height;
     [self.scrollView invalidateIntrinsicContentSize];
 }
@@ -141,11 +140,10 @@
 
 -(void) openDirectionsOnAppleMaps:(CLLocationCoordinate2D) coordinate
 {
-    MKMapItem *currentLocationItem = [MKMapItem mapItemForCurrentLocation];
     MKPlacemark *place = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
-    MKMapItem *destinamtionLocItem = [[MKMapItem alloc] initWithPlacemark:place];
-    destinamtionLocItem.name = self.name;
-    NSArray *mapItemsArray = [NSArray arrayWithObjects:currentLocationItem, destinamtionLocItem, nil];
+    MKMapItem *destinationLocItem = [[MKMapItem alloc] initWithPlacemark:place];
+    destinationLocItem.name = self.name;
+    NSArray *mapItemsArray = [NSArray arrayWithObject:destinationLocItem];
     NSDictionary *dictForDirections = [NSDictionary dictionaryWithObject:MKLaunchOptionsDirectionsModeDriving forKey:MKLaunchOptionsDirectionsModeKey];
     [MKMapItem openMapsWithItems:mapItemsArray launchOptions:dictForDirections];
 }
@@ -245,8 +243,8 @@
             }
             if(!self.name && [building objectForKey:@"name"] != [NSNull null])
                 self.name = [building objectForKey:@"name"];
-            if(!self.description && [building objectForKey:@"longDescription"] != [NSNull null])
-                self.description = [building objectForKey:@"longDescription"];
+            if(!self.poiDescription && [building objectForKey:@"longDescription"] != [NSNull null])
+                self.poiDescription = [building objectForKey:@"longDescription"];
             if(!self.additionalServices && [building objectForKey:@"additionalServices"] != [NSNull null])
                 self.additionalServices = [building objectForKey:@"additionalServices"];
             if(!([self.types count] > 0) && [building objectForKey:@"types"] != [NSNull null])
@@ -261,18 +259,15 @@
 
         }
         
-        if(!self.name && !self.description && !self.additionalServices && !self.location && !self.address && !self.imageUrl) {
+        if(!self.name && !self.poiDescription && !self.additionalServices && !self.location && !self.address && !self.imageUrl) {
                 self.nameLabel.text = NSLocalizedString(@"No information available for this building.", @"message when there is no information to show the user about a building they selected");
         }
     }
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:toInterfaceOrientation].width;
-}
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     [self.descriptionTextView invalidateIntrinsicContentSize];
     [self resetScrollViewContentOffset];
 }

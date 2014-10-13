@@ -24,5 +24,5 @@
 
 +(void) applyAppearanceChanges:(UIView *)window;
 + (BOOL) isRTL;
-+(CGSize) sizeInOrientation:(UIInterfaceOrientation)orientation;
++(CGSize) currentScreenBoundsDependOnOrientation;
 @end

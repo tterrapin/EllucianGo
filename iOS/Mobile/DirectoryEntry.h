@@ -33,5 +33,7 @@
 @property (strong, nonatomic) NSString *suffix;
 
 -(NSString *) nameOrderedByFirstName:(BOOL)firstNameFirst;
+-(NSString *) firstNameSort;
+-(NSString *) lastNameSort;
 
 @end

@@ -224,7 +224,7 @@
         vc.types = [types copy];
         vc.location = [[CLLocation alloc] initWithLatitude:[poi.latitude doubleValue] longitude:[poi.longitude doubleValue]];
         vc.address = poi.address;
-        vc.description = poi.description_;
+        vc.poiDescription = poi.description_;
         vc.additionalServices = poi.additionalServices;
         vc.campusName = poi.campus.name;
         vc.module = self.module;

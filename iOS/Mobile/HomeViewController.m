@@ -53,32 +53,17 @@
         //if its a default configuration but the images hasn't yet been downloaded, use the launch image.  Have to pull the right version out of the asset catalog.
         NSString *launchImage = @"LaunchImage";
         UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-        
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
 
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-                if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    launchImage = @"LaunchImage-700-Landscape";
-                } else {
-                    launchImage = @"LaunchImage-700-Portrait";
-                }
-            } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&[UIScreen mainScreen].bounds.size.height > 480.0f) {
-                launchImage = @"LaunchImage-700-568h";
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+            if (UIInterfaceOrientationIsLandscape(orientation)) {
+                launchImage = @"LaunchImage-700-Landscape";
             } else {
-                launchImage = @"LaunchImage-700";
+                launchImage = @"LaunchImage-700-Portrait";
             }
+        } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&[UIScreen mainScreen].bounds.size.height > 480.0f) {
+            launchImage = @"LaunchImage-700-568h";
         } else {
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-                if (UIInterfaceOrientationIsLandscape(orientation)) {
-                    launchImage = @"LaunchImage-Landscape";
-                } else {
-                    launchImage = @"LaunchImage-Portrait";
-                }
-            } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&[UIScreen mainScreen].bounds.size.height > 480.0f) {
-                launchImage = @"LaunchImage-568h";
-            } else {
-                launchImage = @"LaunchImage";
-            }
+            launchImage = @"LaunchImage-700";
         }
         
         UIImage *image = [UIImage imageNamed:launchImage];
@@ -145,6 +130,7 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     if([UIViewController instancesRespondToSelector:@selector(edgesForExtendedLayout)]) {
         self.edgesForExtendedLayout=UIRectEdgeNone;
     }

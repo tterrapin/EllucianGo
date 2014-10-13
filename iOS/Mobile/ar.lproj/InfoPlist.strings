@@ -1,0 +1,3 @@
+/* Localized versions of Info.plist keys */
+
+NSLocationWhenInUseUsageDescription = "موقعك يسمح للتطبيق عرض أقرب فروع الجامعة إليك وإمكانية عرض توجيهات الوصول إليه.";

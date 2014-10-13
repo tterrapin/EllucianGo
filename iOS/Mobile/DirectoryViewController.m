@@ -52,13 +52,13 @@
     
     if(accessGranted) {
         self.sort = ABPersonGetSortOrdering();
-        self.sortSelector = self.sort == kABPersonCompositeNameFormatFirstNameFirst ? @selector(firstName) : @selector(lastName);
+        self.sortSelector = self.sort == kABPersonCompositeNameFormatFirstNameFirst ? @selector(firstNameSort) : @selector(lastNameSort);
     
-        self.firstNameFirst = ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst;
+        self.firstNameFirst = ABPersonGetCompositeNameFormatForRecord(NULL) == kABPersonCompositeNameFormatFirstNameFirst;
         CFRelease(addressBook);
     } else {
         self.sort = kABPersonCompositeNameFormatFirstNameFirst;
-        self.sortSelector = @selector(lastName);
+        self.sortSelector = @selector(lastNameSort);
         self.firstNameFirst = YES;
     }
 
@@ -111,9 +111,7 @@
     if([mutableScopesTitle count] > 1) {
         self.searchBar.scopeButtonTitles = [mutableScopesTitle copy];
 
-        if(SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            self.searchBar.tintColor = [UIColor primaryColor];
-        }
+        self.searchBar.tintColor = [UIColor primaryColor];
 
         if(self.initialScope) {
             self.searchBar.selectedScopeButtonIndex = [self.scopesType indexOfObject:[NSNumber numberWithInt:self.initialScope]];
@@ -378,7 +376,8 @@
     //sort each section
     for (NSMutableArray *section in unsortedSections)
     {
-        [sections addObject:[collation sortedArrayFromArray:section collationStringSelector:selector]];
+        NSArray *sorted = [collation sortedArrayFromArray:section collationStringSelector:selector];
+        [sections addObject:sorted];
     }
     
     return sections;

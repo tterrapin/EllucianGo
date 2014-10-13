@@ -20,4 +20,16 @@
     else return @"";
 }
 
+-(NSString *) firstNameSort;
+{
+    if(self.firstName) return self.firstName;
+    else return @"";
+}
+
+-(NSString *) lastNameSort;
+{
+    if(self.lastName) return self.lastName;
+    else return @"";
+}
+
 @end

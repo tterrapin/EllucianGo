@@ -114,8 +114,6 @@
                                                  options:0 metrics:nil
                                                    views:@{@"view":self.addressView}]];
     }
-    
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -123,7 +121,7 @@
     [super viewDidAppear:animated];
     [self sendView:@"Directory card" forModuleNamed:self.module.name];
     
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
 }
 
 -(void)tapEmail:(id)sender
@@ -326,14 +324,10 @@
     return address;
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:toInterfaceOrientation].width;
-}
-
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self.scrollView setContentOffset:CGPointZero animated:YES];
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
 }
 
 

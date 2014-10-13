@@ -359,14 +359,11 @@
 - (CGFloat)screenWidthForOrientation:(UIInterfaceOrientation)orientation
 {
     CGSize size = [UIScreen mainScreen].bounds.size;
-    UIApplication *application = [UIApplication sharedApplication];
-    if (UIInterfaceOrientationIsLandscape(orientation))
-    {
-        size = CGSizeMake(size.height, size.width);
-    }
-    if (application.statusBarHidden == NO)
-    {
-        size.height -= MIN(application.statusBarFrame.size.width, application.statusBarFrame.size.height);
+    if(SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        if (UIInterfaceOrientationIsLandscape(orientation))
+        {
+            size = CGSizeMake(size.height, size.width);
+        }
     }
     return size.width;
 }
@@ -454,9 +451,7 @@
     {
         buttonImage = [[ImageCache sharedCache] getCachedImage: menuImageName];
         buttonImage=  [UIImage imageWithCGImage:[buttonImage CGImage] scale:2.0 orientation:UIImageOrientationUp];
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-            buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        }
+        buttonImage = [buttonImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }
     homeController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:homeController action:@selector(revealMenu:)];
     

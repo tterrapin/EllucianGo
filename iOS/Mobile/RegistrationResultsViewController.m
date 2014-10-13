@@ -202,19 +202,12 @@
     label2.numberOfLines = 0;
     label2.translatesAutoresizingMaskIntoConstraints = NO;
     [h addSubview:label2];
-    
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        UIEdgeInsets separatorInset = [tableView separatorInset];
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 80, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    } else {
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, 80, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    }
+
+    UIEdgeInsets separatorInset = [tableView separatorInset];
+    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 80, 9999, 1)];
+    UIColor *separatorColor = [tableView separatorColor];
+    [bottom setBackgroundColor:separatorColor];
+    [h addSubview:bottom];
 
     imageView.image = [UIImage imageNamed:@"Registration Results Status Important"];
     label.textColor = [UIColor colorWithRed:251/255.0f green:174/255.0f blue:23/255.0f alpha:1.0f];
@@ -232,7 +225,7 @@
                                              options:0 metrics:nil
                                                views:views]];
     [h addConstraints:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[label][label2]"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[label][label2]-6-|"
                                              options:0 metrics:nil
                                                views:views]];
     
@@ -281,18 +274,11 @@
         label.textAlignment = NSTextAlignmentRight;
     }
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        UIEdgeInsets separatorInset = [tableView separatorInset];
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 42, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    } else {
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, 42, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    }
+    UIEdgeInsets separatorInset = [tableView separatorInset];
+    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 42, 9999, 1)];
+    UIColor *separatorColor = [tableView separatorColor];
+    [bottom setBackgroundColor:separatorColor];
+    [h addSubview:bottom];
     
     imageView.image = [UIImage imageNamed:@"Registration Results Status Registered"];
     label.textColor = [UIColor colorWithRed:57/255.0f green:181/255.0f blue:74/255.0f alpha:1.0f];
@@ -366,18 +352,11 @@
         label2.textAlignment = NSTextAlignmentRight;
     }
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        UIEdgeInsets separatorInset = [tableView separatorInset];
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 60, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    } else {
-        UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(0, 60, 9999, 1)];
-        UIColor *separatorColor = [tableView separatorColor];
-        [bottom setBackgroundColor:separatorColor];
-        [h addSubview:bottom];
-    }
+    UIEdgeInsets separatorInset = [tableView separatorInset];
+    UIView *bottom = [[UIView alloc]initWithFrame:CGRectMake(separatorInset.left, 60, 9999, 1)];
+    UIColor *separatorColor = [tableView separatorColor];
+    [bottom setBackgroundColor:separatorColor];
+    [h addSubview:bottom];
 
     imageView.image = [UIImage imageNamed:@"Registration Results Status Error"];
     label.textColor = [UIColor colorWithRed:237/255.0f green:28/255.0f blue:36/255.0f alpha:1.0f];
@@ -397,17 +376,9 @@
                                                views:views]];
 
     [h addConstraints:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[label][label2]"
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-6-[label][label2]-6-|"
                                              options:0 metrics:nil
                                                views:views]];
-    
-    [h addConstraint: [NSLayoutConstraint constraintWithItem:label2
-                                                   attribute:NSLayoutAttributeBottom
-                                                   relatedBy:NSLayoutRelationEqual
-                                                      toItem:imageView
-                                                   attribute:NSLayoutAttributeBottom
-                                                  multiplier:1.0
-                                                    constant:6.0]];
     
     
     [h addConstraint: [NSLayoutConstraint constraintWithItem:label

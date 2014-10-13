@@ -60,7 +60,7 @@
 {
     [super viewDidAppear:animated];
     [self sendView:@"Course Overview" forModuleNamed:self.module.name];
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     self.courseDescriptionTextViewHeightConstraint.constant = [self.courseDescriptionTextView heightOfContent];
 }
 
@@ -312,7 +312,7 @@
     self.courseDescriptionTextView.text = courseDetail.courseDescription;
     self.courseDescriptionTextView.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
     
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
 
     self.courseDescriptionTextViewHeightConstraint.constant = [self.courseDescriptionTextView heightOfContent];
     self.courseDescriptionTextViewBottomConstraint.constant = 0;
@@ -351,13 +351,9 @@
     }
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:toInterfaceOrientation].width;
-}
-
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     self.courseDescriptionTextViewHeightConstraint.constant = [self.courseDescriptionTextView heightOfContent];
     [self resetScrollViewContentOffset];
 }

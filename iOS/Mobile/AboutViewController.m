@@ -113,7 +113,6 @@
     }
 
     self.clientVersion.text = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
     
     [self retrieveVersion];
     [self loadImage];
@@ -124,14 +123,10 @@
     [super viewDidAppear:animated];
     [self sendView:@"About Page" forModuleNamed:nil];
 
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:self.interfaceOrientation].width;
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
     
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
-        self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
-    } else {
-        self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height;
-    }
+    CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
+    self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent.height;
 }
 
 - (void) loadImage
@@ -247,20 +242,13 @@
     [self performSegueWithIdentifier:@"policyView" sender:nil];
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                 duration:(NSTimeInterval)duration
-{
-    self.widthConstraint.constant = [AppearanceChanger sizeInOrientation:toInterfaceOrientation].width;
-}
-
 -(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
-        self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent .height;
-    } else {
-        self.contactTextViewHeightConstraint.constant = self.contactTextView.contentSize.height;
-    }
+    CGSize sizeThatShouldFitTheContent = [self.contactTextView sizeThatFits:self.contactTextView.frame.size];
+    self.contactTextViewHeightConstraint.constant = sizeThatShouldFitTheContent .height;
+    
+    self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
+
     [self resetScrollViewContentOffset];
 }
 

@@ -36,9 +36,7 @@
     
     self.navigationController.navigationBar.translucent = NO;
     self.searchDisplayController.searchBar.translucent = NO;
-    if([self.searchDisplayController.searchBar respondsToSelector:@selector(setBarTintColor:)]) {
-        self.searchDisplayController.searchBar.barTintColor = [UIColor defaultPrimaryColor];
-    }
+    self.searchDisplayController.searchBar.barTintColor = [UIColor defaultPrimaryColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(outdated:) name:kVersionCheckerOutdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAvailable:) name:kVersionCheckerUpdateAvailableNotification object:nil];

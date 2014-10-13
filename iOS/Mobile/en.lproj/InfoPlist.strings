@@ -1,2 +1,6 @@
 /* Localized versions of Info.plist keys */
 
+NSLocationWhenInUseUsageDescription = "when in use usage";
+
+NSLocationAlwaysUsageDescription = "always usage";
+

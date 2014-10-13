@@ -104,12 +104,8 @@
 }
 
 - (IBAction)dismiss:(id)sender {
-    
-    if(!_delegate)
-    {
-        [self updateCategories];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    [self updateCategories];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)initializeCategories
@@ -152,7 +148,7 @@
     CGFloat largestLabelWidth = 200;
     for (NSString *catName in _categories) {
         //Checks size of text using the default font for UITableViewCell's textLabel.
-        CGSize labelSize = [catName sizeWithFont:[UIFont boldSystemFontOfSize:20.0f]];
+        CGSize labelSize = [catName sizeWithAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize:20]}];
         if (labelSize.width > largestLabelWidth) {
             largestLabelWidth = labelSize.width;
         }
@@ -162,9 +158,8 @@
     CGFloat popoverWidth = largestLabelWidth + 100;
     
     //Set the property to tell the popover container how big this view will be.
-    self.contentSizeForViewInPopover = CGSizeMake(popoverWidth, totalRowsHeight);
+    self.preferredContentSize = CGSizeMake(popoverWidth, totalRowsHeight);
 }
-
 
 @end
 

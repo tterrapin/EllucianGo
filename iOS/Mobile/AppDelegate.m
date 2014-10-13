@@ -50,6 +50,13 @@ BOOL logoutOnStartup = YES;
     [GAI sharedInstance].dispatchInterval = 20;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelError];
     
+    //Notifications registration
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+    }
+    
     SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
     slidingViewController.managedObjectContext = self.managedObjectContext;
     
@@ -269,9 +276,23 @@ BOOL logoutOnStartup = YES;
     
     [self.managedObjectContext reset];
     [self.privateWriterContext reset];
-    [self.persistentStoreCoordinator removePersistentStore:store error:&error];
-    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+    if ([self.persistentStoreCoordinator removePersistentStore:store error:&error]) {
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
+    }
     [[ImageCache sharedCache] reset];
+    
+    if (error) {
+        NSLog(@"Failed to remove persistent store: %@", [error localizedDescription]);
+        NSArray *detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
+        if (detailedErrors != nil && [detailedErrors count] > 0) {
+            for (NSError *detailedError in detailedErrors) {
+                NSLog(@" DetailedError: %@", [detailedError userInfo]);
+            }
+        }
+        else {
+            NSLog(@" %@", [error userInfo]);
+        }
+    }
     
     if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         NSLog(@"Error adding persistent store coordinator: %@", error);

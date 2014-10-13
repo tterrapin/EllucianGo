@@ -49,10 +49,9 @@
 
     UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     self.registerButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Register", "Register button") style:UIBarButtonItemStyleBordered target:self action:@selector(startRegistration:)];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
-        [self.navigationController.toolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-    }
+
+    UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
+    [self.navigationController.toolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.registerButton, flexibleItem, nil];
     self.navigationController.navigationBar.translucent = NO;

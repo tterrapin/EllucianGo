@@ -174,6 +174,10 @@
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
             break;
+        case NSFetchedResultsChangeMove:
+            break;
+        case NSFetchedResultsChangeUpdate:
+            break;
     }
 }
 
@@ -222,7 +226,9 @@
                 if([jsonDictionary objectForKey:@"content"] != [NSNull null]) {
                     entry.content = [jsonDictionary objectForKey:@"content"];
                 }
-                entry.date = [self.datetimeFormatter dateFromString:[jsonDictionary objectForKey:@"date"]];
+                if([jsonDictionary objectForKey:@"date"] != [NSNull null]) {
+                    entry.date = [self.datetimeFormatter dateFromString:[jsonDictionary objectForKey:@"date"]];
+                }
                 entry.website = [jsonDictionary objectForKey:@"website"];
             }
         }

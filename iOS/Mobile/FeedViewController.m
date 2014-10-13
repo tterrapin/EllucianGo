@@ -28,6 +28,10 @@
 
 @implementation FeedViewController
 
+- (void) awakeFromNib{
+    [super awakeFromNib];
+    self.splitViewController.delegate = self;
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -39,6 +43,7 @@
         detailController.feedModule = self.feedModule;
         detailController.hiddenCategories = self.hiddenCategories;
         detailController.module = self.module;
+        detailController.delegate = self;
     }
     else if ([[segue identifier] isEqualToString:@"Show Feed Detail"] || [[segue identifier] isEqualToString:@"Show Feed Image Detail"])
     {
@@ -65,6 +70,7 @@
     
     self.title = self.module.name;
     [self fetchFeeds];
+    [self reloadData];
     
     if ([self.fetchedResultsController.fetchedObjects count] > 0 ) {
     
@@ -75,18 +81,6 @@
             [_detailSelectionDelegate selectedDetail:selectedFeed withIndex:head withModule:self.module withController:self];
         }
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    
-    [super viewWillAppear:animated];
-    
-    [self readFeedModule];
-    _fetchedResultsController = nil;
-    NSError *error;
-    [self.fetchedResultsController performFetch:&error];
-    [self.tableView reloadData];
-    
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -673,6 +667,11 @@
         [self.tableView insertSubview:self.searchDisplayController.searchBar aboveSubview:self.tableView];
     }
     return;
+}
+
+-(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end

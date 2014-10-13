@@ -94,7 +94,7 @@
     CGFloat largestLabelWidth = 200;
     for (CourseTerm *term in _terms) {
         //Checks size of text using the default font for UITableViewCell's textLabel.
-        CGSize labelSize = [term.name sizeWithFont:[UIFont boldSystemFontOfSize:20.0f]];
+        CGSize labelSize = [term.name sizeWithAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize:20]}];
         if (labelSize.width > largestLabelWidth) {
             largestLabelWidth = labelSize.width;
         }
@@ -104,7 +104,9 @@
     CGFloat popoverWidth = largestLabelWidth + 100;
     
     //Set the property to tell the popover container how big this view will be.
-    self.contentSizeForViewInPopover = CGSizeMake(popoverWidth, totalRowsHeight);
+    self.preferredContentSize = CGSizeMake(popoverWidth, totalRowsHeight);
+    
+    
 }
 
 @end
