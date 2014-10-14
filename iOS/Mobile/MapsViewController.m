@@ -55,9 +55,6 @@
     } else {
         [self fetchMapsInBackground];
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuOpened:) name:kSlidingViewOpenMenuAppearsNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuClosed:) name:kSlidingViewTopResetNotification object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated

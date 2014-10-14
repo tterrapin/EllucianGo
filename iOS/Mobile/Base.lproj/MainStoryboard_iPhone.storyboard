@@ -2628,7 +2628,7 @@
             <objects>
                 <tableViewController id="BN9-pf-Xa0" customClass="DirectoryViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="akU-vB-dak">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search directory" id="iS4-ME-cUg" customClass="ScopedUISearchBar">
@@ -2688,7 +2688,7 @@
                         <viewControllerLayoutGuide type="bottom" id="937-e1-jTz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="whD-MT-C5f">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ay-3B-nk3">
@@ -5631,7 +5631,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="drX-xI-xTQ"/>
         <segue reference="o5b-9k-abs"/>
         <segue reference="i1U-VI-iRg"/>
         <segue reference="Emw-Mf-7wV"/>

@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSMutableDictionary *thumbImageCache;
 @property (nonatomic, strong) FeedFilterViewController *filterPicker;
 @property (nonatomic, strong) UIPopoverController *filterPickerPopover;
-//@property (nonatomic, strong) UIPopoverController *masterPopoverController;
 
 @end
 
