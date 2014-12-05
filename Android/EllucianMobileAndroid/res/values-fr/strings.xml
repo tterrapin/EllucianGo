@@ -71,6 +71,7 @@
     <string name="label_open">Ouvrir</string>
     <string name="label_date">Date</string>
     <string name="label_location">Position</string>
+    <string name="label_done">Terminé</string>
        
     <string name="label_format">
 	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
@@ -145,6 +146,9 @@
 	<string name="date_time_to_time_format">
 	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
 	</string>
+	<string name="date_time_to_date_time_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
+	</string>
 	<string name="time_to_time_format">
 	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
 	</string>
@@ -169,6 +173,9 @@
 	</string>
 	<string name="default_meeting_days_times_and_type_format">
 	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	<string name="default_two_string_separator_format">
+	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
 	
 	
@@ -239,7 +246,7 @@
     <string name="title_activity_directory_list_student">Annuaire étudiants</string>
     <string name="title_activity_directory_list_faculty">Annuaire enseignants</string>
     <string name="directory">Annuaire</string>
-    <string name="directory_search">Pour utiliser l\'annuaire, effectuez une recherche ci-dessus.</string>
+    <string name="directory_search">Pour utiliser l\'annuaire, lancez une recherche ci-dessus.</string>
     <string name="directory_no_results">Aucun résultat.</string>
     <string name="directory_no_phone">Impossible d\'ajouter de contact sans numéro de téléphone.</string>
     <string name="searchable_directory_hint">Recherche annuaire</string>
@@ -247,7 +254,7 @@
     <string name="directory_icon_description">Icône</string>
     <string name="directory_type_all">Tous</string>
     <string name="directory_type_student">Étudiants</string>
-    <string name="directory_type_faculty">Enseignant(s)</string>
+    <string name="directory_type_faculty">Enseignants</string>
     
     <!-- Events -->
     
@@ -341,10 +348,15 @@
     <string name="registration_results_success_sub">Vous êtes inscrit à ces enseignements.</string>
     <string name="registration_results_warning">Désolé.</string>
     <string name="registration_results_failure_sub">Inscription à ces enseignements impossible:</string>
+    <string name="registration_results_dropped_important_sub">Ces problèmes ont pu empêcher le retrait.</string>
+    <string name="registration_results_dropped_success">Retrait correctement effectué!</string>
+    <string name="registration_results_dropped_success_sub">Vous avez retiré ces enseignements.</string>
+    <string name="registration_results_dropped_failure_sub">Retrait de ces enseignements impossible.</string>
     <string name="registration_dialog_title">Titre</string>
     <string name="registration_dialog_register_message">Voulez-vous vraiment vous inscrire à ces UP?</string>
     <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier?</string>
     <string name="registration_dialog_remove_message">Voulez-vous vraiment supprimer cet élément du panier?</string>
+    <string name="registration_dialog_drop_message">Voulez-vous vraiment retirer ces UP?</string>
     <string name="registration_dialog_variable_credits_to_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f</string>
     <string name="registration_dialog_variable_credits_or_message">Saisir valeur de crédits d\'enseignements de %1$.2f ou %2$.2f</string>
     <string name="registration_dialog_variable_credits_inc_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f en incréments de %3$.2f</string>
@@ -355,11 +367,15 @@
     <string name="registration_dialog_pin_message">Saisir un code confidentiel pour chacun des semestres suivants:</string>
     <string name="registration_search_header">Sélectionner semestre et saisir critères de recherche.</string>
     <string name="registration_search_field_hint">Critères de recherche</string>
+    <string name="registration_search_refine_search"><u>Affiner la recherche</u></string>
+    <string name="registration_search_refine_location">Campus</string>
+    <string name="registration_search_refine_level">Niveau</string>
     <string name="registration_add_to_cart">Ajouter au panier</string>
     <string name="registration_added_to_server_cart_failed">Au moins une UP n\'a pas été enregistrée sur le serveur. Ces données ne peuvent rester que pour la session en cours.</string>
     <string name="registration_fill_in_message">Sélectionner un semestre et saisir une recherche.</string>
     <string name="registration_section_id">ID d\'UP</string>
     <string name="registration_grading">Notation</string>
+    <string name="registration_academic_levels">Niveaux</string>
     <string name="registration_ceus">FC</string>
     <string name="registration_audit">Auditeur libre</string>
     <string name="registration_graded">Noté</string>
@@ -370,12 +386,13 @@
     <string name="registration_were_sorry">Désolé.</string>
     <string name="registration_ineligible_to_register">Non admissible</string>
     <string name="registration_remove">Supprimer</string>
+    <string name="registration_drop">Retirer</string>
     
     <string name="registration_added_to_cart_success_format">
-	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> ajouté(s) au panier.
+	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> ajouté au panier.
 	</string>
     <string name="registration_added_to_cart_failed_format">
-        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> non ajouté(s) au panier. Données manquantes ou UP existe déjà dans le panier.
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> non ajouté au panier. Données manquantes ou UP existe déjà dans le panier.
     </string>
     <string name="registration_row_credits_format">
 	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>

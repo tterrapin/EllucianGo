@@ -41,12 +41,15 @@ import com.ellucian.mobile.android.provider.EllucianContract.NotificationsColumn
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategories;
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategoriesColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersColumns;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevelsColumns;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocationsColumns;
 
 public class EllucianDatabase extends SQLiteOpenHelper {
 	
 	// 7 = Ellucian Mobile 3.5
 	// 8 = Ellucian Mobile 3.6
-	private static final int DB_VERSION = 8;
+	// 9 = Ellucian Mobile 4.0
+	private static final int DB_VERSION = 9;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -113,7 +116,9 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 						+ " on " + EVENTS_CATEGORIES + "."
 						+ EventsCategories.EVENTS_CATEGORY_ID + "="
 						+ EVENTS_EVENTS_CATEGORIES + "."
-						+ EventsCategories.EVENTS_CATEGORY_ID;;
+						+ EventsCategories.EVENTS_CATEGORY_ID;
+		String REGISTRATION_LOCATIONS = "registration_locations";
+		String REGISTRATION_LEVELS = "registration_levels";
 		
 	}
 
@@ -485,7 +490,21 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ " TEXT NOT NULL " + References.EVENTS_ID + ", "
 				+ EventsCategoriesColumns.EVENTS_CATEGORY_ID
 				+ " TEXT NOT NULL " + References.EVENTS_CATEGORY_ID + ")");
-
+		
+		db.execSQL("CREATE TABLE " + Tables.REGISTRATION_LOCATIONS + " ("
+				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ ModulesColumns.MODULES_ID + " TEXT NOT NULL " + References.MODULES_ID + ", " 
+				+ RegistrationLocationsColumns.REGISTRATION_LOCATIONS_NAME + " TEXT NOT NULL, " 
+				+ RegistrationLocationsColumns.REGISTRATION_LOCATIONS_CODE + " TEXT NOT NULL "
+				+ ")");
+		
+		db.execSQL("CREATE TABLE " + Tables.REGISTRATION_LEVELS + " ("
+				+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ ModulesColumns.MODULES_ID + " TEXT NOT NULL " + References.MODULES_ID + ", " 
+				+ RegistrationLevelsColumns.REGISTRATION_LEVELS_NAME + " TEXT NOT NULL, " 
+				+ RegistrationLevelsColumns.REGISTRATION_LEVELS_CODE + " TEXT NOT NULL "
+				+ ")");
+				
 		createNewsSearch(db);
 		createEventsSearch(db);
 
@@ -652,8 +671,20 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 		case 7: //3.5
 			db.execSQL("ALTER TABLE " + Tables.COURSE_PATTERNS					
 					+ " ADD COLUMN " + CoursePatternsColumns.PATTERN_INSTRUCTIONAL_METHOD + " TEXT ");
-
-
+		case 8: //4.0
+			db.execSQL("CREATE TABLE " + Tables.REGISTRATION_LOCATIONS + " ("
+					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ ModulesColumns.MODULES_ID + " TEXT NOT NULL " + References.MODULES_ID + ", " 
+					+ RegistrationLocationsColumns.REGISTRATION_LOCATIONS_NAME + " TEXT NOT NULL, " 
+					+ RegistrationLocationsColumns.REGISTRATION_LOCATIONS_CODE + " TEXT NOT NULL "
+					+ ")");
+			
+			db.execSQL("CREATE TABLE " + Tables.REGISTRATION_LEVELS + " ("
+					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ ModulesColumns.MODULES_ID + " TEXT NOT NULL " + References.MODULES_ID + ", " 
+					+ RegistrationLevelsColumns.REGISTRATION_LEVELS_NAME + " TEXT NOT NULL, " 
+					+ RegistrationLevelsColumns.REGISTRATION_LEVELS_CODE + " TEXT NOT NULL "
+					+ ")");
 		}
 
 		Log.d(this.getClass().getSimpleName(),

@@ -85,10 +85,13 @@
     UILabel *line1aLabel = (UILabel *)[cell viewWithTag:1];
     line1aLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"course name-section number", @"Localizable", [NSBundle mainBundle], @"%@-%@", @"course name-section number"), plannedSection.courseName, plannedSection.courseSectionNumber];
     UILabel *line1bLabel = (UILabel *)[cell viewWithTag:6];
-    if(plannedSection.instructionalMethod) {
-        line1bLabel.text = [NSString stringWithFormat:@"(%@)", plannedSection.instructionalMethod];
-    } else
-    {
+    if(plannedSection.academicLevels && plannedSection.location) {
+        line1bLabel.text = [NSString stringWithFormat:@"%@ | %@", [plannedSection.academicLevels componentsJoinedByString:@","], plannedSection.location];
+    } else if(plannedSection.academicLevels) {
+            line1bLabel.text = [plannedSection.academicLevels componentsJoinedByString:@","];
+    } else if(plannedSection.location) {
+        line1bLabel.text = plannedSection.location;
+    } else {
         line1bLabel.text = nil;
     }
     UILabel *line2Label = (UILabel *)[cell viewWithTag:2];
@@ -134,10 +137,20 @@
         line3bLabel.text = nil;
     }
     UILabel *line4Label = (UILabel *)[cell viewWithTag:4];
-    if(plannedSection.meetingPatternDescription) {
-        line4Label.text = [NSString stringWithFormat:@"%@", plannedSection.meetingPatternDescription];
+    UILabel *line4bLabel = (UILabel *)[cell viewWithTag:7];
+    if(plannedSection.meetingPatternDescription && plannedSection.instructionalMethod) {
+        line4Label.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration search results meeting pattern", @"Localizable", [NSBundle mainBundle], @"%@", @"registration search results meeting pattern"), plannedSection.meetingPatternDescription];
+        line4bLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"registration search results instructional method", @"Localizable", [NSBundle mainBundle], @" | %@", @"registration search results instructional method"), plannedSection.instructionalMethod];
+        
+    } else if(plannedSection.meetingPatternDescription) {
+        line4Label.text = plannedSection.meetingPatternDescription;
+        line4bLabel.text = nil;
+    } else if(plannedSection.instructionalMethod) {
+        line4Label.text = plannedSection.instructionalMethod;
+        line4bLabel.text = nil;
     } else {
         line4Label.text = nil;
+        line4bLabel.text = nil;
     }
     
     UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:100];
@@ -306,6 +319,7 @@
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
+        detailController.module = self.module;
     }
 }
 

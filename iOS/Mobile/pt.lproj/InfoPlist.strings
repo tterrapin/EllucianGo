@@ -1,3 +1,3 @@
-/* Localized versions of Info.plist keys */
+﻿/* Localized versions of Info.plist keys */
 
-NSLocationWhenInUseUsageDescription = "A sua localização permite exibir o campus mais próximo e fornecer itinerários para o campus.";
+NSLocationWhenInUseUsageDescription = "Sua localização nos permite mostrar o campus mais próximo e fornecer as direções do campus.";

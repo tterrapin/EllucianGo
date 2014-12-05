@@ -34,6 +34,7 @@ public class Extra {
 	public static final String LOGIN_BACKGROUND = "loginBackground";
 	public static final String LOGIN_SUCCESS = "loginSuccess";
 	public static final String CONFIGURATION_REFRESH = "configurationRefresh";
+	public static final String REFRESH = "refresh";
 	
 	/** Courses Extras */
 	

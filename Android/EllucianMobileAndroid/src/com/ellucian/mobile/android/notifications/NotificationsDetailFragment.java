@@ -24,6 +24,7 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
+import com.ellucian.mobile.android.webframe.WebframeActivity;
 
 public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 
@@ -91,20 +92,19 @@ public class NotificationsDetailFragment extends EllucianDefaultDetailFragment {
 				} else {
 					hyperlink = "http" + hyperlink.substring(4);
 				}
-				final Intent websiteIntent = new Intent(Intent.ACTION_VIEW,
-						Uri.parse(hyperlink));
-				boolean intentAvailable = Utils.isIntentAvailable(getActivity(),  websiteIntent);
-				if (intentAvailable) {
-					button.setText(linkLabel);
-					button.setOnClickListener(new View.OnClickListener() {
-						public void onClick(View arg0) {
-							sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_FOLLOW_WEB, "Open notification in web frame", null, getEllucianActivity().moduleName);
-							startActivity(websiteIntent);
-						}
-					});
-				} else {
-					button.setVisibility(View.GONE);
-				}
+				final String webframeLink = hyperlink;
+				button.setText(linkLabel);
+				button.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View arg0) {
+						sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_FOLLOW_WEB, "Open notification in web frame", null, getEllucianActivity().moduleName);
+							
+		    			Intent intent = new Intent(getActivity(), WebframeActivity.class);
+		    			intent.putExtra(Extra.REQUEST_URL, webframeLink);
+		    			intent.putExtra(Extra.MODULE_NAME, getEllucianActivity().moduleName);
+				    		
+			    		startActivity(intent);
+					}
+				});
 			} else {
 				button.setVisibility(View.GONE);
 			}

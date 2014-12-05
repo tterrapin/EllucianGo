@@ -43,31 +43,41 @@
     tabBarItem2.selectedImage = [UIImage imageNamed:@"Registration Registered Tab Image Selected"];
     
     self.searchedSections = [NSMutableArray new];
+    
+    if([CurrentUser sharedInstance].isLoggedIn) {
+        [self loadRegistration:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadRegistration:) name:kLoginExecutorSuccess object:nil];
+
 }
 
--(void) viewDidAppear:(BOOL)animated
+-(void) loadRegistration:(id)sender
 {
-    [super viewDidAppear:animated];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"Retrieving terms", @"loading message while fetching terms to use for search");
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
         [self fetchTerms];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         MBProgressHUD *hud2 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud2.labelText = NSLocalizedString(@"Checking Eligibility", @"checking registration eligibility message");
+        
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-
+            
             self.registrationAllowed = [self checkRegistrationEligibility:self];
             [MBProgressHUD hideHUDForView:self.view animated:YES];
-    
+            
             MBProgressHUD *hud3 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud3.labelText = NSLocalizedString(@"Fetching saved course sections", @"Fetching saved course sections message");
-
+            
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 [self fetchRegistrationPlans:self];
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+
                 if([self itemsInCartCount] == 0 && !self.ineligibleMessage) {
                     self.selectedIndex = 1;
                 }
@@ -83,13 +93,14 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
                     alert.tag = 1;
                     [alert show];
-                    
                 }
             });
         });
     });
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
+    
 }
-
 
 - (IBAction)revealMenu:(id)sender
 {
@@ -113,8 +124,7 @@
     NSError *error;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/eligibility", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkRegistrationEligibility:) name:kLoginExecutorSuccess object:nil];
+
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
     NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
@@ -123,7 +133,6 @@
     
     if(responseData)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
         
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData
@@ -195,7 +204,6 @@
         urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchRegistrationPlans:) name:kLoginExecutorSuccess object:nil];
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
     NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
@@ -204,7 +212,6 @@
     
     if(responseData)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
         
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseData
@@ -269,7 +276,12 @@
                     if ( plannedSection.ceus && [plannedSection.ceus intValue] > 0 ) {
                         plannedSection.credits = nil;
                     }
-                        
+                    if([plannedSectionJson objectForKey:@"location"] != [NSNull null]) {
+                        plannedSection.location = [plannedSectionJson objectForKey:@"location"];
+                    }
+                    if([plannedSectionJson objectForKey:@"academicLevels"] != [NSNull null]) {
+                        plannedSection.academicLevels = [plannedSectionJson objectForKey:@"academicLevels"];
+                    }
                     
                     NSMutableArray *meetingPatterns = [NSMutableArray new];
                     for(NSDictionary *meetingPatternJson in [plannedSectionJson objectForKey:@"meetingPatterns"]) {
@@ -592,7 +604,6 @@
     [NSURLConnection sendAsynchronousRequest:urlRequest queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if(data)
         {
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
             
             NSDictionary* json = [NSJSONSerialization
                                   JSONObjectWithData:data

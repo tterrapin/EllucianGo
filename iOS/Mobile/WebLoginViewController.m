@@ -47,7 +47,7 @@
     NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     if([title isEqualToString:@"Authentication Success"]) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication using web login" withValue:nil forModuleNamed:nil];
-        [LoginExecutor getUserInfo];
+        [LoginExecutor getUserInfo:NO];
         
         BOOL match = NO;
         if(self.access) {
@@ -74,7 +74,6 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
             }
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
         
         // register the device if needed
         _dismissed = YES;

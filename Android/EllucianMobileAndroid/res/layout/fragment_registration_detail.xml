@@ -62,16 +62,33 @@
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:paddingLeft="10dp" />
+	            android:gravity="right|end" />
 	    </LinearLayout>
 		
-	    <TextView
-	        android:id="@+id/grading_type"
-	        android:layout_width="wrap_content"
+	    <LinearLayout
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
 	        android:paddingLeft="10dp"
         	android:paddingStart="10dp"
-        	android:paddingBottom="10dp" />
+        	android:paddingBottom="10dp"
+        	android:paddingRight="10dp"
+        	android:paddingEnd="10dp" >
+	    
+		    <TextView
+		        android:id="@+id/grading_type"
+		        android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" />
+		    
+		    <TextView
+		        android:id="@+id/academic_levels"
+		        android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:gravity="right|end" />
+	    
+	    </LinearLayout>
 	        	
 	    <LinearLayout
 	        android:id="@+id/meeting_layout"

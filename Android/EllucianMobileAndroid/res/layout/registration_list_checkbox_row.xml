@@ -21,16 +21,44 @@
         android:id="@+id/info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textDirection="firstStrong"
         android:orientation="vertical" 
         android:paddingLeft="6sp"
         android:paddingStart="6sp" >
         
-        <TextView
-	        android:id="@+id/course_name"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <RelativeLayout 
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+            
+            <TextView
+		        android:id="@+id/course_name"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentStart="true"
+		        android:layout_alignParentTop="true"
+		        android:maxLines="1"
+		        android:ellipsize="end"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <TextView
+                android:id="@+id/academic_level_and_location"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignParentEnd="true"
+		        android:layout_alignParentTop="true"
+		        android:layout_toRightOf="@+id/course_name"
+		        android:layout_toEndOf="@+id/course_name"
+		        android:gravity="right|end|center_vertical"
+		        android:maxLines="1"
+	            android:ellipsize="end"
+	            android:paddingLeft="3sp"
+        		android:paddingStart="3sp"
+        		android:paddingTop="3sp" />
+            
+        </RelativeLayout>
+        
+        
         
         <TextView
             android:id="@+id/section_title"

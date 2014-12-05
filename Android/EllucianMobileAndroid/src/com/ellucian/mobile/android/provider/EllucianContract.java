@@ -234,8 +234,17 @@ public class EllucianContract {
 	
 	interface EventsCategoriesColumns {
 		String EVENTS_CATEGORY_ID = "eventscategories_id";
-		String EVENTS_CATEGORY_NAME = "eventscategories_name";
+		String EVENTS_CATEGORY_NAME = "eventscategories_name";	
+	}
 	
+	interface RegistrationLocationsColumns {
+		String REGISTRATION_LOCATIONS_NAME = "registrationlocations_name";
+		String REGISTRATION_LOCATIONS_CODE = "registrationlocations_code";	
+	}
+	
+	interface RegistrationLevelsColumns {
+		String REGISTRATION_LEVELS_NAME = "registrationlevels_name";
+		String REGISTRATION_LEVELS_CODE = "registrationlevels_code";	
 	}
 	
 	public static class Modules implements ModulesColumns, BaseColumns {
@@ -785,6 +794,42 @@ public class EllucianContract {
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.events_events_categories";
 		
 		public static final String DEFAULT_SORT = Events.EVENTS_ID + " ASC";
+		
+		public static Uri buildUri(String id) {
+			return CONTENT_URI.buildUpon().appendPath(id).build();
+		}
+		
+		public static String getId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	static final String PATH_REGISTRATION_LOCATIONS = "registration_locations";
+	public static class RegistrationLocations implements RegistrationLocationsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REGISTRATION_LOCATIONS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ellucian.registration_locations";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.registration_locations";
+		
+		public static final String DEFAULT_SORT = RegistrationLocationsColumns.REGISTRATION_LOCATIONS_NAME + " ASC";
+		
+		public static Uri buildUri(String id) {
+			return CONTENT_URI.buildUpon().appendPath(id).build();
+		}
+		
+		public static String getId(Uri uri) {
+			return uri.getPathSegments().get(1);
+		}
+	}
+	
+	static final String PATH_REGISTRATION_LEVELS = "registration_levels";
+	public static class RegistrationLevels implements RegistrationLevelsColumns, BaseColumns {
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_REGISTRATION_LEVELS).build();
+		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ellucian.registration_levels";
+		
+		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.registration_levels";
+		
+		public static final String DEFAULT_SORT = RegistrationLevelsColumns.REGISTRATION_LEVELS_NAME + " ASC";
 		
 		public static Uri buildUri(String id) {
 			return CONTENT_URI.buildUpon().appendPath(id).build();

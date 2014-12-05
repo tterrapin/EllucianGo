@@ -19,7 +19,16 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true" />
     
-        
+	<Button 
+        android:id="@+id/drop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/registration_drop"
+        android:textSize="12sp"
+        android:padding="6dp"
+        android:onClick="onDropClicked"
+        android:visibility="gone" />
         
 </RelativeLayout>
     

@@ -70,7 +70,8 @@
     <string name="label_meeting_information">Meeting Information</string>
     <string name="label_open">Open</string>
     <string name="label_date">Date</string>
-    <string name="label_location">Location:</string>
+    <string name="label_location">Location</string>
+    <string name="label_done">Done</string>
        
     <string name="label_format">
 	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
@@ -145,6 +146,9 @@
 	<string name="date_time_to_time_format">
 	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
 	</string>
+	<string name="date_time_to_date_time_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
+	</string>
 	<string name="time_to_time_format">
 	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
 	</string>
@@ -169,6 +173,9 @@
 	</string>
 	<string name="default_meeting_days_times_and_type_format">
 	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	<string name="default_two_string_separator_format">
+	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
 	
 	
@@ -341,10 +348,15 @@
     <string name="registration_results_success_sub">You registered for these courses.</string>
     <string name="registration_results_warning">We\'re Sorry.</string>
     <string name="registration_results_failure_sub">We couldn\'t register these courses.</string>
+    <string name="registration_results_dropped_important_sub">These issues may have prevented dropping.</string>
+    <string name="registration_results_dropped_success">Dropped Successfully!</string>
+    <string name="registration_results_dropped_success_sub">You have dropped these courses.</string>
+    <string name="registration_results_dropped_failure_sub">We couldn\'t drop these courses.</string>
     <string name="registration_dialog_title">Title</string>
     <string name="registration_dialog_register_message">Are you sure you want to register these sections?</string>
     <string name="registration_dialog_add_to_cart_message">Are you sure you want to add these sections to the cart?</string>
     <string name="registration_dialog_remove_message">Are you sure you want to remove this item from the cart?</string>
+    <string name="registration_dialog_drop_message">Are you sure you want to drop these sections?</string>
     <string name="registration_dialog_variable_credits_to_message">Enter course credit value between %1$.2f and %2$.2f</string>
     <string name="registration_dialog_variable_credits_or_message">Enter course credit value of either %1$.2f or %2$.2f</string>
     <string name="registration_dialog_variable_credits_inc_message">Enter course credit value between %1$.2f and %2$.2f in increments of %3$.2f</string>
@@ -355,11 +367,15 @@
     <string name="registration_dialog_pin_message">Please enter a PIN for each of the following terms:</string>
     <string name="registration_search_header">Select a Term and enter Search criteria</string>
     <string name="registration_search_field_hint">Search criteria</string>
+    <string name="registration_search_refine_search"><u>Refine Search</u></string>
+    <string name="registration_search_refine_location">Location</string>
+    <string name="registration_search_refine_level">Academic Level</string>
     <string name="registration_add_to_cart">Add To Cart</string>
     <string name="registration_added_to_server_cart_failed">At least one section failed to save to server. This data may only stay for the current session.</string>
     <string name="registration_fill_in_message">You must select a term and enter a query to search.</string>
     <string name="registration_section_id">Section ID</string>
     <string name="registration_grading">Grading</string>
+    <string name="registration_academic_levels">Academic Levels</string>
     <string name="registration_ceus">CEUs</string>
     <string name="registration_audit">Audit</string>
     <string name="registration_graded">Graded</string>
@@ -370,6 +386,7 @@
     <string name="registration_were_sorry">We\'re sorry</string>
     <string name="registration_ineligible_to_register">Ineligible for Registration</string>
     <string name="registration_remove">Remove</string>
+    <string name="registration_drop">Drop</string>
     
     <string name="registration_added_to_cart_success_format">
 	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> added to cart.

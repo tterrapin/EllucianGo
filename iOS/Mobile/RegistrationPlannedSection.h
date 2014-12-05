@@ -35,9 +35,12 @@
 @property (nonatomic, strong) NSNumber *maximumCredits;
 @property (nonatomic, strong) NSNumber *variableCreditIncrement;
 @property (nonatomic, strong) NSString *variableCreditOperator;
+@property (nonatomic, strong) NSString *location;
+@property (nonatomic, strong) NSArray *academicLevels;
 
 @property (nonatomic, assign) BOOL selectedInCart;
 @property (nonatomic, assign) BOOL selectedInSearchResults;
+@property (nonatomic, assign) BOOL selectedForDrop;
 @property (nonatomic, readonly) BOOL isVariableCredit;
 
 @property (nonatomic, assign) BOOL isPassFail;

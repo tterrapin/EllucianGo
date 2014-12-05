@@ -1,16 +1,20 @@
 package com.ellucian.mobile.android.webframe;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.ConsoleMessage;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -34,61 +38,80 @@ public class WebframeActivity extends EllucianActivity {
 	
 	@SuppressLint("SetJavaScriptEnabled")
 	@SuppressWarnings("deprecation")
+	@TargetApi(19)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_webframe);
-		
+
 		if (!TextUtils.isEmpty(moduleName)) {
-			this.setTitle(moduleName);	
+			this.setTitle(moduleName);
 		}
-		
+
 		webView = new WebView(this);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (0 != (this.getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
+				WebView.setWebContentsDebuggingEnabled(true);
+			}
+		}
+		webView.addJavascriptInterface(new WebframeJavascriptInterface(this),
+				"EllucianMobileDevice");
 		FrameLayout layout = (FrameLayout) findViewById(R.id.web_frame);
 		layout.addView(webView);
-		
+
 		if (savedInstanceState != null) {
 			webView.restoreState(savedInstanceState);
-		} else {			
-			webView.setWebChromeClient(new WebChromeClient());
+		} else {
+			webView.setWebChromeClient(new WebChromeClient() {
+				public boolean onConsoleMessage(ConsoleMessage cm) {
+					Log.d("onConsole",
+							cm.message() + " -- From line " + cm.lineNumber()
+									+ " of " + cm.sourceId());
+					return true;
+				}
+			}
+
+			);
 			webView.setWebViewClient(new WebViewClient() {
-	
-			    @Override
-			    public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
-			    	handleError(handler);
-			    }
-			    
-			    @Override
+
+				@Override
+				public void onReceivedSslError(WebView view,
+						SslErrorHandler handler, SslError error) {
+					handleError(handler);
+				}
+
+				@Override
 				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				    if( url.startsWith("http:") || url.startsWith("https:") ) {
-				        return false;
-				    }
-	
-				    // Otherwise allow the OS to handle it
-				    sendToExternalBrowser(url);
-				    return true;
+					if (url.startsWith("http:") || url.startsWith("https:")) {
+						return false;
+					}
+
+					// Otherwise allow the OS to handle it
+					sendToExternalBrowser(url);
+					return true;
 				}
 			});
-	
+
 			WebSettings webSettings = webView.getSettings();
 			webSettings.setJavaScriptEnabled(true);
-			//webSettings.setBuiltInZoomControls(true); //removed because of bug http://code.google.com/p/android/issues/detail?id=15694
+			// webSettings.setBuiltInZoomControls(true); //removed because of
+			// bug http://code.google.com/p/android/issues/detail?id=15694
 			webSettings.setUseWideViewPort(true);
-			
-			//Enable HTML 5 local storage
-			String databasePath = webView.getContext().getDir("databases", 
-	                Context.MODE_PRIVATE).getPath(); 
+
+			// Enable HTML 5 local storage
+			String databasePath = webView.getContext()
+					.getDir("databases", Context.MODE_PRIVATE).getPath();
 			webSettings.setDatabaseEnabled(true);
-			webSettings.setDatabasePath(databasePath); //deprecated, but needed for earlier than API 19
+			webSettings.setDatabasePath(databasePath); // deprecated, but needed
+														// for earlier than API
+														// 19
 			webSettings.setDomStorageEnabled(true);
-			
+
 			Log.d("WebframeActivity", "Making request at: " + requestUrl);
 
 			webView.loadUrl(requestUrl);
-
 		}
-		
-	}	
+	}
 
 
 	protected void onSaveInstanceState(Bundle outState) {
@@ -158,8 +181,7 @@ public class WebframeActivity extends EllucianActivity {
         } else {
         	sharedMenuItem.setVisible(false).setEnabled(false);
         }
-        
-        
+
         MenuItem viewMenuItem = menu.findItem(R.id.view_target);
         viewMenuItem.setIcon(R.drawable.ic_location_web_site_white);
         Intent viewIntent = new Intent(Intent.ACTION_VIEW);
@@ -182,6 +204,10 @@ public class WebframeActivity extends EllucianActivity {
 	private void sendToExternalBrowser(String url) {
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 	    startActivity( intent );
+	}
+	
+	WebView getWebView() {
+		return this.webView;
 	}
 	 
 }

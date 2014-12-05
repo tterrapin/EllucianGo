@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+        android:id="@+id/lists_layout"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentTop="true"
+    	android:layout_above="@+id/buttons_layout"
+    	android:weightSum="1"
+    	android:orientation="vertical" >
+    
+	    <LinearLayout
+	        android:id="@+id/location_layout"  
+	        android:layout_width="match_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="0.5"
+		    android:orientation="vertical">
+	    
+		    <TextView 
+			        android:id="@+id/location_header"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content" 
+			        android:padding="6dp"
+			        android:text="@string/registration_search_refine_location"
+			        android:textAppearance="@android:style/TextAppearance.Medium"
+			        android:gravity="center" />
+		     
+		  
+		    <ListView 
+		        android:id="@+id/location_list"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:fadeScrollbars="false" >
+		        
+	    	</ListView>
+	    
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/level_layout" 
+	    	android:layout_width="match_parent"
+		    android:layout_height="0dp" 
+		    android:layout_weight="0.5"
+		    android:orientation="vertical">
+	    
+		    <TextView 
+			        android:id="@+id/level_header"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content" 
+			        android:padding="6dp"
+			        android:text="@string/registration_search_refine_level"
+			        android:textAppearance="@android:style/TextAppearance.Medium"
+			        android:gravity="center" />
+		    
+		    <ListView 
+		        android:id="@+id/level_list"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:fadeScrollbars="false"  >
+		        
+		    </ListView>
+	    
+	    </LinearLayout>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/buttons_layout" 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentBottom="true"
+    	android:orientation="horizontal"
+    	android:padding="4dp" >
+        
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@android:string/cancel" />
+    
+    	<Button 
+	        android:id="@+id/ok_button"
+	         android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@android:string/ok" />
+        
+    </LinearLayout>
+
+</RelativeLayout>

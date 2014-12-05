@@ -19,6 +19,8 @@ import com.ellucian.mobile.android.directory.DirectoryCategoriesFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevels;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
 
 public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONObject>{
 	@SuppressWarnings("unused")
@@ -37,6 +39,8 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 			batch.add(ContentProviderOperation.newDelete(Modules.CONTENT_URI).build());
 			batch.add(ContentProviderOperation.newDelete(ModulesProperties.CONTENT_URI).build());
 			batch.add(ContentProviderOperation.newDelete(ModulesRoles.CONTENT_URI).build());
+			batch.add(ContentProviderOperation.newDelete(RegistrationLocations.CONTENT_URI).build());
+			batch.add(ContentProviderOperation.newDelete(RegistrationLevels.CONTENT_URI).build());
 			
 			Iterator<?> iter = mApps.keys();
 			while (iter.hasNext()) {
@@ -171,16 +175,55 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 					}
 				}
 				
-				if (type.equals(ModuleType.REGISTRATION)) {;
-				if (moduleObject.has("planningTool") && moduleObject.getString("planningTool").equals("true")) {
-					batch.add(ContentProviderOperation
-							.newInsert(ModulesProperties.CONTENT_URI)
-							.withValue(Modules.MODULES_ID, moduleId)
-							.withValue(ModulesProperties.MODULE_PROPERTIES_NAME, ModuleMenuAdapter.PLANNING_TOOL)
-							.withValue(ModulesProperties.MODULE_PROPERTIES_VALUE, "true")
-							.build());
-				}	
-			}
+				if (type.equals(ModuleType.REGISTRATION)) {
+					if (moduleObject.has("planningTool") && moduleObject.getString("planningTool").equals("true")) {
+						batch.add(ContentProviderOperation
+								.newInsert(ModulesProperties.CONTENT_URI)
+								.withValue(Modules.MODULES_ID, moduleId)
+								.withValue(ModulesProperties.MODULE_PROPERTIES_NAME, ModuleMenuAdapter.PLANNING_TOOL)
+								.withValue(ModulesProperties.MODULE_PROPERTIES_VALUE, "true")
+								.build());
+					}
+					if (moduleObject.has("locations")) {
+						JSONArray locationsArray = moduleObject.getJSONArray("locations");
+						for (int i = 0; i < locationsArray.length(); i++) {
+							JSONObject locationObject = (JSONObject) locationsArray.get(i);
+							if (locationObject != null && locationObject.length() > 0) {
+								String locationName = locationObject.getString("name");
+								String locationCode = locationObject.getString("code");
+								
+								if (!TextUtils.isEmpty(locationName) && !TextUtils.isEmpty(locationCode)) {
+									batch.add(ContentProviderOperation
+											.newInsert(RegistrationLocations.CONTENT_URI)
+											.withValue(Modules.MODULES_ID, moduleId)
+											.withValue(RegistrationLocations.REGISTRATION_LOCATIONS_NAME, locationName)
+											.withValue(RegistrationLocations.REGISTRATION_LOCATIONS_CODE, locationCode)
+											.build());
+								}														
+							}
+						}						
+					}
+					if (moduleObject.has("academic levels")) {
+						JSONArray levelsArray = moduleObject.getJSONArray("academic levels");
+						for (int i = 0; i < levelsArray.length(); i++) {
+							JSONObject levelObject = (JSONObject) levelsArray.get(i);
+							if (levelObject != null && levelObject.length() > 0) {
+								String levelName = levelObject.getString("name");
+								String levelCode = levelObject.getString("code");
+								
+								if (!TextUtils.isEmpty(levelName) && !TextUtils.isEmpty(levelCode)) {
+									batch.add(ContentProviderOperation
+											.newInsert(RegistrationLevels.CONTENT_URI)
+											.withValue(Modules.MODULES_ID, moduleId)
+											.withValue(RegistrationLevels.REGISTRATION_LEVELS_NAME, levelName)
+											.withValue(RegistrationLevels.REGISTRATION_LEVELS_CODE, levelCode)
+											.build());
+								}													
+							}
+						}	
+					}
+					
+				}
 								
 			}
 			

@@ -5,11 +5,13 @@ package com.ellucian.mobile.android.registration;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
@@ -26,6 +28,7 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	
 	protected RegistrationActivity activity;
 	protected Button addToCartButton;
+	protected boolean newSearch;
 	
 	public RegistrationSearchResultsListFragment () {	
 	}
@@ -52,6 +55,38 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		
+		if (newSearch) {
+			mCurCheckPosition = 1;
+			detailBundle = null;
+			final ListView listView = getListView();
+			Handler handler = new Handler();
+	   		handler.post(new Runnable(){
+
+				@Override
+				public void run() {
+					
+					int positionToClick = 0;
+					if (mDualPane) {
+						positionToClick = mCurCheckPosition;	
+					}
+					// Reset and auto-select first on list if not empty
+					// On non-dual-pane layouts we force click the header instead which
+					// will scroll to the correct place and clear the selected
+					if (!getListAdapter().isEmpty()) {
+						listView.performItemClick(null, positionToClick,
+								listView.getAdapter().getItemId(positionToClick));
+		    		}
+					// After force click scroll list to top to show header
+					listView.smoothScrollToPosition(0);
+					listView.setSelection(0);
+							
+				}
+	   			
+	   		});
+	   		newSearch = false;
+		}
+		
 		super.onActivityCreated(savedInstanceState);
 		
 		getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,7 +96,7 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 				SectionedListAdapter sectionedAdapter = (SectionedListAdapter)parent.getAdapter();
 				if (sectionedAdapter.getItemViewType(position) != SectionedListAdapter.TYPE_SECTION_HEADER) {
 					Cursor cursor = (Cursor)sectionedAdapter.getItem(position);
-					
+
 					String sectionId = cursor.getString(cursor.getColumnIndex(RegistrationActivity.SECTION_ID));
 					String termId = cursor.getString(cursor.getColumnIndex(RegistrationActivity.TERM_ID));
 
@@ -73,6 +108,7 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 				}
 			}		
 		});
+		
 	}
 	
 	@Override
@@ -123,8 +159,13 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);
-		
+		bundle.putString(RegistrationDetailFragment.REQUESTING_LIST_FRAGMENT, 
+				this.getClass().getSimpleName());
 		return bundle;
+	}
+	
+	public void setNewSearch(boolean value) {
+		newSearch = value;
 	}
 	
 	

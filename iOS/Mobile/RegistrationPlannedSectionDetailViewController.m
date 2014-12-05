@@ -15,6 +15,7 @@
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "CourseDetail.h"
 #import "RegistrationTabBarController.h"
+#import "RegistrationLocation.h"
 
 @interface RegistrationPlannedSectionDetailViewController ()
 @property (strong, nonatomic) NSOrderedSet *meetingPatterns;
@@ -91,6 +92,7 @@
         }
         //self.sectionLabel.text = @"Section ID:";
         self.sectionContent.text = self.registrationPlannedSection.sectionId;
+        self.academicLevelsLabel.text = [self.registrationPlannedSection.academicLevels componentsJoinedByString:@","];
     
         //self.creditsLabel.text = @"Credits:";
         if ( self.registrationPlannedSection.credits ) {
@@ -418,14 +420,27 @@
         NSString *location = @"";
         if(mp.building && mp.room) {
             location = [NSString stringWithFormat:NSLocalizedString(@"%@, Room %@", @"label - building name, room number"), mp.building, mp.room];
-            } else if(mp.building) {
-                location = mp.building;
-            } else  if(mp.room) {
-                location = [NSString stringWithFormat:NSLocalizedString(@"Room %@", @"label - room number"), mp.room];
-            }
+        } else if(mp.building) {
+            location = mp.building;
+        } else  if(mp.room) {
+            location = [NSString stringWithFormat:NSLocalizedString(@"Room %@", @"label - room number"), mp.room];
+        }
 
-        meetingContent = [meetingContent stringByAppendingString:@"\r"];
-        meetingContent = [meetingContent stringByAppendingString:location];
+        if([location length] > 0) {
+            meetingContent = [meetingContent stringByAppendingString:@"\r"];
+            meetingContent = [meetingContent stringByAppendingString:location];
+        }
+        if(self.registrationPlannedSection.location) {
+            NSError *error;
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"RegistrationLocation"];
+            request.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@ AND code == %@", self.module.internalKey, self.registrationPlannedSection.location];
+            RegistrationLocation *coreDataLocation = [[self.module.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+
+            if(coreDataLocation) {
+                meetingContent = [meetingContent stringByAppendingString:@"\r"];
+                meetingContent = [meetingContent stringByAppendingString:coreDataLocation.name];
+            }
+        }
     
         UILabel *meetingLabel = [UILabel new];
         meetingLabel.backgroundColor = [UIColor clearColor];
@@ -666,6 +681,7 @@
     
     //self.sectionLabel.text = @"Section ID:";
     self.sectionContent.text = self.registrationPlannedSection.sectionId;
+    self.academicLevelsLabel.text = [self.registrationPlannedSection.academicLevels componentsJoinedByString:@","];
     
     if (self.registrationPlannedSection.isPassFail){
         self.gradingContent.text = NSLocalizedString(@"Pass/Fail", @"PassFail label for registration");

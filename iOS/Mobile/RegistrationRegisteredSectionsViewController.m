@@ -25,6 +25,8 @@
 
 @interface RegistrationRegisteredSectionsViewController ()
 @property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
+@property (strong, nonatomic) UIBarButtonItem *dropButton;
+@property (nonatomic, strong) NSString *termNeedingPIN;
 @end
 
 @implementation RegistrationRegisteredSectionsViewController
@@ -33,6 +35,7 @@
 {
     [super viewDidAppear:animated];
     [self sendView:@"Registration Registered Sections list" forModuleNamed:self.module.name];
+    [self updateStatusBar];
 }
 
 - (void)viewDidLoad
@@ -42,6 +45,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData:) name:kRegistrationPlanDataReloaded object:nil];
     
     self.navigationItem.title = [self.module name];
+    
+    UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    self.dropButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Drop", "Registration Drop button") style:UIBarButtonItemStyleBordered target:self action:@selector(dropRegistration:)];
+    UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
+    [self.navigationController.toolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    
+    self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.dropButton, flexibleItem, nil];
     self.navigationController.navigationBar.translucent = NO;
     
     [self checkEmptyList];
@@ -139,6 +149,26 @@
         line4Label.text = nil;
     }
     
+    UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:100];
+    if(plannedSection.selectedForDrop) {
+        checkmarkImageView.image = [UIImage imageNamed:@"Registration Checkmark"];
+    } else {
+        checkmarkImageView.image = [UIImage imageNamed:@"Registration Circle"];
+    }
+    
+    UIImage *image = [UIImage imageNamed:@"Registration Detail"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(0.0, 0.0, 44.0f, 44.0f);
+    button.frame = frame;
+    [button setImage:image forState:UIControlStateNormal];
+    
+    [button addTarget: self
+               action: @selector(accessoryButtonTapped:withEvent:)
+     forControlEvents: UIControlEventTouchUpInside];
+    cell.accessoryView = button;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
@@ -149,6 +179,47 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section];
+    if(term.requiresAltPin && !term.userEnteredPIN) {
+        [self promptForPIN:term.termId];
+    }
+    NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
+    RegistrationPlannedSection *plannedSection = [plannedSections objectAtIndex:indexPath.row];
+    
+    plannedSection.selectedForDrop = !plannedSection.selectedForDrop;
+    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [self updateStatusBar];
+}
+
+- (NSString *)tableView:(UITableView *)tableView stringForTitleForHeaderInSection:(NSInteger)section
+{
+    
+    RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:section];
+    return term.name;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:section ];
+    NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
+    return [plannedSections count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [self.registrationTabController.terms count];
+}
+
+- (void) accessoryButtonTapped: (UIControl *) button withEvent: (UIEvent *) event
+{
+    NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint: [[[event touchesForView: button] anyObject] locationInView: self.tableView]];
+    if ( indexPath == nil )
+        return;
+    
+    [self.tableView.delegate tableView: self.tableView accessoryButtonTappedForRowWithIndexPath: indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:indexPath.section];
     NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
@@ -188,24 +259,6 @@
 
 }
 
-- (NSString *)tableView:(UITableView *)tableView stringForTitleForHeaderInSection:(NSInteger)section
-{
-
-    RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:section];
-    return term.name;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    RegistrationTerm *term = [self.registrationTabController.terms objectAtIndex:section ];
-    NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
-    return [plannedSections count];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [self.registrationTabController.terms count];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [super tableView:tableView heightForHeaderInSection:section];
 }
@@ -229,8 +282,69 @@
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
+        detailController.module = self.module;
+    } else if ([[segue identifier] isEqualToString:@"Show Drop Results"]) {
+        NSDictionary *messages = (NSDictionary *)sender;
+        id detailController = [segue destinationViewController];
+        if([detailController isKindOfClass:[UINavigationController class]]) {
+            detailController = ((UINavigationController *)detailController).childViewControllers[0];
+        }
+        
+        RegistrationResultsViewController *resultsViewController = (RegistrationResultsViewController *)detailController;
+        resultsViewController.module = self.module;
+        resultsViewController.importantMessages = [messages objectForKey:@"messages"];
+        resultsViewController.registeredMessages = [messages objectForKey:@"successes"];
+        resultsViewController.warningMessages = [messages objectForKey:@"failures"];
+        resultsViewController.delegate = self.registrationTabController;
+        
+        if([[messages objectForKey:@"messages"] count] || [[messages objectForKey:@"failures"] count]) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userEnteredPIN.length > 0"];
+            NSArray *filteredArray = [self.registrationTabController.terms filteredArrayUsingPredicate:predicate];
+            for(RegistrationTerm *term in filteredArray) {
+                term.userEnteredPIN = nil;
+            }
+        }
     }
 }
+
+- (IBAction)dropRegistration:(id)sender {
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:NSLocalizedString(@"Drop", @"Registration Drop button")
+                                                    otherButtonTitles:nil];
+    
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [actionSheet showFromBarButtonItem:self.dropButton animated:YES];
+    } else {
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Register" withValue:nil forModuleNamed:self.module.name];
+        [self dropSelectedCourses];
+    }
+}
+
+-(void) updateStatusBar
+{
+    int count = 0;
+    for(RegistrationTerm *term in self.self.registrationTabController.terms) {
+        NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
+        for(RegistrationPlannedSection *course in plannedSections) {
+            if(course.selectedForDrop) {
+                count++;
+            }
+        }
+    }
+    [self.navigationController setToolbarHidden:!(count>0) animated:YES];
+    self.dropButton.title = [NSString stringWithFormat:NSLocalizedString(@"Drop (%d)", @"label for drop button in registered list"), count];
+}
+
 
 -(BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
 {
@@ -241,6 +355,138 @@
 {
     [self.tableView reloadData];
     [self checkEmptyList];
+}
+
+-(NSString *) planId
+{
+    return self.registrationTabController.planId;
+}
+
+-(void) dropSelectedCourses
+{
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"Dropping", @"loading message while waiting for dropping");
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+        
+        NSMutableArray *sectionRegistrations = [NSMutableArray new];
+        
+        for(RegistrationTerm *term in self.registrationTabController.terms) {
+            NSArray *plannedSections = [self.registrationTabController registeredSections:term.termId];
+            for(RegistrationPlannedSection *course in plannedSections) {
+                
+                if ( course.selectedForDrop ) {
+                    
+                    NSMutableDictionary *sectionToRegister = [[NSMutableDictionary alloc] init];
+                    
+                    NSString * action = @"Drop";
+                    
+                    if (course.isAudit) {
+                        action = @"Audit";
+                    } else if (course.isPassFail) {
+                        action = @"PassFail";
+                    }
+                    
+                    if(course.isVariableCredit) {
+                        [sectionToRegister setObject:course.credits forKey:@"credits"];
+                    }
+                    if(term.requiresAltPin) {
+                        [sectionToRegister setObject:term.userEnteredPIN forKey:@"altPin"];
+                    }
+                    [sectionToRegister setObject:term.termId forKey:@"termId"];
+                    [sectionToRegister setObject:course.sectionId forKey:@"sectionId"];
+                    [sectionToRegister setObject:action forKey:@"action"];
+                    
+                    
+                    [sectionRegistrations addObject:sectionToRegister];
+                }
+                
+            }
+        }
+        
+        NSDictionary *postDictionary = @{
+                                         @"planId": self.planId,
+                                         @"sectionRegistrations": sectionRegistrations,
+                                         };
+        NSError *jsonError;
+        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&jsonError];
+        
+        NSString *urlString = [NSString stringWithFormat:@"%@/%@/register-sections", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+        NSString* planningTool = [self.module propertyForKey:@"planningTool"];
+        if(planningTool) {
+            urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
+        }
+        
+        NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+            [urlRequest addAuthenticationHeader];
+        }
+        
+        [urlRequest setHTTPMethod:@"PUT"];
+        [urlRequest setHTTPBody:jsonData];
+        NSError *error;
+        NSURLResponse *response;
+        
+        NSDate *startDate = [NSDate date];
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
+        NSTimeInterval elapsedTimeInterval = [[NSDate date] timeIntervalSinceDate:startDate];
+        [self sendUserTimingWithCategory:@"Registration" withTimeInterval:elapsedTimeInterval withName:@"Registration Drop" withLabel:nil forModuleNamed:self.module.name];
+        if(responseData) {
+            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
+            [self.registrationTabController fetchRegistrationPlans:self];
+            [self performSegueWithIdentifier:@"Show Drop Results" sender:jsonResponse];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+            [alert show];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }
+    });
+}
+
+-(void) promptForPIN:(NSString *)termId;
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PIN", @"PIN label for registration") message:NSLocalizedString(@"Enter the registration PIN", @"PIN label for registration") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
+    alert.tag = -2;
+    alert.delegate = self;
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.placeholder = NSLocalizedString(@"PIN", @"PIN label for registration");
+    alertTextField.secureTextEntry = YES;
+    self.termNeedingPIN = termId;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == -2) {
+        if(buttonIndex == 0) {
+            NSArray *sectionsInCartForTerm = [self.registrationTabController registeredSections:self.termNeedingPIN];
+            for(RegistrationPlannedSection *section in sectionsInCartForTerm) {
+                section.selectedForDrop = NO;
+            }
+            [self.tableView reloadData];
+        }
+        if(buttonIndex == 1) {
+            RegistrationTerm *term = [self.registrationTabController findTermById:self.termNeedingPIN];
+            self.termNeedingPIN = nil;
+            term.userEnteredPIN = [[alertView textFieldAtIndex:0] text];
+        }
+    }
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    if(alertView.tag == -2) {
+        NSString *text = [[alertView textFieldAtIndex:0] text];
+        return ([text length] > 0);
+    }
+    return YES;
+    
 }
 
 @end

@@ -13,10 +13,11 @@ In the iPad Storyboard, the first label has its width set, due to bug that it co
 */
 
 #import <UIKit/UIKit.h>
+#import "RegistrationRefineSearchViewController.h"
 
 @class Module;
 
-@interface RegistrationSearchViewController : UIViewController<UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, UISplitViewControllerDelegate>
+@interface RegistrationSearchViewController : UIViewController<UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, UISplitViewControllerDelegate, RegistrationRefineSearchDelegate>
 
 @property (strong, nonatomic) Module *module;
 
@@ -24,6 +25,8 @@ In the iPad Storyboard, the first label has its width set, due to bug that it co
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (nonatomic, assign) BOOL  allowAddToCart;
+@property (weak, nonatomic) IBOutlet UIButton *refineSearchButton;
+
 
 - (IBAction)search:(id)sender;
 - (IBAction)updateSearchButton:(id)sender;

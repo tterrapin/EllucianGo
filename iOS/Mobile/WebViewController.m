@@ -13,12 +13,17 @@
 #import "LoginExecutor.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "LoginViewController.h"
+#import <JavaScriptCore/JavaScriptCore.h>
+#import "WebViewJavascriptInterface.h"
+#import "SlidingViewController.h"
 
 @interface WebViewController ()
 
 @property (nonatomic, strong) NSURL* loadingUrl;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) NSURL *originalUrlCopy;
+@property (nonatomic, strong) JSContext *context;
 @end
 
 @implementation WebViewController
@@ -29,10 +34,14 @@
     
     self.navigationController.navigationBar.translucent = NO;
     self.toolbar.translucent = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEditing:) name:kSlidingViewOpenMenuAppearsNotification object:nil];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.originalUrlCopy = [self.loadRequest.URL copy];
 
     [self sendView:@"Display web frame" forModuleNamed:self.analyticsLabel];
     
@@ -164,6 +173,15 @@
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
+    
+    self.context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    self.context[@"EllucianMobileDevice"] = [WebViewJavascriptInterface class];
+    self.context[@"console"][@"log"] = ^(NSString *message) {
+        NSLog(@"%@", message);
+    };
+    JSValue *jsFunction = self.context[@"EllucianMobile"][@"_ellucianMobileInternalReady"];
+    [jsFunction callWithArguments:nil];
+
     self.loadingUrl = nil;
     //self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -236,6 +254,16 @@
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+}
+
+-(NSURL *) originalUrl
+{
+    return self.originalUrlCopy;
+}
+
+-(void) endEditing:(id)sender
+{
+    [self.webView endEditing:YES];
 }
 
 @end

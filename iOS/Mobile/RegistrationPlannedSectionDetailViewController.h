@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionContent;
 
+@property (weak, nonatomic) IBOutlet UILabel *academicLevelsLabel;
 
 
 

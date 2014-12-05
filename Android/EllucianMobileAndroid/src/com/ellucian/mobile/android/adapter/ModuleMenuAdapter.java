@@ -301,7 +301,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		return new ModuleMenuAdapter(context, headersCursor, childCursorList);
 	}
 	
-	private static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
+	public static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
 		boolean showModule = false;
 		
 		List<String> moduleRoles = getModuleRoles(ellucianApp.getContentResolver(), moduleId);
@@ -341,7 +341,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		return roles;
 	}
 	
-	private static boolean doesUserHaveAccessForRole(List<String> userRoles, List<String> moduleRoles) {
+	public static boolean doesUserHaveAccessForRole(List<String> userRoles, List<String> moduleRoles) {
 		if (userRoles == null || moduleRoles == null) {
 			return false;
 		}
@@ -354,7 +354,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		
 	}
 	
-	private static boolean showLock(Context context, String type, String subType, String secureString,
+	public static boolean showLock(Context context, String type, String subType, String secureString,
 			List<String> moduleRoles) {
 
 		if (moduleRoles.size() > 0) {
@@ -375,7 +375,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		}
 	}
 	
-	private static boolean allowMaps(Context context) {
+	public static boolean allowMaps(Context context) {
 		// check if google play services is present
 		try {
 			context.getPackageManager().getApplicationInfo(

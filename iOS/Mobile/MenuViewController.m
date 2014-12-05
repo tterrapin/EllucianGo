@@ -397,6 +397,7 @@
 -(void) reload
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
@@ -404,22 +405,31 @@
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
+    NSError *error;
+    NSArray *definedModules;
+    
     CurrentUser *currentUser = [CurrentUser sharedInstance];
     if(currentUser && [currentUser isLoggedIn ]) {
+        
         NSSet *roles = currentUser.roles;
         NSMutableArray *parr = [NSMutableArray array];
+        
         [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
         [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", @"Everyone"] ];
         for(NSString *role in roles) {
             [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
         }
-        fetchRequest.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
+        
+        NSPredicate *joinOnRolesPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
+        NSArray *allModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        definedModules = [allModules filteredArrayUsingPredicate:joinOnRolesPredicate];
+        
     } else {
+
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(hideBeforeLogin == %@) || (hideBeforeLogin = nil)", [NSNumber numberWithBool:NO]];
+        definedModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     }
-    
-    NSError *error;
-    NSArray *definedModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
     NSMutableArray *infoArray = [[NSMutableArray alloc] init];
     
     MenuSectionInfo *info;

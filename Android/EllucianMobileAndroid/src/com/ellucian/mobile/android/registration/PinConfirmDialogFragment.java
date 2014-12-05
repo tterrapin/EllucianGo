@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +28,7 @@ public class PinConfirmDialogFragment extends EllucianDialogFragment {
 	
 	private RegistrationActivity registrationActivity;
 	public List<TermInfoHolder> termsThatNeedPins;
+	public String action;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -63,6 +65,7 @@ public class PinConfirmDialogFragment extends EllucianDialogFragment {
 			View rowLayout = registrationActivity.getLayoutInflater().inflate(R.layout.label_edit_text_row, null);
 			TextView label = (TextView) rowLayout.findViewById(R.id.label);		
 			EditText input = (EditText) rowLayout.findViewById(R.id.input);
+			input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 			
 			label.setText(holder.termName + ":");
 			labelViews.add(label);
@@ -93,7 +96,7 @@ public class PinConfirmDialogFragment extends EllucianDialogFragment {
 					pinMap.put(termsThatNeedPins.get(i).termId, value);					
 				}
 				
-				registrationActivity.onPinConfirmOkClicked(pinMap);
+				registrationActivity.onPinConfirmOkClicked(pinMap, action);
 				PinConfirmDialogFragment.this.dismiss();
 			}
 		});

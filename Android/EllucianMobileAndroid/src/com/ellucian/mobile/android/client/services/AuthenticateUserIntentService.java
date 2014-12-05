@@ -40,8 +40,13 @@ public class AuthenticateUserIntentService extends IntentService {
 		String loginPassword = intent.getStringExtra(Extra.LOGIN_PASSWORD);
 		boolean saveUser = intent.getBooleanExtra(Extra.LOGIN_SAVE_USER, false);
 		boolean backgroundAuth = intent.getBooleanExtra(Extra.LOGIN_BACKGROUND, false);
+		boolean refreshOnly = intent.getBooleanExtra(Extra.REFRESH, false);
 		
 		boolean success = false;
+		
+		if(refreshOnly) {
+			securityUrl += "?refresh=true";
+		}
 
 		MobileClient client = new MobileClient(this);
 		String response = client.authenticateUser(securityUrl, loginUsername, loginPassword);

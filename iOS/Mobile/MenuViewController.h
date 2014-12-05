@@ -26,5 +26,6 @@
 -(void) showModule:(Module*) module;
 - (UIViewController*) findControllerByModule:(Module*)module;
 -(void) showViewController:(UIViewController*) newTopViewController;
+-(BOOL) isSupportedModule:(Module *) module;
 
 @end

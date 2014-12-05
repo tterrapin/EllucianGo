@@ -22,6 +22,8 @@
 #import "RegistrationTerm.h"
 #import "Module.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "RegistrationLocation.h"
+#import "RegistrationAcademicLevel.h"
 
 @interface RegistrationSearchViewController ()
 
@@ -30,6 +32,8 @@
 @property (nonatomic, strong) NSString *selectedTermId;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
+@property (nonatomic, strong) NSArray *locations;
+@property (nonatomic, strong) NSArray *academicLevels;
 
 @end
 
@@ -57,6 +61,21 @@
         self.termTextField.tintColor = [UIColor whiteColor];
     }
     self.navigationController.navigationBar.translucent = NO;
+
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"RegistrationLocation"];
+    request.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@", self.module.internalKey];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES ]];
+    self.locations = [self.module.managedObjectContext executeFetchRequest:request error:&error];
+    request = [NSFetchRequest fetchRequestWithEntityName:@"RegistrationAcademicLevel"];
+    request.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@", self.module.internalKey];
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES ]];
+    self.academicLevels = [self.module.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if([self.locations count] == 0 && [self.academicLevels count] == 0) {
+        [self.refineSearchButton removeFromSuperview];
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -167,8 +186,19 @@
 -(NSMutableArray *) searchForCourses
 {
     NSError *error;
+    NSString *urlString;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    if([self.academicLevels count] > 0 && [self.locations count] > 0) {
+        urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@&academicLevels=%@&locations=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedAcademicLevelsCodes stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedLocationsCodes stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    } else if( [self.academicLevels count] >0 ) {
+            urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@&academicLevels=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedAcademicLevelsCodes stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    } else if( [self.locations count] > 0) {
+        urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@&locations=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedLocationsCodes stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    } else {
+        urlString = [NSString stringWithFormat:@"%@/%@/search-courses?pattern=%@&term=%@", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.searchTextField.text stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.selectedTermId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+
+    }
+
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
     NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
@@ -244,6 +274,12 @@
             //}
             plannedSection.gradingType = @"Graded";
 //            plannedCourse.classification = [plannedCourseJson objectForKey:@"classification"];
+            if([plannedSectionJson objectForKey:@"location"] != [NSNull null]) {
+                plannedSection.location = [plannedSectionJson objectForKey:@"location"];
+            }
+            if([plannedSectionJson objectForKey:@"academicLevels"] != [NSNull null]) {
+                plannedSection.academicLevels = [plannedSectionJson objectForKey:@"academicLevels"];
+            }
             
             NSMutableArray *meetingPatterns = [NSMutableArray new];
             for(NSDictionary *meetingPatternJson in [plannedSectionJson objectForKey:@"meetingPatterns"]) {
@@ -374,9 +410,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [self.navigationController setToolbarHidden:YES animated:YES];
-    if ([[segue identifier] isEqualToString:@"Show Section Detail"]) {
-        
-    } else if ([[segue identifier] isEqualToString:@"Search"]) {
+    if ([[segue identifier] isEqualToString:@"Search"]) {
         id detailController = [segue destinationViewController];
         if([detailController isKindOfClass:[UINavigationController class]]) {
             detailController = ((UINavigationController *)detailController).childViewControllers[0];
@@ -386,8 +420,18 @@
         resultsViewController.allowAddToCart = self.allowAddToCart;
         resultsViewController.courses  = sender;
         resultsViewController.module = self.module;
+    } else if ([[segue identifier] isEqualToString:@"Show Filter"])
+    {
+        [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionList_Select withLabel:@"Select filter" withValue:nil forModuleNamed:self.module.name];
+        UINavigationController *navController = [segue destinationViewController];
+        RegistrationRefineSearchViewController *detailController = [[navController viewControllers] objectAtIndex:0];
+        detailController.locations = self.locations;
+        detailController.academicLevels = self.academicLevels;
+        //detailController.module = self.module;
     }
+    
 }
+
 
 - (IBAction)updateSearchButton:(id)sender
 {
@@ -410,5 +454,37 @@
     return self.registrationTabController.terms;
 }
 
+-(void)registrationRefindSearchViewControllerSelectedLocations:(NSArray *)locations acadLevels:(NSArray *)levels
+{
+    self.locations = locations;
+    self.academicLevels = levels;
+}
+
+-(NSString *)selectedLocationsCodes
+{
+    
+    NSMutableArray *selectedCodes = [NSMutableArray new];
+    for(RegistrationLocation *location in self.locations) {
+        
+        if(!location.unselected) {
+            [selectedCodes addObject:location.code];
+        }
+    }
+    return [[selectedCodes copy] componentsJoinedByString:@","];
+    
+}
+
+-(NSString *)selectedAcademicLevelsCodes
+{
+    NSMutableArray *selectedCodes = [NSMutableArray new];
+    for(RegistrationAcademicLevel *academicLevel in self.academicLevels) {
+        
+        if(!academicLevel.unselected) {
+            [selectedCodes addObject:academicLevel.code];
+        }
+    }
+    return [selectedCodes componentsJoinedByString:@","];
+    
+}
 
 @end

@@ -14,7 +14,7 @@
 
 @implementation LoginExecutor
 
-+(NSInteger) getUserInfo
++(NSInteger) getUserInfo:(BOOL)refreshOnly
 {
     NSError *error;
     
@@ -22,6 +22,9 @@
     NSString *loginUrl = [defaults objectForKey:@"login-url"];
     
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    if(refreshOnly) {
+        loginUrl = [NSString stringWithFormat:@"%@?refresh=true", loginUrl];
+    }
     NSData *data = [authenticatedRequet requestURL:[NSURL URLWithString:loginUrl] fromView:nil];
     
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)authenticatedRequet.response;
@@ -46,7 +49,9 @@
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
+        if(!refreshOnly) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
+        }
         
         // register the device if needed
         [NotificationManager registerDeviceIfNeeded];

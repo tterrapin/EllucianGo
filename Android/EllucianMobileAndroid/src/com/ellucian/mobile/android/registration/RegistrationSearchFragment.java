@@ -2,6 +2,11 @@
 
 package com.ellucian.mobile.android.registration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,13 +19,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianFragment;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.client.registration.OpenTerm;
 import com.ellucian.mobile.android.client.registration.TermsResponse;
+import com.ellucian.mobile.android.provider.EllucianContract.Modules;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevels;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
 
 public class RegistrationSearchFragment extends EllucianFragment  {
 	private static final String TAG = RegistrationSearchFragment.class.getSimpleName();
@@ -30,11 +40,92 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 	protected Spinner termsSpinner;
 	protected EditText searchField;
 	protected Button searchButton;
+	protected TextView refineSearchView;
 	protected RetrieveSearchableTermsTask termsTask;
 	protected ArrayAdapter<String> termsAdapter;
 	protected String[] termNames;
 	protected OpenTerm[] terms;
 	protected int selectedSpinnerItem = -1;
+	protected List<SearchFilter> locationFilters = new ArrayList<SearchFilter>();
+	protected List<SearchFilter> levelFilters = new ArrayList<SearchFilter>();
+	protected ArrayList<String> selectedLocations;
+	protected ArrayList<String> selectedLevels;
+	
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = (RegistrationActivity) activity;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		if (savedInstanceState != null) {
+			locationFilters = savedInstanceState.getParcelableArrayList("locationFilters");
+			levelFilters = savedInstanceState.getParcelableArrayList("levelFilters");
+			selectedLocations = savedInstanceState.getStringArrayList("selectedLocations");
+			selectedLevels = savedInstanceState.getStringArrayList("selectedLevels");			
+		} else {
+			
+			String moduleId = ((EllucianActivity)activity).moduleId;
+			String selection = Modules.MODULES_ID + " = ?";
+			
+			Cursor locationCursor = activity.getContentResolver().query(
+												RegistrationLocations.CONTENT_URI, 
+												null, 
+												selection, 
+												new String[] { moduleId }, 
+												RegistrationLocations.DEFAULT_SORT);
+			
+
+			if (locationCursor.moveToFirst()) {
+
+				do {
+					String locationName = locationCursor.getString(
+							locationCursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_NAME));
+					String locationCode = locationCursor.getString(
+							locationCursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_CODE));
+					
+					if (!TextUtils.isEmpty(locationName) && !TextUtils.isEmpty(locationName)) {
+						SearchFilter locationFilter = new SearchFilter();
+						locationFilter.name = locationName;
+						locationFilter.code = locationCode;
+						locationFilters.add(locationFilter);
+					}
+				} while (locationCursor.moveToNext());
+			}
+			
+			locationCursor.close();
+			
+			Cursor levelCursor = activity.getContentResolver().query(
+					RegistrationLevels.CONTENT_URI, 
+											null, 
+											selection, 
+											new String[] { moduleId },
+											RegistrationLevels.DEFAULT_SORT);
+		
+			if (levelCursor.moveToFirst()) {
+				do {
+					String levelName = levelCursor.getString(
+							levelCursor.getColumnIndex(RegistrationLevels.REGISTRATION_LEVELS_NAME));
+					String levelCode = levelCursor.getString(
+							levelCursor.getColumnIndex(RegistrationLevels.REGISTRATION_LEVELS_CODE));
+		
+					if (!TextUtils.isEmpty(levelName) && !TextUtils.isEmpty(levelName)) {
+						SearchFilter levelFilter = new SearchFilter();
+						levelFilter.name = levelName;
+						levelFilter.code = levelCode;
+						levelFilters.add(levelFilter);
+					}
+				} while (levelCursor.moveToNext());
+			}
+
+			levelCursor.close();
+		}
+
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +134,7 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		termsSpinner = (Spinner) rootView.findViewById(R.id.terms_spinner);
 		searchField = (EditText) rootView.findViewById(R.id.search_field);
 		searchButton = (Button) rootView.findViewById(R.id.search_button);
+		refineSearchView = (TextView) rootView.findViewById(R.id.refine_search_link);
 		return rootView; 
 	}
 	
@@ -62,17 +154,31 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 					selectedTermId = terms[selectedTermPosition].id;
 				}
 				String pattern = searchField.getText().toString();
-				if (!TextUtils.isEmpty(selectedTermId) && !TextUtils.isEmpty(pattern)) {
-					
-					activity.startSectionSearch(selectedTermId, pattern);
-				} else {
+				if (TextUtils.isEmpty(selectedTermId) && TextUtils.isEmpty(pattern)) {
 					Toast fillInMessage = Toast.makeText(getActivity(), R.string.registration_fill_in_message, Toast.LENGTH_SHORT);
 					fillInMessage.setGravity(Gravity.CENTER, 0, 0);
 					fillInMessage.show();
-				}	
+				} else {
+					List<String> locationCodes = getCodeList(locationFilters, selectedLocations);
+					List<String> levelCodes = getCodeList(levelFilters, selectedLevels);
+					
+					activity.startSectionSearch(selectedTermId, pattern, locationCodes, levelCodes);
+				}
 			}
 			
 		});
+		
+		if (!locationFilters.isEmpty() || !levelFilters.isEmpty()) {
+			refineSearchView.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					activity.openRefineSearch();				
+				}
+			});
+		} else {
+			refineSearchView.setVisibility(View.GONE);
+		}
 		
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey("terms")) {
@@ -112,6 +218,12 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 				outState.putInt("selectedSpinnerItem", termsSpinner.getSelectedItemPosition());
 			}
 		}
+		
+		outState.putParcelableArrayList("locationFilters", (ArrayList<SearchFilter>)locationFilters);
+		outState.putParcelableArrayList("levelFilters", (ArrayList<SearchFilter>)levelFilters);
+		outState.putStringArrayList("selectedLocations", (ArrayList<String>)selectedLocations);
+		outState.putStringArrayList("selectedLevels", (ArrayList<String>)selectedLevels);
+		
 	}
 	
 	@Override
@@ -186,5 +298,47 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		super.onStart();
 		sendView("Registration Search", getEllucianActivity().moduleName);
 	}
-
+	
+	protected void setSearchFilters(ArrayList<String> selectedLocations, ArrayList<String> selectedLevels) {
+		this.selectedLocations = selectedLocations;
+		this.selectedLevels = selectedLevels;
+	}
+	
+	protected ArrayList<String> getLocationNames() {
+		if (locationFilters == null) {
+			return null;
+		}
+		ArrayList<String> locationNames = new ArrayList<String>();		
+		for (SearchFilter filter : locationFilters) {
+			locationNames.add(filter.name);
+		}
+		return locationNames;
+	}
+	
+	protected ArrayList<String> getLevelNames() {
+		if (levelFilters == null) {
+			return null;
+		}
+		ArrayList<String> levelNames = new ArrayList<String>();
+		for (SearchFilter filter : levelFilters) {
+			levelNames.add(filter.name);
+		}
+		return levelNames;
+	}
+	
+	private ArrayList<String> getCodeList(List<SearchFilter> filterList, List<String> nameList) {
+		ArrayList<String> codeList = new ArrayList<String>();
+		if (nameList != null) {
+			for (SearchFilter searchFilter: filterList) {
+				if (nameList.contains(searchFilter.name)) {
+					codeList.add(searchFilter.code);
+				}
+			}
+		} else {
+			for (SearchFilter searchFilter: filterList) {
+				codeList.add(searchFilter.code);
+			}
+		}
+		return codeList;
+	}
 }

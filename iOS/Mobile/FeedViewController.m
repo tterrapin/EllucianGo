@@ -417,7 +417,7 @@
                                   options:kNilOptions
                                   error:&error];
             
-            NSMutableDictionary *previousFeeds = [[NSMutableDictionary alloc] init];
+            NSMutableArray *previousFeeds = [[NSMutableArray alloc] init];
             NSMutableSet *newKeys = [[NSMutableSet alloc] init];
             
             NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Feed"];
@@ -426,9 +426,10 @@
             [request setPredicate:filterPredicate];
             NSArray * oldObjects = [importContext executeFetchRequest:request error:&error];
             for (Feed* oldObject in oldObjects) {
-                //if it exists, add to the array so it will be deleted if not found in latest response.  If there is no entry id, go ahead and delete it and treat it as new if its in the new response.
+                
+                //if it exists, add to the array so it will be deleted if not found in latest response.  If there is no entry id, go ahead and delete it and treat it as new if it's in the new response.
                 if([oldObject.entryId length] > 0) {
-                    [previousFeeds setObject:oldObject forKey:oldObject.entryId];
+                    [previousFeeds addObject:oldObject];
                 } else {
                     [importContext deleteObject:oldObject];
                 }
@@ -462,10 +463,18 @@
             int j=0;
             for(NSDictionary *json in [jsonResponse objectForKey:@"entries"]) {
                 NSString *uid = [json objectForKey:@"entryId"];
-                Feed *feed = [previousFeeds objectForKey:uid];
 
+                Feed *feed = nil;
+                
+                NSPredicate *entryIdPredicate = [NSPredicate predicateWithFormat:@"entryId == %@", uid];
+                NSArray * filteredArray  = [previousFeeds filteredArrayUsingPredicate:entryIdPredicate];
+
+                if ([filteredArray count] > 0) {
+                    feed = filteredArray[0];
+                }
+                
                 if(feed) {
-                    [previousFeeds removeObjectForKey:uid];
+                    [previousFeeds removeObject:feed];
                 } else {
                     j++;
                     feed = [NSEntityDescription insertNewObjectForEntityForName:@"Feed" inManagedObjectContext:importContext];
@@ -527,7 +536,7 @@
         }
             
         //find and delete old ones
-        for (NSManagedObject * oldObject in [previousFeeds allValues]) {
+        for (NSManagedObject * oldObject in previousFeeds ) {
             [importContext deleteObject:oldObject];
         }
      

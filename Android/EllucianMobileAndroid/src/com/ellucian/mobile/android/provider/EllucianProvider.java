@@ -46,6 +46,8 @@ import com.ellucian.mobile.android.provider.EllucianContract.NewsCategories;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.provider.EllucianContract.Numbers;
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategories;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevels;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
 import com.ellucian.mobile.android.provider.EllucianDatabase.EventsSearchColumns;
 import com.ellucian.mobile.android.provider.EllucianDatabase.NewsSearchColumns;
 import com.ellucian.mobile.android.provider.EllucianDatabase.Tables;
@@ -119,6 +121,10 @@ public class EllucianProvider extends ContentProvider {
 	private static final int COURSEANNOUNCEMENTS_ID = 2101;
 	private static final int COURSEEVENTS = 2200;
 	private static final int COURSEEVENTS_ID = 2201;
+	private static final int REGISTRATIONLOCATIONS = 2300;
+	private static final int REGISTRATIONLOCATIONS_ID = 2301;
+	private static final int REGISTRATIONLEVELS = 2302;
+	private static final int REGISTRATIONLEVELS_ID = 2303;
 	
 	private static UriMatcher buildUriMatcher() {
 		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -187,6 +193,10 @@ public class EllucianProvider extends ContentProvider {
 		matcher.addURI(authority, EllucianContract.PATH_EVENTS_CATEGORIES+"/*", EVENTSCATEGORIES_ID);
 		matcher.addURI(authority, EllucianContract.PATH_EVENTS_EVENTSCATEGORIES, EVENTS_EVENTSCATEGORIES);
 		matcher.addURI(authority, EllucianContract.PATH_EVENTS_EVENTSCATEGORIES+"/*", EVENTS_EVENTSCATEGORIES_ID);
+		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LOCATIONS, REGISTRATIONLOCATIONS);
+		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LOCATIONS+"/*", REGISTRATIONLOCATIONS_ID);
+		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LEVELS, REGISTRATIONLEVELS);
+		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LEVELS+"/*", REGISTRATIONLEVELS_ID);
 		
 		return matcher;
 	}
@@ -355,6 +365,14 @@ public class EllucianProvider extends ContentProvider {
 				return EventsEventsCategories.CONTENT_TYPE;
 			case EVENTS_EVENTSCATEGORIES_ID:
 				return EventsEventsCategories.CONTENT_ITEM_TYPE;
+			case REGISTRATIONLOCATIONS:
+				return RegistrationLocations.CONTENT_TYPE;
+			case REGISTRATIONLOCATIONS_ID:
+				return RegistrationLocations.CONTENT_ITEM_TYPE;
+			case REGISTRATIONLEVELS:
+				return RegistrationLevels.CONTENT_TYPE;
+			case REGISTRATIONLEVELS_ID:
+				return RegistrationLevels.CONTENT_ITEM_TYPE;
 				
 			default:
 				throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -503,7 +521,17 @@ public class EllucianProvider extends ContentProvider {
 				long id = db.insertOrThrow(Tables.EVENTS_EVENTS_CATEGORIES, null, values);
 				notifyChange(uri);
 				return EventsEventsCategories.buildUri(Long.toString(id));
-			}	
+			}
+			case REGISTRATIONLOCATIONS: {
+				long id = db.insertOrThrow(Tables.REGISTRATION_LOCATIONS, null, values);
+				notifyChange(uri);
+				return RegistrationLocations.buildUri(Long.toString(id));
+			}
+			case REGISTRATIONLEVELS: {
+				long id = db.insertOrThrow(Tables.REGISTRATION_LEVELS, null, values);
+				notifyChange(uri);
+				return RegistrationLevels.buildUri(Long.toString(id));
+			}
 			default:
 				throw new UnsupportedOperationException("Unknown uri: "+ uri);
 		}
@@ -785,6 +813,20 @@ public class EllucianProvider extends ContentProvider {
 					return builder.table(Tables.EVENTS_EVENTS_CATEGORIES)
 							.where(EventsEventsCategories._ID + "=?", id);
 			}
+			case REGISTRATIONLOCATIONS:
+				return builder.table(Tables.REGISTRATION_LOCATIONS);
+			case REGISTRATIONLOCATIONS_ID: {
+					final String id = RegistrationLocations.getId(uri);
+					return builder.table(Tables.REGISTRATION_LOCATIONS)
+							.where(RegistrationLocations._ID + "=?", id);
+			}
+			case REGISTRATIONLEVELS:
+				return builder.table(Tables.REGISTRATION_LEVELS);
+			case REGISTRATIONLEVELS_ID: {
+					final String id = RegistrationLevels.getId(uri);
+					return builder.table(Tables.REGISTRATION_LEVELS)
+							.where(RegistrationLevels._ID + "=?", id);
+			}
 			default:
 				throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
@@ -1036,6 +1078,20 @@ public class EllucianProvider extends ContentProvider {
 				final String id = EventsEventsCategories.getId(uri);
 				return builder.table(Tables.EVENTS_EVENTS_CATEGORIES)
 						.where(EventsEventsCategories._ID + "=?", id);
+		}
+		case REGISTRATIONLOCATIONS:
+			return builder.table(Tables.REGISTRATION_LOCATIONS);
+		case REGISTRATIONLOCATIONS_ID: {
+				final String id = RegistrationLocations.getId(uri);
+				return builder.table(Tables.REGISTRATION_LOCATIONS)
+						.where(RegistrationLocations._ID + "=?", id);
+		}
+		case REGISTRATIONLEVELS:
+			return builder.table(Tables.REGISTRATION_LEVELS);
+		case REGISTRATIONLEVELS_ID: {
+				final String id = RegistrationLevels.getId(uri);
+				return builder.table(Tables.REGISTRATION_LEVELS)
+						.where(RegistrationLevels._ID + "=?", id);
 		}
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);

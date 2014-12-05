@@ -373,7 +373,8 @@
                                   options:kNilOptions
                                   error:&error];
             
-            NSMutableDictionary *previousEvents = [[NSMutableDictionary alloc] init];
+            NSMutableArray *previousEvents = [[NSMutableArray alloc] init];
+            
             NSMutableSet *newKeys = [[NSMutableSet alloc] init];
             
             NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Event"];
@@ -382,7 +383,7 @@
             [request setPredicate:filterPredicate];
             NSArray * oldObjects = [importContext executeFetchRequest:request error:&error];
             for (Event* oldObject in oldObjects) {
-                [previousEvents setObject:oldObject forKey:oldObject.uid];
+                [previousEvents addObject:oldObject];
             }
             
             NSArray *orderedKeys = [[json allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
@@ -418,12 +419,19 @@
                 for(int i = 0; i < [eventsForDate count]; i++) {
                     NSDictionary *jsonEvent = [eventsForDate objectAtIndex:i];
                     
+                    Event *event = nil;
                     //if exists
                     NSString *uid = [jsonEvent objectForKey:@"uid"];
-                    Event *event = [previousEvents objectForKey:uid];
+                                        
+                    NSPredicate *uidPredicate = [NSPredicate predicateWithFormat:@"uid == %@", uid];
+                    NSArray * filteredArray  = [previousEvents filteredArrayUsingPredicate:uidPredicate];
                     
+                    if ([filteredArray count] > 0) {
+                        event = filteredArray[0];
+                    }
+
                     if(event) {
-                        [previousEvents removeObjectForKey:uid];
+                        [previousEvents removeObject:event];
                     } else {
                         j++;
                         event = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:importContext];
@@ -484,7 +492,7 @@
             }
             
             //find and delete old ones
-            for (NSManagedObject * oldObject in [previousEvents allValues]) {
+            for (NSManagedObject * oldObject in previousEvents) {
                  [importContext deleteObject:oldObject];
              }
             

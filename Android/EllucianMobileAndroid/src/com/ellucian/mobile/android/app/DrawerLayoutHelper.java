@@ -48,6 +48,8 @@ import com.ellucian.mobile.android.util.Utils;
 public class DrawerLayoutHelper {
 	
 	public static final String TAG = DrawerLayoutHelper.class.getSimpleName();
+	public static final long AUTH_REFRESH_TIME = 30 * 60 * 1000; // 30 Minutes
+
 	
 	private Activity activity;
 	public DrawerLayout drawerLayout;
@@ -283,9 +285,6 @@ public class DrawerLayoutHelper {
 	}
 	
 	public class MenuChildClickListener implements OnChildClickListener {
-
-		private static final long AUTH_REFRESH_TIME = 30 * 60 * 1000; // 30
-																		// Minutes
 		
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View view, int groupPosition,

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,11 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.courses.Instructor;
 import com.ellucian.mobile.android.client.courses.MeetingPattern;
 import com.ellucian.mobile.android.client.registration.Section;
+import com.ellucian.mobile.android.provider.EllucianContract.Modules;
+import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Utils;
 
@@ -165,11 +169,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			
 			TextView gradingTypeView = (TextView) rootView.findViewById(R.id.grading_type);
 			
-			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_GRADED)) {			
-				gradingTypeView.setText(getString(R.string.label_string_content_format, 
-											getString(R.string.registration_grading),
-											getString(R.string.registration_graded)));			
-			} else if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
+			if (!TextUtils.isEmpty(section.gradingType) && section.gradingType.equals(Section.GRADING_TYPE_AUDIT)) {
 				gradingTypeView.setText(getString(R.string.label_string_content_format, 
 											getString(R.string.registration_grading),
 											getString(R.string.registration_audit)));				
@@ -178,9 +178,30 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 											getString(R.string.registration_grading),
 											getString(R.string.registration_pass_fail)));
 			} else {
-				gradingTypeView.setVisibility(View.GONE);
+				gradingTypeView.setText(getString(R.string.label_string_content_format, 
+						getString(R.string.registration_grading),
+						getString(R.string.registration_graded)));
 			}
-						
+			
+			// Only show academic levels info on the details selected from the search results list
+			TextView academicLevelsView = (TextView)rootView.findViewById(R.id.academic_levels);
+			if (args.containsKey(REQUESTING_LIST_FRAGMENT) && args.getString(REQUESTING_LIST_FRAGMENT)
+					.equals(RegistrationSearchResultsListFragment.class.getSimpleName())) {
+				
+				if (section.academicLevels != null && section.academicLevels.length > 0) {
+					String academicLevelsText = TextUtils.join(",", section.academicLevels);
+					
+					academicLevelsView.setText(getString(R.string.label_string_content_format,
+											getString(R.string.registration_academic_levels),
+											academicLevelsText));
+				} else {
+					academicLevelsView.setVisibility(View.GONE);
+				}
+				
+			} else {
+				academicLevelsView.setVisibility(View.GONE);
+			}
+			
 			LinearLayout meetingLayout = (LinearLayout) rootView.findViewById(R.id.meeting_layout);
 			if (section.meetingPatterns != null && section.meetingPatterns.length > 0) {
 				
@@ -266,24 +287,51 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 							typeView.setText(pattern.instructionalMethodCode);
 						} 
 						
-						TextView locationView = (TextView) rowLayout.findViewById(R.id.building_room);
-						String locationString = "";
+						TextView buildingRoomView = (TextView) rowLayout.findViewById(R.id.building_room);
+						String buildingRoomString = "";
 						if (!TextUtils.isEmpty(pattern.building)) {
 							if (!TextUtils.isEmpty(pattern.room)) {								
-								locationString = getString(R.string.default_building_and_room_format,
+								buildingRoomString = getString(R.string.default_building_and_room_format,
 														pattern.building,
 														pattern.room);
 							} else {
-								locationString = pattern.building;
+								buildingRoomString = pattern.building;
 							}
 						} 
 												
-						if (!TextUtils.isEmpty(locationString)) {
-							locationView.setText(locationString);
+						if (!TextUtils.isEmpty(buildingRoomString)) {
+							buildingRoomView.setText(buildingRoomString);
 							// Show underline of text
 							//locationView.setPaintFlags(locationView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 						} else {
-							locationView.setVisibility(View.GONE);
+							buildingRoomView.setVisibility(View.GONE);
+						}
+						
+						// Only show campus info on the details selected from the search results list
+						TextView campusLocationView = (TextView) rowLayout.findViewById(R.id.campus_location);
+						if (args.containsKey(REQUESTING_LIST_FRAGMENT) && args.getString(REQUESTING_LIST_FRAGMENT)
+								.equals(RegistrationSearchResultsListFragment.class.getSimpleName())) {
+							
+							if (!TextUtils.isEmpty(section.location)) {
+								String selection = Modules.MODULES_ID + " = ? AND " + RegistrationLocations.REGISTRATION_LOCATIONS_CODE + " = ?";
+								Cursor cursor = activity.getContentResolver().query(
+										RegistrationLocations.CONTENT_URI, 
+										new String[] { RegistrationLocations.REGISTRATION_LOCATIONS_NAME }, 
+										selection, 
+										new String[] { ((EllucianActivity)activity).moduleId, section.location }, 
+										null);
+								
+								if (cursor.moveToFirst() && 
+										!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_NAME)))) {
+									campusLocationView.setText(cursor.getString(cursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_NAME)));
+								} else {
+									campusLocationView.setVisibility(View.GONE);
+								}
+							} else {
+								campusLocationView.setVisibility(View.GONE);
+							}
+						} else {
+							campusLocationView.setVisibility(View.GONE);
 						}
 						
 						if (meetingCount > 0) {
@@ -292,7 +340,8 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 						}
 						meetingLayout.addView(rowLayout);
 						meetingCount++;
-					}	
+
+					}				
 				}
 			} else {
 				meetingLayout.setVisibility(View.GONE);

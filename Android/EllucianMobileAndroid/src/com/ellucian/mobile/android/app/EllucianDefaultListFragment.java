@@ -227,6 +227,9 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
             intent.setClass(getActivity(), getDetailActivityClass());
             intent.putExtras(detailBundle); 
             intent.putExtra("index", index);
+            intent.putExtra(Extra.MODULE_ID, getEllucianActivity().moduleId);
+            intent.putExtra(Extra.MODULE_NAME, getEllucianActivity().moduleName);
+            intent.putExtra(Extra.REQUEST_URL, getEllucianActivity().requestUrl);
             intent = addExtras(intent);
             startActivity(intent);
             

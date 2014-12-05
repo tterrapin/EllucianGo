@@ -323,6 +323,7 @@
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
+        detailController.module = self.module;
     } else if ([[segue identifier] isEqualToString:@"Register"]) {
         NSDictionary *messages = (NSDictionary *)sender;
         id detailController = [segue destinationViewController];
@@ -407,6 +408,7 @@
 
 -(void) registerSelectedCourses
 {
+    [self.navigationController setToolbarHidden:YES animated:YES];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
     hud.labelText = NSLocalizedString(@"Registering", @"loading message while waiting for registration");
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);

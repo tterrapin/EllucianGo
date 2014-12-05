@@ -12,4 +12,6 @@
     <color name="details_header_bg">#E8D6A2</color>
     <color name="details_header_border">#D1AD45</color>
     <color name="details_sub_header_border">#D9C696</color>
+    
+    <color name="default_gray">#CCCCCC</color>
 </resources>

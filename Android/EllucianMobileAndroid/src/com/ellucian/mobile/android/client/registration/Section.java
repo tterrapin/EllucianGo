@@ -15,7 +15,8 @@ public class Section implements Parcelable {
 	public static final String VARIABLE_OPERATOR_TO = "TO";
 	public static final String VARIABLE_OPERATOR_OR = "OR";
 	public static final String VARIABLE_OPERATOR_INC = "INC";
-	
+	public static final String CLASSIFICATION_PLANNED = "planned";
+	public static final String CLASSIFICATION_REGISTERED = "registered";
 	
 	public String termId;
 	public String sectionId;
@@ -41,6 +42,8 @@ public class Section implements Parcelable {
 	public boolean allowAudit;
 	public boolean onlyPassNoPass;
 	public float selectedCredits = -1;
+	public String location;
+	public String[] academicLevels;
 	
 	
 	public Section() {
@@ -75,6 +78,8 @@ public class Section implements Parcelable {
 		allowAudit = in.readInt() == 1 ? true : false;
 		onlyPassNoPass = in.readInt() == 1 ? true : false;
 		selectedCredits = in.readFloat();
+		location = in.readString();
+		academicLevels = in.createStringArray();
 	}
 
 	@Override
@@ -109,6 +114,8 @@ public class Section implements Parcelable {
 		dest.writeInt(allowAudit ? 1 : 0);
 		dest.writeInt(onlyPassNoPass ? 1 : 0);
 		dest.writeFloat(selectedCredits);
+		dest.writeString(location);
+		dest.writeStringArray(academicLevels);
 		
 	}
 	

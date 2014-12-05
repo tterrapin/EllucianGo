@@ -26,12 +26,13 @@
 @property (nonatomic, assign) BOOL secure;
 
 @property (strong, nonatomic) NSString *analyticsLabel;
+@property (readonly) NSURL *originalUrl;
 
 - (IBAction)didTapBackButton:(id)sender;
 - (IBAction)didTapForwardButton:(id)sender;
 - (IBAction)didTapShareButton:(id)sender;
 - (IBAction)didTapStopButton:(id)sender;
--(BOOL)shouldPresentActionSheet:(UIActionSheet *)actionSheet;
+- (BOOL)shouldPresentActionSheet:(UIActionSheet *)actionSheet;
 - (IBAction)didTapRefreshButton:(id)sender;
 
 @end

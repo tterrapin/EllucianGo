@@ -10,6 +10,8 @@
 #import "ModuleRole.h"
 #import "ModuleProperty.h"
 #import "ImageCache.h"
+#import "RegistrationAcademicLevel.h"
+#import "RegistrationLocation.h"
 
 @implementation Module (Create)
 
@@ -44,34 +46,50 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
 {
     if([dictionary objectForKey:@"type"] != [NSNull null] ) {
         module.properties = nil;
+        if([dictionary objectForKey:@"type"] != [NSNull null]) {
+            module.type = [dictionary objectForKey:@"type"];
+        }
+        if([dictionary objectForKey:@"name"] != [NSNull null]) {
+            module.name = [dictionary objectForKey:@"name"];
+        }
+        if([dictionary objectForKey:@"icon"] != [NSNull null]) {
+            module.iconUrl = [dictionary objectForKey:@"icon"];
+            [[ImageCache sharedCache] getImage: module.iconUrl];
+        }
+        if([dictionary objectForKey:@"hideBeforeLogin"] != [NSNull null]) {
+            module.hideBeforeLogin = [NSNumber numberWithBool:[[dictionary objectForKey:@"hideBeforeLogin"] boolValue]];
+        }
+        if([dictionary objectForKey:@"order"] != [NSNull null]) {
+            module.index = [NSNumber numberWithInt:[[dictionary objectForKey:@"order"] intValue]];
+        }
+        if([dictionary objectForKey:@"access"] != [NSNull null]) {
+            module.roles = nil;
+            NSArray *access = [dictionary objectForKey:@"access"];
+            for(NSString *role in access) {
+                ModuleRole *managedRole = [NSEntityDescription insertNewObjectForEntityForName:@"ModuleRole" inManagedObjectContext:managedObjectContext];
+                managedRole.role = role;
+                managedRole.module = module;
+                [module addRolesObject:managedRole];
+            }
+        }
+
+        
         for (id key in [dictionary allKeys]) {
             id value = [dictionary objectForKey:key];
             
             if([key isEqualToString:@"type"]) {
-                module.type = value;
             } else if([key isEqualToString:@"name"]) {
-                module.name = value;
             } else if([key isEqualToString:@"icon"]) {
-                module.iconUrl = [dictionary objectForKey:@"icon"];
-                [[ImageCache sharedCache] getImage: module.iconUrl];
             } else if([key isEqualToString:@"hideBeforeLogin"]) {
-                module.hideBeforeLogin = [NSNumber numberWithBool:[[dictionary objectForKey:@"hideBeforeLogin"] boolValue]];
             } else if([key isEqualToString:@"order"]) {
-                module.index = [NSNumber numberWithInt:[value intValue]];
             } else if([key isEqualToString:@"access"]) {
-                module.roles = nil;
-                NSArray *access = [dictionary objectForKey:@"access"];
-                for(NSString *role in access) {
-                    ModuleRole *managedRole = [NSEntityDescription insertNewObjectForEntityForName:@"ModuleRole" inManagedObjectContext:managedObjectContext];
-                    managedRole.role = role;
-                    managedRole.module = module;
-                    [module addRolesObject:managedRole];
-                }
             } else {
                 if([value isKindOfClass:[NSString class]]) {
                     [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
                 } else if([value isKindOfClass:[NSDictionary class]]) {
                     [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext];
+                } else if([value isKindOfClass:[NSArray class]]) {
+                    [self parseArray:value forModule:module inManagedObjectContext:managedObjectContext key:key];
                 }
             }
         }
@@ -87,6 +105,8 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
             [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
         } else if([value isKindOfClass:[NSDictionary class]]) {
             [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext];
+        } else if([value isKindOfClass:[NSArray class]]) {
+            [self parseArray:value forModule:module inManagedObjectContext:managedObjectContext key:key];
         }
     }
 }
@@ -99,5 +119,51 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
     managedProperty.module = module;
     [module addPropertiesObject:managedProperty];
 }
+
++(void) parseArray:(NSArray *)array forModule:(Module *)module inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext key:(NSString *) key
+{
+    if([module.type isEqualToString:@"registration"]) {
+        if([key isEqualToString:@"locations"]) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"RegistrationLocation"];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@", module.internalKey];
+            [fetchRequest setIncludesPropertyValues:NO];
+            
+            NSError *error;
+            NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            for (NSManagedObject *object in fetchedObjects)
+            {
+                [managedObjectContext deleteObject:object];
+            }
+            
+            for(NSDictionary *dictionary in array) {
+                RegistrationLocation *location = [NSEntityDescription insertNewObjectForEntityForName:@"RegistrationLocation" inManagedObjectContext:managedObjectContext];
+                location.name = [dictionary objectForKey:@"name"];
+                location.code = [dictionary objectForKey:@"code"];
+                location.moduleId = module.internalKey;
+            }
+            [managedObjectContext save:&error];
+        } else if([key isEqualToString:@"academic levels"]) {
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"RegistrationAcademicLevel"];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@", module.internalKey];
+            [fetchRequest setIncludesPropertyValues:NO];
+            
+            NSError *error;
+            NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+            for (NSManagedObject *object in fetchedObjects)
+            {
+                [managedObjectContext deleteObject:object];
+            }
+            
+            for(NSDictionary *dictionary in array) {
+                RegistrationAcademicLevel *academicLevel = [NSEntityDescription insertNewObjectForEntityForName:@"RegistrationAcademicLevel" inManagedObjectContext:managedObjectContext];
+                academicLevel.name = [dictionary objectForKey:@"name"];
+                academicLevel.code = [dictionary objectForKey:@"code"];
+                academicLevel.moduleId = module.internalKey;
+            }
+            [managedObjectContext save:&error];
+        }
+    }
+}
+
 
 @end

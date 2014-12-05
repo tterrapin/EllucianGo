@@ -18,6 +18,8 @@ import com.ellucian.mobile.android.client.registration.RegistrationResponse;
 
 public class RegistrationResultsFragment extends EllucianFragment {
 	
+	public static final String METHOD_DROP = "drop";
+	
 	protected View rootView;
 	protected RegistrationResponse response;
 	
@@ -26,8 +28,14 @@ public class RegistrationResultsFragment extends EllucianFragment {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_results, container, false);
 		response = getArguments().getParcelable("RegistrationResponse");
+		boolean drop = getArguments().getBoolean(METHOD_DROP);
 		
 		if (response.messages != null && response.messages.length > 0) {
+			
+			if (drop) {				
+				TextView generalSubHeader = (TextView) rootView.findViewById(R.id.general_sub_header);
+				generalSubHeader.setText(R.string.registration_results_dropped_important_sub);
+			}
 			
 			LinearLayout generalLayout = (LinearLayout) rootView.findViewById(R.id.general_layout);
 			
@@ -47,6 +55,14 @@ public class RegistrationResultsFragment extends EllucianFragment {
 		}
 		
 		if (response.successes != null && response.successes.length > 0) {
+						
+			if (drop) {
+				TextView successHeader = (TextView) rootView.findViewById(R.id.success_header);
+				successHeader.setText(R.string.registration_results_dropped_success);
+				
+				TextView successSubHeader = (TextView) rootView.findViewById(R.id.success_sub_header);
+				successSubHeader.setText(R.string.registration_results_dropped_success_sub);
+			}
 			
 			LinearLayout successLayout = (LinearLayout) rootView.findViewById(R.id.success_layout);
 			for (RegisterSection section: response.successes) {
@@ -84,6 +100,11 @@ public class RegistrationResultsFragment extends EllucianFragment {
 		}
 		
 		if (response.failures != null && response.failures.length > 0) {
+			
+			if (drop) {				
+				TextView failureSubHeader = (TextView) rootView.findViewById(R.id.failure_sub_header);
+				failureSubHeader.setText(R.string.registration_results_dropped_failure_sub);
+			}
 			
 			LinearLayout failureLayout = (LinearLayout) rootView.findViewById(R.id.failure_layout);
 			for (RegisterSection section: response.failures) {

@@ -70,7 +70,8 @@
     <string name="label_meeting_information">Informações sobre a aula</string>
     <string name="label_open">Abrir</string>
     <string name="label_date">Data</string>
-    <string name="label_location">Local</string>
+    <string name="label_location">Localização</string>
+    <string name="label_done">Concluído</string>
        
     <string name="label_format">
 	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
@@ -113,7 +114,7 @@
     <string name="row_email_label">Email:</string>
     <string name="row_date_label">Data:</string>
     <string name="row_due_label">Vencido:</string>
-    <string name="row_location_label">Local:</string>
+    <string name="row_location_label">Localização:</string>
     
     <string name="default_image">Imagem</string>
     <string name="no_data">Dados inexistentes</string>
@@ -145,6 +146,9 @@
 	<string name="date_time_to_time_format">
 	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
 	</string>
+	<string name="date_time_to_date_time_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
+	</string>
 	<string name="time_to_time_format">
 	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
 	</string>
@@ -169,6 +173,9 @@
 	</string>
 	<string name="default_meeting_days_times_and_type_format">
 	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	<string name="default_two_string_separator_format">
+	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
 	
 	
@@ -206,7 +213,7 @@
     <string name="courses_section_activity">Atividades</string>
     <string name="courses_section_grades">Notas</string>
     <string name="courses_section_assignments">Atribuições</string>
-    <string name="courses_section_roster">Lista</string>
+    <string name="courses_section_roster">Lista de presença</string>
     <string name="full_schedule">Horário completo</string>
     <string name="daily_schedule">Horário diário</string>
     <string name="courses_no_courses_message">Não existem disciplinas</string>
@@ -217,7 +224,7 @@
     <string name="courses_menu_view_target">Visualizar</string>
     <string name="course_details">Detalhes</string>
     <string name="course_grades">Notas</string>
-    <string name="course_roster">Lista</string>
+    <string name="course_roster">Lista de presença</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="course_more">Mais&#8230;</string>
     <string name="course_assignments">Atribuições</string>
@@ -268,14 +275,14 @@
     
     <string name="title_activity_maps">Mapas</string>
     <string name="maps_campus_selection_title">Selecionar o campus</string>
-    <string name="maps_get_directions_label">Itinerários</string>
+    <string name="maps_get_directions_label">Direções</string>
     <string name="maps_show_details_label">Exibir os detalhes</string>
     <string name="maps_map_view_label">Visualizar mapa</string>
     <string name="maps_satellite_view_label">Visualizar satélite</string>
     <string name="maps_my_location_label">Minha localização</string>
-    <string name="maps_restore_location_label">Restaurar o local</string>
+    <string name="maps_restore_location_label">Restaurar a localização</string>
     <string name="maps_building_list_label">Lista de prédios</string>
-    <string name="maps_no_locations">Não há locais para exibição</string>
+    <string name="maps_no_locations">Não há localizações para exibição</string>
     <string name="maps_show_map">Mapa</string>
     <string name="maps_building_image_label">Criar imagem</string>
     <string name="maps_no_buildings_message">Não há prédios para exibição.</string>
@@ -341,10 +348,15 @@
     <string name="registration_results_success_sub">Você está matriculado nestas disciplinas.</string>
     <string name="registration_results_warning">Desculpe!</string>
     <string name="registration_results_failure_sub">Não foi possível se matricular nestas disciplinas.</string>
+    <string name="registration_results_dropped_important_sub">Estes itens podem impedir o trancamento.</string>
+    <string name="registration_results_dropped_success">Trancamento realizado com sucesso!</string>
+    <string name="registration_results_dropped_success_sub">Você trancou estas disciplinas.</string>
+    <string name="registration_results_dropped_failure_sub">Não foi possível trancar estas disciplinas.</string>
     <string name="registration_dialog_title">Título</string>
     <string name="registration_dialog_register_message">Tem certeza de que deseja se matricular nestas turmas?</string>
     <string name="registration_dialog_add_to_cart_message">Tem certeza de que deseja adicionar estas turmas no carrinho?</string>
     <string name="registration_dialog_remove_message">Tem certeza de que deseja remover este item do carrinho?</string>
+    <string name="registration_dialog_drop_message">Tem certeza de que deseja trancar estas turmas?</string>
     <string name="registration_dialog_variable_credits_to_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f</string>
     <string name="registration_dialog_variable_credits_or_message">Digite o valor do crédito da disciplina %1$.2f ou %2$.2f</string>
     <string name="registration_dialog_variable_credits_inc_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f com incrementos de %3$.2f</string>
@@ -354,12 +366,16 @@
     </string>
     <string name="registration_dialog_pin_message">Digite a senha para cada um dos seguintes períodos:</string>
     <string name="registration_search_header">Selecione um período e digite os critérios da busca.</string>
-    <string name="registration_search_field_hint">Critérios de pesquisa</string>
+    <string name="registration_search_field_hint">Critérios da busca</string>
+    <string name="registration_search_refine_search"><u>Refinar a busca</u></string>
+    <string name="registration_search_refine_location">Localização</string>
+    <string name="registration_search_refine_level">Nível acadêmico</string>
     <string name="registration_add_to_cart">Adicionar ao carrinho</string>
     <string name="registration_added_to_server_cart_failed">Falha ao salvar uma turma no servidor. Estes dados permanecerão somente para a sessão atual.</string>
     <string name="registration_fill_in_message">Selecione um período e faça uma busca.</string>
     <string name="registration_section_id">ID turma</string>
     <string name="registration_grading">Classificação</string>
+    <string name="registration_academic_levels">Níveis acadêmicos</string>
     <string name="registration_ceus">UECs</string>
     <string name="registration_audit">Auditoria</string>
     <string name="registration_graded">Com nota</string>
@@ -370,6 +386,7 @@
     <string name="registration_were_sorry">Desculpe!</string>
     <string name="registration_ineligible_to_register">Matrícula não autorizada</string>
     <string name="registration_remove">Remover</string>
+    <string name="registration_drop">Trancar</string>
     
     <string name="registration_added_to_cart_success_format">
 	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> adicionado ao carrinho.
