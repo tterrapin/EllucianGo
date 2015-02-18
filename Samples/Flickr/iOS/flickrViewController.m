@@ -44,7 +44,7 @@
         NSString *user_id = [self.module propertyForKey:@"userId"];
         
         // Build the flickr URL
-        NSString *urlString = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=%@&per_page=1&format=json&nojsoncallback=1&user_id=%@&extras=description,date_taken,url_m", api_key, user_id];
+        NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=%@&per_page=1&format=json&nojsoncallback=1&user_id=%@&extras=description,date_taken,url_m", api_key, user_id];
         
         // Download the response from flickr
         NSData *responseData = [NSData dataWithContentsOfURL: [NSURL URLWithString: urlString]];

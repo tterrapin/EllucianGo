@@ -1,0 +1,76 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        xmlns:ellucian="http://schemas.android.com/apk/res/com.ellucian.elluciango"
+        xmlns:app="http://schemas.android.com/apk/res/"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/calendar_nav_bottom_border_2dp"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/courses_daily_date_back_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/right_border_1dp"
+                android:onClick="dayBefore"
+                android:src="@drawable/ic_calendar_nav_left" android:contentDescription="@string/label_left_button"/>
+
+            <TextView
+                android:id="@+id/courses_daily_date_display"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_calendar_picker"
+                android:gravity="center"
+                android:onClick="showDatePicker"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/courses_daily_date_foward_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/left_border_1dp"
+                android:onClick="dayAfter"
+                android:src="@drawable/ic_calendar_nav_right" android:contentDescription="@string/label_right_button"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/courses_daily_root_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <com.ellucian.mobile.android.view.BlocksLayout
+                android:id="@+id/courses_daily_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <com.ellucian.mobile.android.view.TimeRulerView
+                    android:id="@+id/courses_daily_ruler"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    app:labelTextSize="@dimen/list_description_text_size" />
+            </com.ellucian.mobile.android.view.BlocksLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <include layout="@layout/drawer_list" />
+
+</android.support.v4.widget.DrawerLayout>

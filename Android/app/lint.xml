@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="UnusedResources">
+        <ignore path="res/xml/example_custom_module_configurations.xml" />
+    </issue>
+</lint>

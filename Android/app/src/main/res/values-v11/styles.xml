@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Theme.Ellucian" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:selectableItemBackground">@android:color/transparent</item>
+    </style>
+
+</resources>

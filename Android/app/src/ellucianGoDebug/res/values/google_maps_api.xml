@@ -1,0 +1,3 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyAYa_aPD3dNq7p3-HYE59-BXhaoPBlLfiA</string>
+</resources>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+
+
+    <!-- Main -->
+    
+
+    <string name="title_home_page">Accueil</string>
+    <string name="main_sign_in">Connexion</string>
+    <string name="main_sign_out">Déconnexion</string>
+    <string name="main_switch_school">Changer d\'établissement</string>
+    
+    <!-- Menu -->
+    
+    <string name="menu">Menu</string>
+    <string name="menu_item_maps_title">Plans</string>
+    <string name="menu_item_grades_title">Notes</string>
+    <string name="menu_item_about_title">À propos</string>
+    <string name="menu_item_notifications_title">Notifications</string>
+    <string name="menu_filter">Filtre</string>
+    <string name="menu_search">Recherche</string>
+    <string name="menu_add_to_contacts">Ajouter aux contacts</string>
+    <string name="menu_add_to_calendar">Ajouter au calendrier</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_home">Accueil</string>
+    <string name="menu_about">À propos</string>
+    <string name="menu_sign_in">Connexion</string>
+    <string name="menu_sign_out">Déconnexion</string>
+    <string name="menu_switch_school">Changer d\'établissement</string>
+    <string name="menu_search_school_hint">Rechercher établissement</string>
+    <string name="menu_header_applications">Applications</string>
+    <string name="menu_header_actions">Actions</string>
+    <string name="menu_header_indicator_description">Indicateur d\'en-tête</string>
+    <string name="drawer_open">Ouvrir tiroir de navigation</string>
+    <string name="drawer_close">Fermer tiroir de navigation</string>
+    
+    <!-- Configuration and Institutions -->
+    
+    <string name="title_activity_school_selection">Choisir établissement</string>
+    <string name="no_institutions">Aucun établissement à afficher actuellement.</string>
+    
+    <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
+    <string name="school_selection_confirmation">Vous avez sélectionné \'%1$s\'. Est-ce exact?</string>  
+    <string name="title_activity_configuration_loading">Chargement de la configuration</string>
+    <string name="configuration_loading_failed">Échec de chargement de la configuration</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="configuration_loading_message">Chargement de la configuration. Veuillez patienter&#8230;</string>
+    <string name="configuration_loading_missing_config">"Impossible de télécharger la configuration depuis ce lien."</string> 
+    
+    <!-- General Defaults, Dialogs, and Rows -->
+    
+    <string name="label_name">Nom</string>
+    <string name="label_title">Titre</string>
+    <string name="label_phone">Téléphone</string>
+    <string name="label_mobile">Portable</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_address">Adresse</string>
+    <string name="label_website">Site Web</string>
+    <string name="label_type">Type</string>
+    <string name="label_description">Description</string>
+    <string name="label_department">Domaine</string>
+    <string name="label_office">Bureau</string>
+    <string name="label_room">Salle</string>
+    <string name="label_campus">Campus</string>
+    <string name="label_search">Recherche</string>
+    <string name="label_faculty">Enseignant(s)</string>
+    <string name="label_credits">Crédits</string>
+    <string name="label_meeting_information">Informations de réunion</string>
+    <string name="label_open">Ouvrir</string>
+    <string name="label_date">Date</string>
+    <string name="label_location">Position</string>
+    <string name="label_done">Terminé</string>
+       
+    <string name="label_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
+	</string>	
+	<string name="label_string_content_format">
+	    <xliff:g id="label" example="Name">%1$s</xliff:g>: <xliff:g id="content" example="John Smith">%2$s</xliff:g>
+	</string>	
+	<string name="label_integer_content_format">
+	    <xliff:g id="label" example="Room">%1$s</xliff:g>: <xliff:g id="content" example="201">%2$d</xliff:g>
+	</string>	
+	<string name="label_float_content_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="content" example="3.00">%2$.2f</xliff:g>
+	</string>
+	<string name="label_with_count_format">
+	    <xliff:g id="label" example="Cart">%1$s</xliff:g> (<xliff:g id="count" example="5">%2$d</xliff:g>)
+	</string>
+
+    <string name="dialog_sign_in">Connexion</string>
+    <string name="dialog_sign_in_title">Connexion</string>
+    <string name="dialog_stay_signed_in">Rester connecté</string>
+    <string name="dialog_username">Nom d\'utilisateur</string>
+    <string name="dialog_password">Mot de passe</string>
+    <string name="dialog_sign_in_empty">Nom d\'utilisateur et mot de passe doivent être renseignés.</string>
+    <string name="dialog_sign_in_failed">Échec de connexion. Veuillez vérifier votre connexion réseau et/ou vos nom d\'utilisateur et mot de passe. Contactez votre département d\'informatique si vous avez besoin d\'aide pour vous connecter.</string>
+    <string name="dialog_signed_in">Vous êtes connecté.</string>
+    <string name="dialog_signed_out">Vous êtes déconnecté.</string>
+    <string name="dialog_idle_sign_out">Vous êtes resté trop longtemps inactif et avez été déconnecté.</string>
+    <string name="dialog_select_categories">Sélectionner catégories</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="dialog_re_authenticate">Nouvelle authentification en cours, veuillez patienter&#8230;</string>
+	<string name="dialog_continue">Continuer</string>
+	<string name="dialog_go_back">Revenir</string>
+	<string name="dialog_security_warning">Avertissement de sécurité</string>
+	<string name="dialog_cert_warning_statement">"Le certificat de sécurité pour ce site présente des problèmes."</string>
+	<string name="dialog_field_empty">Champ ne peut pas être vide</string>
+	<string name="unauthorized_feature">Vous n\'êtes pas autorisé à utiliser cette fonctionnalité.</string>
+	
+    <string name="row_category_label">Catégorie:</string>
+    <string name="row_contact_label">Contact:</string>
+    <string name="row_email_label">E-mail:</string>
+    <string name="row_date_label">Date:</string>
+    <string name="row_due_label">Échéance:</string>
+    <string name="row_location_label">Position:</string>
+    
+    <string name="default_image">Image</string>
+    <string name="no_data">Aucune donnée</string>
+    <string name="no_results_found">Aucun résultat.</string>
+    <string name="share">Partager</string>
+    <string name="terms">Semestres</string>
+    <string name="layers">Couches</string>
+    <string name="unavailable">Non disponible</string>
+    <string name="dash_separator">"-"</string>
+    <string name="line_speparator">|</string>
+    <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
+    <string name="detail_page_title_format">Détail de %s</string>
+    <string name="nothing_to_display">Rien à afficher</string>
+    <string name="not_applicable">S/O</string>
+    <string name="all_day_event">Événement sur toute la journée</string>
+    <string name="title_activity_default_detail">Détails</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="loading_message">Chargement en cours&#8230;</string>
+
+    <string name="date_to_date_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> - <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g>
+	</string>
+	<string name="date_all_day_event_format">
+	    <xliff:g id="startDate" example="10-8-14">%s</xliff:g> Événement sur toute la journée
+	</string>
+	<string name="date_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="time" example="11:00 AM">%2$s</xliff:g>
+	</string>
+	<string name="date_time_to_time_format">
+	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="date_time_to_date_time_format">
+	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
+	</string>
+	<string name="time_to_time_format">
+	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
+	</string>
+	
+	<string name="default_first_last_name_format">
+	    <xliff:g id="firstName" example="John">%1$s</xliff:g> <xliff:g id="lastName" example="Smith">%2$s</xliff:g>
+	</string>
+	<string name="default_last_name_first_initial_format">
+	    <xliff:g id="lastName" example="Smith">%1$s</xliff:g>, <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
+	</string>
+	<string name="default_course_section_title_format">
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
+	</string>
+	<string name="default_building_and_room_format">
+	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_and_times_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+	</string>
+	<string name="default_meeting_days_times_and_type_format">
+	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+	</string>
+	<string name="default_two_string_separator_format">
+	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
+	</string>
+	
+	
+    <!-- About -->
+    
+    <string name="title_activity_about">À propos</string>
+    <string name="about">À propos</string>
+    <string name="about_logo_description">Logo de l\'établissement</string>
+    <string name="about_app_version">Version de l\'application</string>
+    <string name="about_server_version">Version du serveur</string>
+    <string name="about_phone_description">Lien de téléphone</string>
+    <string name="about_email_description">Lien d\'e-mail</string>
+    <string name="about_website_description">Lien de site Web</string>
+    <string name="about_privacy_label">Politique de confidentialité de l\'université</string>
+    <string name="about_privacy_policy_description">Lien de politique de confidentialité</string>
+    <string name="about_ellucian_privacy_policy">Politique de confidentialité d\'Ellucian</string>
+    <string name="about_powered_by">Optimisé par</string>
+    <string name="about_powered_by_ellucian">Optimisé par Ellucian</string>
+    
+    <!-- Courses -->
+    
+    <string name="title_activity_courses">Enseignements</string>
+    <string name="title_activity_courses_schedule">Enseignements</string>
+    <string name="title_activity_course_overview">Présentation des enseignements</string>
+    <string name="title_activity_course_assignments">Affectations des enseignements</string>
+    <string name="title_activity_course_assignments_detail">Détails des affectations</string>
+    <string name="title_activity_course_announcements">Annonces d\'enseignement</string>
+    <string name="title_activity_course_announcements_detail">Détail de l\'annonce</string>
+    <string name="title_activity_course_events">Événements d\'enseignement</string>
+    <string name="title_activity_course_events_detail">Détail de l\'événement</string>
+    <string name="title_activity_course_activity">Activité d\'enseignement</string>
+    <string name="course_details_faculty">Enseignant(s)</string>
+    <string name="courses_section_details">Détails</string>
+    <string name="courses_section_events">Événements</string>
+    <string name="courses_section_activity">Activité</string>
+    <string name="courses_section_grades">Notes</string>
+    <string name="courses_section_assignments">Affectations</string>
+    <string name="courses_section_roster">Liste étudiants</string>
+    <string name="full_schedule">Planning complet</string>
+    <string name="daily_schedule">Planning du jour</string>
+    <string name="courses_no_courses_message">Aucun enseignement</string>
+    <string name="title_activity_courses_daily_schedule">Planning du jour</string>
+    <string name="title_activity_courses_full_schedule">Planning complet</string>
+    <string name="courses_menu_daily_schedule">Planning du jour</string>
+    <string name="courses_menu_full_schedule">Planning complet</string>
+    <string name="courses_menu_view_target">Afficher</string>
+    <string name="course_details">Détails</string>
+    <string name="course_grades">Notes</string>
+    <string name="course_roster">Liste étudiants</string>
+    <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
+    <string name="course_more">Autre&#8230;</string>
+    <string name="course_assignments">Affectations</string>
+    <string name="course_announcements">Annonces</string>
+    <string name="course_events">Événements</string>
+    <string name="course_details_no_directory">Aucun module d\'annuaire installé</string>
+    <string name="course_details_no_maps">Aucun module de plan installé</string>
+    <string name="course_assignments_no_assignments">Aucune affectation</string>
+    <string name="course_assignments_due">Échéance:</string>
+    <string name="course_assignments_none_assigned">non définie</string>
+    <string name="label_left_button">Bouton gauche</string>
+	<string name="label_right_button">Bouton droit</string>
+
+    <!-- Directory -->
+    
+    <string name="title_activity_directory">Catégories d\'annuaire</string>
+    <string name="title_activity_directory_detail">Détail d\'annuaire</string>
+    <string name="title_activity_directory_list_all">Annuaire</string>
+    <string name="title_activity_directory_list_student">Annuaire étudiants</string>
+    <string name="title_activity_directory_list_faculty">Annuaire enseignants</string>
+    <string name="directory">Annuaire</string>
+    <string name="directory_search">Pour utiliser l\'annuaire, lancez une recherche ci-dessus.</string>
+    <string name="directory_no_results">Aucun résultat.</string>
+    <string name="directory_no_phone">Impossible d\'ajouter de contact sans numéro de téléphone.</string>
+    <string name="searchable_directory_hint">Recherche annuaire</string>
+    <string name="searchable_directory_label">Rechercher dans annuaire</string>
+    <string name="directory_icon_description">Icône</string>
+    <string name="directory_type_all">Tous</string>
+    <string name="directory_type_student">Étudiants</string>
+    <string name="directory_type_faculty">Enseignants</string>
+    
+    <!-- Events -->
+    
+    <string name="title_activity_events">Événements</string>
+    <string name="title_activity_events_detail">Détail de l\'événement</string>
+    <string name="events_no_events">Aucun événement à afficher</string>
+    <string name="searchable_events_hint">Rechercher événements</string>
+    <string name="searchable_events_label">Rechercher événements</string>
+    
+    <!-- Grades -->
+    
+    <string name="title_activity_grades">Notes</string>
+    <string name="grades_last_updated">Dernière mise à jour:</string>
+    <string name="no_grades_in_term">Aucune note pour ce semestre</string>
+    <string name="grades_no_grades">Aucune note enregistrée</string>
+    
+    <!-- Maps -->
+    
+    <string name="title_activity_maps">Plans</string>
+    <string name="maps_campus_selection_title">Choisir campus</string>
+    <string name="maps_get_directions_label">Itinéraire</string>
+    <string name="maps_show_details_label">Afficher les détails</string>
+    <string name="maps_map_view_label">Vue Plan</string>
+    <string name="maps_satellite_view_label">Vue Satellite</string>
+    <string name="maps_my_location_label">Ma position</string>
+    <string name="maps_restore_location_label">Réinitialiser position</string>
+    <string name="maps_building_list_label">Liste des bâtiments</string>
+    <string name="maps_no_locations">Aucune position à afficher</string>
+    <string name="maps_show_map">Plan</string>
+    <string name="maps_building_image_label">Image du bâtiment</string>
+    <string name="maps_no_buildings_message">Aucun bâtiment à afficher.</string>
+    <string name="maps_blank"></string>
+    <string name="search_results_label">Résultats de la recherche</string>
+    <string name="searchable_buildings_hint">Rechercher bâtiments</string>
+    <string name="searchable_buildings_label">Rechercher bâtiments</string>
+    <string name="maps_type_hybrid">Hybride</string>
+    <string name="maps_type_none">Aucun</string>
+    <string name="maps_type_normal">Normal</string>
+    <string name="maps_type_satellite">Satellite</string>
+    <string name="maps_type_terrain">Terrain</string>
+    <string name="legal">Juridique</string>
+    <string name="maps_feature_not_supported">Fonctionnalité non prise en charge par cet appareil.</string>
+    <string name="maps_building_additional_services_label">Services supplémentaires:</string>
+    
+    <!-- Multimedia -->
+    
+    <string name="title_activity_video">Vidéo</string>
+    <string name="title_activity_audio">Audio</string>
+    
+    <!-- News -->
+    
+    <string name="title_activity_news">Nouvelles</string>
+    <string name="title_activity_news_detail">Détail des nouvelles</string>
+    <string name="news_no_news">Aucune nouvelle à afficher</string>
+    <string name="searchable_news_hint">Rechercher nouvelles</string>
+    <string name="searchable_news_label">Rechercher nouvelles</string>
+       
+    <!-- Notifications -->
+    
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="notifications_detail_date_posted">Date de publication:</string>
+    <string name="notifications_detail_link_action">Agir</string>
+    <string name="notifications_device_content">Vous avez de nouvelles notifications!</string>
+    <string name="notifications_no_notifications">Aucune notification à afficher</string>
+    <string name="notifications_sticky_marker_image_text">Balise</string>
+    <string name="notifications_delete">Supprimer</string>
+    <string name="notifications_unable_to_delete_message">Impossible de supprimer cette notification.</string>
+    <string name="notifications_dialog_delete_message">Voulez-vous vraiment supprimer cette notification?</string>
+    
+    <!-- Numbers -->
+    
+    <string name="title_number_list">Numéros</string>
+    <string name="title_number_detail">Détail du numéro</string>
+    <string name="numbers_no_entries">Aucun numéro important</string>
+    <string name="searchable_numbers_hint">Rechercher numéros</string>
+    <string name="searchable_numbers_label">Rechercher numéros</string>
+    
+    <!-- Registration -->
+    
+    <string name="title_activity_registration">Inscription</string>
+    <string name="title_activity_registration_detail">Détail d\'inscription</string>
+    <string name="registration_tab_cart">Panier</string>
+    <string name="registration_tab_search">Recherche</string>
+    <string name="registration_tab_registered">Inscrit</string>
+    <string name="registration_register">S\'inscrire</string>
+    <string name="registration_credits">Crédits</string>
+    <string name="registration_results_important">Critique</string>
+    <string name="registration_results_important_sub">Ces problèmes ont pu empêcher l\'inscription.</string>
+    <string name="registration_results_registered">Inscrit!</string>
+    <string name="registration_results_success_sub">Vous êtes inscrit à ces enseignements.</string>
+    <string name="registration_results_warning">Désolé.</string>
+    <string name="registration_results_failure_sub">Inscription à ces enseignements impossible:</string>
+    <string name="registration_results_dropped_important_sub">Ces problèmes ont pu empêcher le retrait.</string>
+    <string name="registration_results_dropped_success">Retrait correctement effectué!</string>
+    <string name="registration_results_dropped_success_sub">Vous avez retiré ces enseignements.</string>
+    <string name="registration_results_dropped_failure_sub">Retrait de ces enseignements impossible.</string>
+    <string name="registration_dialog_title">Titre</string>
+    <string name="registration_dialog_register_message">Voulez-vous vraiment vous inscrire à ces UP?</string>
+    <string name="registration_dialog_add_to_cart_message">Voulez-vous vraiment ajouter ces UP au panier?</string>
+    <string name="registration_dialog_remove_message">Voulez-vous vraiment supprimer cet élément du panier?</string>
+    <string name="registration_dialog_drop_message">Voulez-vous vraiment retirer ces UP?</string>
+    <string name="registration_dialog_variable_credits_to_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f</string>
+    <string name="registration_dialog_variable_credits_or_message">Saisir valeur de crédits d\'enseignements de %1$.2f ou %2$.2f</string>
+    <string name="registration_dialog_variable_credits_inc_message">Saisir valeur de crédits d\'enseignements entre %1$.2f et %2$.2f en incréments de %3$.2f</string>
+    <string name="registration_dialog_variable_credits_range_error">Saisir un nombre dans la fourchette indiquée.</string>
+    <string name="registration_dialog_variable_credits_increment_error_format">
+        <xliff:g id="increment" example=".25">%1$.2f</xliff:g> Utiliser un incrément.
+    </string>
+    <string name="registration_dialog_pin_message">Saisir un code confidentiel pour chacun des semestres suivants:</string>
+    <string name="registration_search_header">Sélectionner semestre et saisir critères de recherche.</string>
+    <string name="registration_search_field_hint">Critères de recherche</string>
+    <string name="registration_search_refine_search"><u>Affiner la recherche</u></string>
+    <string name="registration_search_refine_location">Campus</string>
+    <string name="registration_search_refine_level">Niveau</string>
+    <string name="registration_add_to_cart">Ajouter au panier</string>
+    <string name="registration_added_to_server_cart_failed">Au moins une UP n\'a pas été enregistrée sur le serveur. Ces données ne peuvent rester que pour la session en cours.</string>
+    <string name="registration_fill_in_message">Sélectionner un semestre et saisir une recherche.</string>
+    <string name="registration_section_id">ID d\'UP</string>
+    <string name="registration_grading">Notation</string>
+    <string name="registration_academic_levels">Niveaux</string>
+    <string name="registration_ceus">FC</string>
+    <string name="registration_audit">Auditeur libre</string>
+    <string name="registration_graded">Noté</string>
+    <string name="registration_pass_fail">Réussite/Échec</string>
+    <string name="registration_pass_fail_abbrev">R/É</string>
+    <string name="registration_default_eligibility_message">Inscription actuellement impossible.</string>
+    <string name="registration_no_plan_eligibility_message">Étudiant non inscrit.</string>
+    <string name="registration_were_sorry">Désolé.</string>
+    <string name="registration_ineligible_to_register">Non admissible</string>
+    <string name="registration_remove">Supprimer</string>
+    <string name="registration_drop">Retirer</string>
+    
+    <string name="registration_added_to_cart_success_format">
+	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> ajouté au panier.
+	</string>
+    <string name="registration_added_to_cart_failed_format">
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> non ajouté au panier. Données manquantes ou UP existe déjà dans le panier.
+    </string>
+    <string name="registration_row_credits_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
+	</string>
+	<string name="registration_row_credits_with_type_format">
+	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> | <xliff:g id="creditType" example="Audit">%3$s</xliff:g>
+	</string>
+    <string name="registration_row_credits_min_max_format">
+	    <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_with_ceus_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g>
+	</string>
+	<string name="registration_label_credits_min_max_format">
+	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
+	</string>
+    
+        
+	<!-- Versioning -->
+	<string name="version_upgrade">Mise à niveau</string>
+	<string name="version_outdated">Périmé</string>
+	<string name="version_outdated_message">Nouvelle version disponible.</string>
+	<string name="version_force_upgrade_message">L\'application doit être mise à niveau vers la dernière version.</string>
+
+
+</resources> 

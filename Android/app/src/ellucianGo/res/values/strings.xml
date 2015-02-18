@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">Ellucian GO</string>
+    <string name="app_intent_filter_host" translatable="false">mobile.elluciancloud.com</string>
+</resources>
