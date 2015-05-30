@@ -20,7 +20,6 @@
 
 @property (strong, nonatomic) Module *module;
 @property (strong, nonatomic) EventModule *eventModule;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) NSArray *categories;
 @property (nonatomic,strong) NSMutableSet *hiddenCategories;
 @property (nonatomic, weak) id<EventsFilterDelegate> delegate;

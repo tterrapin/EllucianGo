@@ -27,6 +27,8 @@
 #import "EventsViewController.h"
 #import "EventDetailViewController.h"
 #import "LoginExecutor.h"
+#import "Ellucian_GO-Swift.h"
+#import "MenuManager.h"
 
 #define kMenuViewControllerHeaderHeight 32.0
 
@@ -69,13 +71,13 @@
     
     self.sectionInfoArray = [NSMutableArray new];
     
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
     
     self.configurationUrl = [prefs stringForKey:@"configurationUrl"];
     
     if(self.configurationUrl) {
         [self reload];
-        NSDate *updateDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu updated date"];
+        NSDate *updateDate = [prefs objectForKey:@"menu updated date"];
         int days = [[[NSDate alloc] init] timeIntervalSinceDate:updateDate]/24/60/60;
         if(days > 0 || updateDate == nil) {
             [self fetchConfiguration];
@@ -224,7 +226,7 @@
         cellImage.image = [UIImage imageNamed:@"icon-home"];
     } else if(indexPath.row == 1) {
         label.text = NSLocalizedString(@"About", @"About menu item");
-        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
         NSString *iconUrl = [defaults objectForKey:@"about-icon"];
         if(iconUrl) {
             cellImage.image = [[ImageCache sharedCache] getCachedImage:iconUrl];
@@ -275,7 +277,7 @@
     sectionHeaderView.delegate = self;
     sectionHeaderView.collapseable = sectionInfo.isCollapseable;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
     BOOL collapsed = [collapsedHeaders containsObject:sectionInfo.headerTitle];
     sectionHeaderView.collapsibleButton.selected = collapsed;
@@ -394,52 +396,27 @@
     }];
 }
 
+
+
 -(void) reload
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    NSError *error;
-    NSArray *definedModules;
-    
+    NSSet *roles = nil;
     CurrentUser *currentUser = [CurrentUser sharedInstance];
     if(currentUser && [currentUser isLoggedIn ]) {
-        
-        NSSet *roles = currentUser.roles;
-        NSMutableArray *parr = [NSMutableArray array];
-        
-        [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
-        [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", @"Everyone"] ];
-        for(NSString *role in roles) {
-            [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
-        }
-        
-        NSPredicate *joinOnRolesPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
-        NSArray *allModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        definedModules = [allModules filteredArrayUsingPredicate:joinOnRolesPredicate];
-        
-    } else {
-
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(hideBeforeLogin == %@) || (hideBeforeLogin = nil)", [NSNumber numberWithBool:NO]];
-        definedModules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        roles = currentUser.roles;
     }
+    NSArray *definedModules = [MenuManager findUserModules:self.managedObjectContext withRoles:roles];
 
     NSMutableArray *infoArray = [[NSMutableArray alloc] init];
     
     MenuSectionInfo *info;
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     if([definedModules count] > 0) {
         for (int i = 0; i < [definedModules count]; i++) {
             Module *module = [definedModules objectAtIndex:i];
             
             if([module.type isEqualToString:@"header"]) {
-                
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
                 NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
                 BOOL collapsed = [collapsedHeaders containsObject:module.name];
                 
@@ -454,7 +431,6 @@
             else {
                 if(i == 0) {
                     NSString *localizedApplications = NSLocalizedString(@"Applications", @"Applications menu heading");
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
                     BOOL collapsed = [collapsedHeaders containsObject:localizedApplications];
                     
@@ -474,7 +450,6 @@
     } else {
         //nothing in list
         NSString *localizedApplications = NSLocalizedString(@"Applications", @"Applications menu heading");
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
         BOOL collapsed = [collapsedHeaders containsObject:localizedApplications];
         
@@ -503,7 +478,7 @@
 
 -(void) logOutUser
 {
-    [[CurrentUser sharedInstance] logout];
+    [[CurrentUser sharedInstance] logout:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
 }
 
@@ -597,6 +572,7 @@
         UITabBarController *tabController = (UITabBarController *) viewController;
         for(UIViewController *tabbedViewController in tabController.viewControllers) {
             [self setModule:module onViewController:tabbedViewController];
+            
         }
     }
     else if([viewController isKindOfClass:[UINavigationController class]]) {
@@ -677,7 +653,7 @@
                 storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
             } else {
                 storyboardIdentifier = [moduleDefinition objectForKey:@"iPhone Storyboard Identifier"];
-                NSString *storyboardName = [moduleDefinition objectForKey:@"iPad Storyboard Name"];
+                NSString *storyboardName = [moduleDefinition objectForKey:@"iPhone Storyboard Name"];
                 if(!storyboardName) storyboardName = @"MainStoryboard_iPhone";
                 storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
             }
@@ -780,7 +756,7 @@
 -(void) showViewController:(UIViewController*) newTopViewController
 {
     UIImage *buttonImage = [UIImage imageNamed:@"icon-menu-iphone"];
-    NSString *menuImageName = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu-icon"];
+    NSString *menuImageName = [[AppGroupUtilities userDefaults] objectForKey:@"menu-icon"];
     
     if(menuImageName)
     {
@@ -872,7 +848,7 @@
     MenuSectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionOpened];
     sectionInfo.collapsed = NO;
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
     NSMutableSet *collapsedHeadersSet = [[NSMutableSet alloc] initWithArray:collapsedHeaders];
     [collapsedHeadersSet removeObject:sectionInfo.headerTitle];
@@ -899,7 +875,7 @@
     
     sectionInfo.collapsed = YES;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSArray *collapsedHeaders = [defaults stringArrayForKey:@"menu-collapsed"];
     NSMutableSet *collapsedHeadersSet = [[NSMutableSet alloc] initWithArray:collapsedHeaders];
     [collapsedHeadersSet addObject:sectionInfo.headerTitle];

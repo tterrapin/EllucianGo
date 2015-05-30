@@ -49,9 +49,7 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CourseDetail"];
     request.predicate = [NSPredicate predicateWithFormat:@"termId == %@ && sectionId == %@", self.termId, self.sectionId];
-    
-    NSError *error;
-    CourseDetail *courseDetail = [[self.module.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+
     NSMutableArray *tempArray = [[NSMutableArray alloc] init ];
     [tempArray addObject:[self.originalViewControllers objectAtIndex:0]];
     [tempArray addObject:[self.originalViewControllers objectAtIndex:1]];
@@ -64,20 +62,8 @@
     if(!( [rosterVisible isEqualToString:@"none"] || ([rosterVisible isEqualToString:@"faculty"] && !self.isInstructor) )) {
         [tempArray addObject:[self.originalViewControllers objectAtIndex:2]];
     }
-    
-//    // assignments, announcements, events
-//    // no learningProvider = none
-//    // sharepoint = announcements, events
-//    // other (moodle, bb) = assignments, announcements, events
-//    if (courseDetail.learningProvider != NULL && ![[courseDetail.learningProvider uppercaseString] isEqualToString:@"SHAREPOINT"]) {
-//        [tempArray addObject:[originalViewControllers objectAtIndex:3]];
-//    }
-//    if (courseDetail.learningProvider != NULL) { // and is SHAREPOINT
-//        [tempArray addObject:[originalViewControllers objectAtIndex:4]];
-//        [tempArray addObject:[originalViewControllers objectAtIndex:5]];
-//    }
-    
-    if ([self.module propertyForKey:@"ilp"] && courseDetail.learningProvider && ![[courseDetail.learningProvider uppercaseString] isEqualToString:@"SHAREPOINT"])
+
+    if ([self.module propertyForKey:@"ilp"])
     {
         [tempArray addObject:[self.originalViewControllers objectAtIndex:3]];
         [tempArray addObject:[self.originalViewControllers objectAtIndex:4]];

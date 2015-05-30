@@ -12,6 +12,10 @@
 	<string>https://mobile.elluciancloud.com/mobilecloud/api/applicationConfigurationByName</string>
 	<key>Allow Switch School</key>
 	<true/>
+	<key>App Group</key>
+	<string></string>
+	<key>URL Scheme</key>
+	<string></string>
 	<key>Custom Modules</key>
 	<dict/>
 </dict>

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.provider;
 
 import android.content.Context;
@@ -48,8 +52,9 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 	
 	// 7 = Ellucian Mobile 3.5
 	// 8 = Ellucian Mobile 3.6
-	// 9 = Ellucian Mobile 4.0
-	private static final int DB_VERSION = 9;
+	// 9 = Ellucian Mobile 3.8
+    // 10 = Ellucian Mobile 4.0
+	private static final int DB_VERSION = 10;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -320,7 +325,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ NumbersColumns.NUMBERS_LATITUDE + " REAL, "
 				+ NumbersColumns.NUMBERS_LONGITUDE + " REAL, "
 				+ NumbersColumns.NUMBERS_BUILDING_ID + " TEXT, "
-				+ NumbersColumns.NUMBERS_CAMPUS_ID + " TEXT "
+				+ NumbersColumns.NUMBERS_CAMPUS_ID + " TEXT, "
+                + NumbersColumns.NUMBERS_EXTENSION + " TEXT "
 				+ ")");
 
 		db.execSQL("CREATE TABLE " + Tables.NUMBERS_CATEGORIES + " ("
@@ -430,7 +436,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ CourseAssignmentsColumns.ASSIGNMENT_NAME + " TEXT NOT NULL, "
 				+ CourseAssignmentsColumns.ASSIGNMENT_DESCRIPTION + " TEXT, "
 				+ CourseAssignmentsColumns.ASSIGNMENT_DUE + " TEXT, "
-				+ CourseAssignmentsColumns.ASSIGNMENT_URL + " TEXT "
+				+ CourseAssignmentsColumns.ASSIGNMENT_URL + " TEXT, "
+                + CourseAssignmentsColumns.ASSIGNMENT_SECTION_NAME + " TEXT "
 				+ ")");
 		
 		db.execSQL("CREATE TABLE " + Tables.COURSE_ANNOUNCEMENTS + " (" 
@@ -439,7 +446,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ CourseAnnouncementsColumns.ANNOUNCEMENT_TITLE + " TEXT NOT NULL, "
 				+ CourseAnnouncementsColumns.ANNOUNCEMENT_CONTENT + " TEXT, "
 				+ CourseAnnouncementsColumns.ANNOUNCEMENT_DATE + " TEXT, "
-				+ CourseAnnouncementsColumns.ANNOUNCEMENT_URL + " TEXT "
+				+ CourseAnnouncementsColumns.ANNOUNCEMENT_URL + " TEXT, "
+                + CourseAnnouncementsColumns.ANNOUNCEMENT_SECTION_NAME + " TEXT "
 				+ ")");
 		
 		db.execSQL("CREATE TABLE " + Tables.COURSE_EVENTS + " (" 
@@ -450,7 +458,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ CourseEventsColumns.EVENT_START + " TEXT, "
 				+ CourseEventsColumns.EVENT_END + " TEXT, "
 				+ CourseEventsColumns.EVENT_LOCATION + " TEXT, "
-				+ CourseEventsColumns.EVENT_ALL_DAY + " TEXT "
+				+ CourseEventsColumns.EVENT_ALL_DAY + " TEXT, "
+                + CourseEventsColumns.EVENT_SECTION_NAME + " TEXT "
 				+ ")");
 		
 		
@@ -671,7 +680,7 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 		case 7: //3.5
 			db.execSQL("ALTER TABLE " + Tables.COURSE_PATTERNS					
 					+ " ADD COLUMN " + CoursePatternsColumns.PATTERN_INSTRUCTIONAL_METHOD + " TEXT ");
-		case 8: //4.0
+		case 8: //3.6
 			db.execSQL("CREATE TABLE " + Tables.REGISTRATION_LOCATIONS + " ("
 					+ BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ ModulesColumns.MODULES_ID + " TEXT NOT NULL " + References.MODULES_ID + ", " 
@@ -685,6 +694,16 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 					+ RegistrationLevelsColumns.REGISTRATION_LEVELS_NAME + " TEXT NOT NULL, " 
 					+ RegistrationLevelsColumns.REGISTRATION_LEVELS_CODE + " TEXT NOT NULL "
 					+ ")");
+        case 9: //3.8
+            db.execSQL("ALTER TABLE " + Tables.NUMBERS
+                    + " ADD COLUMN " + NumbersColumns.NUMBERS_EXTENSION + " TEXT ");
+            db.execSQL("ALTER TABLE " + Tables.COURSE_ASSIGNMENTS
+                    + " ADD COLUMN " + CourseAssignmentsColumns.ASSIGNMENT_SECTION_NAME + " TEXT ");
+            db.execSQL("ALTER TABLE " + Tables.COURSE_ANNOUNCEMENTS
+                    + " ADD COLUMN " + CourseAnnouncementsColumns.ANNOUNCEMENT_SECTION_NAME + " TEXT ");
+            db.execSQL("ALTER TABLE " + Tables.COURSE_EVENTS
+                    + " ADD COLUMN " + CourseEventsColumns.EVENT_SECTION_NAME + " TEXT ");
+
 		}
 
 		Log.d(this.getClass().getSimpleName(),

@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ilp</key>
+	<dict>
+		<key>iPad Storyboard Identifier</key>
+		<string>Daily View</string>
+		<key>iPhone Storyboard Identifier</key>
+		<string>Daily View</string>
+		<key>Needs Authentication</key>
+		<true/>
+	</dict>
 	<key>notifications</key>
 	<dict>
 		<key>iPad Storyboard Identifier</key>
@@ -98,6 +107,15 @@
 		<string>Registration</string>
 		<key>iPhone Storyboard Identifier</key>
 		<string>Registration</string>
+		<key>Needs Authentication</key>
+		<true/>
+	</dict>
+	<key>studentFinancials</key>
+	<dict>
+		<key>iPad Storyboard Identifier</key>
+		<string>Student Financials</string>
+		<key>iPhone Storyboard Identifier</key>
+		<string>Student Financials</string>
 		<key>Needs Authentication</key>
 		<true/>
 	</dict>

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.view;
 
 import com.ellucian.mobile.android.util.Utils;

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Ellucian" parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -17,6 +21,11 @@
         <item name="backgroundStacked">@drawable/ab_stacked_divider</item>
         
         -->
+    </style>
+
+    <style name="ActionBarNoShadow" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:selectableItemBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 	<style name="DropDownItem" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -219,6 +228,14 @@
 	    <item name="android:layout_marginTop">8dp</item>
 	    <item name="android:layout_marginBottom">8dp</item>
 	    <item name="android:background">@drawable/right_border_1dp</item>
+    </style>
+
+    <style name="widget_message">
+        <item name="android:background">#99fbb03b</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
     </style>
 
 </resources>

@@ -13,6 +13,7 @@
 #import "NotificationManager.h"
 #import "LoginExecutor.h"
 #import "ModuleRole.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface WebLoginViewController ()
 
@@ -25,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-web-url"];
+    NSString *urlString = [[AppGroupUtilities userDefaults] objectForKey:@"login-web-url"];
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     self.webView.delegate = self;

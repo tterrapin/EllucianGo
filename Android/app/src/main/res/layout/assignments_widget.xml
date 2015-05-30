@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/assignment_widget_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_header"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:drawableLeft="@drawable/default_home_icon"
+        android:drawableStart="@drawable/default_home_icon"
+        android:drawablePadding="5dp"
+        android:padding="10dp"
+        android:background="@drawable/widget_header_bottom_border"
+        />
+
+    <!-- Layout Messaging and Sign In button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/assignment_widget_login_message"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:background="#99fbb03b"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="1dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_not_connected"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_warning"
+            android:drawableStart="@drawable/ic_warning"
+            android:drawablePadding="5dp"
+            android:textColor="#000000"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_sign_in"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:drawableRight="@drawable/ic_widget_refresh"
+            android:drawablePadding="5dp"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/assignment_widget_ilp_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_no_ilp"
+        android:visibility="gone"
+        style="@style/widget_message" />
+
+    <ListView
+        android:id="@+id/assignment_widget_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:background="@drawable/widget_bg_semi_transparent"
+     />
+    <TextView
+        android:id="@+id/assignment_zero_due"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/widget_bg_semi_transparent"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:text="@string/widget_no_assignments" >
+    </TextView>
+
+</LinearLayout>

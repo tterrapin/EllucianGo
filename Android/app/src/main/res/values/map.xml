@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources>
     <string-array name="map_types">
         <item >@string/maps_type_normal</item>

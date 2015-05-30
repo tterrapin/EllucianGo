@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.numbers;
 
 import java.io.UnsupportedEncodingException;
@@ -40,6 +44,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 	private View rootView;
 	private String name;
 	private String phone;
+    private String extension;
 	private String address;
 	private String email;
 	private Double latitude = null;
@@ -81,6 +86,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		Bundle args = getArguments();
 		name = null;
 		phone = null;
+        extension = null;
 		address = null;
 		email = null;
 		latitude = null;
@@ -118,6 +124,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 			address = args.getString("address");
 			email = args.getString("email");
 			phone = args.getString("phone");
+            extension = args.getString("extension");
 			if (args.containsKey("latitude")) {
 				latitude = args.getDouble("latitude", 0);
 			}
@@ -179,7 +186,11 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 			rootView.findViewById(R.id.phoneLayout).setVisibility(View.VISIBLE);
 			TextView phoneView = (TextView) rootView.findViewById(R.id.phone);
 			phoneView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.PHONE_NUMBERS));
-			phoneView.setText(phone);
+            if (extension != null) {
+                phoneView.setText(getString(R.string.default_phone_with_extension_format,phone,extension));
+            } else {
+                phoneView.setText(phone);
+            }
 			phoneView.setOnClickListener(new OnClickListener() {
 	            @Override
 	            public void onClick(View viewIn) {

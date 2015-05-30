@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Ellucian. All rights reserved.
 //
 
+#import "ModuleRole.h"
 #import "RegistrationTabBarController.h"
 #import "RegistrationSearchViewController.h"
 #import "UIViewController+SlidingViewExtension.h"
@@ -21,6 +22,7 @@
 #import "RegistrationPlannedSectionInstructor.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
 #import "Module+Attributes.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface RegistrationTabBarController ()
 
@@ -37,6 +39,7 @@
 {
     [super viewDidLoad];
 
+
     UITabBarItem *tabBarItem0 = self.tabBar.items[0];
     tabBarItem0.selectedImage = [UIImage imageNamed:@"Registration Cart Selected"];
     UITabBarItem *tabBarItem2 = self.tabBar.items[2];
@@ -45,6 +48,7 @@
     self.searchedSections = [NSMutableArray new];
     
     if([CurrentUser sharedInstance].isLoggedIn) {
+        
         [self loadRegistration:self];
     }
     
@@ -54,49 +58,64 @@
 
 -(void) loadRegistration:(id)sender
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"Retrieving terms", @"loading message while fetching terms to use for search");
+    BOOL match = NO;
     
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    for(ModuleRole *role in self.module.roles) {
+        if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
+            match = YES;
+            break;
+        } else if ([ role.role isEqualToString:@"Everyone"]) {
+            match = YES;
+            break;
+        }
+    }
+    
+    if ( match ) {
         
-        [self fetchTerms];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"Retrieving terms", @"loading message while fetching terms to use for search");
         
-        MBProgressHUD *hud2 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud2.labelText = NSLocalizedString(@"Checking Eligibility", @"checking registration eligibility message");
-        
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
-            self.registrationAllowed = [self checkRegistrationEligibility:self];
+            [self fetchTerms];
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             
-            MBProgressHUD *hud3 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud3.labelText = NSLocalizedString(@"Fetching saved course sections", @"Fetching saved course sections message");
+            MBProgressHUD *hud2 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud2.labelText = NSLocalizedString(@"Checking Eligibility", @"checking registration eligibility message");
             
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self fetchRegistrationPlans:self];
+                
+                self.registrationAllowed = [self checkRegistrationEligibility:self];
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                MBProgressHUD *hud3 = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                hud3.labelText = NSLocalizedString(@"Fetching saved course sections", @"Fetching saved course sections message");
+                
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [self fetchRegistrationPlans:self];
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
 
-                if([self itemsInCartCount] == 0 && !self.ineligibleMessage) {
-                    self.selectedIndex = 1;
-                }
-                
-                if (self.planId == nil) {
-                    //disable ability to add items to cart
-                    [self passCartPermissionToSearchController:NO];
-                } else {
-                    [self passCartPermissionToSearchController:YES];
-                }
-                
-                if(self.ineligibleMessage) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-                    alert.tag = 1;
-                    [alert show];
-                }
+                    if([self itemsInCartCount] == 0 && !self.ineligibleMessage) {
+                        self.selectedIndex = 1;
+                    }
+                    
+                    if (self.planId == nil) {
+                        //disable ability to add items to cart
+                        [self passCartPermissionToSearchController:NO];
+                    } else {
+                        [self passCartPermissionToSearchController:YES];
+                    }
+                    
+                    if(self.ineligibleMessage) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Ineligible for Registration", @"Ineligible for Registration") message:self.ineligibleMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+                        alert.tag = 1;
+                        [alert show];
+                    }
+                });
             });
         });
-    });
+    } 
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginExecutorSuccess object:nil];
     
@@ -594,7 +613,7 @@
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
         [urlRequest addAuthenticationHeader];
     }

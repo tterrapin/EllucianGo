@@ -11,6 +11,7 @@
 #import "AuthenticatedRequest.h"
 #import "NotificationManager.h"
 #import "Base64.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation LoginExecutor
 
@@ -18,7 +19,7 @@
 {
     NSError *error;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *loginUrl = [defaults objectForKey:@"login-url"];
     
     AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
@@ -49,6 +50,26 @@
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
         
+        NSUserDefaults *appGroupUserDefaults = [AppGroupUtilities userDefaults];
+        
+        //save cookies
+        NSMutableArray *cookieArray = [[NSMutableArray alloc] init];
+        for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]) {
+            NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+            [cookieProperties setObject:cookie.name forKey:NSHTTPCookieName];
+            [cookieProperties setObject:cookie.value forKey:NSHTTPCookieValue];
+            [cookieProperties setObject:cookie.domain forKey:NSHTTPCookieDomain];
+            [cookieProperties setObject:cookie.path forKey:NSHTTPCookiePath];
+            [cookieProperties setObject:[NSNumber numberWithInt:(int)cookie.version] forKey:NSHTTPCookieVersion];
+            
+            if( cookie.expiresDate) {
+                [cookieProperties setObject:cookie.expiresDate forKey:NSHTTPCookieExpires];
+            }
+            
+            [cookieArray addObject:cookieProperties];
+        }
+        [appGroupUserDefaults setValue:cookieArray forKey:@"cookieArray"];
+        
         if(!refreshOnly) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
         }
@@ -70,7 +91,7 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
     
     UIViewController *vc;
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if([authenticationMode isEqualToString:@"browser"]) {
         vc = [storyboard instantiateViewControllerWithIdentifier:@"Web Login"];
     } else {

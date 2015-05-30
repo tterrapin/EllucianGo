@@ -22,6 +22,7 @@
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "RegistrationPlannedSectionDetailViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface RegistrationRegisteredSectionsViewController ()
 @property (nonatomic, strong) NSNumberFormatter *creditsFormatter;
@@ -325,7 +326,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Register" withValue:nil forModuleNamed:self.module.name];
+        [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Drop" withValue:nil forModuleNamed:self.module.name];
         [self dropSelectedCourses];
     }
 }
@@ -421,7 +422,7 @@
         NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         
-        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
         if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
             [urlRequest addAuthenticationHeader];
         }

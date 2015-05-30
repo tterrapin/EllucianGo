@@ -13,9 +13,15 @@
 @interface CourseAssignment : NSManagedObject
 
 @property (nonatomic, retain) NSString * assignmentDescription;
-@property (nonatomic, retain) NSDate * dueDate;
+@property (nonatomic, retain) NSDate   * dueDate;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * displayDateSectionHeader;
 @property (nonatomic, retain) NSString * sectionId;
+@property (nonatomic, retain) NSString * courseName;
+@property (nonatomic, retain) NSString * courseSectionNumber;
 @property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSString * overDueWarningSectionHeader;
+
++(NSDateFormatter*) myDisplayDateSectionHeaderDateFormatter;
 
 @end

@@ -192,7 +192,7 @@
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/announcements", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/announcements?term=%@", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     
     [importContext performBlock: ^{
         
@@ -223,6 +223,8 @@
                 
                 entry.sectionId = self.sectionId;
                 entry.title = [jsonDictionary objectForKey:@"title"];
+                entry.courseName = [jsonDictionary objectForKey:@"courseName"];
+                entry.courseSectionNumber = [jsonDictionary objectForKey:@"courseSectionNumber"];
                 if([jsonDictionary objectForKey:@"content"] != [NSNull null]) {
                     entry.content = [jsonDictionary objectForKey:@"content"];
                 }
@@ -274,6 +276,8 @@
         NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
         CourseAnnouncement *announcement = [self.fetchedResultsController objectAtIndexPath:indexPath];
         CourseAnnouncementDetailViewController *detailController = [segue destinationViewController];
+        detailController.courseName = announcement.courseName;
+        detailController.courseSectionNumber = announcement.courseSectionNumber;
         detailController.itemTitle = announcement.title;
         detailController.itemContent = announcement.content;
         detailController.itemLink = [announcement.website stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

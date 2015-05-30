@@ -8,6 +8,7 @@
 
 #import "MobileUIApplication.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation MobileUIApplication
 
@@ -48,7 +49,7 @@
 //if the timer reaches the limit as defined in kApplicationTimeoutInMinutes, post this notification
 -(void)idleTimerExceeded
 {
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionTimeout withLabel:@"Password Timeout" withValue:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kApplicationDidTimeoutNotification object:nil];
@@ -60,7 +61,7 @@
                     withLabel:(NSString *)label
                     withValue:(NSNumber *)value
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];

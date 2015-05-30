@@ -1,15 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
     xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
     
-
+    <string name="app_name" translatable="false">Ellucian GO</string>
     <string name="title_home_page">Inicio</string>
     <string name="main_sign_in">Acceder</string>
     <string name="main_sign_out">Salir</string>
     <string name="main_switch_school">Cambiar escuela</string>
+    <string name="app_intent_filter_host" translatable="false">mobile.elluciancloud.com</string>
     
     <!-- Menu -->
     
@@ -21,7 +26,7 @@
     <string name="menu_filter">Filtrar</string>
     <string name="menu_search">Buscar</string>
     <string name="menu_add_to_contacts">Agregar a contactos</string>
-    <string name="menu_add_to_calendar">Agregar a calendario</string>
+    <string name="menu_add_to_calendar">Agregar al calendario</string>
     <string name="menu_settings">Ajustes</string>
     <string name="menu_home">Inicio</string>
     <string name="menu_about">Acerca de</string>
@@ -114,7 +119,7 @@
     <string name="row_date_label">Fecha:</string>
     <string name="row_due_label">Vencimiento:</string>
     <string name="row_location_label">Ubicación:</string>
-    
+
     <string name="default_image">Imagen</string>
     <string name="no_data">No hay datos</string>
     <string name="no_results_found">No encontró resultados.</string>
@@ -176,7 +181,10 @@
 	<string name="default_two_string_separator_format">
 	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
-	
+	<string name="default_phone_with_extension_format">
+        <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> ext. <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
+    </string>
+
 	
     <!-- About -->
     
@@ -254,21 +262,54 @@
     <string name="directory_type_all">Todos</string>
     <string name="directory_type_student">Alumno</string>
     <string name="directory_type_faculty">Docente</string>
-    
+
     <!-- Events -->
-    
+
     <string name="title_activity_events">Eventos</string>
     <string name="title_activity_events_detail">Detalle de eventos</string>
     <string name="events_no_events">No hay eventos a desplegar</string>
     <string name="searchable_events_hint">Buscar eventos</string>
     <string name="searchable_events_label">Buscar eventos</string>
-    
+
+    <!-- Finances -->
+
+    <string name="title_activity_finances">Finanzas del alumno</string>
+    <string name="finances_no_balance">--</string>  <!-- display dashes -->
+    <string name="finances_no_payments">No hay pagos recientes.</string>
+    <string name="finances_recent_payments">Pagos recientes</string>
+    <string name="finances_balance">Saldo</string>
+
     <!-- Grades -->
     
     <string name="title_activity_grades">Calificaciones</string>
     <string name="grades_last_updated">Última actualización:</string>
     <string name="no_grades_in_term">No hay calificaciones para este periodo</string>
     <string name="grades_no_grades">No hay calificaciones registradas</string>
+
+    <!-- Ilp -->
+
+    <string name="title_activity_ilp">ILP</string>
+    <string name="title_activity_ilp_today">ILP para hoy</string>
+    <string name="title_activity_ilp_detail">Detalle de ILP</string>
+    <string name="ilp_assignments_today">Asignaciones</string>
+    <string name="ilp_events_today">Eventos para hoy</string>
+    <string name="ilp_announcements_today">Anuncios</string>
+    <string name="ilp_assignments">Asignaciones</string>
+    <string name="ilp_events">Eventos</string>
+    <string name="ilp_announcements">Anuncios</string>
+    <string name="ilp_view_all">Ver todos</string>
+    <string name="ilp_view_by_date">Por fecha de vencimiento</string>
+    <string name="ilp_view_by_no_date">Sin fecha de vencimiento</string>
+    <string name="ilp_today">Hoy</string>
+    <string name="ilp_tomorrow">Mañana</string>
+    <string name="ilp_no_date">Sin fecha</string>
+    <string name="ilp_remind_me">Recuérdeme</string>
+    <string name="ilp_overdue">Vencido</string>
+    <string name="ilp_due_today">Vence hoy</string>
+    <string name="ilp_assignments_none_today">Ninguna asignación vence hoy</string>
+    <string name="ilp_events_none_today">No hay eventos programados para hoy</string>
+    <string name="ilp_announcements_none_today">No hay anuncios para hoy</string>
+
     
     <!-- Maps -->
     
@@ -313,15 +354,16 @@
        
     <!-- Notifications -->
     
-    <string name="title_activity_notifications">Avisos</string>
+    <string name="title_activity_notifications">Notificaciones</string>
     <string name="notifications_detail_date_posted">Fecha de publicación:</string>
     <string name="notifications_detail_link_action">Actuar</string>
-    <string name="notifications_device_content">Tiene nuevos avisos</string>
-    <string name="notifications_no_notifications">No hay avisos a desplegar</string>
+    <string name="notifications_device_title" translatable="false">Ellucian GO</string>
+    <string name="notifications_device_content">Tiene nuevas notificaciones</string>
+    <string name="notifications_no_notifications">No hay notificaciones a desplegar</string>
     <string name="notifications_sticky_marker_image_text">Marcador</string>
     <string name="notifications_delete">Eliminar</string>
-    <string name="notifications_unable_to_delete_message">No puede eliminar este aviso.</string>
-    <string name="notifications_dialog_delete_message">¿Está seguro que desea eliminar este aviso?</string>
+    <string name="notifications_unable_to_delete_message">No puede eliminar esta notificación.</string>
+    <string name="notifications_dialog_delete_message">¿Está seguro que desea eliminar esta notificación?</string>
     
     <!-- Numbers -->
     
@@ -414,6 +456,13 @@
 	<string name="version_outdated">Obsoleto</string>
 	<string name="version_outdated_message">Una nueva versión está disponible.</string>
 	<string name="version_force_upgrade_message">Debe actualizar la aplicación a la versión más reciente.</string>
+
+    <!-- Widget -->
+    <string name="widget_no_ilp">Asignaciones no están disponibles para su institución</string>
+    <string name="widget_sign_in">Acceder para actualizar</string>
+    <string name="widget_not_connected">No conectado</string>
+    <string name="widget_header">Asignaciones (hoy)</string>
+    <string name="widget_no_assignments">Ninguna asignación vence hoy</string>
 
 
 </resources> 

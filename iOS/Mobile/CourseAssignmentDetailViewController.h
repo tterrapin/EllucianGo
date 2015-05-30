@@ -9,15 +9,25 @@
 #import <UIKit/UIKit.h>
 #import "UIColor+SchoolCustomization.h"
 #import "Module.h"
+#import "DetailSelectionDelegate.h"
+#import "CourseAssignment.h"
+@import EventKitUI;
 
-@interface CourseAssignmentDetailViewController : UIViewController
+
+@interface CourseAssignmentDetailViewController : UIViewController <DetailSelectionDelegate, UIAlertViewDelegate, EKEventEditViewDelegate>
+
+@property (nonatomic, strong) CourseAssignment *courseAssignment;
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *courseNameLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
+@property (weak, nonatomic) IBOutlet UIToolbar *padToolBar;
 
+@property (strong, nonatomic) NSString *courseName;
+@property (strong, nonatomic) NSString *courseSectionNumber;
 @property (strong, nonatomic) NSString *itemTitle;
 @property (strong, nonatomic) NSString *itemContent;
 @property (strong, nonatomic) NSString *itemLink;

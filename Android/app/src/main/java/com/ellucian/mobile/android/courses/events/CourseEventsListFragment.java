@@ -1,6 +1,8 @@
-package com.ellucian.mobile.android.courses.events;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.Date;
+package com.ellucian.mobile.android.courses.events;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -9,11 +11,13 @@ import android.text.TextUtils;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
-import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
+import com.ellucian.mobile.android.ilp.IlpDetailFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseEvents;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+
+import java.util.Date;
 
 public class CourseEventsListFragment extends EllucianDefaultListFragment {
 	
@@ -30,6 +34,7 @@ public class CourseEventsListFragment extends EllucianDefaultListFragment {
 		String content = cursor.getString(cursor.getColumnIndex(CourseEvents.EVENT_DESCRIPTION));
 		String location = cursor.getString(cursor.getColumnIndex(CourseEvents.EVENT_LOCATION));
 		String allDayString = cursor.getString(cursor.getColumnIndex(CourseEvents.EVENT_ALL_DAY));
+		String section = cursor.getString(cursor.getColumnIndex(CourseEvents.EVENT_SECTION_NAME));
 		
 		boolean allDay = Boolean.parseBoolean(allDayString);
 		
@@ -78,12 +83,14 @@ public class CourseEventsListFragment extends EllucianDefaultListFragment {
 		bundle.putString(Extra.DATE, output);
 		bundle.putString(Extra.CONTENT, content);
 		bundle.putString(Extra.LOCATION, location);
-		
+		bundle.putString(Extra.HEADER_SECTION_NAME, section);
+		// We use the IlpDetailFragment to display the detail view.
+		bundle.putString(IlpDetailFragment.DETAIL_TYPE, IlpDetailFragment.DETAIL_TYPE_EVENTS);
 		return bundle;
 	}
 	
 	@Override
-	public Class<? extends  EllucianDefaultDetailFragment> getDetailFragmentClass() {
+	public Class<? extends IlpDetailFragment> getDetailFragmentClass() {
 		return CourseEventsDetailFragment.class;	
 	}
 	

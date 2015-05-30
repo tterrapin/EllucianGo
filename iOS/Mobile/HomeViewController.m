@@ -14,6 +14,7 @@
 #import "NotificationsFetcher.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "LoginExecutor.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface HomeViewController ()
 
@@ -31,7 +32,7 @@
         self.topMessageLabel.textAlignment = NSTextAlignmentRight;
     }
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     if([defaults objectForKey:@"menu-discovered"]) {
         [self.topMessageView removeFromSuperview];
     } else {
@@ -103,7 +104,7 @@
 
 - (IBAction)signOut:(id)sender {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionLogout withLabel:@"Home-Click Sign Out" withValue:nil forModuleNamed:nil];
-    [[CurrentUser sharedInstance] logout];
+    [[CurrentUser sharedInstance] logout:YES];
 }
 
 - (IBAction)switchSchools:(id)sender {

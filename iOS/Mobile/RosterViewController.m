@@ -11,6 +11,7 @@
 #import "AuthenticatedRequest.h"
 #import "DirectoryViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface RosterViewController ()
 
@@ -138,7 +139,7 @@
     CourseRoster *roster = [_fetchedResultsController objectAtIndexPath:indexPath];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:1];
     nameLabel.text = roster.name;
-    NSString *directoryUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-studentSearch"];
+    NSString *directoryUrl = [[AppGroupUtilities userDefaults] objectForKey:@"urls-directory-studentSearch"];
     
     if(directoryUrl) {
         cell.userInteractionEnabled = YES;

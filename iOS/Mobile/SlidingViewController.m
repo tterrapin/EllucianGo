@@ -14,6 +14,7 @@
 #import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "NotificationsViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 #define kSlidingViewMenuOpenTargetWidth 44.0f
 #define kSlidingViewMenuVelocityX 100.0f
@@ -188,7 +189,7 @@
         CGFloat currentVelocityX = currentVelocityPoint.x;
         
         if ([self menuShowing] && currentVelocityX > kSlidingViewMenuVelocityX) {
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
             [defaults setBool:YES forKey:@"menu-discovered"];
             [defaults synchronize];
             [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionSlide_Action withLabel:@"Activate sliding menu (Apple only)" withValue:nil forModuleNamed:nil];
@@ -445,7 +446,7 @@
     //newTopViewController.navigationItem.leftBarButtonItem.enabled = NO;
     //homeController .navigationItem.leftBarButtonItem.enabled = NO;
     UIImage *buttonImage = [UIImage imageNamed:@"icon-menu-iphone"];
-    NSString *menuImageName = [[NSUserDefaults standardUserDefaults] objectForKey:@"menu-icon"];
+    NSString *menuImageName = [[AppGroupUtilities userDefaults] objectForKey:@"menu-icon"];
 
     if(menuImageName)
     {
@@ -572,5 +573,86 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
+
+-(void) showAssignments:(NSString *)assignmentId
+{
+    // find the module then use menuViewController->showModule
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    NSError *error;
+    
+    NSArray *modules = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"type == %@", @"ilp"];
+    NSArray *modulesArray = [modules filteredArrayUsingPredicate:predicate];
+    Module* module = [modulesArray firstObject];
+    
+    if(!module) { //there is no ILP module defined so start at home screen
+        [self showHome];
+    } else if (assignmentId) { //there's a specific notification to show
+        UIViewController *topViewController = self.topViewController;
+        BOOL assignmentsModule = NO;
+        
+        //search if the open controller is the notifications module
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            if([topViewController isKindOfClass:[UINavigationController class]]) {
+                UINavigationController *navigationController = (UINavigationController *) topViewController;
+                UIViewController *viewController = navigationController.childViewControllers[0];
+                if([viewController respondsToSelector:@selector(module)]) {
+                    Module *module = [viewController valueForKey:@"module"];
+                    if([module.type isEqualToString:@"ilp"]) {
+                        assignmentsModule = YES;
+                    }
+                }
+            }
+        } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if([topViewController isKindOfClass:[UISplitViewController class]]) {
+                UISplitViewController *splitController = (UISplitViewController *) topViewController;
+                UIViewController *viewController = splitController.childViewControllers[0];
+                if([viewController isKindOfClass:[UINavigationController class]]) {
+                    UINavigationController *navigationController = (UINavigationController *) viewController;
+                    UIViewController *viewController = navigationController.childViewControllers[0];
+                    if([viewController respondsToSelector:@selector(module)]) {
+                        Module *module = [viewController valueForKey:@"module"];
+                        if([module.type isEqualToString:@"ilp"]) {
+                            assignmentsModule = YES;
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        
+        //Assignments module already opened, so use it
+        if(assignmentsModule) {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                UINavigationController *ilpNavController = (UINavigationController *)self.topViewController;
+                [ilpNavController popToRootViewControllerAnimated:YES];
+                ILPViewController *ilpViewController = ilpNavController.childViewControllers[0];
+                [ILPViewController requestAssignmentDetailById:assignmentId];
+                [ilpViewController fetchAssignments:self];
+            } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                UISplitViewController *splitController = (UISplitViewController *) topViewController;
+                UINavigationController *navigationController = (UINavigationController *)splitController.childViewControllers[0];
+                ILPViewController *ilpViewController = (ILPViewController *)navigationController.childViewControllers[0];
+                [ILPViewController requestAssignmentDetailById:assignmentId];
+                [ilpViewController fetchAssignments:self];
+            }
+        } else { //open Assignments module
+            [self.menuViewController showModule:module];
+            [ILPViewController requestAssignmentDetailById:assignmentId];
+            
+        }
+    } else { // not trying to open specific notification, so proceed as normal
+        [self.menuViewController showModule:module];
+    }
+}
+
 
 @end

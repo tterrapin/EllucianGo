@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.client.numbers;
 
 import java.util.ArrayList;
@@ -49,7 +53,8 @@ public class NumbersBuilder extends ContentProviderOperationBuilder<NumbersRespo
 					.withValue(Numbers.NUMBERS_LATITUDE, number.latitude)
 					.withValue(Numbers.NUMBERS_LONGITUDE, number.longitude)
 					.withValue(Numbers.NUMBERS_BUILDING_ID, number.buildingId) 
-					.withValue(Numbers.NUMBERS_CAMPUS_ID, number.campusId)	
+					.withValue(Numbers.NUMBERS_CAMPUS_ID, number.campusId)
+                    .withValue(Numbers.NUMBERS_EXTENSION, number.extension)
 					.build());
 		}	
 		

@@ -10,12 +10,13 @@
 #import "AppDelegate.h"
 #import "CurrentUser.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation NotificationManager
 
 +(void) registerDeviceIfNeeded
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString* notificationRegistrationUrl = [defaults stringForKey:@"notification-registration-url"];
     
     CurrentUser *user = [CurrentUser sharedInstance];
@@ -37,7 +38,7 @@
 
 +(void) registerDeviceToken:(NSData*)deviceToken
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     
     NSString* notificationRegistrationUrl = [defaults stringForKey:@"notification-registration-url"];
     NSString* notificationEnabled = [defaults stringForKey:@"notification-enabled"];
@@ -66,7 +67,7 @@
         NSMutableURLRequest* urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:notificationRegistrationUrl]];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         
-        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        NSString *authenticationMode = [defaults objectForKey:@"login-authenticationType"];
         if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
             [urlRequest addAuthenticationHeader];
         }

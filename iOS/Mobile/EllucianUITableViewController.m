@@ -48,7 +48,6 @@
         }
         constrainedView.backgroundColor = [UIColor whiteColor];
         _noDataView.hidden = YES;
-        [constrainedView addSubview:self.noMatchesLabel];
         
         self.noMatchesLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [constrainedView addSubview:self.noMatchesLabel];

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.events;
 
 import android.app.Activity;
@@ -19,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
@@ -31,6 +36,7 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	
 	private Activity activity;
 	private View rootView;
+    private boolean calendarAvailable;
 	
 	public EventsDetailFragment() {	
 	}
@@ -45,6 +51,8 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+        Intent calIntent = new Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI);
+        calendarAvailable = Utils.isIntentAvailable(activity, calIntent);
 	}
 	
 	@Override
@@ -127,6 +135,12 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.events_detail, menu);
+
+        if (!calendarAvailable) {
+            MenuItem calendarItem = menu.findItem(R.id.event_detail_add_to_calendar);
+            calendarItem.setVisible(false);
+            calendarItem.setEnabled(false);
+        }
         
 		Bundle args = getArguments();
         String title = args.getString(Extra.TITLE);
@@ -219,7 +233,7 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         	} else {
         		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime);
         	}
-        	
+
         startActivity(intent);
     }
 

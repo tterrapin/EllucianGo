@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.maps;
 
 import java.util.HashMap;
@@ -443,7 +447,6 @@ public class MapsActivity extends EllucianActivity implements
 					markers.put(marker, building);
 					lastMarker = marker;
 				} while (data.moveToNext());
-				lastMarker.showInfoWindow();
 			}
 			break;
 		}

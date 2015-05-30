@@ -17,6 +17,7 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
 #import "UIScrollView+Size.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface CourseDetailViewController ()
 @property (strong, nonatomic) NSOrderedSet *meetingPatterns;
@@ -111,7 +112,8 @@
 
 -(void) setupData
 {
-    NSString *buildingsUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-map-buildings"];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
+    NSString *buildingsUrl = [defaults objectForKey:@"urls-map-buildings"];
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CourseDetail"];
     request.predicate = [NSPredicate predicateWithFormat:@"termId == %@ && sectionId == %@", self.termId, self.sectionId];
@@ -262,7 +264,7 @@
         facultyLabel.text = instructor.formattedName;
         facultyLabel.font = [UIFont systemFontOfSize:16.0f];
         facultyLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
-        NSString *directoryUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-facultySearch"];
+        NSString *directoryUrl = [defaults objectForKey:@"urls-directory-facultySearch"];
         if(directoryUrl) {
             [facultyView setAction:@selector(gotoFaculty:) withTarget:self];
         }

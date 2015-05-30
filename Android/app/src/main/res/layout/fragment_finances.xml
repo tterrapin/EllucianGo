@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/balance_container"
+        android:background="@color/default_gray"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingLeft="13dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:textSize="24sp"
+            android:textColor="@color/list_description_text_color"
+            android:drawableLeft="@drawable/ic_balance"
+            android:drawableStart="@drawable/ic_balance"
+            android:drawablePadding="13dp"
+            android:text="@string/finances_balance"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/balance_text_view"
+            android:textColor="@color/finances_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="13dp"
+            android:textSize="24sp"
+            android:paddingBottom="13dp"
+            android:gravity="center_vertical|right"
+            android:textStyle="bold"
+            android:paddingRight="14dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/finances_divider_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/balance_container"
+        android:text="@string/finances_recent_payments"
+        android:textStyle="bold"
+        android:textSize="@dimen/detail_title_text_size"
+        android:padding="@dimen/content_padding"
+        android:gravity="center_vertical|start" />
+
+    <ListView
+        android:id="@+id/transactions_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/finances_divider_bar"
+        android:layout_above="@+id/finance_url_button"
+        android:drawSelectorOnTop="false" />
+    <TextView
+        android:id="@+id/transactions_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_below="@+id/finances_divider_bar"
+        android:layout_above="@+id/finance_url_button"
+        android:visibility="gone"
+        android:text="@string/finances_no_payments"/>
+
+    <Button
+        android:id="@+id/finance_url_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical|center_horizontal"
+    />
+
+</RelativeLayout>

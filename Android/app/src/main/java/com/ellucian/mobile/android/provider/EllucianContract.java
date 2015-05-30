@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.provider;
 
 import java.util.List;
@@ -121,6 +125,7 @@ public class EllucianContract {
 		String NUMBERS_LONGITUDE = "numbers_long"; 
 		String NUMBERS_BUILDING_ID = "numbers_building_id";
 		String NUMBERS_CAMPUS_ID = "numbers_campus_id";
+        String NUMBERS_EXTENSION = "numbers_extension";
 	}
 	
 	interface NumbersCategoriesColumns {
@@ -201,6 +206,7 @@ public class EllucianContract {
 		String ASSIGNMENT_DESCRIPTION = "assignment_description";
 		String ASSIGNMENT_DUE = "assignment_due";
 		String ASSIGNMENT_URL= "assignment_url";
+        String ASSIGNMENT_SECTION_NAME = "assignment_section_name";
 	}
 	
 	interface CourseAnnouncementsColumns {
@@ -208,6 +214,7 @@ public class EllucianContract {
 		String ANNOUNCEMENT_CONTENT = "announcement_content";
 		String ANNOUNCEMENT_DATE = "announcement_date";
 		String ANNOUNCEMENT_URL= "announcement_url";
+        String ANNOUNCEMENT_SECTION_NAME = "announcement_section_name";
 	}
 	
 	interface CourseEventsColumns {
@@ -217,6 +224,7 @@ public class EllucianContract {
 		String EVENT_START = "event_start";
 		String EVENT_END = "event_end";
 		String EVENT_ALL_DAY= "event_all_day";
+        String EVENT_SECTION_NAME = "event_section_name";
 	}
 
 	interface EventsColumns {

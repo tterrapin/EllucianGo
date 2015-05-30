@@ -1,24 +1,8 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.client;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Application;
@@ -41,6 +25,8 @@ import com.ellucian.mobile.android.client.courses.overview.CourseRosterResponse;
 import com.ellucian.mobile.android.client.directory.DirectoryResponse;
 import com.ellucian.mobile.android.client.events.Event;
 import com.ellucian.mobile.android.client.events.EventsResponse;
+import com.ellucian.mobile.android.client.finances.BalancesResponse;
+import com.ellucian.mobile.android.client.finances.TransactionsResponse;
 import com.ellucian.mobile.android.client.grades.GradesResponse;
 import com.ellucian.mobile.android.client.maps.BuildingsResponse;
 import com.ellucian.mobile.android.client.maps.MapsResponse;
@@ -56,6 +42,26 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MobileClient {
 	private static final String TAG = MobileClient.class.getSimpleName();
 	public static final String REQUEST_DELETE= "DELETE";
@@ -67,6 +73,7 @@ public class MobileClient {
 
 	private Gson jsonParser;
 	private EllucianApplication application;
+    private boolean sendUnauthenticatedBroadcast = true;
 	
 	public MobileClient(Activity activity) {
 		this(activity.getApplication());
@@ -87,7 +94,10 @@ public class MobileClient {
 		}
 	}
 	
-	
+	public void setSendUnauthenticatedBroadcast(boolean sendUnauthenticatedBroadcast) {
+        this.sendUnauthenticatedBroadcast = sendUnauthenticatedBroadcast;
+    }
+
 	public void setDateFormat(String dateFormat) {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setDateFormat(dateFormat);
@@ -227,11 +237,13 @@ public class MobileClient {
 				if (returnErrorCodesAsResponse) {
 					responseString = "" + statusCode;
 				}
-					
-				LocalBroadcastManager bm = LocalBroadcastManager.getInstance(application.getApplicationContext());
-				Intent broadcastIntent = new Intent();
-				broadcastIntent.setAction(ACTION_UNAUTHENTICATED_USER);
-				bm.sendBroadcast(broadcastIntent);
+
+                if (sendUnauthenticatedBroadcast){
+                    LocalBroadcastManager bm = LocalBroadcastManager.getInstance(application.getApplicationContext());
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction(ACTION_UNAUTHENTICATED_USER);
+                    bm.sendBroadcast(broadcastIntent);
+                }
 			} else {
 				Log.e(TAG, "Status code " + statusCode + " for " + urlConnection.getURL());
 				if (returnErrorCodesAsResponse) {
@@ -507,6 +519,18 @@ public class MobileClient {
 		}	
 		
 	}
+
+    /** Finances requests */
+
+    public BalancesResponse getFinanceBalance(String requestUrl) {
+        Log.d(TAG, "Retrieving Balance");
+        return getResponseObject(BalancesResponse.class, requestUrl, false);
+    }
+
+    public TransactionsResponse getFinanceTransactions(String requestUrl) {
+        Log.d(TAG, "Retrieving Transactions");
+        return getResponseObject(TransactionsResponse.class, requestUrl, false);
+    }
 	
 	/** Grades requests */
 	

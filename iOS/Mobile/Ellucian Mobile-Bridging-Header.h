@@ -27,3 +27,16 @@
 
 //Views
 #import "MBProgressHUD.h"
+
+
+#import "EmptyTableViewCell.h"
+#import "CourseAssignment.h"
+#import "CourseAnnouncement.h"
+#import "CourseEvent.h"
+#import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "CourseAssignmentDetailViewController.h"
+#import "CourseEventsDetailViewController.h"
+#import "CourseAnnouncementDetailViewController.h"
+
+//Web
+#import "WebViewController.h"

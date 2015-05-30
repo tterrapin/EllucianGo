@@ -3,7 +3,7 @@
 //  Mobile
 //
 //  Created by Alan McEwan on 9/10/12.
-//  Copyright (c) 2012-2014 Ellucian. All rights reserved.
+//  Copyright (c) 2012-2015 Ellucian. All rights reserved.
 //
 
 #import "LoginViewController.h"
@@ -15,12 +15,15 @@
 #import "LoginExecutor.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "NotificationManager.h"
+#import "Ellucian_GO-Swift.h"
 
 #define LOGIN_SUCCESS 200
 
 @interface LoginViewController ()
 
 @property (nonatomic, strong) NSString *url;
+@property (nonatomic, assign) NSHTTPURLResponse *httpResponse;
+@property (nonatomic, assign) BOOL canceled;
 
 @end
 
@@ -38,17 +41,6 @@
     self.usernameField.leftViewMode = UITextFieldViewModeAlways;
     self.passwordField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_password"]];
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
-    
-//    UIImage* image = [UIImage imageNamed:@"btn-home-sign-in"];
-//    UIEdgeInsets insets = UIEdgeInsetsMake(0,11,0,11);
-//    image = [image resizableImageWithCapInsets:insets];
-//    [self.signInButton setBackgroundImage:image forState:UIControlStateNormal];
-//    [self.cancelButton setBackgroundImage:image forState:UIControlStateNormal];
-//    
-//    UIImage* imagePressed = [UIImage imageNamed:@"btn-home-sign-in-pressed"];
-//    imagePressed = [imagePressed resizableImageWithCapInsets:insets];
-//    [self.signInButton setBackgroundImage:imagePressed forState:UIControlStateHighlighted];
-//    [self.cancelButton setBackgroundImage:imagePressed forState:UIControlStateHighlighted];
     
     self.signInButton.tintColor =  [UIColor primaryColor];
     [[self.signInButton layer] setCornerRadius:10.0f];
@@ -70,12 +62,11 @@
     self.rememberMeLabel.textColor = [UIColor subheaderTextColor];
     self.contactInstitutionLabel.textColor = [UIColor subheaderTextColor];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     self.url = [defaults objectForKey:@"login-url"];
     
     self.usernameField.text = [[CurrentUser sharedInstance] userauth];
     self.rememberUserSwitch.on = [[CurrentUser sharedInstance] remember];
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -86,6 +77,8 @@
 
 - (IBAction)signInCanceled:(id)sender
 {
+    [self.activityIndicator stopAnimating];
+    self.canceled = YES;
     [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionCancel withLabel:@"Click Cancel" withValue:nil forModuleNamed:nil];
     //For cases where the user was previously signed in and timedout and canceled the prompt
     [[CurrentUser sharedInstance] logoutWithoutUpdatingUI];
@@ -112,16 +105,27 @@
 }
 
 - (IBAction)signIn:(id)sender {
+    [self.activityIndicator startAnimating];
     if(self.rememberUserSwitch.isOn) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication with save credential" withValue:nil forModuleNamed:nil];
     } else {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication without save credential" withValue:nil forModuleNamed:nil];
     }
+    self.signInButton.enabled = NO;
     
-    NSArray *roles;
-    NSInteger responseStatusCode = [self performLogin:self.url forUser:usernameField.text andPassword:passwordField.text andRememberUser:self.rememberUserSwitch.isOn returningRoles:&roles];
+    __block NSHTTPURLResponse *blockResponse = self.httpResponse;
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        blockResponse = [self performLogin:self.url forUser:usernameField.text andPassword:passwordField.text andRememberUser:self.rememberUserSwitch.isOn];
+        self.httpResponse = blockResponse;
+        [self finishSignIn];
+    });
+}
 
-    if (responseStatusCode == LOGIN_SUCCESS )
+-(void) finishSignIn {
+    [self.activityIndicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:YES];
+    if(self.canceled) {
+        return;
+    } else if ([self.httpResponse statusCode] == LOGIN_SUCCESS)
     {
         BOOL match = NO;
         if(self.access) {
@@ -138,14 +142,17 @@
                 match = YES;
             }
             if(!match) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
-                                                                message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                      otherButtonTitles:nil];
-                [alert show];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
+                                                                    message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                          otherButtonTitles:nil];
+                    [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
+                });
+                
             }
         }
         [self dismissViewControllerAnimated:YES completion: nil];
@@ -158,8 +165,9 @@
                               delegate:self
                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
                               otherButtonTitles:nil];
+        self.signInButton.enabled = YES;
         
-        [alert show];
+        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
     }
 
 }
@@ -167,13 +175,12 @@
 -(NSInteger) backgroundLogin
 {
     CurrentUser *user = [CurrentUser sharedInstance];
-    NSArray *roles;
-    NSString *loginUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-url"];
-    return [self performLogin:loginUrl forUser:[user userauth] andPassword:[user getPassword] andRememberUser:[user remember] returningRoles:&roles];
-
+    NSString *loginUrl = [[AppGroupUtilities userDefaults] objectForKey:@"login-url"];
+    NSHTTPURLResponse *response = [self performLogin:loginUrl forUser:[user userauth] andPassword:[user getPassword] andRememberUser:[user remember]];
+    return response.statusCode;
 }
 
--(NSInteger) performLogin:(NSString *)urlString forUser:(NSString *)username andPassword:(NSString *)password andRememberUser:(BOOL)rememberUser returningRoles:(NSArray**)roles
+-(NSHTTPURLResponse *) performLogin:(NSString *)urlString forUser:(NSString *)username andPassword:(NSString *)password andRememberUser:(BOOL)rememberUser
 {
     NSError *error;
     NSURLResponse *response;
@@ -182,7 +189,7 @@
     NSString *loginString = [NSString stringWithFormat:@"%@:%@", username, password];
     NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];
     NSString *authHeader = [@"Basic " stringByAppendingFormat:@"%@", encodedLoginData];
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:urlString]
                                                            cachePolicy: NSURLRequestReloadIgnoringCacheData
                                                        timeoutInterval: 90];
@@ -205,18 +212,38 @@
                               JSONObjectWithData:data
                               options:kNilOptions
                               error:&error];
+
         NSString *userId = [json objectForKey:@"userId"];
         NSString *authId = [json objectForKey:@"authId"];
-        *roles = [json objectForKey:@"roles"];
+        NSArray *roles = [json objectForKey:@"roles"];
         
         CurrentUser *user = [CurrentUser sharedInstance];
-        [user login:authId andPassword:password andUserid:userId andRoles:[NSSet setWithArray:*roles] andRemember:rememberUser];
+        [user login:authId andPassword:password andUserid:userId andRoles:[NSSet setWithArray:roles] andRemember:rememberUser];
         
         NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
         NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers forURL:response.URL];
         for(NSHTTPCookie *cookie in cookies) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
         }
+
+        //save cookies
+        NSMutableArray *cookieArray = [[NSMutableArray alloc] init];
+        for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]) {
+            NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+            [cookieProperties setObject:cookie.name forKey:NSHTTPCookieName];
+            [cookieProperties setObject:cookie.value forKey:NSHTTPCookieValue];
+            [cookieProperties setObject:cookie.domain forKey:NSHTTPCookieDomain];
+            [cookieProperties setObject:cookie.path forKey:NSHTTPCookiePath];
+            [cookieProperties setObject:[NSNumber numberWithInt:(int)cookie.version] forKey:NSHTTPCookieVersion];
+            
+            if( cookie.expiresDate) {
+                [cookieProperties setObject:cookie.expiresDate forKey:NSHTTPCookieExpires];
+            }
+
+            [cookieArray addObject:cookieProperties];
+            
+        }
+        [[AppGroupUtilities userDefaults] setValue:cookieArray forKey:@"cookieArray"];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoginExecutorSuccess object:nil];
         
@@ -224,7 +251,7 @@
         [NotificationManager registerDeviceIfNeeded];
     }
     
-    return responseStatusCode;
+    return httpResponse;
 }
 
 @end

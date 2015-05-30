@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
     xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
     
-    <string name="app_name" translatable="false">Ellucian GO</string>
     <string name="title_home_page">Home</string>
     <string name="main_sign_in">Sign In</string>
     <string name="main_sign_out">Sign Out</string>
     <string name="main_switch_school">Switch School</string>
-    <string name="app_intent_filter_host" translatable="false">mobile.elluciancloud.com</string>
-    
+
     <!-- Menu -->
     
     <string name="menu">Menu</string>
@@ -115,7 +117,7 @@
     <string name="row_date_label">Date:</string>
     <string name="row_due_label">Due:</string>
     <string name="row_location_label">Location:</string>
-    
+
     <string name="default_image">Image</string>
     <string name="no_data">No data</string>
     <string name="no_results_found">No results found.</string>
@@ -177,7 +179,10 @@
 	<string name="default_two_string_separator_format">
 	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
-	
+	<string name="default_phone_with_extension_format">
+        <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> ext. <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
+    </string>
+
 	
     <!-- About -->
     
@@ -255,21 +260,54 @@
     <string name="directory_type_all">All</string>
     <string name="directory_type_student">Student</string>
     <string name="directory_type_faculty">Faculty</string>
-    
+
     <!-- Events -->
-    
+
     <string name="title_activity_events">Events</string>
     <string name="title_activity_events_detail">Events Detail</string>
     <string name="events_no_events">No Events to Display</string>
     <string name="searchable_events_hint">Search Events</string>
     <string name="searchable_events_label">Search Events</string>
-    
+
+    <!-- Finances -->
+
+    <string name="title_activity_finances">Student Finances</string>
+    <string name="finances_no_balance">--</string>  <!-- display dashes -->
+    <string name="finances_no_payments">There are no recent payments.</string>
+    <string name="finances_recent_payments">RECENT PAYMENTS</string>
+    <string name="finances_balance">BALANCE</string>
+
     <!-- Grades -->
     
     <string name="title_activity_grades">Grades</string>
     <string name="grades_last_updated">Last Updated:</string>
     <string name="no_grades_in_term">There are no grades for this term</string>
     <string name="grades_no_grades">No Grades Recorded</string>
+
+    <!-- Ilp -->
+
+    <string name="title_activity_ilp">Ilp</string>
+    <string name="title_activity_ilp_today">Ilp Today</string>
+    <string name="title_activity_ilp_detail">Ilp Detail</string>
+    <string name="ilp_assignments_today">Assignments</string>
+    <string name="ilp_events_today">Today\'s Events</string>
+    <string name="ilp_announcements_today">Announcements</string>
+    <string name="ilp_assignments">Assignments</string>
+    <string name="ilp_events">Events</string>
+    <string name="ilp_announcements">Announcements</string>
+    <string name="ilp_view_all">View All</string>
+    <string name="ilp_view_by_date">By Due Date</string>
+    <string name="ilp_view_by_no_date">No Due Date</string>
+    <string name="ilp_today">Today</string>
+    <string name="ilp_tomorrow">Tomorrow</string>
+    <string name="ilp_no_date">No Date</string>
+    <string name="ilp_remind_me">Remind Me</string>
+    <string name="ilp_overdue">OVERDUE</string>
+    <string name="ilp_due_today">DUE TODAY</string>
+    <string name="ilp_assignments_none_today">No assignments due today</string>
+    <string name="ilp_events_none_today">No events scheduled for today</string>
+    <string name="ilp_announcements_none_today">No announcements for today</string>
+
     
     <!-- Maps -->
     
@@ -317,7 +355,6 @@
     <string name="title_activity_notifications">Notifications</string>
     <string name="notifications_detail_date_posted">Date Posted:</string>
     <string name="notifications_detail_link_action">Take Action</string>
-    <string name="notifications_device_title" translatable="false">Ellucian GO</string>
     <string name="notifications_device_content">You have new notifications!</string>
     <string name="notifications_no_notifications">No Notifications to Display</string>
     <string name="notifications_sticky_marker_image_text">Marker</string>
@@ -416,6 +453,17 @@
 	<string name="version_outdated">Outdated</string>
 	<string name="version_outdated_message">A new version is available.</string>
 	<string name="version_force_upgrade_message">The application must be upgraded to the latest version.</string>
+
+    <!-- Widget -->
+    <string name="widget_no_ilp">Assignments are not available for your institution</string>
+    <string name="widget_sign_in">Sign In to Refresh</string>
+    <string name="widget_not_connected">Not Connected</string>
+    <string name="widget_header">Assignments (Today)</string>
+    <string name="widget_no_assignments">No assignments due today</string>
+
+    <!-- Testing -->
+    <string name="test_configuration">Test Configuration</string>
+    <string name="configuration_list">Configuration List</string>
 
 
 </resources>

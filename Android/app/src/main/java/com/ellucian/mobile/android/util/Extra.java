@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.util;
 
 public class Extra {
@@ -13,6 +17,7 @@ public class Extra {
 	public static final String VIDEO_URL = "videoUrl";
 	public static final String REQUESTING_CLASS = "requestingClass";
 	public static final String IMAGE_URL_LIST = "imageUrlList";
+    public static final String HEADER_SECTION_NAME = "headerSectionName";
 	public static final String ID = "id";
 	public static final String TITLE = "title";
 	public static final String CONTENT = "content";	
@@ -22,20 +27,22 @@ public class Extra {
 	public static final String LOGO = "logo";
 	public static final String LINK = "link";
 	public static final String LINK_LABEL = "linkLabel";
+    public static final String LINK_EXTERNAL_BROWSER = "linkExternalBrowser";
 	public static final String DATE = "date";
 	public static final String DATE_LABEL = "dateLabel";
 	public static final String START = "start";
 	public static final String END = "end";
 	public static final String LIST_DESCRIPTION = "listDescription";
 	public static final String SEND_BROADCAST = "sendBroadcast";
-	public static final String LOGIN_USERNAME = "loginUsername";
+    public static final String SEND_UNAUTH_BROADCAST = "sendUnauthBroadcast";
+    public static final String LOGIN_USERNAME = "loginUsername";
 	public static final String LOGIN_PASSWORD = "loginPassword";
 	public static final String LOGIN_SAVE_USER = "loginSaveUser";
 	public static final String LOGIN_BACKGROUND = "loginBackground";
 	public static final String LOGIN_SUCCESS = "loginSuccess";
 	public static final String CONFIGURATION_REFRESH = "configurationRefresh";
 	public static final String REFRESH = "refresh";
-	
+
 	/** Courses Extras */
 	
 	public static final String COURSES_FULL_URL = "coursesFullUrl";

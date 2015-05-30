@@ -1,8 +1,8 @@
-package com.ellucian.mobile.android.app;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+package com.ellucian.mobile.android.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -44,6 +44,10 @@ import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DrawerLayoutHelper {
 	
@@ -402,7 +406,7 @@ public class DrawerLayoutHelper {
 					// Sign Out
 
 					// This also removes saved users
-					ellucianApp.removeAppUser();
+					ellucianApp.removeAppUser(true);
 
 					Toast signOutMessage = Toast.makeText(activity,
 							R.string.dialog_signed_out, Toast.LENGTH_LONG);

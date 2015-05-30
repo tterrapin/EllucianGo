@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<resources>
+
+    <string name="app_name" translatable="false">Ellucian GO</string>
+    <string name="notifications_device_title" translatable="false">Ellucian GO</string>
+    <string name="app_intent_filter_host" translatable="false">mobile.elluciancloud.com</string>
+
+</resources>
+

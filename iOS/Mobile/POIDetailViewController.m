@@ -10,6 +10,7 @@
 #import "MapPOIType.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation POIDetailViewController
 
@@ -207,7 +208,7 @@
 
 -(void) fetchBuilding
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *defaultUrlString = [defaults objectForKey:@"urls-map-buildings"];
     
     NSString *urlString = [NSString stringWithFormat:@"%@/%@", defaultUrlString, [self.buildingId  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];

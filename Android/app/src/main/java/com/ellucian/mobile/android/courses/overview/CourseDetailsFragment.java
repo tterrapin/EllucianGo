@@ -1,11 +1,8 @@
-package com.ellucian.mobile.android.courses.overview;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+package com.ellucian.mobile.android.courses.overview;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -36,6 +33,13 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class CourseDetailsFragment extends EllucianFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -203,15 +207,19 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				// Getting correct days to show
 				String[] days = daysOfWeek.split(",");
 				String displayDaysOfWeek = "";
-				for (String day : days) {
-					int dayNumber = Integer.parseInt(day);
-					if (!TextUtils.isEmpty(displayDaysOfWeek)) {
-						displayDaysOfWeek += ", ";
-					}
-					// Adding 1 to number to make the Calendar constants 
-					displayDaysOfWeek += CalendarUtils.getDayShortName(dayNumber);
-				}
-				displayDaysOfWeek += ": ";
+                try {
+                    for (String day : days) {
+                        int dayNumber = Integer.parseInt(day);
+                        if (!TextUtils.isEmpty(displayDaysOfWeek)) {
+                            displayDaysOfWeek += ", ";
+                        }
+                        // Adding 1 to number to make the Calendar constants
+                        displayDaysOfWeek += CalendarUtils.getDayShortName(dayNumber);
+                    }
+                    displayDaysOfWeek += ": ";
+                } catch (Exception e) {
+                    Log.e("CourseDetailsFragment", e.getMessage());
+                }
 				
 
 				final LinearLayout meetingRow = (LinearLayout)inflater.inflate(
@@ -348,8 +356,7 @@ public class CourseDetailsFragment extends EllucianFragment implements
         descriptionTextView.setText( cursor.getString(cursor.getColumnIndex(CourseCourses.COURSE_DESCRIPTION)));
         
         boolean isILPConfigured = getActivity().getIntent().getExtras().containsKey(Extra.COURSES_ILP_URL);
-        String learningProvider = cursor.getString(cursor.getColumnIndex(CourseCourses.COURSE_LEARNING_PROVIDER));
-        if(isILPConfigured && learningProvider != null && !learningProvider.equalsIgnoreCase("SHAREPOINT")) {
+        if(isILPConfigured) { 
         	((CourseOverviewActivity)activity).addMoreTab();
         }
     }

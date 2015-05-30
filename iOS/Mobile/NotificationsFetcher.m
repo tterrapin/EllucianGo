@@ -12,6 +12,7 @@
 #import "Module+Attributes.h"
 #import "AppDelegate.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface NotificationsFetcher ()
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -203,7 +204,7 @@ static BOOL lock;
     
     NSMutableURLRequest * urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
         [urlRequest addAuthenticationHeader];
     }

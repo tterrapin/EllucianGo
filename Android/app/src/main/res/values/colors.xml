@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources>
     <color name="content_msg_color">#999999</color>
     <color name="list_description_text_color">#666666</color>
@@ -14,4 +18,11 @@
     <color name="details_sub_header_border">#D9C696</color>
     
     <color name="default_gray">#CCCCCC</color>
+    <color name="card_sub_header_bg">#E6E6E6</color>
+    <color name="card_toolbar_bg">#999999</color>
+    <color name="warning_text_color">#c1272d</color>
+    <color name="due_today_green">#006837</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#00838F</color>
+    <color name="finances_color">#54a8cc</color>
 </resources>

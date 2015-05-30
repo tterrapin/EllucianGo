@@ -189,7 +189,7 @@
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/events", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/events?term=%@", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
     
     [importContext performBlock: ^{
         
@@ -220,6 +220,8 @@
                 
                 entry.sectionId = self.sectionId;
                 entry.title = [jsonDictionary objectForKey:@"title"];
+                entry.courseName = [jsonDictionary objectForKey:@"courseName"];
+                entry.courseSectionNumber = [jsonDictionary objectForKey:@"courseSectionNumber"];
                 if([jsonDictionary objectForKey:@"description"] != [NSNull null]) {
                     entry.eventDescription = [jsonDictionary objectForKey:@"description"];
                 }
@@ -273,6 +275,8 @@
         NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
         CourseEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
         CourseEventsDetailViewController *detailController = [segue destinationViewController];
+        detailController.courseName = event.courseName;
+        detailController.courseSectionNumber = event.courseSectionNumber;
         detailController.eventDescription = event.eventDescription;
         detailController.endDate = event.endDate;
         detailController.location = event.location;

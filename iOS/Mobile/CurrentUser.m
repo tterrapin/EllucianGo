@@ -12,6 +12,7 @@
 #import "RNEncryptor.h"
 #import "RNDecryptor.h"
 #import "NotificationsFetcher.h"
+#import "Ellucian_GO-Swift.h"
 
 #define kAES256Key @"key"
 
@@ -22,7 +23,7 @@
 - (id)init
 {
     self = [super init];
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
 
     NSError *decryptionError = nil;
     NSData *decryptedUserAuthData = [RNDecryptor decryptData:[defaults objectForKey:kLoginUserauth] withPassword:kAES256Key error:&decryptionError];
@@ -35,21 +36,22 @@
     _remember = [defaults boolForKey:kLoginRemember];
     _password = [self getPassword];
     _isLoggedIn = _password != nil;
+
     return self;
 }
 
 -(void)logoutWithoutUpdatingUI
 {
-    [self logoutWithNotification:NO];
+    [self logoutWithNotification:NO requestedByUser:YES];
 }
 
--(void)logout
+-(void)logout:(BOOL)requestedByUser
 {
-    [self logoutWithNotification:YES];
+    [self logoutWithNotification:YES requestedByUser:requestedByUser];
 }
 
 
--(void)logoutWithNotification:(BOOL)postNotification
+-(void)logoutWithNotification:(BOOL)postNotification requestedByUser:(BOOL)requestedByUser
 {
     //logging out resets this user's attributes and removes it from the keychain
     self.isLoggedIn  = false;
@@ -64,23 +66,32 @@
                             andServiceName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]
                                      error:&error];
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     //set the new config for about
     [defaults removeObjectForKey:kLoginRoles];
     [defaults removeObjectForKey:kLoginRemember];
     [defaults removeObjectForKey:kLoginUserauth];
     [defaults removeObjectForKey:kLoginUserid];
     
+    NSUserDefaults *appGroupUserDefaults = [AppGroupUtilities userDefaults];
+    [appGroupUserDefaults removeObjectForKey:kLoginUserauth];
+    [appGroupUserDefaults removeObjectForKey:kLoginUserid];
+    [appGroupUserDefaults removeObjectForKey:kLoginRoles];
+    [appGroupUserDefaults synchronize];
+    
     //remove persisted cookies
     NSHTTPCookieStorage* cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     
     NSArray *allCookies = [cookies cookies];
     
+    //remove all cookies persisted in app groups
+    [appGroupUserDefaults removeObjectForKey:@"cookieArray"];
+    
     for(NSHTTPCookie *cookie in allCookies) {
         [cookies deleteCookie:cookie];
     }
     
-    [self removeSensitiveData];
+    [self removeSensitiveData:requestedByUser];
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
@@ -106,7 +117,7 @@
                     updateExisting:true
                              error:&error];
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     //set the new config for about
     [defaults setObject:[roleSet allObjects] forKey:kLoginRoles];
     [defaults setBool:self.remember forKey:kLoginRemember];
@@ -124,7 +135,7 @@
                                                error:&error];
 
     [defaults setObject:encryptedUserIdData forKey:kLoginUserid];
-    
+
     self.lastLoggedInDate = [NSDate date];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
@@ -139,7 +150,7 @@
     self.roles = roleSet;
     self.isLoggedIn = true;
           
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     //set the new config for about
     [defaults setObject:[roleSet allObjects] forKey:kLoginRoles];
     NSData* encryptedUserAuthData = [self.userauth dataUsingEncoding:NSUTF8StringEncoding];
@@ -156,7 +167,7 @@
                                              error:&error];
     
     [defaults setObject:encryptedUserIdData forKey:kLoginUserid];
-    
+
     self.lastLoggedInDate = [NSDate date];
           
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
@@ -174,7 +185,7 @@
 {
     if (self.isLoggedIn)
     {
-        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
         //set the new config for about
         NSArray* array = [defaults objectForKey:@"roles"];
         return [NSSet setWithArray:array];
@@ -201,14 +212,21 @@
     
 }
 
--(void) removeSensitiveData
+-(void) removeSensitiveData:(BOOL)requestedByUser
 {
-    NSArray *entities = @[ @"CourseAnnouncement", @"CourseAssignment", @"CourseDetail", @"CourseEvent", @"CourseRoster", @"CourseTerm", @"GradeTerm", @"Notification"];
+    NSArray *entities = @[ @"CourseAnnouncement", @"CourseDetail", @"CourseEvent", @"CourseRoster", @"CourseTerm", @"GradeTerm", @"Notification"];
     for(NSString *entity in entities) {
         [self removeData:entity];
         if([entity isEqualToString:@"Notification"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationsUpdatedNotification object:nil];
         }
+    }
+    if(requestedByUser) {
+        [self removeData:@"CourseAssignment"];
+        NSUserDefaults *appGroupUserDefaults = [AppGroupUtilities userDefaults];
+        [appGroupUserDefaults removeObjectForKey:@"today-widget-assignments"];
+        [appGroupUserDefaults synchronize];
+        
     }
 }
 

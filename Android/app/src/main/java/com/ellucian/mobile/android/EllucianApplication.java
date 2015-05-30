@@ -1,21 +1,24 @@
-package com.ellucian.mobile.android;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+package com.ellucian.mobile.android;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Application;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
+import com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetProvider;
 import com.ellucian.mobile.android.client.services.NotificationsIntentService;
+import com.ellucian.mobile.android.client.services.UpdateAssignmentIntentService;
 import com.ellucian.mobile.android.login.IdleTimer;
 import com.ellucian.mobile.android.login.User;
 import com.ellucian.mobile.android.notifications.DeviceNotifications;
@@ -36,6 +39,12 @@ import com.google.android.gms.analytics.HitBuilders.EventBuilder;
 import com.google.android.gms.analytics.Logger.LogLevel;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+
 public class EllucianApplication extends Application {
 	public static final String TAG = EllucianApplication.class.getSimpleName();
 
@@ -46,12 +55,14 @@ public class EllucianApplication extends Application {
 	private DeviceNotifications deviceNotifications;
 	private long lastNotificationsCheck;
 	public static final long DEFAULT_NOTIFICATIONS_REFRESH = 60 * 60 * 1000; // 60 minutes
+    public static final long DEFAULT_ASSIGNMENTS_REFRESH = 60 * 60 * 1000; // 60 minutes
 	private long lastAuthRefresh;
 	private ConfigurationProperties configurationProperties;
 	private HashMap<String, ModuleConfiguration> moduleConfigMap;
 	private EllucianNotificationManager ellucianNotificationManager;
 	public static final long MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 	private ModuleMenuAdapter moduleMenuAdapter;
+    private Timer timer;
 
 	// Google Analytics trackers
 	private Tracker gaTracker1;
@@ -60,7 +71,7 @@ public class EllucianApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		PRNGFixes.apply();
 
 		GoogleAnalytics.getInstance(this).getLogger()
@@ -111,7 +122,31 @@ public class EllucianApplication extends Application {
 			logString += "\n" + "roles:" + roles.toString();
 		}
 		Log.d("EllucianApplication.createAppUser", logString);
+
+        if (widgetInstalled()) {
+            Intent assignmentIntent = new Intent(this, UpdateAssignmentIntentService.class);
+            startService(assignmentIntent);
+        }
 	}
+
+    public boolean widgetInstalled() {
+        int ids[] = AppWidgetManager.getInstance(this).getAppWidgetIds(
+                new ComponentName(this, AssignmentsWidgetProvider.class));
+        if (ids != null && ids.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void removeAppUser(Boolean explicitSignOut) {
+        if (explicitSignOut) {
+            // Assignment data is deleted on explicit Sign out, but kept on a time out.
+            getContentResolver().delete(EllucianContract.CourseAssignments.CONTENT_URI, null,
+                    null);
+        }
+        removeAppUser();
+    }
 
 	public void removeAppUser() {
 		user = null;
@@ -123,7 +158,11 @@ public class EllucianApplication extends Application {
 		CookieManager.getInstance().removeAllCookie();
 
 		stopIdleTimer();
-	}
+        if (widgetInstalled()) {
+            Intent assignmentIntent = new Intent(this, UpdateAssignmentIntentService.class);
+            startService(assignmentIntent);
+        }
+    }
 
 	public void loadSavedUser() {
 		String userId = Utils.getSavedUserId(this);
@@ -237,12 +276,12 @@ public class EllucianApplication extends Application {
 
 	public String getNotificationsUrl() {
 		return Utils.getStringFromPreferences(this, Utils.NOTIFICATION,
-				Utils.NOTIFICATION_NOTIFICATIONS_URL, null);
+                Utils.NOTIFICATION_NOTIFICATIONS_URL, null);
 	}
 
 	public String getMobileNotificationsUrl() {
 		return Utils.getStringFromPreferences(this, Utils.NOTIFICATION,
-				Utils.NOTIFICATION_MOBILE_NOTIFICATIONS_URL, null);
+                Utils.NOTIFICATION_MOBILE_NOTIFICATIONS_URL, null);
 	}
 
 	public long getLastAuthRefresh() {
@@ -285,8 +324,8 @@ public class EllucianApplication extends Application {
 		if (gaTracker1 == null) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 			String trackerId1 = Utils.getStringFromPreferences(this,
-					Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1,
-					null);
+                    Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER1,
+                    null);
 			if (trackerId1 != null)
 				gaTracker1 = analytics.newTracker(trackerId1);
 		}
@@ -297,8 +336,8 @@ public class EllucianApplication extends Application {
 		if (gaTracker2 == null) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 			String trackerId2 = Utils.getStringFromPreferences(this,
-					Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2,
-					null);
+                    Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2,
+                    null);
 			if (trackerId2 != null)
 				gaTracker2 = analytics.newTracker(trackerId2);
 		}
@@ -307,7 +346,7 @@ public class EllucianApplication extends Application {
 
 	/**
 	 * Send event to google analytics
-	 * 
+	 *
 	 * @param category
 	 * @param action
 	 * @param label
@@ -317,37 +356,37 @@ public class EllucianApplication extends Application {
 	public void sendEvent(String category, String action, String label,
 			Long value, String moduleName) {
 		sendEventToTracker1(category, action, label, value,
-				moduleName);
+                moduleName);
 		sendEventToTracker2(category, action, label, value,
-				moduleName);
+                moduleName);
 	}
 
 	/**
 	 * Send event to google analytics for just tracker 1
-	 * 
+	 *
 	 */
 	public void sendEventToTracker1(String category, String action,
 			String label, Long value, String moduleName) {
 		sendEventToTracker(getTracker1(), category, action, label, value,
-				moduleName);
+                moduleName);
 	}
 
 	/**
 	 * Send event to google analytics for just tracker 2
-	 * 
+	 *
 	 */
 	public void sendEventToTracker2(String category, String action,
 			String label, Long value, String moduleName) {
 		sendEventToTracker(getTracker2(), category, action, label, value,
-				moduleName);
+                moduleName);
 	}
 
 	/**
 	 * Send event to google analytics
-	 * 
-	 * @param category
-	 * @param action
-	 * @param label
+	 *
+	 * @param categoryId
+	 * @param actionId
+	 * @param labelId
 	 * @param value
 	 * @param moduleName
 	 */
@@ -355,7 +394,7 @@ public class EllucianApplication extends Application {
 			String actionId, String labelId, Long value, String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
-					Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
+                    Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
 			EventBuilder eventBuilder = new HitBuilders.EventBuilder();
 			eventBuilder.setCategory(categoryId);
 			eventBuilder.setAction(actionId);
@@ -374,7 +413,7 @@ public class EllucianApplication extends Application {
 
 	/**
 	 * Send view to google analytics
-	 * 
+	 *
 	 * @param appScreen
 	 * @param moduleName
 	 */
@@ -385,7 +424,7 @@ public class EllucianApplication extends Application {
 
 	/**
 	 * Send view to google analytics for just tracker 1
-	 * 
+	 *
 	 * @param appScreen
 	 */
 	public void sendViewToTracker1(String appScreen, String moduleName) {
@@ -394,7 +433,7 @@ public class EllucianApplication extends Application {
 
 	/**
 	 * Send view to google analytics for just tracker 2
-	 * 
+	 *
 	 * @param appScreen
 	 */
 	public void sendViewToTracker2(String appScreen, String moduleName) {
@@ -403,7 +442,7 @@ public class EllucianApplication extends Application {
 
 	/**
 	 * Send view to google analytics
-	 * 
+	 *
 	 * @param tracker
 	 * @param appScreen
 	 * @param moduleName
@@ -412,7 +451,7 @@ public class EllucianApplication extends Application {
 			String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
-					Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
+                    Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
 			tracker.setScreenName(appScreen);
 			AppViewBuilder appViewBuilder = new HitBuilders.AppViewBuilder();
 			appViewBuilder.setCustomDimension(1, configurationName);
@@ -421,7 +460,7 @@ public class EllucianApplication extends Application {
 			tracker.send(appViewBuilder.build());
 		}
 	}
-	
+
 	/**
 	 * Send timing to google analytics
 	 * @param category
@@ -471,7 +510,7 @@ public class EllucianApplication extends Application {
 			String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
-					Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
+                    Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
 			HitBuilders.TimingBuilder timingBuilder = new HitBuilders.TimingBuilder();
 			timingBuilder.setCategory(category).setValue(value).setVariable(name).setLabel(label);
 			timingBuilder.setCustomDimension(1, configurationName);
@@ -480,8 +519,8 @@ public class EllucianApplication extends Application {
 			tracker.send(timingBuilder.build());
 		}
 	}
-	
-	
+
+
 	/**
 	 * Application will only manage one menu adapter at a time.
 	 * Typically ModuleMenuAdapter.buildInstance() will only be called once on app creation
@@ -490,10 +529,10 @@ public class EllucianApplication extends Application {
 	public ModuleMenuAdapter getModuleMenuAdapter() {
 		if (moduleMenuAdapter == null) {
 			moduleMenuAdapter = ModuleMenuAdapter.buildInstance(this);
-		}		
+		}
     	return moduleMenuAdapter;
     }
-	
+
 	public void resetModuleMenuAdapter() {
 		moduleMenuAdapter = null;
 	}

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.client.configuration;
 
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
 import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevels;
 import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
+import com.ellucian.mobile.android.util.Utils;
 
 public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONObject>{
 	@SuppressWarnings("unused")
@@ -224,6 +229,16 @@ public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONOb
 					}
 					
 				}
+
+                if (type.equals(ModuleType.ILP)) {
+                    if(moduleObject.has("urls")) {
+                        JSONObject urls = moduleObject.getJSONObject("urls");
+                        if (urls.has("ilp")) {
+                            Utils.addStringToPreferences(context, Utils.CONFIGURATION, Utils.ILP_URL, urls.getString("ilp"));
+                        }
+                    }
+
+                }
 								
 			}
 			

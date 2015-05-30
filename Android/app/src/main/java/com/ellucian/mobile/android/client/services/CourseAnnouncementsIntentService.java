@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.client.services;
 
 import java.util.ArrayList;
@@ -8,6 +12,7 @@ import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.ellucian.mobile.android.client.MobileClient;
@@ -31,9 +36,14 @@ public class CourseAnnouncementsIntentService extends IntentService {
 		Log.d(TAG, "handling intent");
 		MobileClient client = new MobileClient(this);
 		String courseId = intent.getStringExtra(Extra.COURSES_COURSE_ID);
+        String termId = intent.getStringExtra(Extra.COURSES_TERM_ID);
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.COURSES_ILP_URL));
-		url += "/" + courseId + "/announcements";
+        if(!TextUtils.isEmpty(courseId) && !TextUtils.isEmpty(termId)) {
+            url += "/" + courseId + "/announcements?term=" + termId;
+        } else {
+            url += "/announcements";
+        }
 		CourseAnnouncementsResponse response = client.getCourseAnnouncements(url);
 		
 		if (response != null) {

@@ -17,6 +17,7 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "Ellucian_GO-Swift.h"
 
 #define LIVE_CONFIGURATIONS_URL @"https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations"
 
@@ -100,7 +101,7 @@
 #pragma mark - load configuration
 -(void) schoolChosen:(Configuration *)selectedCandidate
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     if(trackingId1) {
         id tracker1 = [[GAI sharedInstance] trackerWithTrackingId:trackingId1];
@@ -117,10 +118,9 @@
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [delegate reset];
         
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs setObject:configurationUrl forKey:@"configurationUrl"];
-        [prefs setObject:name forKey:@"configurationName"];
-        [prefs synchronize];
+        [defaults setObject:configurationUrl forKey:@"configurationUrl"];
+        [defaults setObject:name forKey:@"configurationName"];
+        [defaults synchronize];
 
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kVersionCheckerUpdateAvailableNotification object:nil];
         BOOL success = [ConfigurationFetcher fetchConfigurationFromURL:configurationUrl WithManagedObjectContext:self.managedObjectContext ];
@@ -151,15 +151,16 @@
             NSError *error;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
-            NSString *urlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobilecloud-url"];
+            NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
+            NSString *urlString = [defaults objectForKey:@"mobilecloud-url"];
             
             if(!urlString) {
                 urlString = self.liveConfigurationsUrl;
                 
-                NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+                NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
                 [defaults setObject:urlString forKey:@"mobilecloud-url"];
                 [defaults synchronize];
-                urlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"mobilecloud-url"];
+                urlString = [defaults objectForKey:@"mobilecloud-url"];
             }
             NSURL *url = [NSURL URLWithString:urlString];
             
@@ -184,7 +185,6 @@
                     //Google Analytics
                     if([[json objectForKey:@"analytics"] objectForKey:@"ellucian"] != [NSNull null]) {
                         
-                        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
                         [defaults setObject:[[json objectForKey:@"analytics"] objectForKey:@"ellucian"] forKey:@"gaTracker1"];
                         [defaults synchronize];
                         NSString *trackingId1 = [[json objectForKey:@"analytics"] objectForKey:@"ellucian"];

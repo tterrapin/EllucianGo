@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 @interface ImageCache : NSObject
 
 @property (nonatomic, retain) NSString * cachePath;

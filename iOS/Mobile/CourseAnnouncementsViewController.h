@@ -9,8 +9,9 @@
 #import "EllucianUITableViewController.h"
 #import "EllucianUITableViewController.h"
 #import "Module+Attributes.h"
+#import "DetailSelectionDelegate.h"
 
-@interface CourseAnnouncementsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate>
+@interface CourseAnnouncementsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) NSString *termId;
 @property (strong, nonatomic) NSString *sectionId;

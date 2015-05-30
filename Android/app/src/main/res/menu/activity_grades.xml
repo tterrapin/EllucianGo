@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_grades_term_picker" android:title="@string/terms" android:showAsAction="ifRoom"></item>
 </menu>

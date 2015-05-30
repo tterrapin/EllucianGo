@@ -10,12 +10,13 @@
 #import "GAI.h"
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation UIViewController (GoogleAnalyticsTrackerSupport)
 
 - (void)sendView:(NSString *)screen forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -25,7 +26,7 @@
 
 - (void)sendViewToTracker1:(NSString *)screen forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = nil;
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -35,7 +36,7 @@
 
 - (void)sendViewToTracker2:(NSString *)screen forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = nil;
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -67,7 +68,7 @@
                     withLabel:(NSString *)label
                     withValue:(NSNumber *)value forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -81,7 +82,7 @@
                               withValue:(NSNumber *)value forModuleNamed:(NSString *)moduleName
 {
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = nil;
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -95,7 +96,7 @@
                               withLabel:(NSString *)label
                               withValue:(NSNumber *)value forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 =  nil;
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -130,7 +131,7 @@
                          withLabel:(NSString *)label
                     forModuleNamed:(NSString *)moduleName
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -146,7 +147,7 @@
                               forModuleNamed:(NSString *)moduleName
 {
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = nil;
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
@@ -162,7 +163,7 @@
                               forModuleNamed:(NSString *)moduleName
 {
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = nil;
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];
     NSString *configurationName = [defaults objectForKey:@"configurationName"];

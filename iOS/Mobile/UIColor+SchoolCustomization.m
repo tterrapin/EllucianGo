@@ -8,6 +8,7 @@
 
 #import "UIColor+SchoolCustomization.h"
 #import "UIColor+HexString.h"
+#import "Ellucian_GO-Swift.h"
 
 #define kSchoolCustomizationPrimaryColor @"#331640"
 #define kSchoolCustomizationHeaderColor @"#FFFFFF"
@@ -18,14 +19,14 @@
 
 + (BOOL) hasCustomizationColors
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *color = [defaults objectForKey:@"primaryColor"];
     return color ? YES : NO;
 }
 
 + (UIColor *) primaryColor
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *color = [defaults objectForKey:@"primaryColor"];
     if(!color) color = kSchoolCustomizationPrimaryColor;
     return [UIColor colorWithHexString:color];
@@ -34,7 +35,7 @@
 
 + (UIColor *) headerTextColor
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *color = [defaults objectForKey:@"headerTextColor"];
     if(!color) color = kSchoolCustomizationHeaderColor;
     return [UIColor colorWithHexString:color];
@@ -42,7 +43,7 @@
 
 + (UIColor *) accentColor
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *color = [defaults objectForKey:@"accentColor"];
     if(!color) color = kSchoolCustomizationAccentColor;
     return [UIColor colorWithHexString:color];
@@ -51,7 +52,7 @@
 
 + (UIColor *) subheaderTextColor
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *color = [defaults objectForKey:@"subheaderTextColor"];
     if(!color) color = kSchoolCustomizationSubheaderColor;
     return [UIColor colorWithHexString:color];

@@ -129,9 +129,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     [self performSegueWithIdentifier:@"Show Assignment Detail" sender:self.tableView];
-    
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -197,7 +195,7 @@
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     importContext.parentContext = self.module.managedObjectContext;
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/assignments", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/assignments?term=%@", [self.module propertyForKey:@"ilp"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.sectionId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [self.termId stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
 
     [importContext performBlock: ^{
         
@@ -227,6 +225,8 @@
                 
                 entry.sectionId = self.sectionId;
                 entry.name = [jsonDictionary objectForKey:@"name"];
+                entry.courseName = [jsonDictionary objectForKey:@"courseName"];
+                entry.courseSectionNumber = [jsonDictionary objectForKey:@"courseSectionNumber"];
                 if([jsonDictionary objectForKey:@"description"] != [NSNull null]) {
                     entry.assignmentDescription = [jsonDictionary objectForKey:@"description"];
                 }
@@ -280,6 +280,8 @@
         CourseAssignmentDetailViewController *detailController = [segue destinationViewController];
         detailController.itemTitle = assignment.name;
         detailController.itemContent = assignment.assignmentDescription;
+        detailController.courseName = assignment.courseName;
+        detailController.courseSectionNumber = assignment.courseSectionNumber;
         detailController.itemLink = [assignment.url stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         detailController.itemPostDateTime = assignment.dueDate;
         detailController.module = self.module;

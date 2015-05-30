@@ -1,10 +1,8 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.client.services;
-
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -16,6 +14,12 @@ import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class AuthenticateUserIntentService extends IntentService {
 	public static final String ACTION_UPDATE_MAIN = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.updateMain";
@@ -49,6 +53,10 @@ public class AuthenticateUserIntentService extends IntentService {
 		}
 
 		MobileClient client = new MobileClient(this);
+        if (!intent.getBooleanExtra(Extra.SEND_UNAUTH_BROADCAST, true)) {
+            client.setSendUnauthenticatedBroadcast(false);
+        }
+
 		String response = client.authenticateUser(securityUrl, loginUsername, loginPassword);
 
 		if (!TextUtils.isEmpty(response)) {

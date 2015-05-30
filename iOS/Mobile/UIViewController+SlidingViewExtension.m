@@ -9,6 +9,7 @@
 #import "UIViewController+SlidingViewExtension.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "DetailSelectionDelegate.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation UIViewController (SlidingViewExtension)
 
@@ -24,7 +25,7 @@
 
 - (IBAction)revealMenu:(id)sender
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     [defaults setBool:YES forKey:@"menu-discovered"];
     [defaults synchronize];
     [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Click Menu Tray Icon" withValue:nil forModuleNamed:nil];

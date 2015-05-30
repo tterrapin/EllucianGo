@@ -11,6 +11,7 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
 #import "PseudoButtonView.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface AboutViewController ()
 
@@ -38,8 +39,8 @@
     self.clientVersion.textColor = [UIColor subheaderTextColor];
     self.clientVersionLabel.textColor = [UIColor subheaderTextColor];
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
+
     self.backgroundView.backgroundColor = [UIColor accentColor];
     
     self.separatorAfterPhoneView.backgroundColor = [UIColor accentColor];
@@ -131,7 +132,7 @@
 
 - (void) loadImage
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *myUrl = [defaults objectForKey:@"about-logoUrlPhone"];
     
     dispatch_async(dispatch_get_global_queue(0,0), ^{
@@ -151,7 +152,7 @@
 - (void) retrieveVersion
 {
     //retrieve server version in the background
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
 
     NSString *versionURL = [defaults objectForKey:@"about-version-url"];
     
@@ -184,7 +185,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     [self resetScrollViewContentOffset];
     if ([[segue identifier] isEqualToString:@"webView"]) {
         [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionFollow_web withLabel:@"About Web" withValue:nil forModuleNamed:nil];
@@ -219,7 +220,7 @@
 -(void)tapPhone:(id)sender
 {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"About Phone" withValue:nil forModuleNamed:nil];
-    NSString *phoneNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"about-phone-number"];
+    NSString *phoneNumber = [[AppGroupUtilities userDefaults] objectForKey:@"about-phone-number"];
     NSString *phone = [[phoneNumber componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"() -"]] componentsJoinedByString: @""];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phone]]];
 
@@ -228,7 +229,7 @@
 -(void)tapEmail:(id)sender
 {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"About Email" withValue:nil forModuleNamed:nil];
-    NSString *email = [[NSUserDefaults standardUserDefaults] objectForKey:@"about-email-address"];
+    NSString *email = [[AppGroupUtilities userDefaults] objectForKey:@"about-email-address"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", email]]];
 }
 

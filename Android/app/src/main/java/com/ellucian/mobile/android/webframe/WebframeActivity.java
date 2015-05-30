@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.webframe;
 
 import android.annotation.SuppressLint;
@@ -102,9 +106,10 @@ public class WebframeActivity extends EllucianActivity {
 			String databasePath = webView.getContext()
 					.getDir("databases", Context.MODE_PRIVATE).getPath();
 			webSettings.setDatabaseEnabled(true);
-			webSettings.setDatabasePath(databasePath); // deprecated, but needed
-														// for earlier than API
-														// 19
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+				webSettings.setDatabasePath(databasePath); // deprecated, but needed
+				// for earlier than API 19
+			}
 			webSettings.setDomStorageEnabled(true);
 
 			Log.d("WebframeActivity", "Making request at: " + requestUrl);

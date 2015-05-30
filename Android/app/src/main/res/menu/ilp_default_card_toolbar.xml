@@ -1,0 +1,11 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item 
+	    android:showAsAction="always"
+	    android:id="@+id/view_all" 
+	 	android:title="@string/ilp_view_all" />
+</menu>

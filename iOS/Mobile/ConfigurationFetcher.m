@@ -10,6 +10,7 @@
 #import "ImageCache.h"
 #import "ConfigurationSelectionViewController.h"
 #import "VersionChecker.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation ConfigurationFetcher
 
@@ -51,7 +52,7 @@
 +(BOOL) parseConfiguration:(NSDictionary *)json WithManagedObjectContext:(NSManagedObjectContext *)importContext
 {
     NSMutableArray *currentKeys = [[NSMutableArray alloc] init];
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     
     NSArray *supportedVersions = [[json objectForKey:@"versions"] objectForKey:@"ios"];
     if([VersionChecker checkVersion:supportedVersions])
@@ -145,19 +146,14 @@
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         
-        dispatch_queue_t myQueue = dispatch_queue_create("com.ellucian.mappcreation", 0);
-        
         NSDictionary *modules = [json objectForKey:@"mapp"];
         //create/update objects
         for(NSString *key in [modules allKeys]) {
-            dispatch_async(myQueue, ^{NSDictionary *jsonMApp = [modules objectForKey:key];
+                NSDictionary *jsonMApp = [modules objectForKey:key];
                 [Module moduleFromDictionary:jsonMApp inManagedObjectContext:importContext withKey:key];
-                [currentKeys addObject:key];});
+                [currentKeys addObject:key];
         }
-        // wait for queue to empty
-        dispatch_sync(myQueue, ^{
-            NSLog(@"Tasks completed");
-        });
+        
         //find and delete old ones
         NSError *error = nil;
 

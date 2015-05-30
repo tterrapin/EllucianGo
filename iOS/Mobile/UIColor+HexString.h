@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 Ellucian. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
 @interface UIColor (HexString)
 

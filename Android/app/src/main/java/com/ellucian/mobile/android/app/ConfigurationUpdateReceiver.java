@@ -56,7 +56,8 @@ public class ConfigurationUpdateReceiver extends BroadcastReceiver {
 				mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				activity.startActivity(mainIntent);
-			} 
+
+            }
 		}
 	}
 }

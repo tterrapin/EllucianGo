@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSArray *access;
 @property (weak, nonatomic) IBOutlet UILabel *rememberMeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *contactInstitutionLabel;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 
 - (IBAction)signInCanceled:(id)sender;

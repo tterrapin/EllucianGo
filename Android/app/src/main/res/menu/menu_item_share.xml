@@ -1,8 +1,11 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
     <item
         android:id="@+id/share"
         android:title="@string/share"
         android:showAsAction="ifRoom"
-        android:actionProviderClass="android.widget.ShareActionProvider"
-    />
+        android:actionProviderClass="android.widget.ShareActionProvider" />
 </menu>

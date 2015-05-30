@@ -15,6 +15,7 @@
 #import "DirectoryEntryViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface DirectoryViewController ()
 
@@ -37,18 +38,12 @@
     ABAddressBookRef addressBook;
     addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
     __block BOOL accessGranted = NO;
-    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
-        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-            accessGranted = granted;
-            dispatch_semaphore_signal(sema);
-        });
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-        //dispatch_release(sema);
-    }
-    else { // we're on iOS 5 or older
-        accessGranted = YES;
-    }
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        accessGranted = granted;
+        dispatch_semaphore_signal(sema);
+    });
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
     
     if(accessGranted) {
         self.sort = ABPersonGetSortOrdering();
@@ -90,17 +85,18 @@
             [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeAll]];
         }
     } else { //not a directory module, but reusing search
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-studentSearch"] && !self.hideStudents) {
+        NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
+        if([defaults objectForKey:@"urls-directory-studentSearch"] && !self.hideStudents) {
             if(!self.selectedScope) self.selectedScope = DirectoryViewTypeStudent;
             [mutableScopesTitle addObject:NSLocalizedString(@"Students", @"student search scope in directory") ];
             [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeStudent]];
         }
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-facultySearch"] && !self.hideFaculty ) {
+        if([defaults objectForKey:@"urls-directory-facultySearch"] && !self.hideFaculty ) {
             if(!self.selectedScope) self.selectedScope = DirectoryViewTypeFaculty;
             [mutableScopesTitle addObject:NSLocalizedString(@"Faculty/Staff", @"facilty/staff search scope in directory") ];
             [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeFaculty]];
         }
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-allSearch"] && [mutableScopesTitle count] > 1) {
+        if([defaults objectForKey:@"urls-directory-allSearch"] && [mutableScopesTitle count] > 1) {
             if(!self.selectedScope) self.selectedScope = DirectoryViewTypeAll;
             [mutableScopesTitle addObject:NSLocalizedString(@"All", @"all search scope in directory") ];
             [mutableScopesTypes addObject:[NSNumber numberWithInt:DirectoryViewTypeAll]];
@@ -320,12 +316,13 @@
                  url = [self.module propertyForKey:@"allSearch"];
             }
         } else {
+            NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
             if(self.selectedScope == DirectoryViewTypeStudent) {
-                url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-studentSearch"];
+                url = [defaults objectForKey:@"urls-directory-studentSearch"];
             } else if(self.selectedScope == DirectoryViewTypeFaculty) {
-               url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-facultySearch"];
+               url = [defaults objectForKey:@"urls-directory-facultySearch"];
             } else {
-               url = [[NSUserDefaults standardUserDefaults] objectForKey:@"urls-directory-allSearch"];
+               url = [defaults objectForKey:@"urls-directory-allSearch"];
             }
         }
         url = [NSString stringWithFormat:@"%@?searchString=%@", url, [searchString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];

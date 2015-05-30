@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.app;
 
 import android.app.Fragment;
@@ -58,7 +62,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 		EllucianDefaultListFragment fragment;
 		
 		if (TextUtils.isEmpty(fname)) {
-			fname = EllucianDefaultDetailFragment.class.getName();
+			fname = EllucianDefaultListFragment.class.getName();
 		}
 		Log.d(TAG, "Creating new instance for class: " + fname);
 		
@@ -225,11 +229,9 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
         	
             Intent intent = new Intent();
             intent.setClass(getActivity(), getDetailActivityClass());
+            intent.putExtras(getActivity().getIntent().getExtras());
             intent.putExtras(detailBundle); 
             intent.putExtra("index", index);
-            intent.putExtra(Extra.MODULE_ID, getEllucianActivity().moduleId);
-            intent.putExtra(Extra.MODULE_NAME, getEllucianActivity().moduleName);
-            intent.putExtra(Extra.REQUEST_URL, getEllucianActivity().requestUrl);
             intent = addExtras(intent);
             startActivity(intent);
             

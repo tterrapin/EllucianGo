@@ -31,7 +31,8 @@
 @property (nonatomic, strong) NSString* email;
 
 -(void)logoutWithoutUpdatingUI;
--(void)logout;
+-(void)logout:(BOOL)requestedByUser;
+-(void)logoutWithNotification:(BOOL)postNotification requestedByUser:(BOOL)requestedByUser;
 - (void) login: (NSString *) auth
    andPassword: (NSString *) pass
      andUserid: (NSString *) uID

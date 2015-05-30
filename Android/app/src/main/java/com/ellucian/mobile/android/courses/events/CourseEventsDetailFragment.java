@@ -1,10 +1,12 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.courses.events;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,12 +15,12 @@ import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
+import com.ellucian.mobile.android.ilp.IlpDetailFragment;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
-public class CourseEventsDetailFragment extends EllucianDefaultDetailFragment {
+public class CourseEventsDetailFragment extends IlpDetailFragment {
 	
 	public CourseEventsDetailFragment() {		
 	}
@@ -99,31 +101,6 @@ public class CourseEventsDetailFragment extends EllucianDefaultDetailFragment {
     	default:
     		return super.onOptionsItemSelected(item);
     	}
-    }
-    
-	private void sendAddToCalendarIntent() {
-        Bundle args = getArguments();
-        String title = args.getString(Extra.TITLE);
-        String content = args.getString(Extra.CONTENT);
-        String location = args.getString(Extra.LOCATION);
-        
-        long startTime = args.getLong(Extra.START, 0);
-        long endTime = args.getLong(Extra.END, 0);
-        
-        // Creating intent for native Calendar App
-        Intent intent = new Intent(Intent.ACTION_INSERT)
-	        .setData(Events.CONTENT_URI)
-	        .putExtra(Events.TITLE, title)
-	        .putExtra(Events.DESCRIPTION, content)
-	        .putExtra(Events.EVENT_LOCATION, location)
-	        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime);
-        	if (endTime == -1) {
-        		intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-        	} else {
-        		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime);
-        	}
-        	
-        startActivity(intent);
     }
     
     @Override

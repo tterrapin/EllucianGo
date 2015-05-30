@@ -17,6 +17,7 @@
 #import "MapPOIType.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "SlidingViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface MapsViewController ()
 
@@ -123,7 +124,7 @@
     
     [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:@"Select campus" withValue:nil forModuleNamed:self.module.name];
     MapCampus *campus = [self.campuses objectAtIndex:buttonIndex];
-    NSUserDefaults *userDefaults =[NSUserDefaults standardUserDefaults];
+    NSUserDefaults *userDefaults = [AppGroupUtilities userDefaults];
     NSString *key = [NSString stringWithFormat:@"%@-%@", @"mapLastCampus", self.module.internalKey ];
     [userDefaults setObject:campus.campusId forKey:key];
     [self showCampus:campus];
@@ -448,7 +449,7 @@
         self.campusSelectionButton.enabled = YES;
         self.buildingsButton.enabled = YES;
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults *userDefaults = [AppGroupUtilities userDefaults];
         NSString *key = [NSString stringWithFormat:@"%@-%@", @"mapLastCampus", self.module.internalKey ];
         NSString *previousCampus = [userDefaults objectForKey:key];
         

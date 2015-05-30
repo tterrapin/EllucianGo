@@ -19,11 +19,23 @@
 
 @implementation CourseEventsDetailViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setToolbarHidden:NO animated:NO];
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.padToolBar setHidden:NO];
+    }
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setToolbarHidden:NO animated:NO];
+    }
     self.navigationController.navigationBar.translucent = NO;
     
     if([AppearanceChanger isRTL]) {
@@ -35,13 +47,42 @@
         self.locationLabelLabel.textAlignment = NSTextAlignmentRight;
     }
     
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    UIBarButtonItem *addCalendarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar-add-to-calendar-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addToMyCalendar:)];
+    
+    UIBarButtonItem *shareButtonItem = [[UIBarButtonItem alloc]  initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share:)];
+    
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        if ([MFMailComposeViewController canSendMail]){
+            self.toolbarItems = [ NSArray arrayWithObjects: addCalendarButtonItem, flexibleSpace, shareButtonItem, nil ];
+        } else {
+            self.toolbarItems = [ NSArray arrayWithObjects: addCalendarButtonItem, nil ];
+        }
+    } else {
+        [self.padToolBar setItems:[ NSArray arrayWithObjects: addCalendarButtonItem, flexibleSpace, shareButtonItem, nil ] animated:NO];
+        self.padToolBar.translucent = NO;
+        UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
+        [self.padToolBar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    }
     
     self.eventStore = [[EKEventStore alloc] init];
     
     self.title = NSLocalizedString(@"Event Detail", @"heading for event detail page");
-    
+
     self.titleLabel.text = self.eventTitle;
+    
+    NSString* courseName = self.courseName? self.courseName : @"";
+    NSString* courseSectionNumber = self.courseSectionNumber? self.courseSectionNumber : @"";
+
+    //format and separate if both are present
+    if ( self.courseName && self.courseSectionNumber ) {
+        self.courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", courseName, courseSectionNumber];
+    } else //otherwise display blanks and/or any fields present
+    {
+        self.courseNameLabel.text = [NSString stringWithFormat:@"%@%@", courseName, courseSectionNumber];
+    }
+    
     NSDateFormatter *datetimeFormatter = [[NSDateFormatter alloc] init];
     [datetimeFormatter setDateStyle:NSDateFormatterMediumStyle];
     [datetimeFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -68,36 +109,20 @@
     
     self.backgroundView.backgroundColor = [UIColor accentColor];
     self.titleLabel.textColor = [UIColor subheaderTextColor];
+    self.courseNameLabel.textColor = [UIColor subheaderTextColor];
+    [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionSearch withLabel:@"ILP Assignments Detail" withValue:nil forModuleNamed:self.module.name];
     
 }
 
--(void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIBarButtonItem *addCalendarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar-add-to-calendar-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(addToMyCalendar:)];
-    
-    
-    UIBarButtonItem *shareButtonItem = [[UIBarButtonItem alloc]  initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share:)];
-    
-    if ([MFMailComposeViewController canSendMail])
-    {
-        self.toolbarItems = [ NSArray arrayWithObjects: addCalendarButtonItem, flexibleSpace, shareButtonItem, nil ];
-        
-    } else {
-        self.toolbarItems = [ NSArray arrayWithObjects: addCalendarButtonItem, nil ];
-        
-    }
-     self.navigationController.toolbar.translucent = NO;
-    [self.navigationController setToolbarHidden:NO animated:NO];
-}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [self.navigationController setToolbarHidden:YES animated:NO];
     [super viewWillDisappear:animated];
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        [self.navigationController setToolbarHidden:YES animated:NO];
+    } else {
+        [self.padToolBar setHidden:YES];
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -227,5 +252,66 @@
         self.popover = nil;
     }
 }
+
+-(void)selectedDetail:(id)newCourseEvent withIndex:(NSIndexPath*)myIndex withModule:(Module*)myModule withController:(id)myController
+{
+    if ( [newCourseEvent isKindOfClass:[CourseEvent class]] )
+    {
+        [self setCourseEvent:(CourseEvent *)newCourseEvent];
+        [self setModule:myModule];
+    }
+}
+
+-(void)setCourseEvent:(CourseEvent *)courseEvent
+{
+    if (_courseEvent != courseEvent) {
+        _courseEvent = courseEvent;
+        
+        [self refreshUI];
+    }
+}
+
+-(void)refreshUI
+{
+    _titleLabel.text = _courseEvent.title;
+    _courseNameLabel.text = [NSString stringWithFormat:@"%@-%@", _courseEvent.courseName, _courseEvent.courseSectionNumber];
+    _descriptionTextView.text = _courseEvent.eventDescription;
+    _locationLabel.text = _courseEvent.location;
+    
+    if ( _courseEvent.isAllDay > 0 ) {
+        _allDay = true;
+    } else {
+        _allDay = false;
+    }
+    _startDate = _courseEvent.startDate;
+    _endDate = _courseEvent.endDate;
+    
+    NSDateFormatter *datetimeFormatter = [[NSDateFormatter alloc] init];
+    [datetimeFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [datetimeFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+
+    if(_allDay) {
+        self.startDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:_startDate]];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        // now build a NSDate object for the next day
+        NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+        [offsetComponents setDay:-1];
+        NSDate *nextDate = [calendar dateByAddingComponents:offsetComponents toDate:self.endDate options:0];
+
+        self.endDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:nextDate]];
+    } else {
+        if(_startDate) {
+            _startDateLabel.text = [datetimeFormatter stringFromDate:self.startDate];
+        }
+        if(_endDate){
+            _endDateLabel.text = self.endDateLabel.text = [datetimeFormatter stringFromDate:self.endDate];
+        }
+    }
+    [self.view setNeedsDisplay];
+}
+
 
 @end

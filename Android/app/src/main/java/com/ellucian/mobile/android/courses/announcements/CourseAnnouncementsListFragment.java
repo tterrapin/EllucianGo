@@ -1,6 +1,8 @@
-package com.ellucian.mobile.android.courses.announcements;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.Date;
+package com.ellucian.mobile.android.courses.announcements;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,11 +10,13 @@ import android.text.TextUtils;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
-import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
+import com.ellucian.mobile.android.ilp.IlpDetailFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseAnnouncements;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+
+import java.util.Date;
 
 public class CourseAnnouncementsListFragment extends EllucianDefaultListFragment {
 	
@@ -27,6 +31,7 @@ public class CourseAnnouncementsListFragment extends EllucianDefaultListFragment
 		String dateString = cursor.getString(cursor.getColumnIndex(CourseAnnouncements.ANNOUNCEMENT_DATE));
 		String content = cursor.getString(cursor.getColumnIndex(CourseAnnouncements.ANNOUNCEMENT_CONTENT));
 		String url = cursor.getString(cursor.getColumnIndex(CourseAnnouncements.ANNOUNCEMENT_URL));
+		String section = cursor.getString(cursor.getColumnIndex(CourseAnnouncements.ANNOUNCEMENT_SECTION_NAME));
 		
 		if (!TextUtils.isEmpty(dateString)) {
 			Date date = CalendarUtils.parseFromUTC(dateString);
@@ -39,18 +44,20 @@ public class CourseAnnouncementsListFragment extends EllucianDefaultListFragment
 		bundle.putString(Extra.DATE, dateString);
 		bundle.putString(Extra.CONTENT, content);
 		bundle.putString(Extra.LINK, url);
-		
+		bundle.putString(Extra.HEADER_SECTION_NAME, section);
+		// We use the IlpDetailFragment to display the detail view.
+		bundle.putString(IlpDetailFragment.DETAIL_TYPE, IlpDetailFragment.DETAIL_TYPE_ANNOUNCEMENTS);
 		return bundle;
 	}
 	
 	@Override
-	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
-		return CourseAnnouncementsDetailFragment.class;	
+	public Class<? extends IlpDetailFragment> getDetailFragmentClass() {
+		return CourseAnnouncementsDetailFragment.class;
 	}
 	
 	@Override
 	public Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
-		return CourseAnnouncementsDetailActivity.class;	
+		return CourseAnnouncementsDetailActivity.class;
 	}
 	
 	@Override

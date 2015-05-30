@@ -22,7 +22,6 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) Module *module;
 @property (strong, nonatomic) FeedModule *feedModule;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) NSArray *categories;
 @property (nonatomic,strong) NSMutableSet *hiddenCategories;
 @property (nonatomic, weak) id<FeedFilterDelegate> delegate;

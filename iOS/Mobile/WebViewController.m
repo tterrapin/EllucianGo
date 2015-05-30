@@ -73,7 +73,7 @@
                                           otherButtonTitles:nil];
                     
                     [alert show];
-                    [user logout];
+                    [user logout:YES];
                 }
             }
         

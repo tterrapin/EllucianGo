@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.courses.overview;
 
 import android.app.ActionBar;
@@ -22,6 +26,7 @@ import com.ellucian.mobile.android.directory.DirectoryCategoriesFragment;
 import com.ellucian.mobile.android.directory.DirectoryListActivity;
 import com.ellucian.mobile.android.maps.MapUtils;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseInstructors;
+import com.ellucian.mobile.android.provider.EllucianContract.CourseRoster;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
@@ -159,9 +164,31 @@ public class CourseOverviewActivity extends EllucianActivity  {
 	public void findRosterStudent(View view) {
 		String studentSearchUrl = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_STUDENT_SEARCH_URL, null);
 		if (Utils.isDirectoryPresent(this) && !TextUtils.isEmpty(studentSearchUrl)) {
-    		String query = (String) ((TextView) view).getText();
-    		
-    		sendDirectoryQueryIntent(DirectoryCategoriesFragment.DIRECTORY_TYPE_STUDENT,  query);
+            String studentFormattedName = (String) ((TextView) view).getText();
+
+            Cursor cursor = getContentResolver().query(CourseRoster.CONTENT_URI,
+                    new String[] {CourseRoster.ROSTER_FIRST_NAME, CourseRoster.ROSTER_LAST_NAME},
+                    CourseRoster.ROSTER_FORMATTED_NAME + " = ?",
+                    new String[] { studentFormattedName },
+                    null);
+            cursor.moveToFirst();
+            String firstName = cursor.getString(cursor.getColumnIndex(CourseRoster.ROSTER_FIRST_NAME));
+            String lastName = cursor.getString(cursor.getColumnIndex(CourseRoster.ROSTER_LAST_NAME));
+            cursor.close();
+
+            String query = "";
+
+            if (!TextUtils.isEmpty(firstName)) {
+                query += firstName;
+            }
+
+            if (!TextUtils.isEmpty(lastName)) {
+                if (!TextUtils.isEmpty(query)) {
+                    query += " ";
+                }
+                query += lastName;
+            }
+            sendDirectoryQueryIntent(DirectoryCategoriesFragment.DIRECTORY_TYPE_STUDENT, query);
     	} else {
     		noModuleToast(R.string.course_details_no_directory);
     	}

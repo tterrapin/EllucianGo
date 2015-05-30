@@ -1,9 +1,8 @@
-package com.ellucian.mobile.android.adapter;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
+package com.ellucian.mobile.android.adapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -35,13 +34,15 @@ import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.courses.daily.CoursesDailyScheduleActivity;
 import com.ellucian.mobile.android.directory.DirectoryActivity;
 import com.ellucian.mobile.android.events.EventsActivity;
+import com.ellucian.mobile.android.finances.FinancesActivity;
 import com.ellucian.mobile.android.grades.GradesActivity;
+import com.ellucian.mobile.android.ilp.IlpCardActivity;
 import com.ellucian.mobile.android.maps.MapsActivity;
 import com.ellucian.mobile.android.multimedia.AudioActivity;
 import com.ellucian.mobile.android.multimedia.VideoActivity;
 import com.ellucian.mobile.android.news.NewsActivity;
 import com.ellucian.mobile.android.notifications.NotificationsActivity;
-import com.ellucian.mobile.android.numbers.NumberListActivity;
+import com.ellucian.mobile.android.numbers.NumbersListActivity;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesProperties;
 import com.ellucian.mobile.android.provider.EllucianContract.ModulesRoles;
@@ -51,6 +52,11 @@ import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.ModuleConfiguration;
 import com.ellucian.mobile.android.util.Utils;
 import com.ellucian.mobile.android.webframe.WebframeActivity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class ModuleMenuAdapter extends CursorTreeAdapter {
 	
@@ -282,6 +288,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._HOME, null,
 				context.getString(R.string.menu_home), null,
 				R.drawable.menu_home, false, false, null });
+
 		String aboutIconUrl = Utils.getStringFromPreferences(context,
 				Utils.APPEARANCE, AboutActivity.PREFERENCES_ICON, null);
 		actionsCursor.addRow(new Object[] { "" + totalRows++, ModuleType._ABOUT, null,
@@ -611,7 +618,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		if (!TextUtils.isEmpty(moduleName)) {
 			intent.putExtra(Extra.MODULE_NAME, moduleName);
 		}
-
+		
 		if (type.equals(ModuleType.AUDIO)) {
 			intent.setClass(context, AudioActivity.class);
 
@@ -678,14 +685,33 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 
 			return intent;
 		} else if (type.equals(ModuleType.EVENTS)) {
-			intent.setClass(context, EventsActivity.class);
+            intent.setClass(context, EventsActivity.class);
 
-			String requestUrl = moduleProperties.get("events");
-			if (!TextUtils.isEmpty(requestUrl)) {
-				intent.putExtra(Extra.REQUEST_URL, requestUrl);
-			}
+            String requestUrl = moduleProperties.get("events");
+            if (!TextUtils.isEmpty(requestUrl)) {
+                intent.putExtra(Extra.REQUEST_URL, requestUrl);
+            }
 
-			return intent;
+            return intent;
+        } else if (type.equals(ModuleType.STUDENT_FINANCIALS)) {
+            intent.setClass(context, FinancesActivity.class);
+
+            String requestUrl = moduleProperties.get("financials");
+            String externalLinkUrl = moduleProperties.get("externalLinkUrl");
+            String externalLinkLabel = moduleProperties.get("externalLinkLabel");
+            String externalBrowser = moduleProperties.get("external");
+            if (!TextUtils.isEmpty(externalLinkLabel) && !TextUtils.isEmpty(externalLinkUrl)) {
+                intent.putExtra(Extra.LINK_LABEL, externalLinkLabel);
+                intent.putExtra(Extra.LINK, externalLinkUrl);
+                if (!TextUtils.isEmpty(externalBrowser) && externalBrowser.equals("true")) {
+                    intent.putExtra(Extra.LINK_EXTERNAL_BROWSER, true);
+                }
+            }
+            if (!TextUtils.isEmpty(requestUrl)) {
+                intent.putExtra(Extra.REQUEST_URL, requestUrl);
+            }
+
+            return intent;
 		} else if (type.equals(ModuleType.FEED)) {
 			intent.setClass(context, NewsActivity.class);
 
@@ -696,15 +722,24 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 
 			return intent;
 		} else if (type.equals(ModuleType.GRADES)) {
-			intent.setClass(context, GradesActivity.class);
+            intent.setClass(context, GradesActivity.class);
 
-			String requestUrl = moduleProperties.get("grades");
-			if (!TextUtils.isEmpty(requestUrl)) {
-				intent.putExtra(Extra.REQUEST_URL, requestUrl);
-			}
+            String requestUrl = moduleProperties.get("grades");
+            if (!TextUtils.isEmpty(requestUrl)) {
+                intent.putExtra(Extra.REQUEST_URL, requestUrl);
+            }
 
-			return intent;
-		} else if (type.equals(ModuleType.MAPS)) {
+            return intent;
+        } else if (type.equals(ModuleType.ILP)) {
+            intent.setClass(context, IlpCardActivity.class);
+
+            String ilpUrl = moduleProperties.get("ilp");
+            if (!TextUtils.isEmpty(ilpUrl)) {
+                intent.putExtra(Extra.COURSES_ILP_URL, ilpUrl);
+            }
+
+            return intent;
+        } else if (type.equals(ModuleType.MAPS)) {
 			intent.setClass(context, MapsActivity.class);
 			String campusesUrl = moduleProperties.get("campuses");
 			if (!TextUtils.isEmpty(campusesUrl)) {
@@ -734,7 +769,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 			}
 			return intent;
 		} else if (type.equals(ModuleType.NUMBERS)) {
-			intent.setClass(context, NumberListActivity.class);
+			intent.setClass(context, NumbersListActivity.class);
 
 			String requestUrl = moduleProperties.get("numbers");
 			if (!TextUtils.isEmpty(requestUrl)) {

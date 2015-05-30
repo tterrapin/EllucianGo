@@ -1,16 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
     xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
-    
 
     <string name="title_home_page">الرئيسية</string>
     <string name="main_sign_in">تسجيل الدخول</string>
     <string name="main_sign_out">تسجيل الخروج</string>
     <string name="main_switch_school">تغيير الجامعة</string>
-    
+
     <!-- Menu -->
     
     <string name="menu">القائمة</string>
@@ -101,7 +104,7 @@
     <string name="dialog_select_categories">اختيار الفئات</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار&#8230;</string>
-	<string name="dialog_continue">متابعة</string>
+	<string name="dialog_continue">المتابعة</string>
 	<string name="dialog_go_back">العودة</string>
 	<string name="dialog_security_warning">تحذير أمان</string>
 	<string name="dialog_cert_warning_statement">"هناك مشاكل متعلقة بشهادة الأمان لهذا الموقع."</string>
@@ -114,7 +117,7 @@
     <string name="row_date_label">التاريخ:</string>
     <string name="row_due_label">المستحق:</string>
     <string name="row_location_label">المكان:</string>
-    
+
     <string name="default_image">الصورة</string>
     <string name="no_data">لا توجد بيانات</string>
     <string name="no_results_found">لم يتم العثور على نتائج.</string>
@@ -176,7 +179,10 @@
 	<string name="default_two_string_separator_format">
 	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
 	</string>
-	
+	<string name="default_phone_with_extension_format">
+        <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> تحويلة رقم: <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
+    </string>
+
 	
     <!-- About -->
     
@@ -254,21 +260,54 @@
     <string name="directory_type_all">الكل</string>
     <string name="directory_type_student">الطالب</string>
     <string name="directory_type_faculty">أعضاء هيئة التدريس</string>
-    
+
     <!-- Events -->
-    
+
     <string name="title_activity_events">الفعاليات</string>
     <string name="title_activity_events_detail">تفاصيل الفعاليات</string>
     <string name="events_no_events">لا توجد فعاليات للعرض</string>
     <string name="searchable_events_hint">البحث في الفعاليات</string>
     <string name="searchable_events_label">البحث في الفعاليات</string>
-    
+
+    <!-- Finances -->
+
+    <string name="title_activity_finances">شؤون الطالب المالية</string>
+    <string name="finances_no_balance">--</string>  <!-- display dashes -->
+    <string name="finances_no_payments">لا توجد دفعات حديثة.</string>
+    <string name="finances_recent_payments">دفعات حديثة</string>
+    <string name="finances_balance">الرصيد</string>
+
     <!-- Grades -->
     
     <string name="title_activity_grades">الدرجات</string>
     <string name="grades_last_updated">آخر تحديث:</string>
     <string name="no_grades_in_term">لا توجد درجات لهذا الفصل الدراسي</string>
     <string name="grades_no_grades">لا توجد درجات مسجلة</string>
+
+    <!-- Ilp -->
+
+    <string name="title_activity_ilp">منصة التعلم الذكي</string>
+    <string name="title_activity_ilp_today">منصة التعلم الذكي اليوم</string>
+    <string name="title_activity_ilp_detail">تفاصيل منصة التعلم الذكي</string>
+    <string name="ilp_assignments_today">الواجبات</string>
+    <string name="ilp_events_today">فعاليات اليوم</string>
+    <string name="ilp_announcements_today">الإعلانات</string>
+    <string name="ilp_assignments">الواجبات</string>
+    <string name="ilp_events">الفعاليات</string>
+    <string name="ilp_announcements">الإعلانات</string>
+    <string name="ilp_view_all">عرض الكل</string>
+    <string name="ilp_view_by_date">حسب موعد التسليم</string>
+    <string name="ilp_view_by_no_date">دون موعد تسليم</string>
+    <string name="ilp_today">اليوم</string>
+    <string name="ilp_tomorrow">غدا</string>
+    <string name="ilp_no_date">دون تاريخ</string>
+    <string name="ilp_remind_me">ذكرني</string>
+    <string name="ilp_overdue">متأخر</string>
+    <string name="ilp_due_today">تسليمه اليوم</string>
+    <string name="ilp_assignments_none_today">لا توجد واجبات تسليمها اليوم</string>
+    <string name="ilp_events_none_today">لا توجد فعاليات اليوم</string>
+    <string name="ilp_announcements_none_today">لا توجد إعلانات اليوم</string>
+
     
     <!-- Maps -->
     
@@ -285,7 +324,7 @@
     <string name="maps_show_map">الخريطة</string>
     <string name="maps_building_image_label">صورة المبنى</string>
     <string name="maps_no_buildings_message">لا توجد مبانٍ للعرض.</string>
-    <string name="maps_blank"/>
+    <string name="maps_blank"></string>
     <string name="search_results_label">نتائج البحث</string>
     <string name="searchable_buildings_hint">البحث في المباني</string>
     <string name="searchable_buildings_label">البحث في المباني</string>
@@ -336,7 +375,7 @@
     <string name="title_activity_registration">التسجيل</string>
     <string name="title_activity_registration_detail">تفاصيل التسجيل</string>
     <string name="registration_tab_cart">سلة التسجيل</string>
-    <string name="registration_tab_search">بحث</string>
+    <string name="registration_tab_search">البحث</string>
     <string name="registration_tab_registered">مسجَّل</string>
     <string name="registration_register">تسجيل</string>
     <string name="registration_credits">الساعات المعتمدة</string>
@@ -350,7 +389,7 @@
     <string name="registration_results_dropped_success">تم الحذف بنجاح!</string>
     <string name="registration_results_dropped_success_sub">لقد قمت بحذف هذه المقررات.</string>
     <string name="registration_results_dropped_failure_sub">تعذر حذف هذه المقررات.</string>
-    <string name="registration_dialog_title">المسمى</string>
+    <string name="registration_dialog_title">اللقب</string>
     <string name="registration_dialog_register_message">هل أنت متأكد أنك تريد تسجيل هذه الشعب؟</string>
     <string name="registration_dialog_add_to_cart_message">هل أنت متأكد أنك تريد إضافة هذه الشعب إلى سلة التسجيل؟</string>
     <string name="registration_dialog_remove_message">هل أنت متأكد أنك تريد إزالة الشعب من سلة التسجيل؟</string>
@@ -383,7 +422,7 @@
     <string name="registration_no_plan_eligibility_message">الطالب غير ملتحق.</string>
     <string name="registration_were_sorry">نأسف.</string>
     <string name="registration_ineligible_to_register">غير مؤهل للتسجيل</string>
-    <string name="registration_remove">ازالة</string>
+    <string name="registration_remove">إزالة</string>
     <string name="registration_drop">حذف</string>
     
     <string name="registration_added_to_cart_success_format">
@@ -414,6 +453,13 @@
 	<string name="version_outdated">قديم</string>
 	<string name="version_outdated_message">يوجد إصدار جديد لهذا التطبيق.</string>
 	<string name="version_force_upgrade_message">يجب تحديث التطبيق إلى آخر إصدار.</string>
+
+    <!-- Widget -->
+    <string name="widget_no_ilp">الواجبات غير متوفرة في هذه المؤسسة التعليمية</string>
+    <string name="widget_sign_in">سجّل الدخول لتحديث البيانات</string>
+    <string name="widget_not_connected">غير متصل</string>
+    <string name="widget_header">الواجبات (اليوم)</string>
+    <string name="widget_no_assignments">لا توجد واجبات تسليمها اليوم</string>
 
 
 </resources> 

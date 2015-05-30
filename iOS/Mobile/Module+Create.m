@@ -12,6 +12,8 @@
 #import "ImageCache.h"
 #import "RegistrationAcademicLevel.h"
 #import "RegistrationLocation.h"
+#import "Module+Attributes.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation Module (Create)
 
@@ -36,7 +38,17 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
         [Module populateModule:module withDictionary:dictionary inManagedObjectContext:managedObjectContext];
     } else {
         module = [matches lastObject];
-       [Module populateModule:module withDictionary:dictionary inManagedObjectContext:managedObjectContext];        
+        [Module populateModule:module withDictionary:dictionary inManagedObjectContext:managedObjectContext];
+    }
+    
+    //special logic to handle extensions
+    if([module.type isEqualToString:@"ilp"]) {
+        NSString *url = [module propertyForKey:@"ilp"];
+        NSUserDefaults *userDefaults = [AppGroupUtilities userDefaults];
+        if(userDefaults) {
+            [userDefaults setObject:url forKey:@"ilp-url"];
+            [userDefaults synchronize];
+        }
     }
     return module;
 }
@@ -72,7 +84,7 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
                 [module addRolesObject:managedRole];
             }
         }
-
+        
         
         for (id key in [dictionary allKeys]) {
             id value = [dictionary objectForKey:key];

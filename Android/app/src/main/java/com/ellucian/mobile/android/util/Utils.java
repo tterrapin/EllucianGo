@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.util;
 
 import java.util.Arrays;
@@ -77,6 +81,7 @@ public class Utils {
 	public static final String NATIVE_LOGIN_TYPE = "native";
 	public static final String MENU = "menu";
 	public static final String MENU_HEADER_STATE = "menuHeaderState";
+    public static final String ILP_URL = "ilpUrl";
 
 
 	public static boolean isIntentAvailable(Context context, Intent intent) {

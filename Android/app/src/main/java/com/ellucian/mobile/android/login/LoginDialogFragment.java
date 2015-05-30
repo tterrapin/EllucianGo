@@ -1,7 +1,8 @@
-package com.ellucian.mobile.android.login;
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
-import java.util.ArrayList;
-import java.util.List;
+package com.ellucian.mobile.android.login;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,6 +40,9 @@ import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoginDialogFragment extends EllucianDialogFragment {
 	public static final String LOGIN_DIALOG = "login_dialog";
 	public AlertDialog loginDialog;
@@ -47,7 +51,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
 	private boolean forcedLogin;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -276,6 +280,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		intent.putExtra(Extra.LOGIN_USERNAME, username);
 		intent.putExtra(Extra.LOGIN_PASSWORD, password);
 		intent.putExtra(Extra.LOGIN_SAVE_USER, staySignedInChecked);
+        intent.putExtra(Extra.SEND_UNAUTH_BROADCAST, false);
 		LoginDialogFragment.this.getActivity().startService(intent);
 	}
 	
@@ -283,12 +288,12 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	public void onPause() {
 		super.onPause();
 		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mainAuthenticationReceiver);
-	}
+    }
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		mainAuthenticationReceiver = new MainAuthenticationReceiver();
+        mainAuthenticationReceiver = new MainAuthenticationReceiver();
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mainAuthenticationReceiver, new IntentFilter(AuthenticateUserIntentService.ACTION_UPDATE_MAIN));
 		
 	
@@ -324,7 +329,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 				
 				// Checks to see if the dialog was opened by a request for a auth-neccessary activity
 				startQueuedIntent();
-				
+
 			} else {
 				signInMessage.show();
 				if(loginButton != null) loginButton.setEnabled(true);

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android;
 
 import android.content.BroadcastReceiver;
@@ -20,17 +24,22 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
 import com.ellucian.mobile.android.login.LoginDialogFragment;
+import com.ellucian.mobile.android.login.QueuedIntentHolder;
 import com.ellucian.mobile.android.schoolselector.ConfigurationLoadingActivity;
 import com.ellucian.mobile.android.schoolselector.SchoolSelectionActivity;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.List;
+
 public class MainActivity extends EllucianActivity {
-	
+
+    public static final String SHOW_LOGIN = "showLogin";
 	public boolean useDefaultConfiguration; 
 	public String defaultConfigurationUrl; 
 
@@ -63,8 +72,8 @@ public class MainActivity extends EllucianActivity {
 		super.onResume();
 		
 		this.setTitle(R.string.title_home_page);
-		
-		String backgroundUrl = null;
+
+        String backgroundUrl = null;
 		if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= 
 		        Configuration.SCREENLAYOUT_SIZE_LARGE) {
 			backgroundUrl = Utils.getStringFromPreferences(this, Utils.APPEARANCE, Utils.HOME_URL_TABLET, "");
@@ -111,6 +120,25 @@ public class MainActivity extends EllucianActivity {
 		if (getEllucianApp().isUserAuthenticated()) {
 			signInButton.setText(R.string.main_sign_out);
 		}
+
+        if (getIntent().getBooleanExtra(SHOW_LOGIN, false)) {
+            getIntent().removeExtra(SHOW_LOGIN);
+
+            if (getIntent().getParcelableExtra(QueuedIntentHolder.QUEUED_INTENT_HOLDER) != null) {
+                QueuedIntentHolder qih = getIntent().getExtras().getParcelable(QueuedIntentHolder.QUEUED_INTENT_HOLDER);
+                    String moduleId = qih.moduleId;
+                    List<String> roles = null;
+                    if(moduleId != null) {
+                        roles = ModuleMenuAdapter.getModuleRoles(getContentResolver(), moduleId);
+                    }
+
+                    LoginDialogFragment loginFragment = new LoginDialogFragment();
+                    loginFragment.queueIntent(qih.queuedIntent, roles);
+                    loginFragment.show(getFragmentManager(), LoginDialogFragment.LOGIN_DIALOG);
+            } else {
+                showLoginDialog();
+            }
+        }
 
 		LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
 
@@ -169,8 +197,8 @@ public class MainActivity extends EllucianActivity {
 			
 			EllucianApplication ellucianApp = getEllucianApp();
 			// This also removes saved users
-			ellucianApp.removeAppUser();
-			
+			ellucianApp.removeAppUser(true);
+
 			Toast signOutMessage = Toast.makeText(this, R.string.dialog_signed_out, Toast.LENGTH_LONG);
 			signOutMessage.setGravity(Gravity.CENTER, 0, 0);
 			signOutMessage.show();
@@ -187,7 +215,7 @@ public class MainActivity extends EllucianActivity {
 			showLoginDialog();
 		}
 	}
-	
+
 	
 	private void showLoginDialog() {
 		LoginDialogFragment loginFragment = new LoginDialogFragment();

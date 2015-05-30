@@ -41,5 +41,6 @@
 - (void) showNotifications;
 - (void) showNotifications:(NSString*) notificationId;
 - (void) showNotificationAlert:(NSString*) message withNotificationId:(NSString*) notificationId;
+- (void) showAssignments:(NSString*) assignmentId;
 
 @end

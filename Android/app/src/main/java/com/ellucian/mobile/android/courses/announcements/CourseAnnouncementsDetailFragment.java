@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.courses.announcements;
 
 
@@ -10,12 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
+import com.ellucian.mobile.android.ilp.IlpDetailFragment;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.webframe.WebframeActivity;
 
-public class CourseAnnouncementsDetailFragment extends EllucianDefaultDetailFragment {
+public class CourseAnnouncementsDetailFragment extends IlpDetailFragment {
 	private static final String TAG = CourseAnnouncementsDetailFragment.class.getSimpleName();
 	
 	public CourseAnnouncementsDetailFragment() {

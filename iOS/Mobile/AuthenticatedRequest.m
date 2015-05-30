@@ -11,6 +11,7 @@
 #import "Base64.h"
 #import "LoginExecutor.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface AuthenticatedRequest ()
 
@@ -32,7 +33,7 @@
     self.request = [NSMutableURLRequest requestWithURL: self.url
                                            cachePolicy: NSURLRequestReloadIgnoringCacheData
                                        timeoutInterval: 90];
-    NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+    NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
         [self.request addAuthenticationHeader];
     }
@@ -51,6 +52,8 @@
     //treat redirects from cas just like a log in is needed.  We can't detect which redirects are for cas and which are not.
     if([self.error code] == kCFURLErrorUserCancelledAuthentication || [self.response statusCode] == 401 || [self.response statusCode] == 302) {
         NSLog(@"AuthenticatedRequest for url: %@ errorCode: %ld", [url absoluteString] , (long)[self.error code]);
+        CurrentUser *user = [CurrentUser sharedInstance];
+        [user logoutWithNotification:NO requestedByUser:NO];
         if(viewController) {
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC);
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

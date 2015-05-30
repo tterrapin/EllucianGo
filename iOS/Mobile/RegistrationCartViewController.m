@@ -23,6 +23,7 @@
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "RegistrationPlannedSectionDetailViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface RegistrationCartViewController ()
 @property (strong, nonatomic) UIBarButtonItem *registerButton;
@@ -466,7 +467,7 @@
         //[urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
-        NSString *authenticationMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"login-authenticationType"];
+        NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
         if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
             [urlRequest addAuthenticationHeader];
         }

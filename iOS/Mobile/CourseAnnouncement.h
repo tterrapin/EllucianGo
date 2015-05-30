@@ -13,9 +13,14 @@
 @interface CourseAnnouncement : NSManagedObject
 
 @property (nonatomic, retain) NSString * content;
-@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSDate   * date;
 @property (nonatomic, retain) NSString * sectionId;
+@property (nonatomic, retain) NSString * displayDateSectionHeader;
+@property (nonatomic, retain) NSString * courseName;
+@property (nonatomic, retain) NSString * courseSectionNumber;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * website;
 
+
++ (NSDateFormatter *)myDisplayDateSectionHeaderDateFormatter;
 @end

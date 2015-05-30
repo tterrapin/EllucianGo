@@ -1,3 +1,7 @@
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
+
 package com.ellucian.mobile.android.notifications;
 
 
@@ -27,11 +31,14 @@ import android.widget.TextView;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.MainActivity;
+import com.ellucian.mobile.android.ModuleType;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
+import com.ellucian.mobile.android.login.QueuedIntentHolder;
 import com.ellucian.mobile.android.client.notifications.Notification;
 import com.ellucian.mobile.android.client.services.NotificationsUpdateDatabaseService;
 import com.ellucian.mobile.android.client.services.NotificationsUpdateServerService;
+import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
 
@@ -59,10 +66,31 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 		EllucianApplication app = getEllucianApp();
 		if(!app.isUserAuthenticated()) {
 			Log.e(TAG, "User not authenticated, sending to home.");
+            // Pass the incoming Intent as an extra, so after
+            // login user is directed back here.
+            Intent queuedIntent = getIntent();
+            if (moduleId == null) {
+                Cursor cursor = getContentResolver().query(EllucianContract.Modules.CONTENT_URI,
+                        new String[] {EllucianContract.Modules.MODULES_ID},
+                        EllucianContract.Modules.MODULE_TYPE + " = ?",
+                        new String[] {ModuleType.NOTIFICATIONS},
+                        null);
+                if (cursor.moveToFirst()) {
+                    moduleId = cursor.getString(cursor.getColumnIndex(EllucianContract.Modules.MODULES_ID));
+                }
+                cursor.close();
+            }
+
+            QueuedIntentHolder queuedIntentHolder = new QueuedIntentHolder(moduleId, queuedIntent);
+
         	Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mainIntent.putExtra(MainActivity.SHOW_LOGIN, true);
+            mainIntent.putExtra(QueuedIntentHolder.QUEUED_INTENT_HOLDER, queuedIntentHolder);
             startActivity(mainIntent);
+            finish();
+            return;
 		}
 		
 		FragmentManager manager = getFragmentManager();

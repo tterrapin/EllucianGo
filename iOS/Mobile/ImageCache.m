@@ -32,7 +32,7 @@ static ImageCache *sharedImageCache = nil;
 {
     _cachePath = nil;
     NSFileManager*fm = [NSFileManager defaultManager];
-    
+   
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     if ([paths count])
     {

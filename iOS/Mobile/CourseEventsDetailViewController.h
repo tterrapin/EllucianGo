@@ -14,10 +14,16 @@
 #import "Event.h"
 #import "UIColor+SchoolCustomization.h"
 #import "Module.h"
+#import "DetailSelectionDelegate.h"
+#import "CourseEvent.h"
 
-@interface CourseEventsDetailViewController : UIViewController<EKEventEditViewDelegate,UIPopoverControllerDelegate>
+@interface CourseEventsDetailViewController : UIViewController
+            <EKEventEditViewDelegate,UIPopoverControllerDelegate,DetailSelectionDelegate>
 
+@property (nonatomic, strong) CourseEvent *courseEvent;
 
+@property (strong, nonatomic) NSString *courseName;
+@property (strong, nonatomic) NSString *courseSectionNumber;
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) NSDate *startDate;
 @property (strong, nonatomic) NSDate *endDate;
@@ -26,6 +32,7 @@
 @property (assign, readwrite) BOOL allDay;
 
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
+@property (weak, nonatomic) IBOutlet UILabel *courseNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endDateLabel;
@@ -34,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *startDateLabelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endDateLabelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabelLabel;
+@property (weak, nonatomic) IBOutlet UIToolbar *padToolBar;
 
 @property (strong, nonatomic) Module *module;
 

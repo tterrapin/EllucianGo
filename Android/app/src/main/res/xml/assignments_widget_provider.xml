@@ -1,0 +1,12 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:minWidth="250dp"
+  android:minHeight="110dp"
+  android:updatePeriodMillis="0"
+  android:previewImage="@drawable/assignment_widget_preview"
+  android:initialLayout="@layout/assignments_widget"
+  android:resizeMode="vertical|horizontal"
+/>
