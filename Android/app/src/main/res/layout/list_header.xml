@@ -4,6 +4,7 @@
 
 <TextView
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/list_header_title"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
@@ -13,4 +14,5 @@
 	android:paddingLeft="5dip"
 	android:paddingStart="5dip"
 	style="?android:attr/listSeparatorTextViewStyle"
-	android:textIsSelectable="false" />
+	android:textIsSelectable="false"
+	tools:ignore="NewApi,RtlSymmetry" />

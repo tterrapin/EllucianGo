@@ -202,7 +202,8 @@ public class AboutActivity extends EllucianActivity {
     }
     
   
-    public void callContact(View view) {
+    @SuppressWarnings("unused")
+	public void callContact(View view) {
     	sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "About Phone", null, null);
     	Uri uri = Uri.parse("tel:" + clickedPhoneNumber);
     	Intent intent = new Intent(Intent.ACTION_DIAL, uri);
@@ -211,7 +212,8 @@ public class AboutActivity extends EllucianActivity {
     	}
     }
     
-    public void emailSupport(View view) {
+    @SuppressWarnings("unused")
+	public void emailSupport(View view) {
     	sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "About Email", null, null);
     	Uri uri = Uri.parse("mailto:" + clickedEmailAddress);
     	Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -221,28 +223,32 @@ public class AboutActivity extends EllucianActivity {
     	} 
     }
     
-    public void goToUniversityWebsite(View view) {
+    @SuppressWarnings("unused")
+	public void goToUniversityWebsite(View view) {
     	sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_FOLLOW_WEB, "About Web", null, null);
     	Uri uri = Uri.parse(clickedWebsiteUrl);
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
     }
     
-    public void goToUniversityPrivacy(View view) {
+    @SuppressWarnings("unused")
+	public void goToUniversityPrivacy(View view) {
     	sendView("School Privacy", null);
     	Uri uri = Uri.parse(clickedPrivacyUrl);
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
     }
     
-    public void goToEllucianHome(View view) {
+    @SuppressWarnings("unused")
+	public void goToEllucianHome(View view) {
     	sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "About Text", null, null);
     	Uri uri = Uri.parse("http://www.ellucian.com");
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
     }
     
-    public void goToEllucianPrivacy(View view) {
+    @SuppressWarnings("unused")
+	public void goToEllucianPrivacy(View view) {
     	sendView("Ellucian Privacy", null);
     	Uri uri = Uri.parse("http://www.ellucian.com/Privacy");
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);

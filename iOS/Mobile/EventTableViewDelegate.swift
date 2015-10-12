@@ -63,8 +63,6 @@ class EventTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelega
                 eventTableView.insertRowsAtIndexPaths([newIndexPath as NSIndexPath!], withRowAnimation: .Fade)
             case .Delete:
                 eventTableView.deleteRowsAtIndexPaths([indexPath as NSIndexPath!], withRowAnimation: .Fade)
-            default:
-                return
             }
     }
     
@@ -123,7 +121,7 @@ class EventTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelega
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("Daily Event Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Daily Event Cell", forIndexPath: indexPath) as UITableViewCell
         configureCell(cell, atIndexPath:indexPath)
         return cell
     }
@@ -149,7 +147,7 @@ class EventTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelega
         
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if let sections = eventController!.sections as? [NSFetchedResultsSectionInfo] {
+        if let sections = eventController!.sections {
             return sections[section].name
         } else {
             return nil
@@ -166,13 +164,13 @@ class EventTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelega
             myNoDataView = UIView(frame: CGRect(x:0,y:0,width:eventTableWidthConstraint.constant, height:40.0))
             
             let constrainedView = UIView()
-            constrainedView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            constrainedView.translatesAutoresizingMaskIntoConstraints = false
             myNoDataView?.addSubview(constrainedView)
             
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
             
-            var noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:eventTableWidthConstraint.constant, height:40.0))
+            let noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:eventTableWidthConstraint.constant, height:40.0))
             noMatchesLabel.font = UIFont.systemFontOfSize(14)
             noMatchesLabel.numberOfLines = 1;
             noMatchesLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
@@ -182,7 +180,7 @@ class EventTableViewDelegate: NSObject, UITableViewDataSource, UITableViewDelega
             
             constrainedView.backgroundColor = UIColor.whiteColor()
             myNoDataView?.hidden = true
-            noMatchesLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            noMatchesLabel.translatesAutoresizingMaskIntoConstraints = false
             constrainedView.addSubview(noMatchesLabel)
             constrainedView.addConstraint(NSLayoutConstraint(item:noMatchesLabel,
                 attribute:NSLayoutAttribute.CenterY,

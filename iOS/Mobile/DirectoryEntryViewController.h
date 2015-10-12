@@ -10,7 +10,6 @@
 #import "DirectoryEntry.h"
 #import "DirectoryEntryViewController.h"
 #import "AsynchronousImageView.h"
-#import "UIColor+SchoolCustomization.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "Module.h"
 #import "PseudoButtonView.h"

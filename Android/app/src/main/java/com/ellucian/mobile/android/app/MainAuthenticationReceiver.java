@@ -9,7 +9,7 @@ import com.ellucian.mobile.android.EllucianApplication;
 
 public class MainAuthenticationReceiver extends BroadcastReceiver {
 	
-	private DrawerLayoutActivity activity;
+	private final DrawerLayoutActivity activity;
 
 	public MainAuthenticationReceiver(DrawerLayoutActivity activity) {
 		this.activity = activity;

@@ -16,7 +16,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.Numbers;
 import com.ellucian.mobile.android.provider.EllucianContract.NumbersCategories;
 
 public class NumbersBuilder extends ContentProviderOperationBuilder<NumbersResponse> {
-	String module;
+	private final String module;
 	
 	public NumbersBuilder(Context context, String module) {
 		super(context);

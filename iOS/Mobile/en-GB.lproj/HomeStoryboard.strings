@@ -1,0 +1,30 @@
+/* Class = "UILabel"; text = "Label"; ObjectID = "EtB-Aj-aG7"; */
+"EtB-Aj-aG7.text" = "Label";
+
+/* Class = "UILabel"; text = "99"; ObjectID = "NwT-KJ-cb2"; */
+"NwT-KJ-cb2.text" = "99";
+
+/* Class = "UIImageView"; accessibilityLabel = "Lock"; ObjectID = "OG9-I3-mwE"; */
+"OG9-I3-mwE.accessibilityLabel" = "Lock";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "PEq-Hn-ysU"; */
+"PEq-Hn-ysU.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Home"; ObjectID = "Rbq-pC-Wou"; */
+"Rbq-pC-Wou.title" = "Home";
+
+/* Class = "UILabel"; text = "Look around without signing in.  Tap or swipe right for the menu."; ObjectID = "X9s-ml-hy6"; */
+"X9s-ml-hy6.text" = "Look around without signing in.  Tap or swipe right for the menu.";
+
+/* Class = "UIImageView"; accessibilityLabel = "Lock"; ObjectID = "cvt-hr-CY1"; */
+"cvt-hr-CY1.accessibilityLabel" = "Lock";
+
+/* Class = "UILabel"; text = "Sign In"; ObjectID = "ml5-vN-rwe"; */
+"ml5-vN-rwe.text" = "Sign In";
+
+/* Class = "UILabel"; text = "Loading configuration.  Please wait..."; ObjectID = "nbl-jr-rw5"; */
+"nbl-jr-rw5.text" = "Loading configuration.  Please wait...";
+
+/* Class = "UIButton"; accessibilityLabel = "Sign In"; ObjectID = "vub-eC-2Uv"; */
+"vub-eC-2Uv.accessibilityLabel" = "Sign In";
+

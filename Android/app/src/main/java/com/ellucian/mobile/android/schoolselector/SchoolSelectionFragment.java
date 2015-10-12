@@ -4,11 +4,6 @@
 
 package com.ellucian.mobile.android.schoolselector;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -36,9 +31,14 @@ import com.ellucian.mobile.android.client.configurationlist.ConfigurationListRes
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 public class SchoolSelectionFragment extends EllucianFragment {
 
-	private static final String PREFERENCES_CLOUR_URL = "cloudUrl";
+	private static final String PREFERENCES_CLOUD_URL = "cloudUrl";
 	private static final String PREFERENCES_FILENAME = "SchoolSelection";
 	
 	// live configurations
@@ -84,15 +84,14 @@ public class SchoolSelectionFragment extends EllucianFragment {
         	List<String> segments = data.getPathSegments();
         	cloudUrl = TextUtils.join("/", segments.subList(2, segments.size()));
         	cloudUrl = cloudUrl.replaceFirst("/", "://");
-        	Utils.addStringToPreferences(this.activity, PREFERENCES_FILENAME, PREFERENCES_CLOUR_URL, cloudUrl);
+        	Utils.addStringToPreferences(this.activity, PREFERENCES_FILENAME, PREFERENCES_CLOUD_URL, cloudUrl);
         } else {
-        	cloudUrl = Utils.getStringFromPreferences(this.activity, PREFERENCES_FILENAME, PREFERENCES_CLOUR_URL, configurationListUrl);
+        	cloudUrl = Utils.getStringFromPreferences(this.activity, PREFERENCES_FILENAME, PREFERENCES_CLOUD_URL, configurationListUrl);
         }
 
 		if (configurationList != null) {
 			adapter = getAdapter(this.activity, android.R.layout.simple_list_item_1, configurationList);
 			listView.setAdapter(adapter);
-			//setSupportProgressBarIndeterminateVisibility (false);
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> list, View v, int position, long id) {					

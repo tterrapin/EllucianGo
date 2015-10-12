@@ -44,10 +44,11 @@
     
     //setup toolbar
     UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    self.addToCartButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add To Cart", "Add To Cart button") style:UIBarButtonItemStyleBordered target:self action:@selector(addToCart:)];
+    self.addToCartButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add To Cart", "Add To Cart button") style:UIBarButtonItemStylePlain target:self action:@selector(addToCart:)];
 
     UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
     [self.navigationController.toolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    self.navigationController.toolbar.tintColor = [UIColor whiteColor];
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.addToCartButton, flexibleItem, nil];
     self.navigationController.navigationBar.translucent = NO;

@@ -9,7 +9,7 @@
 import Foundation
 
 @objc
-class AppGroupUtilities {
+class AppGroupUtilities : NSObject {
 
     @objc class func userDefaults() -> NSUserDefaults? {
         if NSBundle.mainBundle().bundleIdentifier!.hasPrefix("com.ellucian.elluciangoenterprise") {
@@ -25,7 +25,7 @@ class AppGroupUtilities {
         }
         if plistDictionary != nil && plistDictionary!["App Group"] != nil {
             let appGroup = plistDictionary?["App Group"] as! String
-            if count(appGroup) > 0 {
+            if appGroup.characters.count > 0 {
                 return appGroup
             }
         }

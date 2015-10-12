@@ -34,7 +34,7 @@ public class NotificationsDetailActivity extends EllucianDefaultDetailActivity {
 		return NotificationsDetailFragment.class;
 	}
 	
-	protected void deleteNotification() {
+	void deleteNotification() {
 		setResult(NotificationsActivity.RESULT_DELETE);
 		finish();
 	}

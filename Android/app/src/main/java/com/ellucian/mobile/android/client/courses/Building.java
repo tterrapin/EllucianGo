@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.client.courses;
 
-public class Building {
+class Building {
 	public String name;
 
 }

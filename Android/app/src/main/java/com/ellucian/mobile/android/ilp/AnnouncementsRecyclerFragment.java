@@ -5,10 +5,10 @@
 package com.ellucian.mobile.android.ilp;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -119,7 +119,7 @@ public class AnnouncementsRecyclerFragment extends EllucianDefaultRecyclerFragme
         setAdapter(null);
 	}
 
-    protected void showCurrentSelected() {
+    private void showCurrentSelected() {
         if (recyclerView.getSelectedIndex() == -1 && adapter != null && adapter.getItemCount() > 0) {
             Object itemHolder = adapter.getItem(1);
             detailBundle = buildDetailBundle(itemHolder);
@@ -143,7 +143,7 @@ public class AnnouncementsRecyclerFragment extends EllucianDefaultRecyclerFragme
         }
     }
 	
-	public ArrayList<IlpItemHolder> buildAnnouncementsList(Cursor cursor) {
+	private ArrayList<IlpItemHolder> buildAnnouncementsList(Cursor cursor) {
 		ArrayList<IlpItemHolder> announcementsList = new ArrayList<IlpItemHolder>();
 		
 		if (cursor.moveToFirst()) {
@@ -178,7 +178,7 @@ public class AnnouncementsRecyclerFragment extends EllucianDefaultRecyclerFragme
 		return announcementsList;
 	}
 	
-	public void buildAdapters(ArrayList<IlpItemHolder> announcementsList) {
+	private void buildAdapters(ArrayList<IlpItemHolder> announcementsList) {
         adapter = new IlpSectionedRecyclerAdapter(activity);
 		if (!announcementsList.isEmpty()) {
             IlpHeaderHolder headerHolder = new IlpHeaderHolder(getString(R.string.ilp_announcements), null);

@@ -4,20 +4,18 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+           xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
-    
-    <string name="app_name" translatable="false">Ellucian GO</string>
+
     <string name="title_home_page">Inicio</string>
     <string name="main_sign_in">Acceder</string>
     <string name="main_sign_out">Salir</string>
     <string name="main_switch_school">Cambiar escuela</string>
-    <string name="app_intent_filter_host" translatable="false">mobile.elluciancloud.com</string>
-    
+
     <!-- Menu -->
-    
+
     <string name="menu">Menú</string>
     <string name="menu_item_maps_title">Mapas</string>
     <string name="menu_item_grades_title">Calificaciones</string>
@@ -39,22 +37,22 @@
     <string name="menu_header_indicator_description">Indicador de encabezado</string>
     <string name="drawer_open">Abrir el panel de navegación</string>
     <string name="drawer_close">Cerrar el panel de navegación</string>
-    
+
     <!-- Configuration and Institutions -->
-    
+
     <string name="title_activity_school_selection">Elegir escuela</string>
     <string name="no_institutions">No hay instituciones a desplegar en este momento.</string>
-    
+
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
-    <string name="school_selection_confirmation">Ha seleccionado \'%1$s\'. ¿Esto es correcto?</string>  
+    <string name="school_selection_confirmation">Ha seleccionado \'%1$s\'. ¿Esto es correcto?</string>
     <string name="title_activity_configuration_loading">Carga de configuración</string>
     <string name="configuration_loading_failed">Falló en la carga de configuración</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="configuration_loading_message">Cargando la configuración. Por favor espere&#8230;</string>
-    <string name="configuration_loading_missing_config">"No puede descargar la configuración de ese enlace."</string> 
-    
+    <string name="configuration_loading_missing_config">"No puede descargar la configuración de ese enlace."</string>
+
     <!-- General Defaults, Dialogs, and Rows -->
-    
+
     <string name="label_name">Nombre</string>
     <string name="label_title">Título</string>
     <string name="label_phone">Teléfono</string>
@@ -95,7 +93,7 @@
 
     <string name="dialog_sign_in">Acceder</string>
     <string name="dialog_sign_in_title">Acceder</string>
-    <string name="dialog_stay_signed_in">Mantenerse conectado</string>
+    <string name="dialog_stay_signed_in">Seguir conectado</string>
     <string name="dialog_username">Nombre de usuario</string>
     <string name="dialog_password">Contraseña</string>
     <string name="dialog_sign_in_empty">Nombre de usuario o contraseña no puede estar vacío.</string>
@@ -106,14 +104,14 @@
     <string name="dialog_select_categories">Seleccionar categorías</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">Autenticando nuevamente, por favor espere&#8230;</string>
-	<string name="dialog_continue">Continuar</string>
-	<string name="dialog_go_back">Regresar</string>
-	<string name="dialog_security_warning">Alerta de seguridad</string>
-	<string name="dialog_cert_warning_statement">"Hay problemas con el certificado de seguridad para este sitio."</string>
-	<string name="dialog_field_empty">El campo no puede estar vacío</string>
-	<string name="unauthorized_feature">No tiene permiso para usar esta característica.</string>
-	
-    <string name="row_category_label">Categoría:</string>
+    <string name="dialog_continue">Continuar</string>
+    <string name="dialog_go_back">Regresar</string>
+    <string name="dialog_security_warning">Alerta de seguridad</string>
+    <string name="dialog_cert_warning_statement">"Hay problemas con el certificado de seguridad para este sitio."</string>
+    <string name="dialog_field_empty">El campo no puede estar vacío</string>
+    <string name="unauthorized_feature">No tiene permiso para usar esta característica.</string>
+
+    <string name="row_category_label">\u2022</string>  <!-- This is a bullet -->
     <string name="row_contact_label">Contacto:</string>
     <string name="row_email_label">Correo-e:</string>
     <string name="row_date_label">Fecha:</string>
@@ -128,7 +126,7 @@
     <string name="layers">Capas</string>
     <string name="unavailable">No disponible</string>
     <string name="dash_separator">"-"</string>
-    <string name="line_speparator">|</string>
+    <string name="line_separator">|</string>
     <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
     <string name="detail_page_title_format">Detalle de %s</string>
     <string name="nothing_to_display">Nada a desplegar</string>
@@ -185,9 +183,9 @@
         <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> ext. <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
     </string>
 
-	
+
     <!-- About -->
-    
+
     <string name="title_activity_about">Acerca de</string>
     <string name="about">Acerca de</string>
     <string name="about_logo_description">Logo de la escuela</string>
@@ -201,9 +199,9 @@
     <string name="about_ellucian_privacy_policy">Política de privacidad de Ellucian</string>
     <string name="about_powered_by">Desarrollado por</string>
     <string name="about_powered_by_ellucian">Desarrollado por Ellucian</string>
-    
+
     <!-- Courses -->
-    
+
     <string name="title_activity_courses">Cursos</string>
     <string name="title_activity_courses_schedule">Cursos</string>
     <string name="title_activity_course_overview">Resumen del curso</string>
@@ -243,10 +241,10 @@
     <string name="course_assignments_due">Vencimiento:</string>
     <string name="course_assignments_none_assigned">Ninguno asignado</string>
     <string name="label_left_button">Botón izquierdo</string>
-	<string name="label_right_button">Botón derecho</string>
+    <string name="label_right_button">Botón derecho</string>
 
     <!-- Directory -->
-    
+
     <string name="title_activity_directory">Categorías de directorio</string>
     <string name="title_activity_directory_detail">Detalle de directorio</string>
     <string name="title_activity_directory_list_all">Directorio</string>
@@ -280,7 +278,7 @@
     <string name="finances_balance">Saldo</string>
 
     <!-- Grades -->
-    
+
     <string name="title_activity_grades">Calificaciones</string>
     <string name="grades_last_updated">Última actualización:</string>
     <string name="no_grades_in_term">No hay calificaciones para este periodo</string>
@@ -292,7 +290,7 @@
     <string name="title_activity_ilp_today">ILP para hoy</string>
     <string name="title_activity_ilp_detail">Detalle de ILP</string>
     <string name="ilp_assignments_today">Asignaciones</string>
-    <string name="ilp_events_today">Eventos para hoy</string>
+    <string name="ilp_events_today">Eventos</string>
     <string name="ilp_announcements_today">Anuncios</string>
     <string name="ilp_assignments">Asignaciones</string>
     <string name="ilp_events">Eventos</string>
@@ -310,9 +308,9 @@
     <string name="ilp_events_none_today">No hay eventos programados para hoy</string>
     <string name="ilp_announcements_none_today">No hay anuncios para hoy</string>
 
-    
+
     <!-- Maps -->
-    
+
     <string name="title_activity_maps">Mapas</string>
     <string name="maps_campus_selection_title">Elegir campus</string>
     <string name="maps_get_directions_label">Indicaciones</string>
@@ -338,43 +336,45 @@
     <string name="legal">Legal</string>
     <string name="maps_feature_not_supported">Característica no soportada por este dispositivo.</string>
     <string name="maps_building_additional_services_label">Servicios adicionales:</string>
-    
+    <string name="maps_storage_alert_title">Permiso solicitado</string>
+    <string name="maps_storage_alert_message">Para usar mapas en esta aplicación, el API de mapas requiere acceso a los datos con base en los mapas de su dispositivo. Por favor habilite los ajustes de "Almacenamiento"</string>
+    <string name="maps_storage_not_granted">No se despliegan mapas sin permiso de almacenamiento para esta aplicación.</string>
+
     <!-- Multimedia -->
-    
+
     <string name="title_activity_video">Video</string>
     <string name="title_activity_audio">Audio</string>
-    
+
     <!-- News -->
-    
+
     <string name="title_activity_news">Noticias</string>
     <string name="title_activity_news_detail">Detalle de noticias</string>
     <string name="news_no_news">No hay noticias a desplegar</string>
     <string name="searchable_news_hint">Buscar noticias</string>
     <string name="searchable_news_label">Buscar noticias</string>
-       
+
     <!-- Notifications -->
-    
+
     <string name="title_activity_notifications">Notificaciones</string>
     <string name="notifications_detail_date_posted">Fecha de publicación:</string>
     <string name="notifications_detail_link_action">Actuar</string>
-    <string name="notifications_device_title" translatable="false">Ellucian GO</string>
     <string name="notifications_device_content">Tiene nuevas notificaciones</string>
     <string name="notifications_no_notifications">No hay notificaciones a desplegar</string>
     <string name="notifications_sticky_marker_image_text">Marcador</string>
     <string name="notifications_delete">Eliminar</string>
     <string name="notifications_unable_to_delete_message">No puede eliminar esta notificación.</string>
     <string name="notifications_dialog_delete_message">¿Está seguro que desea eliminar esta notificación?</string>
-    
+
     <!-- Numbers -->
-    
+
     <string name="title_number_list">Números</string>
     <string name="title_number_detail">Detalle de número</string>
     <string name="numbers_no_entries">No hay números importantes</string>
     <string name="searchable_numbers_hint">Buscar números</string>
     <string name="searchable_numbers_label">Buscar números</string>
-    
+
     <!-- Registration -->
-    
+
     <string name="title_activity_registration">Inscripción</string>
     <string name="title_activity_registration_detail">Detalle de inscripción</string>
     <string name="registration_tab_cart">Carrito</string>
@@ -417,8 +417,8 @@
     <string name="registration_grading">Modo de calificar</string>
     <string name="registration_academic_levels">Niveles académicos</string>
     <string name="registration_ceus">UEC</string>
-    <string name="registration_audit">Auditar</string>
-    <string name="registration_graded">Calificada</string>
+    <string name="registration_audit">Oyente</string>
+    <string name="registration_graded">Calificado</string>
     <string name="registration_pass_fail">Aprobada/Rechazada</string>
     <string name="registration_pass_fail_abbrev">A/R</string>
     <string name="registration_default_eligibility_message">No se puede inscribir en este momento.</string>
@@ -449,13 +449,13 @@
 	<string name="registration_label_credits_min_max_format">
 	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
 	</string>
-    
-        
-	<!-- Versioning -->
-	<string name="version_upgrade">Actualización</string>
-	<string name="version_outdated">Obsoleto</string>
-	<string name="version_outdated_message">Una nueva versión está disponible.</string>
-	<string name="version_force_upgrade_message">Debe actualizar la aplicación a la versión más reciente.</string>
+
+
+    <!-- Versioning -->
+    <string name="version_upgrade">Actualización</string>
+    <string name="version_outdated">Obsoleto</string>
+    <string name="version_outdated_message">Una nueva versión está disponible.</string>
+    <string name="version_force_upgrade_message">Debe actualizar la aplicación a la versión más reciente.</string>
 
     <!-- Widget -->
     <string name="widget_no_ilp">Asignaciones no están disponibles para su institución</string>
@@ -463,6 +463,5 @@
     <string name="widget_not_connected">No conectado</string>
     <string name="widget_header">Asignaciones (hoy)</string>
     <string name="widget_no_assignments">Ninguna asignación vence hoy</string>
-
 
 </resources> 

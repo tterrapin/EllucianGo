@@ -10,8 +10,8 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 
 public abstract class ContentProviderOperationBuilder<E> {
-	Context context;
-	public ContentProviderOperationBuilder(Context context) {
+	private final Context context;
+	protected ContentProviderOperationBuilder(Context context) {
 		this.context = context;
 	}
 	

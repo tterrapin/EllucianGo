@@ -46,7 +46,7 @@
     self.sectionTitleLabel.textColor = [UIColor subheaderTextColor];
     self.dateLabel.textColor = [UIColor subheaderTextColor];
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.sectionTitleLabel.textAlignment = NSTextAlignmentRight;
     }
     
@@ -169,7 +169,7 @@
             [line1Label setTextColor:[UIColor subheaderTextColor]];
             line1Label.minimumScaleFactor = .5f;
             line1Label.adjustsFontSizeToFitWidth = YES;
-            line1Label.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+            line1Label.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
 
             line1Label.attributedText = attributedLine1;
             [meetingPatternView addSubview:line1Label];
@@ -263,7 +263,7 @@
         facultyLabel.translatesAutoresizingMaskIntoConstraints = NO;
         facultyLabel.text = instructor.formattedName;
         facultyLabel.font = [UIFont systemFontOfSize:16.0f];
-        facultyLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+        facultyLabel.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         NSString *directoryUrl = [defaults objectForKey:@"urls-directory-facultySearch"];
         if(directoryUrl) {
             [facultyView setAction:@selector(gotoFaculty:) withTarget:self];
@@ -312,7 +312,7 @@
 
     //description
     self.courseDescriptionTextView.text = courseDetail.courseDescription;
-    self.courseDescriptionTextView.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+    self.courseDescriptionTextView.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
     
     self.widthConstraint.constant = [AppearanceChanger currentScreenBoundsDependOnOrientation].width;
 

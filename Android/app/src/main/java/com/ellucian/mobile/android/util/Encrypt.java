@@ -71,7 +71,7 @@ public class Encrypt {
         return new String(toByte(hex));
     }
 
-    public static byte[] toByte(String hexString) {
+    private static byte[] toByte(String hexString) {
         int len = hexString.length()/2;
         byte[] result = new byte[len];
         for (int i = 0; i < len; i++)
@@ -79,7 +79,7 @@ public class Encrypt {
         return result;
     }
 
-    public static String toHex(byte[] buf) {
+    private static String toHex(byte[] buf) {
         if (buf == null)
         	return "";
         StringBuffer result = new StringBuffer(2*buf.length);

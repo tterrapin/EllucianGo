@@ -42,9 +42,9 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	private View rootView;
 	private Activity activity;
 	
-	protected SimpleDateFormat defaultTimeParserFormat;
-	protected SimpleDateFormat altTimeParserFormat;
-	protected DateFormat timeFormatter;
+	private SimpleDateFormat defaultTimeParserFormat;
+	private SimpleDateFormat altTimeParserFormat;
+	private DateFormat timeFormatter;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -420,7 +420,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
     	}
     }
 
-    protected void triggerRemoveItemFromCart() {
+    void triggerRemoveItemFromCart() {
     	Activity activity = getActivity();
     	if (activity instanceof RegistrationActivity) {
     		((RegistrationActivity)activity).removeItemFromCart();

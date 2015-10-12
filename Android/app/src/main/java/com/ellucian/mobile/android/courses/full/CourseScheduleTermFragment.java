@@ -4,10 +4,10 @@
 
 package com.ellucian.mobile.android.courses.full;
 
-import android.app.LoaderManager;
-import android.content.CursorLoader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;

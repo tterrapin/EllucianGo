@@ -4,9 +4,6 @@
 
 package com.ellucian.mobile.android.client.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -27,9 +24,12 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotificationsIntentService extends IntentService {
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.NotificationsIntentService.action.updated";
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.NotificationsIntentService.action.updated";
 
 	public NotificationsIntentService() {
 		super("NotificationsIntentService");
@@ -43,6 +43,8 @@ public class NotificationsIntentService extends IntentService {
 		
 		String url = client.addUserToUrl(intent.getStringExtra(Extra.REQUEST_URL));
 		NotificationsResponse response = client.getNotifications(url);
+
+        String requestedNotificationId = intent.getStringExtra(Extra.NOTIFICATIONS_NOTIFICATION_ID);
 		
 		if (response != null) {
 			
@@ -58,7 +60,7 @@ public class NotificationsIntentService extends IntentService {
 				
 				int count = 0;
 				if (notificationsCursor != null && notificationsCursor.moveToFirst()) {
-					List<String> savedIdList = new ArrayList<String>();
+					List<String> savedIdList = new ArrayList<>();
 					
 					int columnIndex = notificationsCursor.getColumnIndex(Notifications.NOTIFICATIONS_ID);
 					do {
@@ -66,10 +68,16 @@ public class NotificationsIntentService extends IntentService {
 						savedIdList.add(savedId);
 						Log.d("NotificationsIntentService", "Found notification id in database: " + savedId);
 					} while (notificationsCursor.moveToNext());
-					
+
+                    // If there are 1 or more new notifications to be added to database, raise a
+                    // device notification to inform the user. If user is already viewing details
+                    // of a specific push notification, don't count that.
 					for (Notification notification : response.notifications) {
 						if (!savedIdList.contains(notification.id)) {
-							count++;
+                            if (!notification.id.equals(requestedNotificationId)) {
+                                Log.d("NotificationsIntentService", "New notification: " + notification.id);
+                                count++;
+                            }
 						}
 					}
 				} else {
@@ -83,9 +91,9 @@ public class NotificationsIntentService extends IntentService {
 					deviceNotifications.makeNotificationActive(deviceNotifications.buildNotification(count));
 				}
 			}
-			
-			
-			
+
+
+
 			Log.d("NotificationsIntentService", "Retrieved response from notifications client");
 			NotificationsBuilder builder = new NotificationsBuilder(this);
 			Log.d("NotificationsIntentService", "Building content provider operations");

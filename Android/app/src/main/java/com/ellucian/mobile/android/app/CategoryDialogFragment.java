@@ -4,10 +4,6 @@
 
 package com.ellucian.mobile.android.app;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,16 +13,20 @@ import android.util.Log;
 
 import com.ellucian.elluciango.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CategoryDialogFragment extends EllucianDialogFragment {
-	CategoryDialogListener listener;
+	private CategoryDialogListener listener;
 	private String[] startingFilteredCategories;
 
 	public interface CategoryDialogListener {
-		public static final String FILTERED_CATEGORIES = "filtered_categories";
-		public static final String CATEGORY_DIALOG = "category_dialog";
-		public String[] getAllCategories();
-		public String[] getFilteredCategories();
-		public void updateFilteredCategories(String[] filteredCategories);
+		String FILTERED_CATEGORIES = "filtered_categories";
+		String CATEGORY_DIALOG = "category_dialog";
+		String[] getAllCategories();
+		String[] getFilteredCategories();
+		void updateFilteredCategories(String[] filteredCategories);
 	}
 	
 	public void onAttach(Activity activity) {
@@ -35,7 +35,7 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 		try {
 			listener = (CategoryDialogListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement CategoryDialogListenter");
+			throw new ClassCastException(activity.toString() + " must implement CategoryDialogListener");
 		}
 	}
 		
@@ -44,7 +44,7 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 		final String[] currentCategories = listener.getAllCategories();
 		final String[] currentFiltered = listener.getFilteredCategories();
 		
-		final ArrayList<Integer> selectedPositions = new ArrayList<Integer>();
+		final ArrayList<Integer> selectedPositions = new ArrayList<>();
 		boolean[] checkedItems = new boolean[currentCategories.length];
 
 		if (currentFiltered != null) {
@@ -105,7 +105,13 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 						}
 	               		listener.updateFilteredCategories(filteredArray);
                    }
-               });
+               })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
 
         // Create the AlertDialog object and return it
         return builder.create();

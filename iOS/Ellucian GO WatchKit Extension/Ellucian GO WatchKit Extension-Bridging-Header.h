@@ -14,9 +14,12 @@
 #import "ImageCache.h"
 #import <UIKit/UIKit.h>
 #import "Module+Attributes.h"
+#import "Module+Create.h"
 #import "Map.h"
 #import "MapCampus.h"
 #import "MapPOI.h"
 #import <CoreData/CoreData.h>
 #import "CourseAssignment.h"
 #import "ModuleRole.h"
+#import "ModuleProperty.h"
+#import "VersionChecker.h"

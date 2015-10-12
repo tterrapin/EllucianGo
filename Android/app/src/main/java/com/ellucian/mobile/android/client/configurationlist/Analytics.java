@@ -6,5 +6,6 @@ package com.ellucian.mobile.android.client.configurationlist;
 
 public class Analytics {
 
+	@SuppressWarnings("unused")
 	public String ellucian;
 }

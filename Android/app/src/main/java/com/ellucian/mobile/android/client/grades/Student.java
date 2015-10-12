@@ -8,8 +8,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Student implements Parcelable {
-	String id;
-	String name;
+	private String id;
+	private String name;
 
     public Student(String id, String name) {
         this.id = id;

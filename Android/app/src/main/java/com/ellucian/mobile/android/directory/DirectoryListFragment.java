@@ -4,12 +4,9 @@
 
 package com.ellucian.mobile.android.directory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,11 +28,14 @@ import com.ellucian.mobile.android.client.directory.Entry;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.OnQueryListener;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class DirectoryListFragment extends EllucianListFragment implements OnQueryListener{
 	private static final String TAG = DirectoryListFragment.class.getSimpleName();
 	
-	boolean mDualPane;
-    int mCurCheckPosition = -1;
+	private boolean mDualPane;
+    private int mCurCheckPosition = -1;
     
     private DirectoryListActivity activity;
     private RetrieveDirectoryInfoTask directoryTask;
@@ -131,7 +131,7 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
      * displaying a fragment in-place in the current UI, or starting a
      * whole new activity in which it is displayed.
      */
-    void showDetails(int index) {
+	private void showDetails(int index) {
         mCurCheckPosition = index;
         getListView().setSelection(mCurCheckPosition);
         
@@ -230,7 +230,7 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
     	} 
     }
     
-    public void clearCurrentDetailFragment() {
+    private void clearCurrentDetailFragment() {
     	Fragment details = getFragmentManager().findFragmentById(R.id.frame_extra);
     	if (details != null) {
         	FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -266,7 +266,7 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
 			bundle.putString(Extra.DIRECTORY_EMAIL, entry.email);
 		}
 		
-		//Build formated address
+		//Build formatted address
 		String address = "";
 		if (!TextUtils.isEmpty(entry.street)) {
 			address += entry.street.replace("\\n", "\n");
@@ -309,13 +309,13 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
 	
 	
 	private class RetrieveDirectoryInfoTask extends AsyncTask<String, Void, DirectoryResponse> {
-		Activity activity;
+		final Activity activity;
 		
 		RetrieveDirectoryInfoTask(Activity activity) {
 			this.activity = activity;
 		}
 		
-		// params (requertUrl, directoryType, query) 
+		// params (requestUrl, directoryType, query)
 		@Override
 		protected DirectoryResponse doInBackground(String... params) {
 			DirectoryResponse response = null;
@@ -330,7 +330,6 @@ public class DirectoryListFragment extends EllucianListFragment implements OnQue
 				try {
 					encodedQuery = URLEncoder.encode(query, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (!TextUtils.isEmpty(encodedQuery)) {

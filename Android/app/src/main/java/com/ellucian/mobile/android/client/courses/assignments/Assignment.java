@@ -4,6 +4,7 @@
 
 package com.ellucian.mobile.android.client.courses.assignments;
 
+@SuppressWarnings("unused")
 public class Assignment {
 	public String name;
 	public String sectionId;

@@ -17,9 +17,9 @@ import android.util.Log;
 import com.ellucian.mobile.android.provider.EllucianContract;
 
 public abstract class EllucianIntentService extends IntentService {
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public String actionFinished;
-	public String tag;
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private final String actionFinished;
+	private final String tag;
 	
 	
 	public EllucianIntentService(String tag) {

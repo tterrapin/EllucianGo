@@ -4,7 +4,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+           xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
@@ -15,7 +15,7 @@
     <string name="main_switch_school">Alterar a instituição</string>
 
     <!-- Menu -->
-    
+
     <string name="menu">Menu</string>
     <string name="menu_item_maps_title">Mapas</string>
     <string name="menu_item_grades_title">Notas</string>
@@ -37,22 +37,22 @@
     <string name="menu_header_indicator_description">Indicador de cabeçalho</string>
     <string name="drawer_open">Abrir o Navigation Drawer</string>
     <string name="drawer_close">Fechar o Navigation Drawer</string>
-    
+
     <!-- Configuration and Institutions -->
-    
+
     <string name="title_activity_school_selection">Selecionar uma instituição</string>
     <string name="no_institutions">Não há instituições para exibição neste momento.</string>
-    
+
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
-    <string name="school_selection_confirmation">Você selecionou \'%1$s\'. Está correta?</string>  
+    <string name="school_selection_confirmation">Você selecionou \'%1$s\'. Está correta?</string>
     <string name="title_activity_configuration_loading">Carregando a configuração</string>
     <string name="configuration_loading_failed">Falha ao carregar a configuração.</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="configuration_loading_message">Carregando a configuração. Aguarde&#8230;</string>
-    <string name="configuration_loading_missing_config">"Não é possível baixar a configuração a partir deste link."</string> 
-    
+    <string name="configuration_loading_missing_config">"Não é possível baixar a configuração a partir deste link."</string>
+
     <!-- General Defaults, Dialogs, and Rows -->
-    
+
     <string name="label_name">Nome</string>
     <string name="label_title">Título</string>
     <string name="label_phone">Telefone</string>
@@ -96,7 +96,7 @@
     <string name="dialog_stay_signed_in">Continuar conectado</string>
     <string name="dialog_username">Nome de usuário</string>
     <string name="dialog_password">Senha</string>
-    <string name="dialog_sign_in_empty">Nome de usuário ou senha não podem ficar em branco.</string>
+    <string name="dialog_sign_in_empty">O nome de usuário ou senha não podem ficar em branco.</string>
     <string name="dialog_sign_in_failed">Falha na autenticação. Verifique a conexão de rede e/ou seu nome de usuário e senha. Contate a equipe de TI da sua instituição para ajuda com o login.</string>
     <string name="dialog_signed_in">Você está conectado.</string>
     <string name="dialog_signed_out">Sessão finalizada.</string>
@@ -104,14 +104,14 @@
     <string name="dialog_select_categories">Selecionar as categorias</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">Fazendo nova autenticação, aguarde&#8230;</string>
-	<string name="dialog_continue">Continuar</string>
-	<string name="dialog_go_back">Voltar</string>
-	<string name="dialog_security_warning">Aviso de segurança</string>
-	<string name="dialog_cert_warning_statement">"Há problemas com o certificado de segurança para este site."</string>
-	<string name="dialog_field_empty">O campo não pode ficar vazio</string>
-	<string name="unauthorized_feature">Você não tem permissão para usar este recurso.</string>
-	
-    <string name="row_category_label">Categoria:</string>
+    <string name="dialog_continue">Continuar</string>
+    <string name="dialog_go_back">Voltar</string>
+    <string name="dialog_security_warning">Aviso de segurança</string>
+    <string name="dialog_cert_warning_statement">"Há problemas com o certificado de segurança para este site."</string>
+    <string name="dialog_field_empty">O campo não pode ficar vazio</string>
+    <string name="unauthorized_feature">Você não tem permissão para usar este recurso.</string>
+
+    <string name="row_category_label">\u2022</string>  <!-- This is a bullet -->
     <string name="row_contact_label">Contato:</string>
     <string name="row_email_label">E-mail:</string>
     <string name="row_date_label">Data:</string>
@@ -126,7 +126,7 @@
     <string name="layers">Camadas</string>
     <string name="unavailable">Indisponível</string>
     <string name="dash_separator">"-"</string>
-    <string name="line_speparator">|</string>
+    <string name="line_separator">|</string>
     <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
     <string name="detail_page_title_format">Detalhes %s</string>
     <string name="nothing_to_display">Nenhuma exibição</string>
@@ -183,9 +183,9 @@
         <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> ramal <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
     </string>
 
-	
+
     <!-- About -->
-    
+
     <string name="title_activity_about">Sobre</string>
     <string name="about">Sobre</string>
     <string name="about_logo_description">Logo da instituição</string>
@@ -199,9 +199,9 @@
     <string name="about_ellucian_privacy_policy">Política de privacidade da Ellucian</string>
     <string name="about_powered_by">Desenvolvido por</string>
     <string name="about_powered_by_ellucian">Desenvolvido pela Ellucian</string>
-    
+
     <!-- Courses -->
-    
+
     <string name="title_activity_courses">Disciplinas</string>
     <string name="title_activity_courses_schedule">Disciplinas</string>
     <string name="title_activity_course_overview">Visão geral da disciplina</string>
@@ -235,16 +235,16 @@
     <string name="course_assignments">Tarefas</string>
     <string name="course_announcements">Comunicados</string>
     <string name="course_events">Eventos</string>
-    <string name="course_details_no_directory">O módulo Diretório não está instalado</string>
-    <string name="course_details_no_maps">O módulo Mapas não está instalado</string>
+    <string name="course_details_no_directory">O módulo Diretório não está instalado.</string>
+    <string name="course_details_no_maps">O módulo Mapas não está instalado.</string>
     <string name="course_assignments_no_assignments">Não há tarefas</string>
     <string name="course_assignments_due">Vencido:</string>
-    <string name="course_assignments_none_assigned">Sem atribuições</string>
+    <string name="course_assignments_none_assigned">Sem tarefas</string>
     <string name="label_left_button">Botão esquerdo</string>
-	<string name="label_right_button">Botão direito</string>
+    <string name="label_right_button">Botão direito</string>
 
     <!-- Directory -->
-    
+
     <string name="title_activity_directory">Categorias do diretório</string>
     <string name="title_activity_directory_detail">Detalhes do diretório</string>
     <string name="title_activity_directory_list_all">Diretório</string>
@@ -271,14 +271,14 @@
 
     <!-- Finances -->
 
-    <string name="title_activity_finances">Financeiro do aluno</string>
+    <string name="title_activity_finances">Status financeiro do aluno</string>
     <string name="finances_no_balance">--</string>  <!-- display dashes -->
     <string name="finances_no_payments">Não há pagamentos recentes.</string>
     <string name="finances_recent_payments">PAGAMENTOS RECENTES</string>
     <string name="finances_balance">SALDO</string>
 
     <!-- Grades -->
-    
+
     <string name="title_activity_grades">Notas</string>
     <string name="grades_last_updated">Última atualização:</string>
     <string name="no_grades_in_term">Não há notas para este período</string>
@@ -288,15 +288,15 @@
 
     <string name="title_activity_ilp">ILP</string>
     <string name="title_activity_ilp_today">ILP hoje</string>
-    <string name="title_activity_ilp_detail">Detalhe ILP</string>
+    <string name="title_activity_ilp_detail">Detalhes ILP</string>
     <string name="ilp_assignments_today">Tarefas</string>
-    <string name="ilp_events_today">Eventos de hoje</string>
+    <string name="ilp_events_today">Eventos</string>
     <string name="ilp_announcements_today">Comunicados</string>
     <string name="ilp_assignments">Tarefas</string>
     <string name="ilp_events">Eventos</string>
     <string name="ilp_announcements">Comunicados</string>
     <string name="ilp_view_all">Visualizar tudo</string>
-    <string name="ilp_view_by_date">Pela data de vencimento</string>
+    <string name="ilp_view_by_date">Com data de vencimento</string>
     <string name="ilp_view_by_no_date">Sem data de vencimento</string>
     <string name="ilp_today">Hoje</string>
     <string name="ilp_tomorrow">Amanhã</string>
@@ -304,16 +304,16 @@
     <string name="ilp_remind_me">Lembrar-me</string>
     <string name="ilp_overdue">VENCIDO</string>
     <string name="ilp_due_today">VENCE HOJE</string>
-    <string name="ilp_assignments_none_today">Nenhuma tarefa vence hoje</string>
+    <string name="ilp_assignments_none_today">Não há tarefas vencendo hoje</string>
     <string name="ilp_events_none_today">Não há eventos programados para hoje</string>
     <string name="ilp_announcements_none_today">Não há comunicados para hoje</string>
 
-    
+
     <!-- Maps -->
-    
+
     <string name="title_activity_maps">Mapas</string>
     <string name="maps_campus_selection_title">Selecionar o campus</string>
-    <string name="maps_get_directions_label">Direções</string>
+    <string name="maps_get_directions_label">Trajetos</string>
     <string name="maps_show_details_label">Exibir os detalhes</string>
     <string name="maps_map_view_label">Visualizar mapa</string>
     <string name="maps_satellite_view_label">Visualizar satélite</string>
@@ -336,22 +336,25 @@
     <string name="legal">Legal</string>
     <string name="maps_feature_not_supported">O recurso não é suportado por este dispositivo.</string>
     <string name="maps_building_additional_services_label">Serviços adicionais:</string>
-    
+    <string name="maps_storage_alert_title">Permissão obrigatória</string>
+    <string name="maps_storage_alert_message">Para utilizar o recurso Mapas deste aplicativo, o API requer acesso aos mapas baseado nos dados do seu aparelho. Habilite "Armazenamento" na tela de ajustes.</string>
+    <string name="maps_storage_not_granted">Os mapas não poderão ser exibidos sem habilitar o Armazenamento no aplicativo.</string>
+
     <!-- Multimedia -->
-    
+
     <string name="title_activity_video">Vídeo</string>
     <string name="title_activity_audio">Áudio</string>
-    
+
     <!-- News -->
-    
+
     <string name="title_activity_news">Notícias</string>
     <string name="title_activity_news_detail">Detalhes da notícia</string>
     <string name="news_no_news">Não há notícias para exibição</string>
     <string name="searchable_news_hint">Buscar notícias</string>
     <string name="searchable_news_label">Buscar notícias</string>
-       
+
     <!-- Notifications -->
-    
+
     <string name="title_activity_notifications">Notificações</string>
     <string name="notifications_detail_date_posted">Data de publicação:</string>
     <string name="notifications_detail_link_action">Acionar</string>
@@ -360,18 +363,18 @@
     <string name="notifications_sticky_marker_image_text">Professor</string>
     <string name="notifications_delete">Excluir</string>
     <string name="notifications_unable_to_delete_message">Não é possível excluir esta notificação.</string>
-    <string name="notifications_dialog_delete_message">Tem certeza de que deseja apagar esta notificação?</string>
-    
+    <string name="notifications_dialog_delete_message">Tem certeza de que deseja excluir esta notificação?</string>
+
     <!-- Numbers -->
-    
+
     <string name="title_number_list">Números</string>
     <string name="title_number_detail">Detalhes do número</string>
     <string name="numbers_no_entries">Não há números importantes</string>
     <string name="searchable_numbers_hint">Buscar números</string>
     <string name="searchable_numbers_label">Buscar números</string>
-    
+
     <!-- Registration -->
-    
+
     <string name="title_activity_registration">Matrícula</string>
     <string name="title_activity_registration_detail">Detalhes da matrícula</string>
     <string name="registration_tab_cart">Carrinho</string>
@@ -380,20 +383,20 @@
     <string name="registration_register">Matricular-se</string>
     <string name="registration_credits">Créditos</string>
     <string name="registration_results_important">Crítico</string>
-    <string name="registration_results_important_sub">Estes itens podem impedir a matrícula.</string>
+    <string name="registration_results_important_sub">Os itens abaixo não permitem a matrícula.</string>
     <string name="registration_results_registered">Matriculado!</string>
     <string name="registration_results_success_sub">Você está matriculado nestas disciplinas.</string>
     <string name="registration_results_warning">Desculpe!</string>
     <string name="registration_results_failure_sub">Não foi possível se matricular nestas disciplinas.</string>
-    <string name="registration_results_dropped_important_sub">Estes itens podem impedir o trancamento.</string>
+    <string name="registration_results_dropped_important_sub">Os itens abaixo não permitem o trancamento.</string>
     <string name="registration_results_dropped_success">Trancamento realizado com sucesso!</string>
     <string name="registration_results_dropped_success_sub">Você trancou estas disciplinas.</string>
     <string name="registration_results_dropped_failure_sub">Não foi possível trancar estas disciplinas.</string>
     <string name="registration_dialog_title">Título</string>
-    <string name="registration_dialog_register_message">Tem certeza de que deseja se matricular nestas turmas?</string>
-    <string name="registration_dialog_add_to_cart_message">Tem certeza de que deseja adicionar estas turmas no carrinho?</string>
+    <string name="registration_dialog_register_message">Tem certeza de que deseja se matricular nestas disciplinas?</string>
+    <string name="registration_dialog_add_to_cart_message">Tem certeza de que deseja adicionar estas disciplinas no carrinho?</string>
     <string name="registration_dialog_remove_message">Tem certeza de que deseja remover este item do carrinho?</string>
-    <string name="registration_dialog_drop_message">Tem certeza de que deseja trancar estas turmas?</string>
+    <string name="registration_dialog_drop_message">Tem certeza de que deseja trancar estas disciplinas?</string>
     <string name="registration_dialog_variable_credits_to_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f</string>
     <string name="registration_dialog_variable_credits_or_message">Digite o valor do crédito da disciplina %1$.2f ou %2$.2f</string>
     <string name="registration_dialog_variable_credits_inc_message">Digite o valor do crédito da disciplina entre %1$.2f e %2$.2f com incrementos de %3$.2f</string>
@@ -401,7 +404,7 @@
     <string name="registration_dialog_variable_credits_increment_error_format">
         <xliff:g id="increment" example=".25">%1$.2f</xliff:g> Use um incremento.
     </string>
-    <string name="registration_dialog_pin_message">Digite a senha para cada um dos seguintes períodos:</string>
+    <string name="registration_dialog_pin_message">Digite a senha para cada um dos períodos abaixo:</string>
     <string name="registration_search_header">Selecione um período e digite os critérios da busca.</string>
     <string name="registration_search_field_hint">Critérios da busca</string>
     <string name="registration_search_refine_search"><u>Refinar a busca</u></string>
@@ -411,10 +414,10 @@
     <string name="registration_added_to_server_cart_failed">Falha ao salvar uma turma no servidor. Estes dados permanecerão somente para a sessão atual.</string>
     <string name="registration_fill_in_message">Selecione um período e faça uma busca.</string>
     <string name="registration_section_id">ID turma</string>
-    <string name="registration_grading">Classificação</string>
+    <string name="registration_grading">Avaliação</string>
     <string name="registration_academic_levels">Níveis acadêmicos</string>
     <string name="registration_ceus">UECs</string>
-    <string name="registration_audit">Auditoria</string>
+    <string name="registration_audit">Aluno ouvinte</string>
     <string name="registration_graded">Com nota</string>
     <string name="registration_pass_fail">Aprovado/Reprovado</string>
     <string name="registration_pass_fail_abbrev">A/R</string>
@@ -429,7 +432,7 @@
 	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> adicionado ao carrinho.
 	</string>
     <string name="registration_added_to_cart_failed_format">
-        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> falha ao adicionar no carrinho. Faltam dados ou a turma já existe no carrinho.
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> falha ao adicionar no carrinho. Faltam dados ou a disciplina já está no carrinho.
     </string>
     <string name="registration_row_credits_format">
 	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
@@ -446,19 +449,19 @@
 	<string name="registration_label_credits_min_max_format">
 	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
 	</string>
-    
-        
-	<!-- Versioning -->
-	<string name="version_upgrade">Atualizar</string>
-	<string name="version_outdated">Desatualizado</string>
-	<string name="version_outdated_message">Uma nova versão está disponível.</string>
-	<string name="version_force_upgrade_message">O aplicativo deve ser atualizado para a versão mais recente.</string>
+
+
+    <!-- Versioning -->
+    <string name="version_upgrade">Atualizar</string>
+    <string name="version_outdated">Desatualizado</string>
+    <string name="version_outdated_message">Uma nova versão está disponível.</string>
+    <string name="version_force_upgrade_message">O aplicativo deve ser atualizado para a versão mais recente.</string>
 
     <!-- Widget -->
     <string name="widget_no_ilp">As tarefas não estão disponíveis para sua instituição</string>
     <string name="widget_sign_in">Entrar para atualizar</string>
     <string name="widget_not_connected">Não conectado</string>
     <string name="widget_header">Tarefas (hoje)</string>
-    <string name="widget_no_assignments">Nenhuma tarefa vence hoje</string>
+    <string name="widget_no_assignments">Não há tarefas vencendo hoje</string>
 
 </resources> 

@@ -28,9 +28,8 @@ import com.ellucian.mobile.android.util.Extra;
 
 public class VideoFragment extends EllucianFragment implements SurfaceHolder.Callback, 
 		MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, DrawerLayoutHelper.DrawerListener   {
-	
-	private View rootView;
-	private VideoView videoView;
+
+    private VideoView videoView;
 	private MediaController mediaController;
 	private CustomToast loadingMessage;
 	private int currentPosition;
@@ -38,13 +37,9 @@ public class VideoFragment extends EllucianFragment implements SurfaceHolder.Cal
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_video, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_video, container, false);
 		videoView = (VideoView) rootView.findViewById(R.id.video);
 		
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			getActivity().getActionBar().hide();
-		}
-
 		mediaController = new MediaController(getActivity());
 
 		videoView.setOnCompletionListener(this);

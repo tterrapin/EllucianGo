@@ -18,7 +18,7 @@ public class QueuedIntentHolder implements Parcelable {
         this.queuedIntent = queuedIntent;
     }
 
-    public QueuedIntentHolder(Parcel in) {
+    private QueuedIntentHolder(Parcel in) {
         readFromParcel(in);
     }
     private void readFromParcel(Parcel in) {

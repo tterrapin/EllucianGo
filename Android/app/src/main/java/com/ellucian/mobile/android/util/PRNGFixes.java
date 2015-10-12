@@ -39,6 +39,7 @@ import java.security.Security;
  * Cryptography Architecture primitives. A good place to invoke them is in the
  * application's {@code onCreate}.
  */
+@SuppressWarnings("JavaDoc, SpellCheckingInspection")
 public final class PRNGFixes {
 
 	private static final int VERSION_CODE_JELLY_BEAN = 16;
@@ -170,7 +171,7 @@ public final class PRNGFixes {
 	 * {@link SecureRandomSpi} which passes all requests to the Linux PRNG (
 	 * {@code /dev/urandom}).
 	 */
-	@SuppressWarnings("serial")
+	@SuppressWarnings({"serial", "JavaDoc"})
 	public static class LinuxPRNGSecureRandom extends SecureRandomSpi {
 
 		/*

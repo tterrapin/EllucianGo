@@ -9,6 +9,7 @@
 #import "CourseEventsDetailViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface CourseEventsDetailViewController ()
 @property (nonatomic, strong) UIActionSheet *actionSheet;
@@ -38,7 +39,7 @@
     }
     self.navigationController.navigationBar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.locationLabel.textAlignment = NSTextAlignmentRight;
         self.descriptionTextView.textAlignment = NSTextAlignmentRight;
@@ -64,6 +65,7 @@
         self.padToolBar.translucent = NO;
         UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
         [self.padToolBar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        self.padToolBar.tintColor = [UIColor whiteColor];
     }
     
     self.eventStore = [[EKEventStore alloc] init];
@@ -92,7 +94,7 @@
     
     if(self.allDay) {
         self.startDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:self.startDate]];
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         // now build a NSDate object for the next day
         NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
         [offsetComponents setDay:-1];
@@ -211,7 +213,7 @@
     
     UIActivityViewController *avc = [[UIActivityViewController alloc]
                                      initWithActivityItems: activityItems applicationActivities:nil];
-    [avc setCompletionHandler:^(NSString *activityType, BOOL completed) {
+    [avc setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         NSString *label = [NSString stringWithFormat:@"Tap Share Icon - %@", activityType];
         [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:label withValue:nil forModuleNamed:self.module.name];
         self.popover = nil;
@@ -295,7 +297,7 @@
 
     if(_allDay) {
         self.startDateLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@, All Day", @"label for all day event"), [dateFormatter stringFromDate:_startDate]];
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         // now build a NSDate object for the next day
         NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
         [offsetComponents setDay:-1];

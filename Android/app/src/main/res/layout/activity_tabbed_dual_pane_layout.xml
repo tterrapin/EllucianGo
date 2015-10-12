@@ -1,50 +1,67 @@
 <!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
-
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
 
-    <android.support.v13.app.FragmentTabHost xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@android:id/tabhost"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <include layout="@layout/toolbar"/>
+
+        <android.support.v4.app.FragmentTabHost
+            android:id="@android:id/tabhost"
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:id="@+id/tabs_layout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp">
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal" android:baselineAligned="false">
+                android:orientation="vertical">
 
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
+                <LinearLayout
+                    android:id="@+id/tabs_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
-                </FrameLayout>
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </FrameLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-    </android.support.v13.app.FragmentTabHost>
+        </android.support.v4.app.FragmentTabHost>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/drawer_list" />
 

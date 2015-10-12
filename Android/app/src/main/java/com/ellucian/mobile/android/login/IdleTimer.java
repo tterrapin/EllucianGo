@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 public class IdleTimer extends Thread {
 	
 	private static final String TAG = IdleTimer.class.getName();
-	Context context;
+	private final Context context;
     private long lastUsed;
     private long period;
     private boolean stop;

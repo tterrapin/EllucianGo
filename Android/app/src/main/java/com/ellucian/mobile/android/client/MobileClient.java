@@ -42,7 +42,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,9 +63,9 @@ import java.util.Map;
 
 public class MobileClient {
 	private static final String TAG = MobileClient.class.getSimpleName();
-	public static final String REQUEST_DELETE= "DELETE";
-	public static final String REQUEST_GET= "GET";
-	public static final String REQUEST_PUT = "PUT";
+	private static final String REQUEST_DELETE= "DELETE";
+	private static final String REQUEST_GET= "GET";
+	private static final String REQUEST_PUT = "PUT";
 	public static final String REQUEST_POST = "POST";
 	
 	public static final String ACTION_UNAUTHENTICATED_USER = "com.ellucian.mobile.android.client.MobileClient.action.unauthenticatedUser";
@@ -104,11 +103,11 @@ public class MobileClient {
 		jsonParser = builder.create();
 	}
 	
-	public String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
+	private String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
 		return makeServerRequest(requestUrl, returnErrorCodesAsResponse, null);
 	}
 	
-	public String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
+	private String makeServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
 		Log.d(TAG + ".makeServerRequest", "Making request at url: " + requestUrl );
 		
 		HttpURLConnection urlConnection = getConnection(requestUrl);
@@ -126,11 +125,11 @@ public class MobileClient {
 		}
 	}
 
-	public String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
+	private String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse) {
 		return makeAuthenticatedServerRequest(requestUrl, returnErrorCodesAsResponse, null);
 	}
 	
-	public String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
+	private String makeAuthenticatedServerRequest(String requestUrl, boolean returnErrorCodesAsResponse, Map<String, String> headers) {
 		String loginType = Utils.getStringFromPreferences(application, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
 		if("native".equals(loginType)) {
 			String username = application.getAppUserName();
@@ -205,7 +204,7 @@ public class MobileClient {
 	
 	private HttpURLConnection getConnection(String requestUrl) {
 		HttpURLConnection urlConnection = null;
-		URL url = null;
+		URL url;
 		try {
 			url = new URL(requestUrl);
 			urlConnection = (HttpURLConnection) url.openConnection();
@@ -221,14 +220,14 @@ public class MobileClient {
 	
 	private String handleResponse(HttpURLConnection urlConnection, boolean returnErrorCodesAsResponse) {
 		String responseString = null;
-	
+
 		try {
 			int statusCode = urlConnection.getResponseCode();
 			if (statusCode == HttpURLConnection.HTTP_OK ||
 			    statusCode == HttpURLConnection.HTTP_CREATED) {
-				
+
 				storeCookies(urlConnection);
-				
+
 				InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 				responseString = readStream(in);
 			} else if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED || statusCode == HttpURLConnection.HTTP_MOVED_TEMP) {
@@ -250,8 +249,9 @@ public class MobileClient {
 					responseString = "" + statusCode;
 				}
 			}
-		} catch (ClientProtocolException e) {
-			Log.e(TAG, "ClientProtocolException", e);
+
+//        } catch (ClientProtocolException e) {
+//			Log.e(TAG, "ClientProtocolException", e);
 		} catch (IOException e) {
 			Log.e(TAG, "IOException", e);
 		} finally {
@@ -303,11 +303,11 @@ public class MobileClient {
         
         return !TextUtils.isEmpty(builder) ? builder.toString() : null;
 	}
-	public <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated) {
+	private <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated) {
 		return getResponseObject(clazz, requestUrl, authenticated, null);
 	}
 	
-	public <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated, Map<String, String> headers) {
+	private <T extends ResponseObject<T>> T getResponseObject(Class<T> clazz, String requestUrl, boolean authenticated, Map<String, String> headers) {
 		assert !TextUtils.isEmpty(requestUrl) : "requestUrl can not be empty or null";
 		
 		String jsonString;
@@ -318,16 +318,14 @@ public class MobileClient {
 		}
 		
 		if (!TextUtils.isEmpty(jsonString)) {
-			try {
-				T response = (T) jsonParser.fromJson(jsonString, clazz);
-				return response;
-			} catch (JsonSyntaxException e) {
-				Log.e(TAG + ".getResponse", "JsonSyntaxException", e);
-				return null;
-			}
-		} else {
-			return null;
-		}
+            try {
+                return jsonParser.fromJson(jsonString, clazz);
+            } catch (JsonSyntaxException e) {
+                Log.e(TAG + ".getResponse", "JsonSyntaxException", e);
+                return null;
+            }
+        }
+        else return null;
 	}
 	
 	
@@ -341,9 +339,8 @@ public class MobileClient {
 	public String getConfiguration(String requestUrl) {
 		Log.d(TAG, "Retrieving Configuration");
 		assert !TextUtils.isEmpty(requestUrl) : "serverUrl can not be empty or null"; 
-		
-		String responseString = makeServerRequest(requestUrl, true);		
-		return responseString;
+
+        return makeServerRequest(requestUrl, true);
 	}
 	
 	//username and password are passed because the user is not yet authenticated.
@@ -379,7 +376,8 @@ public class MobileClient {
 	}
 	
 	/** Default requests */
-	
+
+    @SuppressWarnings("unused")
 	public JSONObject makeDefaultJsonRequest(String requestUrl) {
 		String jsonString = makeServerRequest(requestUrl, false);
 		JSONObject jsonObject = null;
@@ -393,8 +391,9 @@ public class MobileClient {
 		}
 		return jsonObject;
 	}
-	
-	public JSONObject makeAuthenticatedJsonRequest(String requestUrl) {
+
+    @SuppressWarnings("unused")
+    public JSONObject makeAuthenticatedJsonRequest(String requestUrl) {
 		String jsonString = makeAuthenticatedServerRequest(requestUrl, false);
 		JSONObject jsonObject = null;
 		
@@ -408,7 +407,7 @@ public class MobileClient {
 		return jsonObject;
 	}
 	
-	public JSONObject makeAuthenticatedJsonRequest(String requestUrl, String method, String dataToBeWritten) {
+	private JSONObject makeAuthenticatedJsonRequest(String requestUrl, String method, String dataToBeWritten) {
 		String jsonString = makeAuthenticatedServerRequest(requestUrl, method, false, dataToBeWritten);
 		JSONObject jsonObject = null;
 		
@@ -475,13 +474,13 @@ public class MobileClient {
 		String jsonString = makeServerRequest(requestUrl, false);
 		
 		if (!TextUtils.isEmpty(jsonString)) {
-			// Events json has a different date format. Didnt want to mess with the default parser.
+			// Events json has a different date format. Didn't want to mess with the default parser.
 			GsonBuilder builder = new GsonBuilder();
 			builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 			Gson parser = builder.create();
 			
 			EventsResponse response = null;
-			JSONObject jsonObject = null;
+			JSONObject jsonObject;
 			try {
 				jsonObject = new JSONObject(jsonString);
 			} catch (JSONException e1) {
@@ -490,8 +489,8 @@ public class MobileClient {
 			}
 			if (jsonObject != null) {
 				JSONArray keys = jsonObject.names();
-				JSONArray eventsForDate = null;
-				JSONObject eventJson = null;
+				JSONArray eventsForDate;
+				JSONObject eventJson;
 				
 				if (keys != null) {
 					response = new EventsResponse();
@@ -614,7 +613,7 @@ public class MobileClient {
 	}
 	
 	public EligibilityResponse getEligibility(String requestUrl) {
-		Log.d(TAG, "Retrieveing Eligibility");
+		Log.d(TAG, "Retrieving Eligibility");
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Accept", "application/vnd.hedtech.v1+json");
 		return getResponseObject(EligibilityResponse.class, requestUrl,  true, headers);

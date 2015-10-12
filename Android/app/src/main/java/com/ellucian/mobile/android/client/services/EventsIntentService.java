@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.client.services;
 
-import java.util.ArrayList;
-
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.Intent;
@@ -20,8 +18,10 @@ import com.ellucian.mobile.android.client.events.EventsResponse;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.util.ArrayList;
+
 public class EventsIntentService extends IntentService {
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
 	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.EventsIntentService.action.updated";
 	public EventsIntentService() {
 		super("EventsIntentService");

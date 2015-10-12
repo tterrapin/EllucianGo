@@ -15,7 +15,7 @@ public class MeetingPattern implements Parcelable {
 	public String endTime;
 	public int[] daysOfWeek;
 	public String room;
-	public String frequency;
+	private String frequency;
 	public String building;
 	public String buildingId;
 	public String campusId;
@@ -25,7 +25,7 @@ public class MeetingPattern implements Parcelable {
 	public MeetingPattern() {
 	}
 	
-	public MeetingPattern(Parcel in) { 
+	private MeetingPattern(Parcel in) {
 		readFromParcel(in);
 	}
 	
@@ -48,7 +48,6 @@ public class MeetingPattern implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

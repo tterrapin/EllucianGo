@@ -1,37 +1,27 @@
 <!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
-
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/grades_viewpage_container"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+        <include layout="@layout/progress_indicator" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent" />
 
-            <!--
-        This title strip will display the currently visible page title, as well as the page
-        titles for adjacent pages.
-            -->
-
-            <com.ellucian.mobile.android.view.PagerTitleStrip
-                android:id="@+id/grades_pager_title_strip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp" />
-        </android.support.v4.view.ViewPager>
     </LinearLayout>
 
     <include layout="@layout/drawer_list" />

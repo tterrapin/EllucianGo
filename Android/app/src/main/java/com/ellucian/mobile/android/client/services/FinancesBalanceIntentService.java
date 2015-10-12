@@ -13,7 +13,7 @@ import com.ellucian.mobile.android.util.Extra;
 
 public class FinancesBalanceIntentService extends IntentService {
 
-    public static final String TAG = "FinancesBalanceIntent";
+    private static final String TAG = "FinancesBalanceIntent";
     public static final String ACTION_UPDATE_FINISHED = "com.ellucian.mobile.android.client.FinancesBalanceIntentService.action.update.finished";
     public static final String UPDATE_RESULT = "updateResult";
     public FinancesBalanceIntentService() {

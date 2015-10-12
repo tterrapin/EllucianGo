@@ -13,11 +13,8 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.EllucianApplication;
-
 import com.ellucian.mobile.android.ilp.AssignmentItemHolder;
 import com.ellucian.mobile.android.ilp.AssignmentListsHolder;
-
 import com.ellucian.mobile.android.ilp.IlpDetailFragment;
 import com.ellucian.mobile.android.ilp.IlpListActivity;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseAssignments;
@@ -34,12 +31,8 @@ public class AssignmentsWidgetService extends RemoteViewsService {
     private static final String TAG = "AppWidgetService";
     public static final String LAUNCHED_FROM_APPWIDGET = "LAUNCHED_FROM_APPWIDGET";
 
-    EllucianApplication ellucianApp;
-
     @Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        ellucianApp = (EllucianApplication)this.getApplication();
-
         return (new AssignmentsViewsFactory(this.getApplicationContext(),
 				intent));
 	}
@@ -49,10 +42,10 @@ public class AssignmentsWidgetService extends RemoteViewsService {
         private List<AssignmentItemHolder> assignmentsToday = new ArrayList<>();
         private Context context = null;
 		@SuppressWarnings("unused")
-		private int appWidgetId;
+		private final int appWidgetId;
 
-		public AssignmentsViewsFactory(Context ctxt, Intent intent) {
-            this.context = ctxt;
+		public AssignmentsViewsFactory(Context context, Intent intent) {
+            this.context = context;
 			appWidgetId = intent.getIntExtra(
 					AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);

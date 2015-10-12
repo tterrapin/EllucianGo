@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Extra;
 
 public class RegisterService extends IntentService {
-	public static final String TAG = RegisterService.class.getSimpleName();
+	private static final String TAG = RegisterService.class.getSimpleName();
 	public static final String ACTION_REGISTER_FINISHED = "com.ellucian.mobile.android.client.RegisterService.action.register.finished";
 	public static final String ACTION_DROP_FINISHED = "com.ellucian.mobile.android.client.RegisterService.action.drop.finished";
 	public static final String REGISTRATION_RESULT = "registrationResult";

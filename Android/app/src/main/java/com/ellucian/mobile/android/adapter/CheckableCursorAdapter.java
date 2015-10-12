@@ -4,9 +4,6 @@
 
 package com.ellucian.mobile.android.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -16,20 +13,23 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.SimpleCursorAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class CheckableCursorAdapter extends SimpleCursorAdapter {
 	public List<Boolean> checkedStates = new ArrayList<Boolean>();
-	public List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
+	public final List<CheckBox> checkBoxes = new ArrayList<CheckBox>();
 	
-	private List<OnCheckBoxClickedListener> listenerList = new ArrayList<OnCheckBoxClickedListener>();
+	private final List<OnCheckBoxClickedListener> listenerList = new ArrayList<OnCheckBoxClickedListener>();
 	
-	private Context context;
-	private int layout;
-	private Cursor cursor;
-	private String[] from;
-	private int[] to;
-	private int flags;
-	private int checkBoxResId;
+	private final Context context;
+	private final int layout;
+	private final Cursor cursor;
+	private final String[] from;
+	private final int[] to;
+	private final int flags;
+	private final int checkBoxResId;
 
 	public CheckableCursorAdapter(Context context, int layout,
 			Cursor c, String[] from, int[] to, int flags, int checkBoxResId) {
@@ -49,7 +49,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 	
 	public interface OnCheckBoxClickedListener {
 		
-		public void onCheckBoxClicked(CheckBox checkBox, boolean isChecked, int position);
+		void onCheckBoxClicked(CheckBox checkBox, boolean isChecked, int position);
 	}
 	
 	public void registerOnCheckBoxClickedListener(OnCheckBoxClickedListener value) {
@@ -141,7 +141,7 @@ public class CheckableCursorAdapter extends SimpleCursorAdapter {
 		checkBoxes.set(position, checkBox);
 	}
 	
-	public CheckBox getCheckBoxAtPostition(int position) {
+	public CheckBox getCheckBoxAtPosition(int position) {
 		return checkBoxes.get(position);
 	}
 }

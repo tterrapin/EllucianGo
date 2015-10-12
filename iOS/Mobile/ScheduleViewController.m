@@ -12,6 +12,7 @@
 #import "CourseSection.h"
 #import "CourseDetailTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface ScheduleViewController ()
 

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item 
-	    android:showAsAction="ifRoom|withText"
-	    android:id="@+id/directory_detail_add_to_contacts" 
-	 	android:title="@string/menu_add_to_contacts" />  
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/directory_detail_add_to_contacts"
+        android:title="@string/menu_add_to_contacts"
+        app:showAsAction="ifRoom|withText" />
 </menu>

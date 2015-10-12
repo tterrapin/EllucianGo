@@ -26,7 +26,7 @@
     self.navigationController.navigationBar.translucent = NO;
     self.toolbar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.contactTextView.textAlignment = NSTextAlignmentRight;
         self.phoneLabelLabel.textAlignment = NSTextAlignmentRight;
         self.emailLabelLabel.textAlignment = NSTextAlignmentRight;
@@ -117,6 +117,8 @@
     
     [self retrieveVersion];
     [self loadImage];
+    
+    self.toolbar.barTintColor = [UIColor primaryColor];
 }
 
 -(void) viewDidAppear:(BOOL)animated

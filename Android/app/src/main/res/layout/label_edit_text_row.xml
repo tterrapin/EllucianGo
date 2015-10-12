@@ -4,6 +4,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
@@ -15,7 +16,8 @@
         android:layout_weight="0"
         android:paddingLeft="4dp"
         android:paddingStart="4dp"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        tools:ignore="NewApi,RtlSymmetry" />
     
     <EditText 
         android:id="@+id/input"
@@ -25,6 +27,7 @@
         android:inputType="text"
         android:paddingLeft="4dp"
         android:paddingStart="4dp"
-        android:paddingTop="2dp" />
+        android:paddingTop="2dp"
+        tools:ignore="NewApi,RtlSymmetry" />
 
 </LinearLayout>

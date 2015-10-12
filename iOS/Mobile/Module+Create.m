@@ -13,7 +13,12 @@
 #import "RegistrationAcademicLevel.h"
 #import "RegistrationLocation.h"
 #import "Module+Attributes.h"
+
+#if TARGET_OS_WATCH
+#import "Ellucian_GO_WatchKit_Extension-Swift.h"
+#else
 #import "Ellucian_GO-Swift.h"
+#endif
 
 @implementation Module (Create)
 

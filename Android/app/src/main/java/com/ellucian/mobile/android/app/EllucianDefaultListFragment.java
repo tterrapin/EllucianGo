@@ -4,12 +4,13 @@
 
 package com.ellucian.mobile.android.app;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,13 +39,13 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 	private static final String TAG = EllucianDefaultListFragment.class.getSimpleName();
 	
 	protected View rootView;
-	protected OnItemClickListener listener;
-	protected ViewBinder viewBinder;
+	private OnItemClickListener listener;
+	private ViewBinder viewBinder;
 	
 	protected boolean mDualPane;
 	protected int mCurCheckPosition = 0;
 	protected Bundle detailBundle;
-	protected boolean showDualPaneDetailOnLoad = true;
+	private boolean showDualPaneDetailOnLoad = true;
 	
 	/** A subclass of EllucianDefaultDetailFragment must have an empty constructor */
 	public EllucianDefaultListFragment() {
@@ -58,7 +59,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 	/** Variable "fname" should be the class name of an EllucianDefaultListFragment subclass
 	 *  example -  SubclassFragmentOfDefaultListFragment.class.getName()
 	 */
-	public static EllucianDefaultListFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
+	private static EllucianDefaultListFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
 		EllucianDefaultListFragment fragment;
 		
 		if (TextUtils.isEmpty(fname)) {
@@ -178,8 +179,15 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
             detailBundle = savedInstanceState.getBundle("detailBundle");
             showDualPaneDetailOnLoad = savedInstanceState.getBoolean("showDualPaneDetailOnLoad", true);
                      
-        } 
-        
+        }
+
+        // CoordinatorLayout works with RecyclerView and any other scrolling views that support
+        // NestedScrollView.
+        // This is a workaround to get CoordinatorLayout to work with ListView on Android L+.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getListView().setNestedScrollingEnabled(true);
+        }
+
         if (detailBundle != null && mDualPane) {
         	// Make sure our UI is in the correct state.
         	if (showDualPaneDetailOnLoad) {
@@ -204,7 +212,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
      * displaying a fragment in-place in the current UI, or starting a
      * whole new activity in which it is displayed.
      */
-    public void showDetails(int index) {
+	protected void showDetails(int index) {
         mCurCheckPosition = index;
 
         if (mDualPane) {
@@ -279,7 +287,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
     	} 
     }
     
-    public void clearCurrentDetailFragment() {
+    private void clearCurrentDetailFragment() {
     	EllucianDefaultDetailFragment details = (EllucianDefaultDetailFragment)
                 getFragmentManager().findFragmentById(R.id.frame_extra);
     	if (details != null) {
@@ -289,7 +297,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
     	}
     }
     
-    public Bundle getDefaultBundle() {
+    private Bundle getDefaultBundle() {
     	Bundle bundle = new Bundle();
 		String title = "TITLE";
 		String date = "Today";
@@ -309,13 +317,13 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 	}
     
     /** Override to return custom Bundle */
-    public Bundle buildDetailBundle(Cursor cursor) {
+	protected Bundle buildDetailBundle(Cursor cursor) {
 		Bundle bundle = null;
 		return bundle;
 	}
     
     /** Override to return custom OnItemClickListener */
-    public AdapterView.OnItemClickListener buildOnItemClickListener() {
+	private AdapterView.OnItemClickListener buildOnItemClickListener() {
 		return listener;
 	}
     
@@ -323,7 +331,7 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
      *  See EllucianDefaultDetailFragment.newInstance for more information
      *  If you are only making changes to the class name, override getDetailFragmentClass() instead
      */
-	public EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
+	protected EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
 		
 		return EllucianDefaultDetailFragment.newInstance(getActivity(), 
 				getDetailFragmentClass().getName(), args, index);
@@ -331,17 +339,17 @@ public class EllucianDefaultListFragment extends EllucianListFragment {
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailFragment subclass */
-	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
+	protected Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
 		return EllucianDefaultDetailFragment.class;	
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailActivity subclass */
-	public Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
+	protected Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
 		return EllucianDefaultDetailActivity.class;	
 	}
 	
 	/** Override to return additional extras */
-	public Intent addExtras(Intent intent) {
+	protected Intent addExtras(Intent intent) {
 		return intent;
 	}
 	

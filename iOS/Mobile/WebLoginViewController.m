@@ -8,7 +8,6 @@
 
 #import "WebLoginViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
-#import "HomeViewController.h"
 #import "CurrentUser.h"
 #import "NotificationManager.h"
 #import "LoginExecutor.h"
@@ -49,35 +48,12 @@
     if([title isEqualToString:@"Authentication Success"]) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication using web login" withValue:nil forModuleNamed:nil];
         [LoginExecutor getUserInfo:NO];
-        
-        BOOL match = NO;
-        if(self.access) {
-            for(ModuleRole *role in self.access) {
-                if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
-                    match = YES;
-                    break;
-                } else if ([role.role isEqualToString:@"Everyone"]) {
-                    match = YES;
-                    break;
-                }
-            }
-            if([self.access count] == 0) { //upgrades from 3.0 or earlier
-                match = YES;
-            }
-            if(!match) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
-                                                                message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                      otherButtonTitles:nil];
-                [alert show];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
-            }
-        }
-        
+
         // register the device if needed
         _dismissed = YES;
+        if (self.completionBlock) {
+            self.completionBlock();
+        }
         [self dismissViewControllerAnimated:YES completion: nil];
     }
 }

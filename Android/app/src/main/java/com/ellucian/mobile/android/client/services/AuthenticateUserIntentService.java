@@ -25,10 +25,10 @@ public class AuthenticateUserIntentService extends IntentService {
 	public static final String ACTION_UPDATE_MAIN = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.updateMain";
 	public static final String ACTION_BACKGROUND_AUTH = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.backgroundAuth";
 	public static final String ACTION_SUCCESS = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.success";
-	public static final String ACTION_FAILED = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.failed";
+	private static final String ACTION_FAILED = "com.ellucian.mobile.android.client.services.AuthenticateUserIntentService.action.failed";
 	private static final String TAG = AuthenticateUserIntentService.class.getSimpleName();
 	
-	EllucianApplication ellucianApp;
+	private EllucianApplication ellucianApp;
 
 	public AuthenticateUserIntentService() {
 		super("AuthenticateUserIntentService");

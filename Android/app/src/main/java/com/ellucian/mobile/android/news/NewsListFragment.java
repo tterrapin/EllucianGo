@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.news;
 
-import java.util.Date;
-
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -15,6 +13,8 @@ import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
 import com.ellucian.mobile.android.provider.EllucianContract.News;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+
+import java.util.Date;
 
 public class NewsListFragment extends EllucianDefaultListFragment {
 	
@@ -50,7 +50,7 @@ public class NewsListFragment extends EllucianDefaultListFragment {
 		if(date != null) {
 			Date convDate = CalendarUtils.parseFromUTC(date);
 
-			String dateString = CalendarUtils.getDefaultDateTimeString(getActivity(), convDate);
+			String dateString = CalendarUtils.getMonthDateString(getActivity(), convDate);
 
 			bundle.putString(Extra.DATE, dateString);					
 		}

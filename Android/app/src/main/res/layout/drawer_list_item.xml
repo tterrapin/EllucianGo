@@ -8,10 +8,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="6dp"
+    android:paddingEnd="6dp"
     android:paddingRight="6dp"
     android:paddingTop="6dp"
     android:orientation="horizontal"
-    tools:ignore="UseCompoundDrawables" >
+    tools:ignore="RtlSymmetry,UseCompoundDrawables" >
 
     <ImageView
         android:id="@+id/drawer_list_item_image"
@@ -68,6 +69,7 @@
         android:contentDescription="@null"
         android:textSize="14sp"
         android:textColor="#ff333333"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="NewApi" />
 
 </LinearLayout>

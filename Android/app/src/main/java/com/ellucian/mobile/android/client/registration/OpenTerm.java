@@ -14,7 +14,7 @@ public class OpenTerm implements Parcelable {
 	public OpenTerm() {
 	}
 	
-	public OpenTerm(Parcel in) { 
+	private OpenTerm(Parcel in) {
 		readFromParcel(in);
 	}
 	
@@ -27,7 +27,6 @@ public class OpenTerm implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

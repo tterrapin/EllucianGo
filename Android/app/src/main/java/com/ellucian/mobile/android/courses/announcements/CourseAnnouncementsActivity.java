@@ -4,13 +4,11 @@
 
 package com.ellucian.mobile.android.courses.announcements;
 
-import java.util.Date;
-
 import android.app.IntentService;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.SimpleCursorAdapter;
@@ -26,8 +24,10 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.util.Date;
+
 public class CourseAnnouncementsActivity extends EllucianDefaultDualPaneActivity {
-	protected String courseId;
+	private String courseId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

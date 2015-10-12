@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MapsBuilder extends ContentProviderOperationBuilder<MapsResponse> {
 
-	private String module;
+	private final String module;
 
 	public MapsBuilder(Context context, String module) {
 		super(context);

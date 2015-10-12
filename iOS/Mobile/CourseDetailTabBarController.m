@@ -13,7 +13,7 @@
 #import "CourseDetail.h"
 #import "CourseDetailInstructor.h"
 #import "CourseMeetingPattern.h"
-#import "UIColor+SchoolCustomization.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface CourseDetailTabBarController ()
 

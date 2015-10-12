@@ -4,17 +4,17 @@
 
 package com.ellucian.mobile.android.provider;
 
-import java.util.List;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.ellucian.elluciango.BuildConfig;
 
+import java.util.List;
+
 public class EllucianContract {
 	
 	public static final String CONTENT_AUTHORITY = BuildConfig.contentProvider;
-	static final String PATH_SECURED = "secured";
+	private static final String PATH_SECURED = "secured";
 
 	public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 	public static final Uri SECURED_CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SECURED).build();
@@ -177,7 +177,7 @@ public class EllucianContract {
 	
 	interface CoursePatternsColumns {
 		String PATTERN_DAYS = "coursepatterns_days";
-		String PATTERN_START_TIME = "corusepaterns_start_time";
+		String PATTERN_START_TIME = "corusepaterns_start_time"; // typo in db - leave it
 		String PATTERN_END_TIME = "coursepatterns_end_time";
 		String PATTERN_LOCATION = "coursepatterns_location";
 		String PATTERN_ROOM = "coursepatterns_room";

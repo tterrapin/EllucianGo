@@ -4,31 +4,35 @@
 
 package com.ellucian.mobile.android.maps;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
@@ -41,6 +45,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianDatabase.Tables;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.PermissionUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
@@ -48,58 +53,175 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MapsActivity extends EllucianActivity implements
 		LayersDialogFragmentListener, OnInfoWindowClickListener,
-		OnNavigationListener, LocationSource, LocationListener,
-		LoaderManager.LoaderCallbacks<Cursor> {
+		AdapterView.OnItemSelectedListener,
+		LocationSource, LocationListener,
+		LoaderManager.LoaderCallbacks<Cursor>,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
+    public static final String TAG = "MapsActivity";
 	private static final String STATE_NAV = "nav";
+
+    // WRITE is required by Google Maps API to store map tiles.
+    private static final int STORAGE_REQUEST_ID = 0;
+    private static String[] STORAGE_PERMISSIONS =
+            {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    // LOCATION is optional - user can deny and still use maps.
+    private static final int LOCATION_REQUEST_ID = 1;
+    private static String[] LOCATION_PERMISSIONS =
+            {Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION};
 
 	private GoogleMap map;
 	private OnLocationChangedListener mapLocationListener = null;
 	private LocationManager locMgr = null;
-	private Criteria crit = new Criteria();
+	private final Criteria crit = new Criteria();
 	private SimpleCursorAdapter campusAdapter;
-	private HashMap<Marker, Building> markers = new HashMap<Marker, Building>();
+	private final HashMap<Marker, Building> markers = new HashMap<>();
 	private boolean campusesLoadedFirstTime;
 	private Location lastKnownLocation;
+    private Spinner spinner;
 
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	handleIntent(getIntent());
-    }
+
+        // Check if the Storage permission is already available. READ is implicitly granted if WRITE is.
+        if (!hasStoragePermission()) {
+            // Storage permission have not been granted
+            requestStoragePermissions();
+        } else {
+    	    handleIntent();
+        }
     
+    }
+
+    private boolean hasLocationPermission() {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasStoragePermission() {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    /**
+     * (Android M+ only)
+     * Before user is prompted to grant permission, explain why we need it.
+     * If they choose to never be asked again, they will see this message
+     * and then be returned to where they came from.
+     */
+    private void requestStoragePermissions() {
+        Log.d(TAG, "Explain and request storage permission.");
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.maps_storage_alert_title)
+                .setMessage(R.string.maps_storage_alert_message)
+                .setPositiveButton(R.string.dialog_continue,
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                ActivityCompat.requestPermissions(MapsActivity.this,
+                                        STORAGE_PERMISSIONS, STORAGE_REQUEST_ID);
+                            }
+                        }).create().show();
+    }
+
+    /**
+     * (Android M+ only)
+     * Request location permission. No explanation to user is needed.
+     */
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(this, LOCATION_PERMISSIONS, LOCATION_REQUEST_ID);
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        Log.d(TAG, "onRequestPermissionsResult");
+        if (requestCode == STORAGE_REQUEST_ID) {
+            if (!PermissionUtil.verifyPermissions(grantResults)) {
+                // Not all required permissions were granted.
+                Log.w(TAG, "The Required STORAGE permission was NOT granted.");
+                Toast.makeText(this, R.string.maps_storage_not_granted, Toast.LENGTH_LONG).show();
+                finish();  // Close activity.
+            } else {
+                Log.d(TAG, "Storage permissions have been granted.");
+                handleIntent();
+            }
+
+        } else if (requestCode == LOCATION_REQUEST_ID) {
+            if (PermissionUtil.verifyPermissions(grantResults)) {
+                // All required permissions have been granted.
+                getLocation();
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
-    	handleIntent(intent);
+        if (!hasStoragePermission()) {
+            // Storage permission have not been granted
+            requestStoragePermissions();
+        } else {
+            handleIntent();
+        }
     }
-    
-    protected void handleIntent(Intent intent) {
+
+    private void handleIntent() {
 		
 		if (readyToGo()) {
+
+            if (!hasLocationPermission()) {
+                // Location permissions have not been granted
+                requestLocationPermission();
+            }
+
 			setContentView(R.layout.activity_maps);
 			setUpMapIfNeeded();
 			
 			locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
 			crit.setAccuracy(Criteria.ACCURACY_COARSE);
 
-			map.setMyLocationEnabled(true);
-			map.getUiSettings().setMyLocationButtonEnabled(true);
+            // Don't get user's location if they haven't granted it.
+            if (hasLocationPermission()) {
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+            }
 			map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater()));
-			
 			
 			String provider = locMgr.getBestProvider(crit, true);
 			if(provider != null) {
 				sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Geolocate user", null, moduleName);
-				lastKnownLocation = locMgr.getLastKnownLocation(locMgr
-						.getBestProvider(crit, true));
+                try {
+                    lastKnownLocation = locMgr.getLastKnownLocation(locMgr
+                            .getBestProvider(crit, true));
+                } catch (Exception e) {
+                    Log.e(TAG, "Location not available. " + e.getMessage());
+                }
 				if (lastKnownLocation != null) {
 					LatLng latlng = new LatLng(lastKnownLocation.getLatitude(),
 							lastKnownLocation.getLongitude());
@@ -107,24 +229,25 @@ public class MapsActivity extends EllucianActivity implements
 					map.animateCamera(cu);
 				}
 			}
-			
-			setProgressBarIndeterminateVisibility(true); 
-			Intent serviceIntent = new Intent(this, MapsIntentService.class);
+
+            Intent serviceIntent = new Intent(this, MapsIntentService.class);
 			serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
 			serviceIntent.putExtra(Extra.MAPS_CAMPUSES_URL, getIntent().getStringExtra(Extra.MAPS_CAMPUSES_URL));
 			startService(serviceIntent);
 
-			campusAdapter = new SimpleCursorAdapter(getActionBar().getThemedContext(),
+			ActionBar bar = getSupportActionBar();
+			bar.setDisplayShowTitleEnabled(false);
+			spinner = (Spinner) findViewById(R.id.toolbar_spinner);
+
+			campusAdapter = new SimpleCursorAdapter(getSupportActionBar().getThemedContext(),
 					android.R.layout.simple_spinner_item, null,
 					new String[] { MapsCampuses.CAMPUS_NAME },
 					new int[] { android.R.id.text1 }, 0);
 
-			ActionBar bar = getActionBar();
-
 			campusAdapter
 					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			bar.setListNavigationCallbacks(campusAdapter, this);
+            spinner.setAdapter(campusAdapter);  // TODO disable drop down if cursor has 1 item
+            spinner.setOnItemSelectedListener(this);
 
 			getLoaderManager().initLoader(0, null, this);
 		}
@@ -133,13 +256,10 @@ public class MapsActivity extends EllucianActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(locMgr != null) {
-			try {
-				locMgr.requestLocationUpdates(0L, 0.0f, crit, this, null);
-			} catch (IllegalArgumentException e) {
-				//java.lang.IllegalArgumentException: no providers found for criteria
-			}
-		}
+        if (hasLocationPermission()) {
+            getLocation();
+        }
+
 		if(map != null) {
 			map.setLocationSource(this);
 			map.setIndoorEnabled(true);
@@ -153,7 +273,12 @@ public class MapsActivity extends EllucianActivity implements
 			map.setLocationSource(null);
 			map.setIndoorEnabled(false);
 		}
-		if(locMgr != null) locMgr.removeUpdates(this);
+		if(locMgr != null)
+            try {
+                locMgr.removeUpdates(this);
+            } catch (Exception e) {
+                Log.e(TAG, "Location is not available. " + e.getMessage());
+            }
 		
 		super.onPause();
 	}
@@ -193,16 +318,26 @@ public class MapsActivity extends EllucianActivity implements
 
 	private void setUpMapIfNeeded() {
 		if (map == null) {
-			map = ((MapFragment) getFragmentManager()
+			map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 			if (map != null) {
 				map.setOnInfoWindowClickListener(this);
-				setUpMap();
 			}
 		}
 	}
 
-	protected boolean readyToGo() {
+    private void getLocation() {
+        if(locMgr != null) {
+            try {
+                locMgr.requestLocationUpdates(0L, 0.0f, crit, this, null);
+            } catch (Exception e) {
+                //java.lang.IllegalArgumentException: no providers found for criteria
+                Log.e(TAG, "Location is not available" + e.getMessage());
+            }
+        }
+    }
+
+	private boolean readyToGo() {
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
 		if (status == ConnectionResult.SUCCESS) {
@@ -227,10 +362,6 @@ public class MapsActivity extends EllucianActivity implements
 		}
 
 		return (false);
-	}
-
-	private void setUpMap() {
-
 	}
 
 	@Override
@@ -318,11 +449,14 @@ public class MapsActivity extends EllucianActivity implements
 	}
 
 	@Override
-	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_BUTTON_PRESS, "Tap campus selector", null, moduleName);
 		sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Select campus", null, moduleName);
-		moveToCampus(itemPosition);
-		return true;
+		moveToCampus(parent.getSelectedItemPosition());
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
 	private void moveToCampus(int itemPosition) {
@@ -374,10 +508,9 @@ public class MapsActivity extends EllucianActivity implements
 		int id = loader.getId();
 		switch (id) {
 		case 0:
-			setProgressBarIndeterminateVisibility(false); 
-			campusAdapter.swapCursor(data);
+            campusAdapter.swapCursor(data);
 			if(data.getCount() > 0) {
-				if(campusesLoadedFirstTime == false && lastKnownLocation != null) {
+				if(!campusesLoadedFirstTime && lastKnownLocation != null) {
 					campusesLoadedFirstTime = true;
 					
 					int selectedCampus = 0;
@@ -397,18 +530,17 @@ public class MapsActivity extends EllucianActivity implements
 							distance = campusDistance;
 						}
 					}
-					getActionBar().setSelectedNavigationItem(selectedCampus);
+                    spinner.setSelection(selectedCampus);
 				}
 			}
 			break;
 		case 1:
-			Set<Marker> keys = new HashSet<Marker>(markers.keySet());
+			Set<Marker> keys = new HashSet<>(markers.keySet());
 			for (Marker marker : keys) {
 				marker.remove();
 				markers.remove(marker);
 			}
 			if (data.moveToFirst()) {
-				Marker lastMarker = null;
 				do {
 
 					String buildingName = data.getString(data
@@ -445,7 +577,6 @@ public class MapsActivity extends EllucianActivity implements
 					building.longitude = buildingLon;
 					building.additionalServices = additionalServices;
 					markers.put(marker, building);
-					lastMarker = marker;
 				} while (data.moveToNext());
 			}
 			break;
@@ -461,18 +592,18 @@ public class MapsActivity extends EllucianActivity implements
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		super.onSaveInstanceState(savedInstanceState);
-
-		savedInstanceState.putInt(STATE_NAV, getActionBar()
-				.getSelectedNavigationIndex());
+        if (spinner != null) {
+		savedInstanceState.putInt(STATE_NAV, spinner.getSelectedItemPosition());
 	}
+    }
 
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-
-		getActionBar().setSelectedNavigationItem(
-				savedInstanceState.getInt(STATE_NAV));
+        if (spinner != null) {
+        spinner.setSelection(savedInstanceState.getInt(STATE_NAV));
 	}
+    }
 
 	@Override
 	public void onInfoWindowClick(Marker arg0) {

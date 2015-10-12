@@ -20,8 +20,8 @@ public class RegistrationResultsFragment extends EllucianFragment {
 	
 	public static final String METHOD_DROP = "drop";
 	
-	protected View rootView;
-	protected RegistrationResponse response;
+	private View rootView;
+	private RegistrationResponse response;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

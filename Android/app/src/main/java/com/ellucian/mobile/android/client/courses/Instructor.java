@@ -10,7 +10,7 @@ import android.os.Parcelable;
 public class Instructor implements Parcelable {
 	public String firstName;
 	public String lastName;
-	public String middleIntial;
+	public String middleInitial;
 	public String instructorId;
 	public boolean primary;
 	public String formattedName;
@@ -18,14 +18,14 @@ public class Instructor implements Parcelable {
 	public Instructor() {
 	}
 	
-	public Instructor(Parcel in) { 
+	private Instructor(Parcel in) {
 		readFromParcel(in);
 	}
 	
 	private void readFromParcel(Parcel in) {
 		firstName = in.readString();
 		lastName = in.readString();
-		middleIntial = in.readString();
+		middleInitial = in.readString();
 		instructorId = in.readString();
 		int booleanValue = in.readInt();
 		primary = booleanValue == 1 ? true : false;
@@ -35,7 +35,6 @@ public class Instructor implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -43,7 +42,7 @@ public class Instructor implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(firstName);
 		dest.writeString(lastName);
-		dest.writeString(middleIntial);
+		dest.writeString(middleInitial);
 		dest.writeString(instructorId);
 		dest.writeInt(primary ? 1 : 0);
 		dest.writeString(formattedName);

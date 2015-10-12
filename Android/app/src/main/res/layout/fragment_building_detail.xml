@@ -72,7 +72,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_building" />
@@ -117,7 +117,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_building" />
@@ -163,7 +163,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_building" />
@@ -190,7 +190,7 @@
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/addresLabel"
+                        android:id="@+id/addressLabel"
                         style="@style/tableLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_location_web_site" />
@@ -252,7 +252,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_action_about" />
@@ -296,7 +296,7 @@
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/directory_icon_description"
                     android:src="@drawable/ic_additional_services" />

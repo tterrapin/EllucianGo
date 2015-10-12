@@ -4,27 +4,20 @@
 
 package com.ellucian.mobile.android.events;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -49,6 +42,13 @@ import com.ellucian.mobile.android.provider.EllucianDatabase;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 public class EventsActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor>,
 	CategoryDialogFragment.CategoryDialogListener {
 	
@@ -59,7 +59,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 	private String[] filteredCategories;
 	private String query;
 	private boolean resetListPosition;
-	private static String[] eventsColumns = new String[] {
+    private static final String[] eventsColumns = new String[] {
 		Events._ID,
 		Events.EVENTS_TITLE, 
 		Events.EVENTS_START, 
@@ -88,12 +88,12 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 				this,
 				R.layout.events_row, 
 				null, 
-				new String [] { Events.EVENTS_TITLE, Events.EVENTS_START, Events.EVENTS_LOCATION, Events.EVENTS_CATEGORIES }, 
-				new int[] { R.id.events_title, R.id.events_start_time, R.id.events_location, R.id.events_category}, 
+				new String [] { Events.EVENTS_TITLE, Events.EVENTS_START, Events.EVENTS_LOCATION, Events.EVENTS_CATEGORIES, Events.EVENTS_DESCRIPTION },
+				new int[] { R.id.events_title, R.id.events_start_time, R.id.events_location, R.id.events_category, R.id.event_summary},
 				0);
     	
     	
-    	FragmentManager manager = getFragmentManager();
+    	FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag("EventsListFragment");
 		
@@ -120,7 +120,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
     	
     	handleIntent(getIntent());
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
@@ -160,8 +160,8 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
             arguments.putString("query", query);
         }
         
-        getLoaderManager().restartLoader(0, arguments, this);
-        getLoaderManager().restartLoader(1, null, this);
+        getSupportLoaderManager().restartLoader(0, arguments, this);
+        getSupportLoaderManager().restartLoader(1, null, this);
         
         Intent serviceIntent = new Intent(this, EventsIntentService.class);
         serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
@@ -189,6 +189,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
     		dialogFragment.dismiss();
     		dialogFragment = null;
     	}
+
     }
     
     @Override
@@ -213,7 +214,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 
 			@Override
 			public boolean onClose() {
-	        	getLoaderManager().restartLoader(0, null, EventsActivity.this);
+	        	getSupportLoaderManager().restartLoader(0, null, EventsActivity.this);
 	        	query = null;
 	        	resetListPosition = true;
 				return false;
@@ -222,11 +223,11 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
         });
         searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				EventsActivity.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null, moduleName);
-			}
-        	
+            @Override
+            public void onClick(View v) {
+                EventsActivity.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null, moduleName);
+            }
+
         });
         if (!TextUtils.isEmpty(query)) {
         	searchView.setQuery(query, false);
@@ -240,7 +241,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
     	case R.id.events_menu_filter:
     		sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Select filter", null, moduleName);
     		dialogFragment = new CategoryDialogFragment();
-    	    dialogFragment.show(getFragmentManager(), moduleId + "_" + CATEGORY_DIALOG);
+    	    dialogFragment.show(getSupportFragmentManager(), moduleId + "_" + CATEGORY_DIALOG);
     		return true;
     	case R.id.events_action_search:
     		onSearchRequested();
@@ -253,9 +254,9 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
     
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		String[] projection = null;
-		String selection = null;
-		String[] selectionArgs = null;
+		String[] projection;
+		String selection;
+		String[] selectionArgs;
 			
 		switch (id) {
 		case 0:	
@@ -305,7 +306,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 		case 1:
 			Log.d("EventsActivity.onLoadFinished", "Finished loading cursor.  Updating categories");
 			
-			ArrayList<String> categoriesList = new ArrayList<String>();
+			ArrayList<String> categoriesList = new ArrayList<>();
 			while (data.moveToNext()) {
 	        	int columnIndex = data.getColumnIndex(EventsCategories.EVENTS_CATEGORY_NAME);
 	        	categoriesList.add(data.getString(columnIndex));
@@ -330,8 +331,8 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 	
 	/** Make sure to call this method in the LoaderManager.LoaderCallback.onLoadFinished method if  
    	 *  it is overridden in the subclass 
-   	 */ 	
-	protected void createNotifyHandler(final EllucianDefaultListFragment fragment) {
+   	 */
+	private void createNotifyHandler(final EllucianDefaultListFragment fragment) {
    		Handler handler = new Handler(Looper.getMainLooper());
    		handler.post(new Runnable(){
 
@@ -344,47 +345,47 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
    		});
    	}
 	
-	public String getDefaultDateFormatedString(Date date) {
+	private String getDefaultDateFormattedString(Date date) {
 		String dateString;
 		DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(this.getBaseContext());
 		dateString = dateFormatter.format(date);
 		return dateString;
 	}
 	
-	public String getDefaultTimeFormatedString(Date date) {
+	private String getDefaultTimeFormattedString(Date date) {
 		String timeString;
 		DateFormat timeFormatter = android.text.format.DateFormat.getTimeFormat(this.getBaseContext());
 		timeString = timeFormatter.format(date);
 		return timeString;
 	}
 	
-	public String getEventDateFormatedString(Date start, Date end, boolean allDay) {
-		String output = "";
+	public String getEventDateFormattedString(Date start, Date end, boolean allDay) {
+		String output;
 
 		if (allDay) {
 			output = getString(R.string.date_all_day_event_format,
-						getDefaultDateFormatedString(start));
+						getDefaultDateFormattedString(start));
 		} else if (end != null) {
 			output = getString(R.string.date_time_to_time_format,
-						getDefaultDateFormatedString(start),
-						getDefaultTimeFormatedString(start),
-						getDefaultTimeFormatedString(end));
+						getDefaultDateFormattedString(start),
+						getDefaultTimeFormattedString(start),
+						getDefaultTimeFormattedString(end));
 		} else {
 			output = getString(R.string.date_time_format,
-						getDefaultDateFormatedString(start),
-						getDefaultTimeFormatedString(start));
+						getDefaultDateFormattedString(start),
+						getDefaultTimeFormattedString(start));
 		}
 		return output;
 	}
 	
 	// TODO - fix this when events gets fixed on the mobile server
-	public String fromEventDate(Date date) {
-		String formattedDate = null;
-		if (date != null) {
-			formattedDate = eventsFormat.format(date);
-		}
-		return formattedDate;
-	}
+//	public String fromEventDate(Date date) {
+//		String formattedDate = null;
+//		if (date != null) {
+//			formattedDate = eventsFormat.format(date);
+//		}
+//		return formattedDate;
+//	}
 	
 	// TODO - fix this when events gets fixed on the mobile server
 	public Date toEventDate(String formattedDate) {
@@ -417,12 +418,12 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 				Date startDate = toEventDate(startDateString);
 				Date endDate = toEventDate(endDateString);
 				
-				String output = "";
+				String output;
 				
 				if (allDayFlag == 0) {
-					output = getEventDateFormatedString(startDate, endDate, false);
+					output = getEventDateFormattedString(startDate, endDate, false);
 				} else {
-					output = getEventDateFormatedString(startDate, null, true);			
+					output = getEventDateFormattedString(startDate, null, true);
 				}
 				
 				((TextView) view).setText(output);
@@ -455,6 +456,7 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 	public void updateFilteredCategories(String[] filteredCategories) {
 		this.filteredCategories = filteredCategories;
 		resetListPosition = true;
-		getLoaderManager().restartLoader(0, null, this);
+		getSupportLoaderManager().restartLoader(0, null, this);
 	}
+
 }

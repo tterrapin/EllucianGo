@@ -1,35 +1,25 @@
-// Copyright 2014 Ellucian Company L.P and its affiliates.
+/*
+ * Copyright 2015 Ellucian Company L.P. and its affiliates.
+ */
 
 package com.ellucian.mobile.android.registration;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -68,11 +58,26 @@ import com.ellucian.mobile.android.client.services.RegistrationCartUpdateService
 import com.ellucian.mobile.android.registration.RefineSearchDialogFragment.OnDoneFilteringListener;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 import com.google.gson.Gson;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class RegistrationActivity extends EllucianActivity implements OnDoneFilteringListener {
 	private static final String TAG = RegistrationActivity.class.getSimpleName();
-	
+
+    private final Activity activity = this;
 	private final int CART_TAB_INDEX = 0;
 	private final int SEARCH_TAB_INDEX = 1;
 	private final int REGISTERED_TAB_INDEX = 2;
@@ -80,15 +85,15 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	public static final int REGISTRATION_DETAIL_REQUEST_CODE = 8888;
 	public static final int RESULT_REMOVE = 9999;
 	
-	public static final String PLAN_ID = "planId";
+	private static final String PLAN_ID = "planId";
 	public static final String TERM_ID = "termId";
 	public static final String SECTION_ID = "sectionId";
 	public static final String SECTION = "section";
-	public static final String TERM_NAME = "termName";
-	public static final String CART_IDENTIFIER = "Cart";
-	public static final String REGISTERED_IDENTIFIER = "Registered";
-	public static final String ACTION_REGISTER = "acitonRegister";
-	public static final String ACTION_DROP = "actionDrop";
+	private static final String TERM_NAME = "termName";
+	private static final String CART_IDENTIFIER = "Cart";
+	private static final String REGISTERED_IDENTIFIER = "Registered";
+	private static final String ACTION_REGISTER = "actionRegister";
+	private static final String ACTION_DROP = "actionDrop";
 	
 	private CheckableSectionedListAdapter cartAdapter;
 	private RegistrationCartListFragment cartFragment;
@@ -99,39 +104,40 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	private DropConfirmDialogFragment dropConfirmDialogFragment;
 	private AddToCartConfirmDialogFragment addToCartConfirmDialogFragment;
 	private RegistrationRegisteredListFragment registeredFragment;
-	protected CartResponse currentCart;
+	private CartResponse currentCart;
 	private RetrieveCartListTask cartListTask;
 	private int previousSelected; 
-	protected boolean eligibilityChecked;
-	protected boolean planPresent;
+	private boolean eligibilityChecked;
+	private boolean planPresent;
 	private CheckEligibilityTask eligibilityTask;
 	private RegisterReceiver registerReceiver;
 	private DropReceiver dropReceiver;
 	private CartUpdateReceiver cartUpdateReceiver;	
 	private long startTime;
-	
-	protected SearchSectionTask searchTask;
-	protected SearchResponse currentResults;
-	protected CheckableSectionedListAdapter resultsAdapter;
-	protected CheckableSectionedListAdapter registeredAdapter;
-	
-	protected OpenTerm[] openTerms;
-	protected HashMap<String, String> termPinMap;
-	
-	protected SimpleDateFormat defaultTimeParserFormat;
-	protected SimpleDateFormat altTimeParserFormat;
-	protected DateFormat timeFormatter;
+    private TabLayout tabLayout;
+    private int currentTab;
 
-	protected Gson gson;
+    private SearchSectionTask searchTask;
+	private SearchResponse currentResults;
+	private CheckableSectionedListAdapter resultsAdapter;
+	private CheckableSectionedListAdapter registeredAdapter;
+
+	OpenTerm[] openTerms;
+	private HashMap<String, String> termPinMap;
+	
+	private SimpleDateFormat defaultTimeParserFormat;
+	private SimpleDateFormat altTimeParserFormat;
+	private DateFormat timeFormatter;
+
+    private Gson gson;
 	
 	private boolean isInForeground;
-	
-	@SuppressWarnings("unchecked")
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_default_dual_pane);
-		
+		setContentView(R.layout.activity_footer_dual_pane);
+
 		setTitle(moduleName);
 		
 		isInForeground = true;
@@ -144,30 +150,44 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		gson = new Gson();
 		
 		
-		FragmentManager manager = getFragmentManager();
+		FragmentManager manager = getSupportFragmentManager();
 		cartFragment =  (RegistrationCartListFragment) manager.findFragmentByTag("RegistrationCartListFragment");
 		
 		if (cartFragment == null) {
-			cartFragment = (RegistrationCartListFragment) EllucianDefaultListFragment.newInstance(this, RegistrationCartListFragment.class.getName(), null);		
+			cartFragment = (RegistrationCartListFragment) EllucianDefaultListFragment.newInstance(this, RegistrationCartListFragment.class.getName(), null);
 		}
 		
 		searchFragment =  (RegistrationSearchFragment) manager.findFragmentByTag("RegistrationSearchFragment");
-		
+
 		if (searchFragment == null) {
-			searchFragment = (RegistrationSearchFragment) Fragment.instantiate(this, RegistrationSearchFragment.class.getName());		
+			searchFragment = (RegistrationSearchFragment) Fragment.instantiate(this, RegistrationSearchFragment.class.getName());
 		}
-		
+
 		registeredFragment =  (RegistrationRegisteredListFragment) manager.findFragmentByTag("RegistrationRegisteredListFragment");
-		
+
 		if (registeredFragment == null) {
 			registeredFragment = (RegistrationRegisteredListFragment) Fragment.instantiate(this, RegistrationRegisteredListFragment.class.getName());
-		}		
+		}
 		
 		cartAdapter = new CheckableSectionedListAdapter(this);
 		resultsAdapter = new CheckableSectionedListAdapter(this);
 		registeredAdapter = new CheckableSectionedListAdapter(this);
-				
-		boolean registerResultsAdded = false;
+
+        // Setup the 3 tabs for Cart, Search, Registered in 1 TabLayout.
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+
+        Tab cartTab = tabLayout.newTab().setText(getCurrentCartText());
+        Tab searchTab = tabLayout.newTab().setText(R.string.registration_tab_search);
+        Tab registeredTab = tabLayout.newTab().setText(R.string.registration_tab_registered);
+        tabLayout.addTab(cartTab, CART_TAB_INDEX);
+        tabLayout.addTab(searchTab, SEARCH_TAB_INDEX);
+        tabLayout.addTab(registeredTab, REGISTERED_TAB_INDEX);
+        tabLayout.setOnTabSelectedListener(new RegistrationTabListener(this, R.id.frame_main));
+
+        boolean registerResultsAdded = false;
 		boolean searchResultsAdded = false;
 		
 		if (savedInstanceState != null) {
@@ -219,33 +239,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 		cartFragment.setListAdapter(cartAdapter);
 		registeredFragment.setListAdapter(registeredAdapter);
-		
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		Tab cartTab = actionBar.newTab()
-				.setText(getCurrentCartText())
-				.setTabListener(new RegistrationTabListener<RegistrationCartListFragment>(
-						this, "RegistrationCartListFragment", cartFragment,
-						R.id.frame_main));
- 
-		Tab searchTab = actionBar.newTab()
-				.setText(R.string.registration_tab_search)
-				.setTabListener(new RegistrationTabListener<RegistrationSearchFragment>(
-						this, "RegistrationSearchFragment", searchFragment,
-						R.id.frame_main));
-		
-		Tab registeredTab = actionBar.newTab()
-				.setText(R.string.registration_tab_registered)
-				.setTabListener(new RegistrationTabListener<RegistrationRegisteredListFragment>(
-						this, "RegistrationRegisteredListFragment", registeredFragment,
-						R.id.frame_main));
-
-		actionBar.addTab(cartTab, false);
-		actionBar.addTab(searchTab, false);
-		actionBar.addTab(registeredTab, false);
-	
 		if (!eligibilityChecked) {
 			eligibilityTask = new CheckEligibilityTask();
 			eligibilityTask.execute(requestUrl);
@@ -259,32 +253,32 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			if (searchResultsAdded) {
 				FragmentTransaction ft = manager.beginTransaction();
 				clearMainFragment();
-				
+
 				searchResultsFragment = (RegistrationSearchResultsListFragment) manager.findFragmentByTag("RegistrationSearchResultsListFragment");
 				searchResultsFragment.setListAdapter(resultsAdapter);
 				ft.attach(searchResultsFragment);
 				ft.commit();
 			} else {
-				getActionBar().setSelectedNavigationItem(SEARCH_TAB_INDEX);
+				tabLayout.getTabAt(SEARCH_TAB_INDEX).select();
 			}
-			
+
 		} else if (previousSelected == REGISTERED_TAB_INDEX) {
 			cartTab.setTag(true);
 			searchTab.setTag(true);
 			registeredTab.setTag(true);
 			if (registerResultsAdded) {
-				getActionBar().setSelectedNavigationItem(REGISTERED_TAB_INDEX);	
+				tabLayout.getTabAt(REGISTERED_TAB_INDEX).select();
 				FragmentTransaction ft = manager.beginTransaction();
 				clearMainFragment();
-				
+
 				registerResultsFragment = (RegistrationResultsFragment) manager.findFragmentByTag("RegistrationResultsFragment");
-				
+
 				ft.attach(registerResultsFragment);
 				ft.commit();
 			} else {
-				getActionBar().setSelectedNavigationItem(REGISTERED_TAB_INDEX);	
-			}	
-			
+				tabLayout.getTabAt(REGISTERED_TAB_INDEX).select();
+			}
+
 		} else {
 			if (currentCart != null) {
 				cartTab.setTag(true);
@@ -293,37 +287,37 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				if (registerResultsAdded) {
 					FragmentTransaction ft = manager.beginTransaction();
 					clearMainFragment();
-					
+
 					registerResultsFragment = (RegistrationResultsFragment) manager.findFragmentByTag("RegistrationResultsFragment");
-					
+
 					ft.attach(registerResultsFragment);
 					ft.commit();
 				} else {
-					getActionBar().setSelectedNavigationItem(CART_TAB_INDEX);
+                    tabLayout.getTabAt(CART_TAB_INDEX).select();
 				}
-					
+
 			} else {
 				cartTab.setTag(false);
 				searchTab.setTag(false);
 				registeredTab.setTag(false);
 
 				Log.d(TAG, "No cart found, retrieving.");
-				setProgressBarIndeterminateVisibility(true);
-				cartListTask = new RetrieveCartListTask();
+                Utils.showProgressIndicator(activity);
+                cartListTask = new RetrieveCartListTask();
 				cartListTask.execute(requestUrl);
 
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();	
 		isInForeground = true;
 		// Check if the RegisterService is still currently running and if so show the progress bar
 		if (getEllucianApp().isServiceRunning(RegisterService.class)) {
-			setProgressBarIndeterminateVisibility(true);
-		}
+            Utils.showProgressIndicator(activity);
+        }
 		registerReceiver = new RegisterReceiver();
 		cartUpdateReceiver = new CartUpdateReceiver();
 		dropReceiver = new DropReceiver();
@@ -380,19 +374,18 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			}			
 		}
 		
-		int currentTab =  getActionBar().getSelectedNavigationIndex();
+		int mCurrentTab = currentTab;
 
 		if (registerResultsFragment != null) {
 			if (registerResultsFragment.isAdded()) {
 				outState.putBoolean("registerResultsAdded", true);
 			}
-			
 		}
 		
 		if (searchResultsFragment != null) {
 			if (searchResultsFragment.isAdded()) {
 				outState.putBoolean("searchResultsAdded", true);
-				currentTab = SEARCH_TAB_INDEX;
+				mCurrentTab = SEARCH_TAB_INDEX;
 			} 
 		}		
 		
@@ -400,7 +393,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			outState.putSerializable("termPinMap", termPinMap);
 		}
 		
-		outState.putInt("previousSelected", currentTab);
+		outState.putInt("previousSelected", mCurrentTab);
 		outState.putBoolean("eligibilityChecked", eligibilityChecked);
 	}
 	
@@ -453,8 +446,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 	}
 	
-	protected void clearMainFragment() {
-		FragmentManager manager = getFragmentManager();
+	private void clearMainFragment() {
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction ft = manager.beginTransaction();
 		Fragment mainFrame = manager.findFragmentById(R.id.frame_main);
 
@@ -464,8 +457,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		ft.commitAllowingStateLoss();
 	}
 	
-	protected void clearDetailFragment() {
-		FragmentManager manager = getFragmentManager();
+	private void clearDetailFragment() {
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction ft = manager.beginTransaction();
 		Fragment extraFrame = manager.findFragmentById(R.id.frame_extra);
 		
@@ -477,9 +470,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	}
 	
 	private void enableTabs() {
-		ActionBar actionBar = getActionBar();
-		for (int i = 0; i < actionBar.getTabCount(); i++) {
-			actionBar.getTabAt(i).setTag(true);
+		for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            tabLayout.getTabAt(i).setTag(true);
 		}
 	}
 	
@@ -535,8 +527,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 		
 		// After adapter is filled update the number of items in cart showing in tab
-		if (getActionBar().getTabCount() > 0) {
-			Tab cartTab = getActionBar().getTabAt(CART_TAB_INDEX);
+		if (tabLayout.getTabCount() > 0) {
+            Tab cartTab = tabLayout.getTabAt(CART_TAB_INDEX);
 			if (cartTab != null) {
 				cartTab.setText(getCurrentCartText());
 			} else {
@@ -625,7 +617,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	public void onRegisterClicked(View view) {
 		if (planPresent && !getEllucianApp().isServiceRunning(RegisterService.class)) {
 			registerConfirmDialogFragment = new RegisterConfirmDialogFragment();
-			registerConfirmDialogFragment.show(getFragmentManager(), "RegisterConfirmDialogFragment");
+			registerConfirmDialogFragment.show(getSupportFragmentManager(), "RegisterConfirmDialogFragment");
 		}
 	}
 
@@ -638,7 +630,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			pinDialogFragment.termsThatNeedPins = termsThatNeedPins;
 			pinDialogFragment.action = ACTION_REGISTER;
 			pinDialogFragment.setCancelable(false);
-			pinDialogFragment.show(getFragmentManager(), "PinDialogFragment");
+			pinDialogFragment.show(getSupportFragmentManager(), "PinDialogFragment");
 			
 		} else {
 			Log.d(TAG, "No pins required, continuing register");
@@ -690,8 +682,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		List<TermInfoHolder> termsThatNeedPins = new ArrayList<TermInfoHolder>();
 		
 		Cursor cursor = null;
-		for (int checkedPositon : adapter.getCheckedPositions()) {
-			cursor = (Cursor) adapter.getItem(checkedPositon);
+		for (int checkedPosition : adapter.getCheckedPositions()) {
+			cursor = (Cursor) adapter.getItem(checkedPosition);
 			String termId = cursor.getString(cursor.getColumnIndex(TERM_ID));
 			String termName = cursor.getString(cursor.getColumnIndex(TERM_NAME));
 			cursor.close();
@@ -719,7 +711,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			
 	}
 	
-	void finishRegister() {
+	private void finishRegister() {
 		sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_BUTTON_PRESS, "Register", null, moduleName);
 		List<PlanToRegister> plansToRegister = getPlansToRegister();
 		if (plansToRegister != null && !plansToRegister.isEmpty()) {
@@ -735,8 +727,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			registerIntent.putExtra(RegisterService.PLAN_TO_REGISTER, planInJson);
 			startTime = System.currentTimeMillis();
 			startService(registerIntent);
-			setProgressBarIndeterminateVisibility(true);
-		} else {
+            Utils.showProgressIndicator(activity);
+        } else {
 			Log.e(TAG, "List of plans is either null or empty");
 		}
 	}
@@ -746,8 +738,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		CheckableSectionedListAdapter adapter = (CheckableSectionedListAdapter) cartFragment.getListAdapter();
 		
 		List<SectionRegistration> currentSelectionList = null;
-		for (int checkedPositon : adapter.getCheckedPositions()) {
-			Cursor cursor = (Cursor) adapter.getItem(checkedPositon);
+		for (int checkedPosition : adapter.getCheckedPositions()) {
+			Cursor cursor = (Cursor) adapter.getItem(checkedPosition);
 
 			String sectionId = cursor.getString(cursor.getColumnIndex(SECTION_ID));
 			String termId = cursor.getString(cursor.getColumnIndex(TERM_ID));
@@ -804,13 +796,13 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 	}
  	
-	private void updateSections(RegisterSection[] registeredSections, String sectionClassifiation) {
+	private void updateSections(RegisterSection[] registeredSections, String sectionClassification) {
 		int updated = 0;
 		for (RegisterSection registeredSection : registeredSections) {			
 			Section section = findSectionInCart(registeredSection.termId, registeredSection.sectionId);
 			if (section != null) {
-				Log.d(TAG, "Updating " + section.courseName + "-" + section.courseSectionNumber + " to " + sectionClassifiation);
-				section.classification = sectionClassifiation;
+				Log.d(TAG, "Updating " + section.courseName + "-" + section.courseSectionNumber + " to " + sectionClassification);
+				section.classification = sectionClassification;
 				updated ++;
 			}		
 		}
@@ -828,7 +820,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	public void onDropClicked(View view) {
 		if (planPresent && !getEllucianApp().isServiceRunning(RegisterService.class)) {
 			dropConfirmDialogFragment = new DropConfirmDialogFragment();
-			dropConfirmDialogFragment.show(getFragmentManager(), "DropConfirmDialogFragment");
+			dropConfirmDialogFragment.show(getSupportFragmentManager(), "DropConfirmDialogFragment");
 		}
 	}
 	
@@ -840,7 +832,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			pinDialogFragment.termsThatNeedPins = termsThatNeedPins;
 			pinDialogFragment.action = ACTION_DROP;
 			pinDialogFragment.setCancelable(false);
-			pinDialogFragment.show(getFragmentManager(), "PinDialogFragment");
+			pinDialogFragment.show(getSupportFragmentManager(), "PinDialogFragment");
 			
 		} else {
 			Log.d(TAG, "No pins required, continuing drop");
@@ -849,7 +841,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 	}
 	
-	void finishDrop() {
+	private void finishDrop() {
 		sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_BUTTON_PRESS, "Drop", null, moduleName);
 		List<PlanToRegister> plansToDrop = getPlansToDrop();
 		if (plansToDrop != null && !plansToDrop.isEmpty()) {
@@ -865,7 +857,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			registerIntent.putExtra(RegisterService.PLAN_TO_REGISTER, planInJson);
 			registerIntent.putExtra(RegisterService.REGISTER_TYPE, RegisterService.TYPE_DROP);
 			startService(registerIntent);
-			setProgressBarIndeterminateVisibility(true);
+            Utils.showProgressIndicator(activity);
 		} else {
 			Log.e(TAG, "List of plans is either null or empty");
 		}
@@ -876,8 +868,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		CheckableSectionedListAdapter adapter = (CheckableSectionedListAdapter) registeredFragment.getListAdapter();
 		
 		List<SectionRegistration> currentSelectionList = null;
-		for (int checkedPositon : adapter.getCheckedPositions()) {
-			Cursor cursor = (Cursor) adapter.getItem(checkedPositon);
+		for (int checkedPosition : adapter.getCheckedPositions()) {
+			Cursor cursor = (Cursor) adapter.getItem(checkedPosition);
 
 			String sectionId = cursor.getString(cursor.getColumnIndex(SECTION_ID));
 			String termId = cursor.getString(cursor.getColumnIndex(TERM_ID));
@@ -949,7 +941,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 	public void onAddToCartClicked(View view) {
 		if (planPresent) {
 			addToCartConfirmDialogFragment = new AddToCartConfirmDialogFragment();
-			addToCartConfirmDialogFragment.show(getFragmentManager(), "AddToCartConfirmDialogFragment");
+			addToCartConfirmDialogFragment.show(getSupportFragmentManager(), "AddToCartConfirmDialogFragment");
 		}
 	}
 	
@@ -959,8 +951,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 		String successMessage = "";
 		List<Section> updateServerList = new ArrayList<Section>();
-		for (int checkedPositon : adapter.getCheckedPositions()) {
-			Cursor cursor = (Cursor) adapter.getItem(checkedPositon);
+		for (int checkedPosition : adapter.getCheckedPositions()) {
+			Cursor cursor = (Cursor) adapter.getItem(checkedPosition);
 
 			String sectionId = cursor.getString(cursor.getColumnIndex(SECTION_ID));
 			String termId = cursor.getString(cursor.getColumnIndex(TERM_ID));
@@ -1050,7 +1042,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		return false;
 	}
 	
-	protected void removeItemFromCart() {
+	void removeItemFromCart() {
 
     	int position = cartFragment.getCurrentPosition();
     	Cursor cursor  = (Cursor)cartFragment.getListView().getItemAtPosition(position);
@@ -1151,7 +1143,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				}
 				
 				if (TextUtils.isEmpty(section.gradingType)) {
-					Log.d(TAG, "gradingType emtpy using default");
+					Log.d(TAG, "gradingType empty using default");
 					currentCartSection.gradingType = Section.GRADING_TYPE_GRADED;
 				} else {
 					currentCartSection.gradingType = section.gradingType;
@@ -1167,14 +1159,14 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 		Intent updateServerCartIntent = new Intent(this, RegistrationCartUpdateService.class);
 		updateServerCartIntent.putExtra(Extra.REQUEST_URL, requestUrl);
-		updateServerCartIntent.putExtra(ModuleMenuAdapter.PLANNING_TOOL, 
-				getIntent().getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false));
+		updateServerCartIntent.putExtra(ModuleMenuAdapter.PLANNING_TOOL,
+                getIntent().getBooleanExtra(ModuleMenuAdapter.PLANNING_TOOL, false));
 		updateServerCartIntent.putExtra(RegistrationCartUpdateService.SECTIONS_TO_UPDATE, updateCartJson);
 		startService(updateServerCartIntent);
 		
 	}
 	
-	protected void openRefineSearch() {
+	void openRefineSearch() {
 		
 		RefineSearchDialogFragment refineSearchDialogFragment = new RefineSearchDialogFragment();
 		Bundle args = new Bundle();
@@ -1184,7 +1176,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		args.putStringArrayList("selectedLevels", (ArrayList<String>)searchFragment.selectedLevels);
 		refineSearchDialogFragment.setArguments(args);
 		refineSearchDialogFragment.setCancelable(false);
-		refineSearchDialogFragment.show(getFragmentManager(), "refineSearchDialogFragment");
+		refineSearchDialogFragment.show(getSupportFragmentManager(), "refineSearchDialogFragment");
 
 	}
 	
@@ -1195,8 +1187,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 	}
 	
-	protected void startSectionSearch(String termId, String pattern, List<String> locationCodes, 
-			List<String> levelCodes) {
+	void startSectionSearch(String termId, String pattern, List<String> locationCodes,
+							List<String> levelCodes) {
 		
 		String locations = "";		
 		if (locationCodes != null && locationCodes.size() > 0) {				
@@ -1210,31 +1202,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		
 		searchTask = new SearchSectionTask();
 		searchTask.execute(requestUrl, termId, pattern, locations, levels);
-		setProgressBarIndeterminateVisibility(true);
-	}
-	
-	protected void startEmptyFilterSearch() {
-		FragmentManager manager = getFragmentManager();
-		FragmentTransaction ft = manager.beginTransaction();
-		searchResultsFragment = (RegistrationSearchResultsListFragment) 
-				manager.findFragmentByTag("RegistrationSearchResultsListFragment");
-		
-		clearMainFragment();
-		currentResults = null;
-		resultsAdapter = null;
-		if (searchResultsFragment == null) {
-			searchResultsFragment = (RegistrationSearchResultsListFragment) RegistrationSearchResultsListFragment.newInstance(
-					RegistrationActivity.this, RegistrationSearchResultsListFragment.class.getName(), null);
-			searchResultsFragment.setListAdapter(null);
-			searchResultsFragment.setDetailBundle(null);
-			ft.add(R.id.frame_main, searchResultsFragment, "RegistrationSearchResultsListFragment");	
-		} else {
-			
-			searchResultsFragment.setListAdapter(null);
-			searchResultsFragment.setDetailBundle(null);
-			ft.attach(searchResultsFragment);
-		}
-		ft.commit();
+        Utils.showProgressIndicator(activity);
 	}
 
 	private void fillSearchResultsAdapter(SearchResponse response, Bundle savedInstanceState) {
@@ -1276,7 +1244,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 	}
 	
-	protected Section findSectionInResults(String termId, String sectionId) {
+	Section findSectionInResults(String termId, String sectionId) {
 		if (currentResults != null) {
 
 			for (Section section : currentResults.sections) {
@@ -1293,13 +1261,11 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private class PlanToRegister {
 		public String planId;
 		public SectionRegistration[] sectionRegistrations;
 	}
 	
-	@SuppressWarnings("unused")
 	private class SectionRegistration {
 		public String termId;
 		public String altPin;
@@ -1308,19 +1274,16 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		public Float credits;
 	}
 	
-	@SuppressWarnings("unused")
 	private class CartPlan {
 		public String planId;
 		public List<CartTerm> terms;
 	}
 	
-	@SuppressWarnings("unused")
 	private class CartTerm {
 		public String termId;
 		public List<CartSection> sections;
 	}
 	
-	@SuppressWarnings("unused")
 	private class CartSection {
 		public static final String ADD = "add";
 		public static final String REMOVE = "remove";
@@ -1333,7 +1296,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		public String gradingType;
 	}
 	
-	protected class TermInfoHolder {
+	class TermInfoHolder {
 		public String termId;
 		public String termName;
 		
@@ -1388,7 +1351,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				
 				EligibilityDialogFragment eligibilityDialogFragment = EligibilityDialogFragment.newInstance(message);
 				if(isInForeground) {
-					eligibilityDialogFragment.show(getFragmentManager(), "EligibilityDialogFragment");				
+					eligibilityDialogFragment.show(getSupportFragmentManager(), "EligibilityDialogFragment");
 				}
 				
 			}
@@ -1431,8 +1394,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 					
 					if (cartAdapter.getCount() > 0) {	
 						if(isInForeground) {
-							getActionBar().setSelectedNavigationItem(CART_TAB_INDEX);	
-							setProgressBarIndeterminateVisibility(false);
+                            tabLayout.getTabAt(CART_TAB_INDEX).select();
+                            Utils.hideProgressIndicator(activity);
 						}
 						return;
 					} else {
@@ -1447,14 +1410,14 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				planPresent = false;
 			}
 
-			getActionBar().setSelectedNavigationItem(SEARCH_TAB_INDEX);
-			setProgressBarIndeterminateVisibility(false);
+            tabLayout.getTabAt(SEARCH_TAB_INDEX).select();
+            Utils.hideProgressIndicator(activity);
 			
 			if (!planPresent) {
 				EligibilityDialogFragment eligibilityDialogFragment = 
 						EligibilityDialogFragment.newInstance(getString(R.string.registration_no_plan_eligibility_message));
 				if(isInForeground) {
-					eligibilityDialogFragment.show(getFragmentManager(), "PlanNotPresentDialogFragment");				
+					eligibilityDialogFragment.show(getSupportFragmentManager(), "PlanNotPresentDialogFragment");
 				}
 			}
 		}
@@ -1479,7 +1442,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				return;
 			}
 			
-			FragmentManager manager = getFragmentManager();
+			FragmentManager manager = getSupportFragmentManager();
 			FragmentTransaction ft = manager.beginTransaction();
 			Fragment mainFrame = manager.findFragmentById(R.id.frame_main);
 
@@ -1507,7 +1470,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			
 			((CheckableSectionedListAdapter)cartAdapter).clearCheckedPositions();
 			clearDetailFragment();
-			setProgressBarIndeterminateVisibility(false);
+            Utils.hideProgressIndicator(activity);
 			
 		}
 		
@@ -1529,7 +1492,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				return;
 			}
 			
-			FragmentManager manager = getFragmentManager();
+			FragmentManager manager = getSupportFragmentManager();
 			FragmentTransaction ft = manager.beginTransaction();
 			Fragment mainFrame = manager.findFragmentById(R.id.frame_main);
 
@@ -1566,7 +1529,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			
 			((CheckableSectionedListAdapter)registeredAdapter).clearCheckedPositions();
 			clearDetailFragment();
-			setProgressBarIndeterminateVisibility(false);
+            Utils.hideProgressIndicator(activity);
 			
 		}
 		
@@ -1642,7 +1605,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				currentResults = result;
 				
 				resultsAdapter = new CheckableSectionedListAdapter(RegistrationActivity.this);
-				FragmentManager manager = getFragmentManager();
+				FragmentManager manager = getSupportFragmentManager();
 				FragmentTransaction ft = manager.beginTransaction();
 				searchResultsFragment = (RegistrationSearchResultsListFragment) 
 						manager.findFragmentByTag("RegistrationSearchResultsListFragment");
@@ -1667,94 +1630,112 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 					if (currentResults.sections != null && currentResults.sections.length > 0) {						
 						fillSearchResultsAdapter(currentResults, null);
 					} else {
-						Log.e(TAG, "Sections array null or emtpy");
+						Log.e(TAG, "Sections array null or empty");
 						resultsAdapter = null;
 					}			
 				} else {
 					Log.e(TAG, "Search response is null");
 					resultsAdapter = null;
-				}	
-				setProgressBarIndeterminateVisibility(false);
+                }
+                Utils.hideProgressIndicator(activity);
 
 			}	
 		}
 	}
 
-	private class RegistrationTabListener<T extends Fragment> implements ActionBar.TabListener {
-		private Fragment mFragment;
-	    private final Activity mActivity;
-	    private final String mTag;
-	    private final Class<? extends Fragment> mClass;
-		private FragmentManager fragmentManager;
+	private class RegistrationTabListener implements TabLayout.OnTabSelectedListener {
+		private final FragmentManager fragmentManager;
 		private int fragmentContainerResId;
-	    
-	    public RegistrationTabListener(Activity activity, String tag, Fragment fragment,  int fragmentContainerResId) {
-	    	mFragment = fragment;
-	    	mActivity = activity;
-	    	mTag = tag;
-	        mClass = fragment.getClass();
-	        fragmentManager = activity.getFragmentManager();
-	        this.fragmentContainerResId = fragmentContainerResId;
+        private final Context mContext;
+        private String mTag;
+        private Class<? extends Fragment> mClass;
+        private Fragment mFragment;
+
+        public RegistrationTabListener(Context context, int fragmentContainerResId) {
+	        fragmentManager = getSupportFragmentManager();
+            mContext = context;
+            this.fragmentContainerResId = fragmentContainerResId;
 	    }
 
-	    /* The following are each of the ActionBar.TabListener callbacks */
-	    
-	    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-	    	if (tab.getTag() != null) {
-	    		if ((Boolean)tab.getTag() == false) {
-	    			return;
-	    		}
-	    	}	    	
-	    	clearMainFragment();
-	    	clearDetailFragment();
-	    	
-	    	// Check if the fragment is in the Fragment Manager
-	    	if (fragmentManager.findFragmentByTag(mTag) == null || mFragment == null) {
-	            // If not, check to see if it has been instantiated
-	    		if (mFragment == null) {
-	    			mFragment = Fragment.instantiate(mActivity, mClass.getName());
-	    		}
-	    		
-	    		if (fragmentContainerResId == 0) {
-	            	fragmentContainerResId = android.R.id.content;
-	            }
+	    /* The following are each of the TabLayout.OnTabSelectedListener callbacks */
+        @Override
+        public void onTabSelected(Tab tab) {
+            if (tab.getTag() != null) {
+                if (!((Boolean) tab.getTag())) {
+                    return;
+                }
+            }
 
-	            ft.add(fragmentContainerResId, mFragment, mTag);
-	        } else {
-	            // If it exists, simply attach it in order to show it
-	        	ft.attach(mFragment);      	
-	        }
-	    	
-	    }
+            determineTab(tab.getPosition());
+            clearMainFragment();
+            clearDetailFragment();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
 
-	    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	    	/*
-	        if (fragmentManager.findFragmentByTag(mTag) != null && mFragment != null) {
-	            // Detach the fragment, because another one is being attached
-	            ft.detach(mFragment);
-	        }
-	    	 */
-	    	
-	    	clearDetailFragment();
+            // Check if the fragment is in the Fragment Manager
+            if (fragmentManager.findFragmentByTag(mTag) == null) {
+                if (mFragment == null) {
+                    mFragment = Fragment.instantiate(mContext, mClass.getName());
+                }
 
-	    	if ( mFragment != null) { //fragmentManager.findFragmentByTag(mTag) != null &&
+                if (fragmentContainerResId == 0) {
+                    fragmentContainerResId = android.R.id.content;
+                }
+
+                ft.add(fragmentContainerResId, mFragment, mTag);
+
+            } else {
+                // If it exists, simply attach it in order to show it
+                ft.attach(mFragment);
+            }
+            currentTab = tab.getPosition();
+            ft.commit();
+        }
+
+        private void determineTab(int tabPosition) {
+            switch (tabPosition) {
+                case 2: // Register
+                    mClass = RegistrationRegisteredListFragment.class;
+                    mTag = "RegistrationRegisteredListFragment";
+                    mFragment = registeredFragment;
+                    break;
+                case 1: // Search
+                    mClass = RegistrationSearchFragment.class;
+                    mTag = "RegistrationSearchFragment";
+                    mFragment = searchFragment;
+                    break;
+                case 0: // Cart
+                    mClass = RegistrationCartListFragment.class;
+                    mTag = "RegistrationCartListFragment";
+                    mFragment = cartFragment;
+                    break;
+            }
+        }
+
+		@Override
+		public void onTabUnselected(Tab tab) {
+            clearDetailFragment();
+            determineTab(tab.getPosition());
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+
+            if (cartFragment != null) {
 	    		// Detach the fragment, because another one is being attached
-	    		ft.detach(mFragment);
+                ft.detach(cartFragment);
+            }
+
+            Fragment fragment = fragmentManager.findFragmentByTag(tab.getText().toString());
+            if (fragment != null) {
+	    		ft.detach(cartFragment);
 	    	}
-	    	Fragment fragment = fragmentManager.findFragmentByTag(mTag);
-	    	if (fragment != null) {
-	    		ft.detach(mFragment);
-	    	}
-	    	
+            ft.commit();
 	    }
 
-	    public void onTabReselected(Tab tab, FragmentTransaction ft) {
-	    	onTabSelected(tab, ft);
-	    }
-
+		@Override
+		public void onTabReselected(Tab tab) {
+            onTabSelected(tab);
+        }
 	}
 	
-	protected class RegistrationViewBinder implements SimpleCursorAdapter.ViewBinder {
+	private class RegistrationViewBinder implements SimpleCursorAdapter.ViewBinder {
 		@Override
 		public boolean setViewValue(View view, Cursor cursor, int index) {
 			if(index == cursor.getColumnIndex(SECTION_ID)) {
@@ -1771,7 +1752,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 	}
 	
-	protected class RegistrationSearchViewBinder implements SimpleCursorAdapter.ViewBinder {
+	private class RegistrationSearchViewBinder implements SimpleCursorAdapter.ViewBinder {
 		@Override
 		public boolean setViewValue(View view, Cursor cursor, int index) {
 			if(index == cursor.getColumnIndex(RegistrationActivity.SECTION_ID)) {
@@ -1779,8 +1760,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 				String termId = cursor.getString(cursor.getColumnIndex(RegistrationActivity.TERM_ID));
 				
 				Section section = findSectionInResults(termId, sectionId);
-				
-				
+
 				setRowView(section, view, cursor, index);
 				return true;
 			}
@@ -2078,7 +2058,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 						VariableCreditsConfirmDialogFragment creditsDialogFragment = VariableCreditsConfirmDialogFragment.newInstance(section, position);
 						// Stops the back button from closing dialog
 						creditsDialogFragment.setCancelable(false);
-						creditsDialogFragment.show(getFragmentManager(), "VariableCreditsConfirmDialogFragment");
+						creditsDialogFragment.show(getSupportFragmentManager(), "VariableCreditsConfirmDialogFragment");
 					}
 					
 				}
@@ -2089,5 +2069,5 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			
 		}
 	}
-	
+
 }

@@ -4,14 +4,14 @@
 
 package com.ellucian.mobile.android.client.notifications;
 
-import java.util.ArrayList;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
+
+import java.util.ArrayList;
 
 public class NotificationsBuilder extends ContentProviderOperationBuilder<NotificationsResponse> {
 
@@ -21,7 +21,7 @@ public class NotificationsBuilder extends ContentProviderOperationBuilder<Notifi
 	
 	@Override
 	public ArrayList<ContentProviderOperation> buildOperations(NotificationsResponse model) {
-		final ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+		final ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 		
 		// delete current contents in database
 		batch.add(ContentProviderOperation.newDelete(Notifications.CONTENT_URI).build());
@@ -31,7 +31,7 @@ public class NotificationsBuilder extends ContentProviderOperationBuilder<Notifi
 		
 		for (Notification notification : model.notifications) {
 			
-			String id = null;
+			String id;
 			if (!TextUtils.isEmpty(notification.id)) {
 				id = notification.id;
 			} else {

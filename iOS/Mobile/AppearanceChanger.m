@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Ellucian. All rights reserved.
 //
 
+//Must stay as objc in iOS 8 because of lack of varargs support to use appearanceWhenContainedIn.
+
 #import "AppearanceChanger.h"
 #import "CalendarViewDayEventView.h"
-#import "ConfigurationSelectionViewController.h"
-#import "UIColor+HexString.h"
-#import "ConfigurationSelectionNavigationController.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation AppearanceChanger
 
@@ -20,23 +20,24 @@
     UIColor *uiColorHeaderTextColor = [UIColor headerTextColor];
     UIColor *uiColorAccentColor = [UIColor accentColor];
     UIColor *uiColorSubheaderTextColor = [UIColor subheaderTextColor];
-    
-    
+
     [[UINavigationBar appearance] setBarTintColor:uiColorPrimary];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:uiColorHeaderTextColor];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil]
+     setTintColor:uiColorHeaderTextColor];
     [[UINavigationBar appearance] setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      uiColorHeaderTextColor,
-      NSForegroundColorAttributeName,
-      nil]];
+     @{NSForegroundColorAttributeName : uiColorHeaderTextColor }];
+    [UINavigationBar appearance].translucent = NO;
     
     [[UISearchBar appearance] setBarTintColor:uiColorPrimary];
     [[UISearchBar appearance] setTintColor : [UIColor blackColor]];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]];
-    [[UISegmentedControl appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor whiteColor]];
+    [[UISegmentedControl appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:uiColorHeaderTextColor];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName: uiColorHeaderTextColor} forState:UIControlStateNormal];
     
-    [[UIToolbar appearance] setBarTintColor:uiColorPrimary];
-    [[UIToolbar appearance] setTintColor:[UIColor whiteColor]];
+    [[UIToolbar appearance] setBarTintColor:[UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1.0]];
+    [[UIToolbar appearance] setTintColor:uiColorPrimary];
+    [UIToolbar appearance].translucent = NO;
+    
     [[UIPageControl appearance] setBackgroundColor:uiColorPrimary];
     
     [[UITabBar appearance] setBarTintColor:uiColorPrimary];
@@ -46,43 +47,31 @@
     id configurationSelectionNavigationBarAppearance = [UINavigationBar appearanceWhenContainedIn:[ConfigurationSelectionNavigationController class], nil];
     [configurationSelectionNavigationBarAppearance setBarTintColor:
      [UIColor defaultPrimaryColor]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[ConfigurationSelectionNavigationController class], nil]
+     setTintColor:[UIColor defaultHeaderColor]];
     [configurationSelectionNavigationBarAppearance setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor defaultHeaderColor],
-      NSForegroundColorAttributeName,
-      nil]];
+     @{NSForegroundColorAttributeName : [UIColor defaultHeaderColor] }];
     id configurationSelectionSearchBarAppearance = [UISearchBar appearanceWhenContainedIn:[ConfigurationSelectionViewController class], nil];
     [configurationSelectionSearchBarAppearance setBarTintColor: [UIColor defaultPrimaryColor]];
-    
-    
+
     [[CalendarViewDayEventView appearance] setBackgroundColor:uiColorAccentColor];
     [[CalendarViewDayEventView appearance] setFontColor:uiColorSubheaderTextColor];
     
 }
 
-+ (BOOL) isRTL
++ (BOOL) isIOS8AndRTL
 {
-    return ([NSLocale characterDirectionForLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]] == NSLocaleLanguageDirectionRightToLeft);
+    if ([UIView respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        return NO;
+    } else {
+        return ([NSLocale characterDirectionForLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]] == NSLocaleLanguageDirectionRightToLeft);
+    }
 }
 
+//TODO: Delete after all references have been updated to not need this call in iOS 8.
 +(CGSize) currentScreenBoundsDependOnOrientation
 {
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        return [UIScreen mainScreen].bounds.size;
-    }
-    
-    CGRect screenBounds = [UIScreen mainScreen].bounds ;
-    CGFloat width = CGRectGetWidth(screenBounds)  ;
-    CGFloat height = CGRectGetHeight(screenBounds) ;
-    UIInterfaceOrientation interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    
-    if(UIInterfaceOrientationIsPortrait(interfaceOrientation)){
-        screenBounds.size = CGSizeMake(width, height);
-    } else if(UIInterfaceOrientationIsLandscape(interfaceOrientation)){
-        screenBounds.size = CGSizeMake(height, width);
-    }
-    
-    return screenBounds.size ;
+    return [UIScreen mainScreen].bounds.size;
 }
 
 

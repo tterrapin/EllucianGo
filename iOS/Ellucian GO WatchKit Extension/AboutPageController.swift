@@ -22,29 +22,29 @@ class AboutPageController: WKInterfaceController {
     
     override func awakeWithContext(context: AnyObject?) {
         let defaults = AppGroupUtilities .userDefaults()
-        if let phoneNumber : String = defaults?.stringForKey("about-phone-number") where count(phoneNumber) > 0  {
+        if let phoneNumber : String = defaults?.stringForKey("about-phone-number") where phoneNumber.characters.count > 0  {
             phoneLabel.setText(phoneNumber)
         } else {
             phoneLabel.setHidden(true)
         }
-        if let email : String = defaults?.stringForKey("about-email-address") where count(email) > 0  {
+        if let email : String = defaults?.stringForKey("about-email-address") where email.characters.count > 0  {
             emailLabel.setText(email)
         } else {
             emailLabel.setHidden(true)
         }
-        if let web : String = defaults?.stringForKey("about-website-url") where count(web) > 0  {
+        if let web : String = defaults?.stringForKey("about-website-url") where web.characters.count > 0  {
             websiteLabel.setText(web)
         } else {
             websiteLabel.setHidden(true)
         }
         
-        if let contact : String = defaults?.stringForKey("about-contact") where count(contact) > 0 {
+        if let contact : String = defaults?.stringForKey("about-contact") where contact.characters.count > 0 {
             contactButton.setHidden(false)
         } else {
             contactButton.setHidden(true)
         }
         
-        if let privacy : String = defaults?.stringForKey("about-privacy-url") where count(privacy) > 0 {
+        if let privacy : String = defaults?.stringForKey("about-privacy-url") where privacy.characters.count > 0 {
             privacyButton.setHidden(false)
         } else {
             privacyButton.setHidden(true)

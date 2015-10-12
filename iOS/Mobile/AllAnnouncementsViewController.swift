@@ -30,25 +30,25 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        var announcementError:NSError?
-        
+
         allAnnouncementController = getAnnouncementsFetchedResultsController()
         
-        if (!allAnnouncementController.performFetch(&announcementError)) {
-            NSLog("Unersolved error: fetch error: \(announcementError!.localizedDescription)")
+        do {
+            try allAnnouncementController.performFetch()
+        } catch let error as NSError {
+            NSLog("Unresolved error: fetch error: \(error.localizedDescription)")
         }
-        
-        allAnnouncementsTableView.registerClass(NSClassFromString("UITableViewHeaderFooterView"), forHeaderFooterViewReuseIdentifier: "Header")
+
+    allAnnouncementsTableView.registerClass(NSClassFromString("UITableViewHeaderFooterView"), forHeaderFooterViewReuseIdentifier: "Header")
         self.view.backgroundColor = UIColor.primaryColor()
         
-        var tabBarItem2 = myTabBarController?.tabBar.items?[2] as! UITabBarItem
-        tabBarItem2.selectedImage = UIImage(named:"ilp-announcements-selected")
+        if let tabBarItem2 = myTabBarController?.tabBar.items?[2] {        tabBarItem2.selectedImage = UIImage(named:"ilp-announcements-selected")
+        }
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             if selectedAnnouncement == nil {
                 if allAnnouncementController.fetchedObjects!.count > 0 {
-                    var indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                    let indexPath = NSIndexPath(forRow: 0, inSection: 0)
                     allAnnouncementsTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition:UITableViewScrollPosition.Top)
                     tableView(allAnnouncementsTableView, didSelectRowAtIndexPath: indexPath);
                 }
@@ -166,35 +166,36 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         if self.showHeaders {
-            let h = allAnnouncementsTableView.dequeueReusableHeaderFooterViewWithIdentifier("Header") as! UITableViewHeaderFooterView
-            
-            for subView in h.contentView.subviews
-            {
-                if (subView.tag == 1 || subView.tag == 2)
+            let h = allAnnouncementsTableView.dequeueReusableHeaderFooterViewWithIdentifier("Header")
+            if let h = h {
+                
+                for subView in h.contentView.subviews
                 {
-                    subView.removeFromSuperview()
+                    if (subView.tag == 1 || subView.tag == 2)
+                    {
+                        subView.removeFromSuperview()
+                    }
+                }
+                
+                let sections = allAnnouncementController.sections
+                
+                let dateLabel:String? = sections?[section].name
+                
+                if h.backgroundColor != UIColor.accentColor() {
+                    h.contentView.backgroundColor = UIColor.accentColor()
+                    let headerLabel = UILabel()
+                    headerLabel.tag = 1
+                    headerLabel.text = dateLabel
+                    headerLabel.backgroundColor = UIColor.clearColor()
+                    headerLabel.textColor = UIColor.subheaderTextColor()
+                    headerLabel.font = UIFont.boldSystemFontOfSize(16)
+                    headerLabel.minimumScaleFactor = 0.5
+                    h.contentView.addSubview(headerLabel)
+                    headerLabel.translatesAutoresizingMaskIntoConstraints = false
+                    h.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-10-[headerLabel]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["headerLabel":headerLabel]))
+                    h.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[headerLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views: ["headerLabel":headerLabel]))
                 }
             }
-            
-            let sections = allAnnouncementController.sections as? [NSFetchedResultsSectionInfo]
-            
-            var dateLabel:String? = sections?[section].name
-            
-            if h.backgroundColor != UIColor.accentColor() {
-                h.contentView.backgroundColor = UIColor.accentColor()
-                let headerLabel = UILabel()
-                headerLabel.tag = 1
-                headerLabel.text = dateLabel
-                headerLabel.backgroundColor = UIColor.clearColor()
-                headerLabel.textColor = UIColor.subheaderTextColor()
-                headerLabel.font = UIFont.boldSystemFontOfSize(16)
-                headerLabel.minimumScaleFactor = 0.5
-                h.contentView.addSubview(headerLabel)
-                headerLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-                h.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-10-[headerLabel]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["headerLabel":headerLabel]))
-                h.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[headerLabel]|", options: NSLayoutFormatOptions(0), metrics:nil, views: ["headerLabel":headerLabel]))
-            }
-            
             return h
             
         } else {
@@ -204,9 +205,7 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("Daily Announcement Cell", forIndexPath: indexPath) as! UITableViewCell
-        let announcement = allAnnouncementController.objectAtIndexPath(indexPath) as! CourseAnnouncement
-
+        let cell = tableView.dequeueReusableCellWithIdentifier("Daily Announcement Cell", forIndexPath: indexPath) as UITableViewCell
         configureCell(cell, atIndexPath: indexPath)
 
         return cell
@@ -240,7 +239,7 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        let indexPath: NSIndexPath! = allAnnouncementsTableView.indexPathForSelectedRow()
+        let indexPath: NSIndexPath! = allAnnouncementsTableView.indexPathForSelectedRow
         let announcement = allAnnouncementController.objectAtIndexPath(indexPath) as! CourseAnnouncement
         let detailController = segue.destinationViewController as! CourseAnnouncementDetailViewController
         detailController.courseName = announcement.courseName
@@ -271,7 +270,7 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
     
     func getAnnouncementsFetchedResultsController() -> NSFetchedResultsController {
         
-        var importContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        let importContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         
         importContext.parentContext = self.myManagedObjectContext
         
@@ -316,7 +315,7 @@ class AllAnnouncementsViewController : UIViewController, UIActionSheetDelegate, 
             {
                 let temp: CourseAnnouncement = iter as! CourseAnnouncement
                 if myTargetItem.website != nil && temp.website == myTargetItem.website {
-                    indexPath = allAnnouncementController.indexPathForObject(temp)
+                    indexPath = allAnnouncementController.indexPathForObject(temp)!
                 }
             }
             allAnnouncementsTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition:UITableViewScrollPosition.Top)

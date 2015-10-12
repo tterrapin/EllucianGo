@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.app;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -18,10 +16,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -51,29 +50,29 @@ import java.util.List;
 
 public class DrawerLayoutHelper {
 	
-	public static final String TAG = DrawerLayoutHelper.class.getSimpleName();
+	private static final String TAG = DrawerLayoutHelper.class.getSimpleName();
 	public static final long AUTH_REFRESH_TIME = 30 * 60 * 1000; // 30 Minutes
 
 	
-	private Activity activity;
-	public DrawerLayout drawerLayout;
-	public final ExpandableListView drawerList;
+	private final AppCompatActivity activity;
+	private final DrawerLayout drawerLayout;
+	private final ExpandableListView drawerList;
 	public ActionBarDrawerToggle drawerToggle;
 	
 	private BackgroundAuthenticationReceiver backgroundAuthenticationReceiver;
 	private DrawerLayoutHelper.DrawerListener listener;
 	private static NotificationsContentObserver contentObserver;
 	
-	public static interface DrawerListener {
-		abstract void onDrawerOpened();
-		abstract void onDrawerClosed();
+	public interface DrawerListener {
+		void onDrawerOpened();
+		void onDrawerClosed();
 	}
 
-	public DrawerLayoutHelper(final Activity activity, ModuleMenuAdapter menuAdapter) {
+	public DrawerLayoutHelper(final AppCompatActivity activity, ModuleMenuAdapter menuAdapter) {
 		this.activity = activity;
 		
-		EllucianApplication ellucianApplicaton = (EllucianApplication) activity.getApplicationContext();
-		contentObserver = new NotificationsContentObserver(new Handler(Looper.getMainLooper()), ellucianApplicaton);
+		EllucianApplication ellucianApplication = (EllucianApplication) activity.getApplicationContext();
+		contentObserver = new NotificationsContentObserver(new Handler(Looper.getMainLooper()), ellucianApplication);
 		final ContentResolver contentResolver = activity.getContentResolver();
 		contentResolver.registerContentObserver (Notifications.CONTENT_URI, true, contentObserver);
 
@@ -111,15 +110,11 @@ public class DrawerLayoutHelper {
 				}
 			}
 
-			final ActionBar actionBar = activity.getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setHomeButtonEnabled(true);
-
 			drawerToggle = new ActionBarDrawerToggle(activity, drawerLayout,
-					R.drawable.ic_drawer, R.string.drawer_open,
+					null, // No independent Toolbar to use
+					R.string.drawer_open,
 					R.string.drawer_close) {
 				public void onDrawerClosed(View view) {
-					actionBar.setTitle(activity.getTitle());
 					activity.invalidateOptionsMenu();
 					// If a extra listener has been set, trigger onDrawerClosed for it
 					if (listener != null) {
@@ -128,7 +123,6 @@ public class DrawerLayoutHelper {
 				}
 
 				public void onDrawerOpened(View drawerView) {
-					actionBar.setTitle(R.string.app_name);
 					activity.invalidateOptionsMenu();
 					// If a extra listener has been set, trigger onDrawerOpened for it
 					if (listener != null) {
@@ -197,7 +191,7 @@ public class DrawerLayoutHelper {
 
 	private void showLoginDialog() {
 		LoginDialogFragment loginFragment = new LoginDialogFragment();
-		loginFragment.show(activity.getFragmentManager(),
+		loginFragment.show(activity.getSupportFragmentManager(),
 				LoginDialogFragment.LOGIN_DIALOG);
 
 	}
@@ -250,7 +244,7 @@ public class DrawerLayoutHelper {
 				} else {
 					headersString = headerLabel;
 				}
-				Log.d(TAG, "Udapted collapsed headers string: " + headersString);
+				Log.d(TAG, "Updated collapsed headers string: " + headersString);
 				Utils.addStringToPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, headersString);	
 			} 
 				
@@ -266,7 +260,7 @@ public class DrawerLayoutHelper {
 				if (index != -1) {
 					headerList.remove(index);
 					String newHeadersString = TextUtils.join(",", headerList);
-					Log.d(TAG, "Udapted collapsed headers string: " + newHeadersString);
+					Log.d(TAG, "Updated collapsed headers string: " + newHeadersString);
 					Utils.addStringToPreferences(activity, Utils.MENU, Utils.MENU_HEADER_STATE, newHeadersString);
 					return true;
 				}
@@ -288,7 +282,7 @@ public class DrawerLayoutHelper {
 		}
 	}
 	
-	public class MenuChildClickListener implements OnChildClickListener {
+	private class MenuChildClickListener implements OnChildClickListener {
 		
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View view, int groupPosition,
@@ -345,7 +339,7 @@ public class DrawerLayoutHelper {
 					
 					LoginDialogFragment loginFragment = new LoginDialogFragment();
 					loginFragment.queueIntent(intent, roles);
-					loginFragment.show(activity.getFragmentManager(),
+					loginFragment.show(activity.getSupportFragmentManager(),
 							LoginDialogFragment.LOGIN_DIALOG);
 				} else if (type.equals(ModuleType.WEB)) {
 					
@@ -472,7 +466,7 @@ public class DrawerLayoutHelper {
 	
 	private class NotificationsContentObserver extends ContentObserver {
 
-		private EllucianApplication application;
+		private final EllucianApplication application;
 
 		public NotificationsContentObserver(Handler handler,
 				EllucianApplication application) {

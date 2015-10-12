@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class IlpItemHolder implements EllucianRecyclerAdapter.ItemInfoHolder, Comparable<IlpItemHolder> {
 	public String type;
-	public String sectionId;
+	private String sectionId;
     public String sectionName;
 	public String title;
 	public String date;
@@ -22,11 +22,11 @@ public class IlpItemHolder implements EllucianRecyclerAdapter.ItemInfoHolder, Co
 	public String location;
 	public String url;
 	
-	public IlpItemHolder() {
+	IlpItemHolder() {
 	}
 	
-	public IlpItemHolder(String type, String sectionId, String sectionName, String title, String date, String displayDate, String content,
-                         String location, String url) {
+	IlpItemHolder(String type, String sectionId, String sectionName, String title, String date, String displayDate, String content,
+				  String location, String url) {
 		this.type = type;
 		this.sectionId = sectionId;
         this.sectionName = sectionName;

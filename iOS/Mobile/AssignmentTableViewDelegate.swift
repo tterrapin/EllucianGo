@@ -153,8 +153,7 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        let sectionName = self.tableView(assignmentTableView, titleForHeaderInSection: indexPath.section)
-        var cell = tableView.dequeueReusableCellWithIdentifier("Daily Assignment Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Daily Assignment Cell", forIndexPath: indexPath) as UITableViewCell
         configureCell(cell, atIndexPath:indexPath)
         return cell
     }
@@ -170,19 +169,19 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var headerView = UIView(frame: CGRect(x:0,y:0, width:assignmentTableWidthConstraint.constant, height:30.0))
+        let headerView = UIView(frame: CGRect(x:0,y:0, width:assignmentTableWidthConstraint.constant, height:30.0))
         
 
         let constrainedView = UIView()
-        constrainedView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        constrainedView.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(constrainedView)
         
-        headerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
-        headerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
+        headerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
+        headerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
         
         
         
-        var title = UILabel(frame:CGRect(x:0,y:0,width:assignmentTableWidthConstraint.constant, height:30.0))
+        let title = UILabel(frame:CGRect(x:0,y:0,width:assignmentTableWidthConstraint.constant, height:30.0))
         title.font = UIFont.boldSystemFontOfSize(14)
         title.numberOfLines = 1;
         title.lineBreakMode = NSLineBreakMode.ByTruncatingTail
@@ -198,7 +197,7 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
         constrainedView.backgroundColor = lightGray
         title.backgroundColor = lightGray
         
-        title.setTranslatesAutoresizingMaskIntoConstraints(false)
+        title.translatesAutoresizingMaskIntoConstraints = false
         constrainedView.addSubview(title)
         
         constrainedView.addConstraint(NSLayoutConstraint(item:title, attribute:NSLayoutAttribute.CenterY, relatedBy:NSLayoutRelation.Equal, toItem:constrainedView,
@@ -206,9 +205,9 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
         
         if title.text == NSLocalizedString("OVERDUE", comment:"overdue assignment indicator for ilp module") {
             let warningIcon:UIImage! = UIImage(named: "ilp-overdue-warning")
-            var imageView = UIImageView(frame:CGRect(x:0.0, y:0.0, width:warningIcon.size.width, height:warningIcon.size.height))
+            let imageView = UIImageView(frame:CGRect(x:0.0, y:0.0, width:warningIcon.size.width, height:warningIcon.size.height))
             imageView.image = warningIcon
-            imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
             constrainedView.addSubview(imageView)
             
             constrainedView.addConstraint(NSLayoutConstraint(item:imageView, attribute:NSLayoutAttribute.CenterY, relatedBy:NSLayoutRelation.Equal, toItem:constrainedView, attribute:NSLayoutAttribute.CenterY, multiplier:1.0, constant:0.0))
@@ -241,7 +240,7 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
     }
         
      func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let sections = assignmentController!.sections as? [NSFetchedResultsSectionInfo] {
+        if let sections = assignmentController!.sections {
             return sections[section].name
         } else {
             return "no name"
@@ -263,13 +262,13 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
             myNoDataView = UIView(frame: CGRect(x:0,y:0, width:assignmentTableWidthConstraint.constant, height:40.0))
     
             let constrainedView = UIView()
-            constrainedView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            constrainedView.translatesAutoresizingMaskIntoConstraints = false
             myNoDataView?.addSubview(constrainedView)
 
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
             
-            var noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:assignmentTableWidthConstraint.constant, height:40.0))
+            let noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:assignmentTableWidthConstraint.constant, height:40.0))
             noMatchesLabel.font = UIFont.systemFontOfSize(14)
             noMatchesLabel.numberOfLines = 1;
             noMatchesLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
@@ -278,7 +277,7 @@ class AssignmentTableViewDelegate: NSObject, UITableViewDataSource, UITableViewD
             
             constrainedView.backgroundColor = UIColor.whiteColor()
             myNoDataView?.hidden = true
-            noMatchesLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            noMatchesLabel.translatesAutoresizingMaskIntoConstraints = false
             constrainedView.addSubview(noMatchesLabel)
             constrainedView.addConstraint(NSLayoutConstraint(item:noMatchesLabel,
                 attribute:NSLayoutAttribute.CenterY,

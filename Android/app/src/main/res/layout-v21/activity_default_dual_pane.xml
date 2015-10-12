@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+
+  For Lollipop and above, we use CoordinatorLayout to allow the Toolbar
+  to collapse on ListViews and RecyclerViews.
+
+  -->
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/toolbar"/>
+
+        <include layout="@layout/progress_indicator"/>
+
+        <FrameLayout
+            android:id="@+id/frame_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/drawer_list" />
+
+</android.support.v4.widget.DrawerLayout>

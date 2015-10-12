@@ -4,14 +4,16 @@
 
 package com.ellucian.mobile.android.maps;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -31,8 +33,6 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianDatabase.Tables;
 import com.ellucian.mobile.android.util.Extra;
-import android.database.Cursor;
-import android.app.LoaderManager;
 
 public class BuildingListActivity extends EllucianActivity 
 	implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -52,7 +52,7 @@ public class BuildingListActivity extends EllucianActivity
 		setContentView(R.layout.activity_default_dual_pane);
 		this.setTitle(moduleName);
 		adapter = getCursorAdapter();
-		FragmentManager manager = getFragmentManager();
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment = (EllucianDefaultListFragment) manager.findFragmentByTag("BuildingListFragment");
 		if (mainFragment == null) {
@@ -93,7 +93,7 @@ public class BuildingListActivity extends EllucianActivity
 			arguments = new Bundle();
 			arguments.putString("query", query);
 		}
-		getLoaderManager().restartLoader(0, arguments, this);
+		getSupportLoaderManager().restartLoader(0, arguments, this);
 	}
 
 
@@ -106,7 +106,7 @@ public class BuildingListActivity extends EllucianActivity
     }
 
 
-	public SimpleCursorAdapter getCursorAdapter() {
+	private SimpleCursorAdapter getCursorAdapter() {
         return new SimpleCursorAdapter(
 				this,
 				R.layout.row_building_list, 
@@ -123,7 +123,7 @@ public class BuildingListActivity extends EllucianActivity
     	} else {
     		query = null;
     	}
-    	getLoaderManager().restartLoader(0,  null,  this);
+    	getSupportLoaderManager().restartLoader(0,  null,  this);
     }
 
 
@@ -175,7 +175,7 @@ public class BuildingListActivity extends EllucianActivity
 			public boolean onClose() {
 				query = null;
 				resetListPosition = true;
-				getLoaderManager().restartLoader(0,  null,  BuildingListActivity.this);
+				getSupportLoaderManager().restartLoader(0,  null,  BuildingListActivity.this);
 				return false;
 			}
 

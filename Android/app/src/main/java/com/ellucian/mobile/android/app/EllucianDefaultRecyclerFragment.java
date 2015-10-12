@@ -5,8 +5,8 @@
 package com.ellucian.mobile.android.app;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,10 +34,10 @@ import com.ellucian.mobile.android.view.SimpleDividerItemDecoration;
  *
  */
 public class EllucianDefaultRecyclerFragment extends EllucianFragment implements EllucianRecyclerAdapter.OnItemClickListener{
-	public static final String TAG = EllucianDefaultRecyclerFragment.class.getSimpleName();
+	private static final String TAG = EllucianDefaultRecyclerFragment.class.getSimpleName();
 	
-	protected Activity activity;
-	protected View rootView;
+	private Activity activity;
+	private View rootView;
 	protected EllucianRecyclerView recyclerView;
 	protected EllucianRecyclerAdapter adapter;
 	protected Bundle detailBundle;
@@ -55,7 +55,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
 	/** Variable "fname" should be the class name of an RetainStateRecyclerFragment subclass
 	 *  example -  SubclassFragmentOfDefaultListFragment.class.getName()
 	 */
-	public static EllucianDefaultRecyclerFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
+	private static EllucianDefaultRecyclerFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
 		EllucianDefaultRecyclerFragment fragment;
 		
 		if (TextUtils.isEmpty(fname)) {
@@ -128,7 +128,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
      * to extend EllucianRecyclerAdapter.
      * All these classes can be found in the com.ellucian.mobile.android.adapter package.
      */
-	public void setAdapter(EllucianRecyclerAdapter adapter) {
+	protected void setAdapter(EllucianRecyclerAdapter adapter) {
 		this.adapter = adapter;
 		if (adapter != null) {
 			adapter.setOnItemClickListener(this);
@@ -151,7 +151,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
         recyclerView.setSelectedIndex(position);
 	}
 
-    public void showDetails(int index) {
+    protected void showDetails(int index) {
 
         if (dualPane) {
         	//We can display everything in-place with fragments
@@ -191,7 +191,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
     }
     
     /** Override to return custom Bundle */
-    public Bundle buildDetailBundle(Object... objects) {
+	protected Bundle buildDetailBundle(Object... objects) {
 		return null;
 	}
 		
@@ -199,7 +199,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
      *  See EllucianDefaultDetailFragment.newInstance for more information
      *  If you are only making changes to the class name, override getDetailFragmentClass() instead
      */
-	public EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
+	private EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
 		
 		return EllucianDefaultDetailFragment.newInstance(getActivity(), 
 				getDetailFragmentClass().getName(), args, index);
@@ -207,12 +207,12 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailFragment subclass */
-	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
+	protected Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
 		return EllucianDefaultDetailFragment.class;	
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailActivity subclass */
-	public Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
+	protected Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
 		return EllucianDefaultDetailActivity.class;	
 	}
 	

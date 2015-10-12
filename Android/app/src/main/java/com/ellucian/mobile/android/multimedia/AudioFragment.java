@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.multimedia;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -28,6 +26,8 @@ import com.ellucian.mobile.android.app.EllucianFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.io.IOException;
+
 public class AudioFragment extends EllucianFragment implements MediaController.MediaPlayerControl,
 		MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, DrawerLayoutHelper.DrawerListener  {
 	private static final String TAG = AudioFragment.class.getSimpleName();
@@ -37,7 +37,7 @@ public class AudioFragment extends EllucianFragment implements MediaController.M
 
 	private MediaPlayer mediaPlayer;
 	private MediaController mediaController;
-	private Handler handler = new Handler();
+	private final Handler handler = new Handler();
 	
 	private boolean contentExpanded;	
 	private int currentPosition;
@@ -188,7 +188,7 @@ public class AudioFragment extends EllucianFragment implements MediaController.M
 	
 	
 		
-	public void triggerTouch() {
+	private void triggerTouch() {
 		try {
 			if (!mediaController.isShowing()) {
 				mediaController.show();

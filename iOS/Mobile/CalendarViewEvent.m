@@ -1,8 +1,5 @@
 #import "CalendarViewEvent.h"
 
-#define DATE_COMPONENTS (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit)
-#define CURRENT_CALENDAR [NSCalendar currentCalendar]
-
 static const NSUInteger MINUTES_IN_HOUR = 60;
 static const NSUInteger DAY_IN_MINUTES = 1440;
 
@@ -13,8 +10,8 @@ static const NSUInteger DAY_IN_MINUTES = 1440;
 - (NSUInteger)minutesSinceMidnight {
 	NSUInteger fromMidnight = 0;
 	
-	NSDateComponents *displayComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_displayDate];
-	NSDateComponents *startComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_start];
+	NSDateComponents *displayComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_displayDate];
+	NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_start];
 	
 	if (DATE_CMP(startComponents, displayComponents)) {
 		fromMidnight = [startComponents hour] * MINUTES_IN_HOUR + [startComponents minute];
@@ -26,9 +23,9 @@ static const NSUInteger DAY_IN_MINUTES = 1440;
 - (NSUInteger)durationInMinutes {
 	NSUInteger duration = 0;
 	
-	NSDateComponents *displayComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_displayDate];
-	NSDateComponents *startComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_start];
-	NSDateComponents *endComponents = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_end];
+	NSDateComponents *displayComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_displayDate];
+	NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_start];
+	NSDateComponents *endComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_end];
 	
 	if (DATE_CMP(endComponents, displayComponents)) {
 		if (DATE_CMP(startComponents, displayComponents)) {

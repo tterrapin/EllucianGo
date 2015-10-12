@@ -14,7 +14,7 @@ public class SearchFilter implements Parcelable {
 	public SearchFilter() {
 	}
 	
-	public SearchFilter(Parcel in) { 
+	private SearchFilter(Parcel in) {
 		readFromParcel(in);
 	}
 	
@@ -25,7 +25,6 @@ public class SearchFilter implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

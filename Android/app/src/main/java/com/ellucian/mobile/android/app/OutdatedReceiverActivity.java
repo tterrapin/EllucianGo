@@ -4,9 +4,6 @@
 
 package com.ellucian.mobile.android.app;
 
-import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.util.Utils;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +11,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.util.Utils;
 
 public class OutdatedReceiverActivity extends Activity {
 	private static final String TAG = OutdatedReceiverActivity.class.getSimpleName();

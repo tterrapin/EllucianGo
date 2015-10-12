@@ -12,6 +12,7 @@
 #import "DirectoryEntry.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation DirectoryEntryViewController
 
@@ -23,7 +24,7 @@
     
     self.backgroundView.backgroundColor = [UIColor accentColor];
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.phoneLabelLabel.textAlignment = NSTextAlignmentRight;
         self.mobileLabelLabel.textAlignment = NSTextAlignmentRight;
         self.officeLabelLabel.textAlignment = NSTextAlignmentRight;

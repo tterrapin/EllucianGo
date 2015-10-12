@@ -4,6 +4,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
             android:clickable="true"
             android:paddingLeft="3dp"
             android:paddingStart="3dp"
-            android:paddingTop="3dp" />
+            android:paddingTop="3dp"
+            tools:ignore="NewApi,RtlSymmetry" />
 
 
         </LinearLayout>
@@ -71,7 +73,8 @@
             android:clickable="true"
             android:drawableRight="@drawable/icon_reminder"
             android:drawableEnd="@drawable/icon_reminder"
-            android:drawablePadding="4dp"/>
+            android:drawablePadding="4dp"
+            tools:ignore="NewApi" />
 
 
     </LinearLayout>

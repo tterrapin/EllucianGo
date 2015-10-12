@@ -9,7 +9,7 @@
 #import "ModuleRole.h"
 #import "RegistrationTabBarController.h"
 #import "RegistrationSearchViewController.h"
-#import "UIViewController+SlidingViewExtension.h"
+#import "UIViewController+ECSlidingViewController.h"
 #import "AppearanceChanger.h"
 #import "RegistrationCartViewController.h"
 #import "MBProgressHUD.h"

@@ -2,10 +2,12 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-     <item android:id="@+id/school_selection_action_search"
-          android:actionViewClass="android.widget.SearchView"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/school_selection_action_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:showAsAction="always"
-        android:title="@string/menu_search" />
+        app:showAsAction="always"
+        android:title="@string/menu_search"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>

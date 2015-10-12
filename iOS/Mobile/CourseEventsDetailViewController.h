@@ -12,7 +12,6 @@
 #import <MessageUI/MessageUI.h>
 #import <Accounts/Accounts.h>
 #import "Event.h"
-#import "UIColor+SchoolCustomization.h"
 #import "Module.h"
 #import "DetailSelectionDelegate.h"
 #import "CourseEvent.h"

@@ -6,13 +6,14 @@ package com.ellucian.mobile.android.events;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
-import android.text.Html;
-import android.text.Spanned;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,22 +21,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ShareActionProvider;
-import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
-import com.ellucian.mobile.android.util.URLImageParser;
 import com.ellucian.mobile.android.util.Utils;
 
 public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	
 	private Activity activity;
-	private View rootView;
     private boolean calendarAvailable;
 	
 	public EventsDetailFragment() {	
@@ -58,8 +55,10 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		if (container == null) {
+
+        View rootView;
+
+        if (container == null) {
             // We have different layouts, and in one of them this
             // fragment's containing frame doesn't exist.  The fragment
             // may still be created from its saved state, but there is
@@ -73,21 +72,14 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 		
 		rootView = inflater.inflate(R.layout.fragment_events_detail, container, false);
 		
-		// Setting Accent colors on headers
-        View outerHeader = rootView.findViewById(R.id.events_detail_header_layout);
-     
-        outerHeader.setBackgroundColor(Utils.getAccentColor(activity));
-        
         Bundle args = getArguments();
 
         TextView titleView = (TextView) rootView.findViewById(R.id.events_detail_title);
         titleView.setText(args.getString(Extra.TITLE));
-        titleView.setTextColor(Utils.getSubheaderTextColor(activity));
-        
+
         TextView dateView = (TextView) rootView.findViewById(R.id.events_detail_date);
         if (args.containsKey(Extra.DATE)) {        	
         	dateView.setText(args.getString(Extra.DATE));
-        	dateView.setTextColor(Utils.getSubheaderTextColor(activity));
         }else {
         	dateView.setVisibility(View.GONE); 
         }
@@ -95,7 +87,6 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         TextView locationView = (TextView) rootView.findViewById(R.id.events_detail_location);
         if (args.containsKey(Extra.LOCATION)) {      	
         	locationView.setText(args.getString(Extra.LOCATION));
-        	locationView.setTextColor(Utils.getSubheaderTextColor(activity));
         } else {
         	locationView.setVisibility(View.GONE); 
         }
@@ -119,13 +110,17 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         	emailView.setVisibility(View.GONE); 
         }
         
-        TextView contentView = (TextView) rootView.findViewById(R.id.events_detail_content);
-        if (args.containsKey(Extra.CONTENT)) {  
-	        URLImageParser parser = new URLImageParser(contentView, activity);
-	        Spanned formatedHtml = Html.fromHtml(args.getString(Extra.CONTENT), parser, null);
-	        contentView.setText(formatedHtml, TextView.BufferType.SPANNABLE );
-	        contentView.setMovementMethod(LinkMovementMethod.getInstance());
-	    }else {
+        WebView contentView = (WebView) rootView.findViewById(R.id.events_detail_web_content);
+        if (args.containsKey(Extra.CONTENT)) {
+            String content = args.getString(Extra.CONTENT).replace("\n", "<br/>");
+
+//	        URLImageParser parser = new URLImageParser(contentView, activity);
+//	        Spanned formattedHtml = Html.fromHtml(content, parser, null);
+//	        contentView.setText(formattedHtml, TextView.BufferType.SPANNABLE );
+//	        contentView.setMovementMethod(LinkMovementMethod.getInstance());
+            contentView.loadDataWithBaseURL(null, "<style>html,body{margin:0px;padding:0px;} img{display: inline;height: auto;max-width: 100%;}</style>" + content, "text/html", "UTF-8", null);
+            contentView.setBackgroundColor(Color.TRANSPARENT);
+        }else {
         	contentView.setVisibility(View.GONE); 
         }
         
@@ -166,7 +161,7 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
         
         /** Getting the actionprovider associated with the menu item whose id is share */
         ShareActionProvider shareActionProvider = 
-        		(ShareActionProvider) sharedMenuItem.getActionProvider();
+        		(ShareActionProvider) MenuItemCompat.getActionProvider(sharedMenuItem);
         shareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
 			
 			@Override

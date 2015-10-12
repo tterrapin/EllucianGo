@@ -20,12 +20,9 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
-    <!-- GCM (Notification) permissions -->
+	<!-- GCM (Notification) permissions -->
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <permission android:name="${applicationId}.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-	<uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
 
 	<uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
@@ -47,12 +44,6 @@
             android:value="@string/google_maps_key" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
-        <provider
-            android:name="com.ellucian.mobile.android.provider.EllucianProvider"
-            android:authorities="@string/content_provider_authority"
-            android:exported="false" />
-
-
         <!-- ACTIVITIES -->
 
         <!-- Main and Configuration -->
@@ -71,7 +62,7 @@
             android:label="@string/title_activity_configuration_loading"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:noHistory="true" >
-            <intent-filter android:label="@string/test_configuration">
+            <intent-filter android:label="@string/app_name">
 				<action android:name="android.intent.action.VIEW" />
           		<category android:name="android.intent.category.DEFAULT" />
           		<category android:name="android.intent.category.BROWSABLE" />
@@ -107,8 +98,9 @@
             android:name="com.ellucian.mobile.android.schoolselector.SchoolSelectionActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_school_selection"
+            android:windowSoftInputMode="adjustPan"
             android:noHistory="true" >
-            <intent-filter android:label="@string/configuration_list">
+            <intent-filter android:label="@string/app_name">
 				<action android:name="android.intent.action.VIEW" />
           		<category android:name="android.intent.category.DEFAULT" />
           		<category android:name="android.intent.category.BROWSABLE" />
@@ -221,6 +213,7 @@
         <activity
             android:name="com.ellucian.mobile.android.directory.DirectoryListActivity"
             android:label="@string/title_activity_directory_list_all"
+            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTop" android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -244,6 +237,7 @@
 		<activity
             android:name="com.ellucian.mobile.android.events.EventsActivity"
             android:label="@string/title_activity_events"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="keyboard|keyboardHidden|screenSize"
             android:launchMode="singleTop" android:exported="false" >
             <intent-filter>
@@ -286,8 +280,7 @@
         <!-- Ilp -->
         <activity
             android:name="com.ellucian.mobile.android.ilp.IlpListActivity"
-            android:label="@string/title_activity_ilp"
-            android:theme="@style/ActionBarNoShadow">
+            android:label="@string/title_activity_ilp" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ellucian.mobile.android.MainActivity"/>
@@ -357,6 +350,7 @@
             android:name="com.ellucian.mobile.android.maps.BuildingListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -392,6 +386,7 @@
             android:name="com.ellucian.mobile.android.news.NewsActivity"
             android:label="@string/title_activity_news"
             android:configChanges="keyboard|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTop" android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -434,15 +429,11 @@
             android:name="com.ellucian.mobile.android.numbers.NumbersListActivity"
             android:label="@string/title_number_list"
             android:configChanges="keyboard|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTop" android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                   android:resource="@xml/searchable_numbers"/>
             <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value="com.ellucian.mobile.android.MainActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ellucian.mobile.android.MainActivity"/>
         </activity>
         <activity
             android:name="com.ellucian.mobile.android.numbers.NumbersDetailActivity"
@@ -455,7 +446,8 @@
         <!-- Registration -->
         <activity
             android:name="com.ellucian.mobile.android.registration.RegistrationActivity"
-            android:label="@string/title_activity_registration" >
+            android:label="@string/title_activity_registration"
+            android:windowSoftInputMode="adjustPan" >
             <meta-data
         		android:name="android.support.PARENT_ACTIVITY"
         		android:value="com.ellucian.mobile.android.MainActivity"/>
@@ -505,20 +497,14 @@
         <service android:name="com.ellucian.mobile.android.client.services.RegistrationCartUpdateService" ></service>
         <service android:name="com.ellucian.mobile.android.client.services.UpdateAssignmentIntentService" ></service>
 
-        <!-- GCM receiver -->
-        <receiver android:name="com.ellucian.mobile.android.notifications.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                <category android:name="${applicationId}"/>
-            </intent-filter>
+        <!-- GCM Listener -->
+        <service
+            android:name="com.ellucian.mobile.android.notifications.EllucianGcmListenerService"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="${applicationId}"/>
             </intent-filter>
-        </receiver>
-
-   	 	<service android:name="com.ellucian.mobile.android.notifications.GcmIntentService"/>
+        </service>
 
     	<!-- App widget -->
     	<receiver

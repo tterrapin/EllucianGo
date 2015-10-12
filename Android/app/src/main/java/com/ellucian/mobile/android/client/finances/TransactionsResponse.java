@@ -11,7 +11,7 @@ import com.ellucian.mobile.android.client.ResponseObject;
 import com.ellucian.mobile.android.client.grades.Student;
 
 public class TransactionsResponse implements ResponseObject<TransactionsResponse>, Parcelable {
-    public Student student;
+    private Student student;
     public String currencyCode;
     public TransactionTerm[] terms;
 

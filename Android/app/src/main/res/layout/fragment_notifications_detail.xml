@@ -3,89 +3,77 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
 
-        <LinearLayout
-            android:id="@+id/header_layout"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/content_padding" >
+            android:layout_margin="@dimen/card_margin"
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="8dp">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/detail_title_text_size"
-                android:textIsSelectable="true" />
-                
-            <LinearLayout 
-                android:id="@+id/date_row"
+            <LinearLayout
+                style="@style/cardContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >                    
-                    
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/notificationDateLabel"
+                    android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="6sp"
-                    android:paddingStart="6sp"
-                    android:text="@string/notifications_detail_date_posted"
-                    android:textStyle="bold" >
-                </TextView>
+                    android:textColor="@color/sub_header_text_color"
+                    android:textIsSelectable="true"
+                    android:textSize="@dimen/detail_title_text_size"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/notificationDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="4sp"
-                    android:paddingStart="4sp"
-                    android:textIsSelectable="true" >
-                </TextView>
+                    android:textColor="@color/list_summary_text_color"
+                    android:textIsSelectable="true"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"/>
+
+                <WebView
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true"/>
+
+                <include
+                    android:id="@+id/separator"
+                    layout="@layout/separator">
+                </include>
+
+                <Button
+                    android:id="@+id/actionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@android:color/transparent"
+                    android:text="@string/notifications_detail_link_action"
+                    android:textColor="@color/list_summary_text_color"
+                    android:textSize="@dimen/detail_title_text_size"
+                    >
+                </Button>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        <LinearLayout
-                android:id="@+id/body_content_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                style="@style/contentBody.PaddingRight" >
-
-            <TextView
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:textIsSelectable="true" >
-            </TextView>
-
-            <include
-                android:id="@+id/separator"
-                layout="@layout/separator" >
-            </include>
-
-            <Button
-                android:id="@+id/actionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="6dp"
-                android:text="@string/notifications_detail_link_action" >
-            </Button>
-       
-        </LinearLayout>
-        
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

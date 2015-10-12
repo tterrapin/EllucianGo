@@ -29,7 +29,7 @@ public class RegisterConfirmDialogFragment extends EllucianDialogFragment {
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		
-		//builder.setTitle(R.string.registraion_dialog_title)
+		//builder.setTitle(R.string.registration_dialog_title)
 		builder.setMessage(R.string.registration_dialog_register_message)
 			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

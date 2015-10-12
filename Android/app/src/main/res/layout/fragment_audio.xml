@@ -28,11 +28,14 @@
             android:background="#CC000000"
             android:lineSpacingExtra="@dimen/multimedia_text_line_spacing_size"
             android:paddingBottom="@dimen/multimedia_text_padding_bottom"
+            android:paddingStart="@dimen/multimedia_text_padding_left"
             android:paddingLeft="@dimen/multimedia_text_padding_left"
+            android:paddingEnd="@dimen/multimedia_text_padding_right"
             android:paddingRight="@dimen/multimedia_text_padding_right"
             android:paddingTop="@dimen/multimedia_text_padding_top"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/list_title_text_size" />
+            android:textSize="@dimen/list_title_text_size"
+            tools:ignore="NewApi" />
     </ScrollView>
 
 </RelativeLayout>

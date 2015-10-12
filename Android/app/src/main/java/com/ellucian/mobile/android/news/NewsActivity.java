@@ -4,23 +4,20 @@
 
 package com.ellucian.mobile.android.news;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.LoaderManager;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +43,9 @@ import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class NewsActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor>,
 	CategoryDialogFragment.CategoryDialogListener {
 	
@@ -69,11 +69,11 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
         				this,
         				R.layout.news_row, 
         				null, 
-        				new String [] { News.NEWS_TITLE, News.NEWS_POST_DATE, News.NEWS_FEED_NAME, News.NEWS_LOGO }, 
-        				new int[] { R.id.news_title, R.id.news_date_and_description, R.id.news_category, R.id.news_logo}, 
+        				new String [] { News.NEWS_TITLE, News.NEWS_POST_DATE, News.NEWS_FEED_NAME, News.NEWS_LOGO, News.NEWS_LIST_DESCRIPTION },
+        				new int[] { R.id.news_title, R.id.news_date_and_description, R.id.news_category, R.id.news_logo, R.id.news_summary},
         				0);
         
-    	FragmentManager manager = getFragmentManager();
+    	FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag("NewsListFragment");
 		
@@ -140,8 +140,8 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
             arguments.putString("query", query);
         }
         
-        getLoaderManager().restartLoader(0, arguments, this);
-        getLoaderManager().restartLoader(1, null, this);
+        getSupportLoaderManager().restartLoader(0, arguments, this);
+        getSupportLoaderManager().restartLoader(1, null, this);
         
         Intent serviceIntent = new Intent(this, NewsIntentService.class);
         serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
@@ -194,7 +194,7 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 
 			@Override
 			public boolean onClose() {
-	        	getLoaderManager().restartLoader(0, null, NewsActivity.this);
+	        	getSupportLoaderManager().restartLoader(0, null, NewsActivity.this);
 	        	query = null;
 	        	resetListPosition = true;
 				return false;
@@ -221,7 +221,7 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
     	case R.id.news_menu_filter:
     		sendEvent(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Select filter", null, moduleName);
     		dialogFragment = new CategoryDialogFragment();
-    		dialogFragment.show(getFragmentManager(), moduleId + "_" + CATEGORY_DIALOG);
+    		dialogFragment.show(getSupportFragmentManager(), moduleId + "_" + CATEGORY_DIALOG);
     		return true;
     	case R.id.news_action_search:
     		onSearchRequested();
@@ -234,9 +234,9 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
     
     @Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {		
-		String[] projection = null;
+		String[] projection;
 		String selection = Modules.MODULES_ID + " = ?";
-		String[] selectionArgs = null;
+		String[] selectionArgs;
 			
 		switch (id) {
 		case 0:	
@@ -281,7 +281,7 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 		case 1:
 			Log.d("NewsActivity.onLoadFinished", "Finished loading cursor.  Updating categories");
 			
-			ArrayList<String> categoriesList = new ArrayList<String>();
+			ArrayList<String> categoriesList = new ArrayList<>();
 			while (data.moveToNext()) {
 	        	int columnIndex = data.getColumnIndex(NewsCategories.NEWS_CATEGORY_NAME);
 	        	categoriesList.add(data.getString(columnIndex));
@@ -306,8 +306,8 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 	
 	/** Make sure to call this method in the LoaderManager.LoaderCallback.onLoadFinished method if  
    	 *  it is overridden in the subclass 
-   	 */ 	
-	protected void createNotifyHandler(final EllucianDefaultListFragment fragment) {
+   	 */
+	private void createNotifyHandler(final EllucianDefaultListFragment fragment) {
    		Handler handler = new Handler(Looper.getMainLooper());
    		handler.post(new Runnable(){
 
@@ -333,7 +333,7 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 	public void updateFilteredCategories(String[] filteredCategories) {
 		this.filteredCategories = filteredCategories;
 		resetListPosition = true;
-		getLoaderManager().restartLoader(0, null, this);
+		getSupportLoaderManager().restartLoader(0, null, this);
 	}
 
 	
@@ -351,26 +351,24 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 				
 				String output = getString(R.string.unavailable);
 				if(date != null) {	
-					output = CalendarUtils.getDefaultDateTimeString(NewsActivity.this, date);
+                    output = CalendarUtils.getMonthDateString(NewsActivity.this, date);
 				} 
 				
 				((TextView) view).setText(output);
 				return true;
 			} else if (index == cursor.getColumnIndex(News.NEWS_FEED_NAME)) {
-				// There is a bug in android that cuts off the side of a italic text in TextView.
-				// Adding a space to end of string is a quick fix.
 				String category = cursor.getString(index);
-				category += " ";
 				((TextView) view).setText(category);
 				return true;
 			} else if (index == cursor.getColumnIndex(News.NEWS_LOGO)) {
 				String imageUrl = cursor.getString(cursor.getColumnIndex(News.NEWS_LOGO));
 				if (!TextUtils.isEmpty(imageUrl)) {
-					AQuery aq = new AQuery(NewsActivity.this);
-					aq.id(view).image(imageUrl); 
-				} else {
-					view.setVisibility(View.GONE);
-				}
+                    AQuery aq = new AQuery(NewsActivity.this);
+					aq.id(view).image(imageUrl);
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.GONE);
+                }
 				return true;
 			} else {
 				return false;

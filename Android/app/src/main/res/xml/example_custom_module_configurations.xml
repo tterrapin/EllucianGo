@@ -24,12 +24,12 @@
 	    <secure>true</secure>
 	    
 	    <!-- For intent extras you must set a key attribute along with the value text. These extras will be 
-	     stored as a String, you must parse them as needed in the activity after recieving them in the intent -->
+	     stored as a String, you must parse them as needed in the activity after receiving them in the intent -->
 	    <intent-extra key="extra" >This is a extra</intent-extra>
 	    <intent-extra key="anotherExtra">Another extra</intent-extra>
 	    
-	    <!-- Hexdecimal value of flags to be set, Example is the value for FLAG_ACTIVITY_CLEAR_TASK -->
-	    <!-- Hexdecimal values must start with 0x so it gets parsed correctly -->
+	    <!-- Hexadecimal value of flags to be set, Example is the value for FLAG_ACTIVITY_CLEAR_TASK -->
+	    <!-- Hexadecimal values must start with 0x so it gets parsed correctly -->
 	    <intent-flag>0x00008000</intent-flag>
 	    
 	    <!-- For each additional flag that you want set, create another <intent-flags> element -->
@@ -48,7 +48,7 @@
 	    <activity>ExampleTwoActivity</activity>
 	    
 	    <!-- For intent extras you must set a key attribute along with the value text. These extras will be 
-	     stored as a String, you must parse them as needed in the activity after recieving them in the intent -->
+	     stored as a String, you must parse them as needed in the activity after receiving them in the intent -->
 	    <intent-extra key="extraTwo" >2</intent-extra>
 	    
 	    <!-- Integer value of flags to be set, Example is the value for FLAG_ACTIVITY_SINGLE_TOP -->

@@ -7,17 +7,12 @@ package com.ellucian.mobile.android.app;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 
 import com.ellucian.mobile.android.adapter.EllucianRecyclerAdapter;
 
-/**
- * Created by jhigley on 2/11/15.
- */
 public class EllucianRecyclerView extends RecyclerView {
 
-    protected int selectedIndex = -1;
+    private int selectedIndex = -1;
 
     public EllucianRecyclerView(Context context) {
         super(context);

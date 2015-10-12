@@ -30,8 +30,8 @@ import com.ellucian.mobile.android.util.Extra;
  * @author sdk
  */
 public class MapsIntentService extends IntentService {
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.MapsIntentService.action.updated";
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.MapsIntentService.action.updated";
 	public MapsIntentService() {
 		super("MapsIntentService");
 	}

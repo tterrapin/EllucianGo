@@ -4,6 +4,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,6 +31,7 @@
             android:maxLines="1"
             android:paddingLeft="3sp"
             android:paddingStart="3sp"
-            android:paddingTop="3sp" />
+            android:paddingTop="3sp"
+            tools:ignore="NewApi,RtlSymmetry" />
 
 </LinearLayout>

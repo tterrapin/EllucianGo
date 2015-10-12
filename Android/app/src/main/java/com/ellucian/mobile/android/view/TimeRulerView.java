@@ -27,16 +27,16 @@ import android.view.View;
  */
 public class TimeRulerView extends View {
 
-    public int mHeaderWidth = 120;
-    private int mHourHeight = 180;
-    private int mLabelTextSize = 24;
-    private int mLabelPaddingLeft = 0;
-    private int mLabelColor = Color.BLACK;
-    private int mDividerColor = Color.LTGRAY;
-    private int mStartHour = 0;
-    private int mEndHour = 24;
+    public final int mHeaderWidth = 120;
+    private final int mHourHeight = 180;
+    private final int mLabelTextSize = 24;
+    private final int mLabelPaddingLeft = 0;
+    private final int mLabelColor = Color.BLACK;
+    private final int mDividerColor = Color.LTGRAY;
+    private final int mStartHour = 0;
+    private final int mEndHour = 24;
     
-    public static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
+    private static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
 
 
     public TimeRulerView(Context context) {
@@ -74,8 +74,8 @@ public class TimeRulerView extends View {
                 resolveSize(height, heightMeasureSpec));
     }
 
-    private Paint mDividerPaint = new Paint();
-    private Paint mLabelPaint = new Paint();
+    private final Paint mDividerPaint = new Paint();
+    private final Paint mLabelPaint = new Paint();
 
     @Override
     protected synchronized void onDraw(Canvas canvas) {

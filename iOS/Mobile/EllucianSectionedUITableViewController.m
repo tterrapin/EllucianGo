@@ -7,6 +7,7 @@
 //
 
 #import "EllucianSectionedUITableViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface EllucianSectionedUITableViewController ()
 

@@ -3,272 +3,244 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding" >
 
-        <TableLayout
-            style="@style/aboutTable"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <!-- NAME -->
-
-            <TableRow
-                android:id="@+id/nameLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white" >
-
-                <LinearLayout
-                    style="@style/tableLayoutVerticalSeparator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/nameLabel"
-                        style="@style/tableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_name" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/name"
-                        style="@style/tableData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textIsSelectable="true" >
-                    </TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/directory_icon_description"
-                    android:src="@drawable/ic_building" />
-            </TableRow>
-
-            <!-- TYPE -->
-
-            <TableRow
-                android:id="@+id/typeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white"
-                android:visibility="gone" >
-
-                <LinearLayout
-                    style="@style/tableLayoutVerticalSeparator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/typeLabel"
-                        style="@style/tableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_type" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/type"
-                        style="@style/tableData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-                    </TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/directory_icon_description"
-                    android:src="@drawable/ic_building" />
-            </TableRow>
-
-            <!-- PHONE -->
-
-            <TableRow
-                android:id="@+id/phoneLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white"
-                android:visibility="gone" >
-
-                <LinearLayout
-                    style="@style/tableLayoutVerticalSeparator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/phoneLabel"
-                        style="@style/tableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_phone" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/phone"
-                        style="@style/tableData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-                    </TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/directory_icon_description"
-                    android:src="@drawable/ic_device_access_call" />
-            </TableRow>
-
-            <!-- E-MAIL -->
-
-            <TableRow
-                android:id="@+id/emailLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white"
-                android:visibility="gone" >
-
-                <LinearLayout
-                    style="@style/tableLayoutVerticalSeparator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/emailLabel"
-                        style="@style/tableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_email" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/email"
-                        style="@style/tableData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-                    </TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/directory_icon_description"
-                    android:src="@drawable/ic_content_email" />
-            </TableRow>
-
-            <!-- ADDRESS -->
-
-            <TableRow
-                android:id="@+id/addressLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:background="@android:color/white"
-                android:visibility="gone" >
-
-                <LinearLayout
-                    style="@style/tableLayoutVerticalSeparator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/addresLabel"
-                        style="@style/tableLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_address" >
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/address"
-                        style="@style/tableData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" >
-                    </TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/directory_icon_description"
-                    android:src="@drawable/ic_location_web_site" />
-            </TableRow>
-        </TableLayout>
-
-        <LinearLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            tools:ignore="ButtonStyle" >
+            android:layout_margin="@dimen/card_margin"
+            card_view:cardCornerRadius="2dp"
+            card_view:cardElevation="8dp">
 
-            <Button
-                android:id="@+id/showMap"
-                android:layout_width="0dip"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12sp"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:text="@string/maps_show_map"
-                android:visibility="gone" >
-            </Button>
+                android:background="@android:color/white"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/showDirections"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_margin="12sp"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:text="@string/maps_get_directions_label"
-                android:visibility="gone" >
-            </Button>
-        </LinearLayout>
+                <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingTop="20dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:contentDescription="@string/directory_icon_description"-->
+                <!--android:src="@drawable/ic_building" />-->
+
+                <!-- NAME -->
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/numberTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textIsSelectable="true"/>
+
+                <!-- TYPE -->
+                <TextView
+                    android:id="@+id/type"
+                    style="@style/tableData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"/>
+
+                <TableLayout
+                    style="@style/cardTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- PHONE -->
+                    <TableRow
+                        android:id="@+id/phoneLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/top_line_1dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/directory_icon_description"
+                            android:src="@drawable/ic_phone_black_24dp"/>
+
+                        <LinearLayout
+                            style="@style/cardTableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"
+                            android:minHeight="?android:attr/listPreferredItemHeight"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/phone"
+                                style="@style/cardData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:id="@+id/phoneLabel"
+                                style="@style/cardLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_phone">
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </TableRow>
+
+                    <!-- E-MAIL -->
+
+                    <TableRow
+                        android:id="@+id/emailLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/top_line_1dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/directory_icon_description"
+                            android:src="@drawable/ic_email_black_24dp"/>
+
+                        <LinearLayout
+                            style="@style/cardTableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"
+                            android:minHeight="?android:attr/listPreferredItemHeight"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/email"
+                                style="@style/cardData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:id="@+id/emailLabel"
+                                style="@style/cardLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_email">
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </TableRow>
+
+                    <!-- ADDRESS -->
+
+                    <TableRow
+                        android:id="@+id/addressLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/top_line_1dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/showMap"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/directory_icon_description"
+                            android:src="@drawable/ic_location_on_black_24dp"/>
+
+                        <LinearLayout
+                            style="@style/cardTableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"
+                            android:minHeight="?android:attr/listPreferredItemHeight"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/address"
+                                style="@style/cardData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                            </TextView>
+
+                            <TextView
+                                android:id="@+id/addressLabel"
+                                style="@style/cardLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_address">
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </TableRow>
+
+                    <!-- DIRECTIONS -->
+
+                    <TableRow
+                        android:id="@+id/directionsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/top_line_1dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center_vertical"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/directory_icon_description"
+                            android:src="@drawable/ic_directions_black_24dp"/>
+
+                        <LinearLayout
+                            style="@style/cardTableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:gravity="center_vertical"
+                            android:minHeight="?android:attr/listPreferredItemHeight"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/cardData"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/maps_get_directions_label">
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

@@ -4,13 +4,6 @@
 
 package com.ellucian.mobile.android.client.services;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.ContentProviderOperation;
@@ -34,6 +27,13 @@ import com.ellucian.mobile.android.client.configuration.ConfigurationBuilder;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ConfigurationUpdateService extends IntentService {
 
@@ -490,14 +490,10 @@ public class ConfigurationUpdateService extends IntentService {
 		if (about.has("logoUrlPhone")) {
 			editor.putString(AboutActivity.PREFERENCES_LOGO_URL_PHONE,
 					about.getString("logoUrlPhone"));
-		} else {
-			// TODO - default here
 		}
 		if (about.has("logoUrlTablet")) {
 			editor.putString(AboutActivity.PREFERENCES_LOGO_URL_TABLET,
 					about.getString("logoUrlTablet"));
-		} else {
-			// TODO - default here
 		}
 		if (about.has("phone")) {
 			JSONObject phone = about.getJSONObject("phone");
@@ -605,7 +601,7 @@ public class ConfigurationUpdateService extends IntentService {
 		    }
 		} catch(JSONException e) {
             Log.e(TAG, "exception processing NOTIFICATION URLs " + e, e);
-			// ignore this for nddow
+			// ignore this for now
 		}
 		// remove enabled attribute if it exists to ensure we check
 		Utils.removeValuesFromPreferences(this, Utils.NOTIFICATION,

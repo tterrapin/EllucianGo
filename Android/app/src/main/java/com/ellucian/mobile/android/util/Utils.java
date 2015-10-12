@@ -4,9 +4,6 @@
 
 package com.ellucian.mobile.android.util;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
@@ -25,11 +22,16 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.androidquery.AQuery;
+import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.ModuleType;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
 	public static final String DEFAULT_MENU_ICON = "defaultMenuIcon";
@@ -57,11 +59,11 @@ public class Utils {
 	public static final String CONFIGURATION_LAST_UPDATE = "configurationLastUpdate";
 	public static final String APPEARANCE = "appearance";
 	public static final String DIALOG = "dialog";
-	public static final String USER = "user";
-	public static final String USER_ID = "userId";
-	public static final String USER_NAME = "userName";
-	public static final String USER_PASSWORD = "userPassword";
-	public static final String USER_ROLES = "userRoles";
+	private static final String USER = "user";
+	private static final String USER_ID = "userId";
+	private static final String USER_NAME = "userName";
+	private static final String USER_PASSWORD = "userPassword";
+	private static final String USER_ROLES = "userRoles";
 	public static final String USER_MASTER = "userMaster";
 	public static final String ID = "id";
 	public static final String COURSE_ROSTER_VISIBILITY = "course_roster_visibility";
@@ -69,9 +71,9 @@ public class Utils {
 	public static final String MAP_CAMPUSES_URL = "mapCampusesUrl";
 	public static final String MAP_PRESENT = "mapPresent";
 	public static final String DIRECTORY_PRESENT = "directoryPresent";
-	public static final String DIRECTORY_ALL_SEARCH_URL = "directoyAllSearchUrl";
-	public static final String DIRECTORY_STUDENT_SEARCH_URL = "directoyStudentSearchUrl";	
-	public static final String DIRECTORY_FACULTY_SEARCH_URL = "directoyFacultySearchUrl";
+	public static final String DIRECTORY_ALL_SEARCH_URL = "directoryAllSearchUrl";
+	public static final String DIRECTORY_STUDENT_SEARCH_URL = "directoryStudentSearchUrl";
+	public static final String DIRECTORY_FACULTY_SEARCH_URL = "directoryFacultySearchUrl";
 	public static final String GOOGLE_ANALYTICS = "googleAnalytics";
 	public static final String GOOGLE_ANALYTICS_TRACKER1 = "tracker1";
 	public static final String GOOGLE_ANALYTICS_TRACKER2 = "tracker2";
@@ -122,11 +124,19 @@ public class Utils {
 			Bitmap bit = aq.getCachedImage(menuIconUrl);
 			if (bit != null) {
 				Drawable draw = new BitmapDrawable(context.getResources(), bit);
-				return draw;
+				return resize(draw, 20, 20, context);
 			}
 		}
 		return null;
 	}
+
+    public static Drawable resize(Drawable image, int height, int width, Context context) {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        int ht_px = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, context.getResources().getDisplayMetrics()));
+        int wt_px = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, width, context.getResources().getDisplayMetrics()));
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, wt_px, ht_px, false);
+        return new BitmapDrawable(context.getResources(), bitmapResized);
+    }
 
 	private static int getColor(Context context, String key) {
 		SharedPreferences preferences = context.getSharedPreferences(APPEARANCE, Context.MODE_PRIVATE);
@@ -165,7 +175,7 @@ public class Utils {
         editor.commit();
 	}
 	
-	public static boolean getBooleanFromPreferences(Context context, String fileName, String key, boolean defaultValue) {		
+	private static boolean getBooleanFromPreferences(Context context, String fileName, String key, boolean defaultValue) {
 		SharedPreferences preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         return preferences.getBoolean(key, defaultValue);
 	}
@@ -309,20 +319,20 @@ public class Utils {
 	    }
 	}
 	
-	public static boolean isPhoneIntentAvailable (Context context) {
+	private static boolean isPhoneIntentAvailable(Context context) {
 		Uri uri = Uri.parse("tel:222-333-4444");
     	Intent intent = new Intent(Intent.ACTION_DIAL, uri);
 		return isIntentAvailable(context, intent);
 	}
 	
-	public static boolean isEmailIntentAvailable (Context context) {
+	private static boolean isEmailIntentAvailable(Context context) {
 		Uri uri = Uri.parse("mailto:test@test.com");
     	Intent intent = new Intent(Intent.ACTION_SENDTO);
     	intent.setData(uri);
 		return isIntentAvailable(context, intent);
 	}
 	
-	public static boolean isWebIntentAvailable(Context context) {
+	private static boolean isWebIntentAvailable(Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("http://www.google.com"));
 		return Utils.isIntentAvailable(context, intent);
@@ -407,4 +417,19 @@ public class Utils {
         }
         return false;
     }
+
+    public static void hideProgressIndicator(Activity activity) {
+        View progressSpinner = activity.findViewById(R.id.progress_spinner);
+        if (progressSpinner != null) {
+            progressSpinner.setVisibility(View.GONE);
+        }
+    }
+
+    public static void showProgressIndicator(Activity activity) {
+        View progressSpinner = activity.findViewById(R.id.progress_spinner);
+        if (progressSpinner != null) {
+            progressSpinner.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

@@ -11,7 +11,7 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class OutdatedReceiver extends BroadcastReceiver {
 	
-	private Activity activity;
+	private final Activity activity;
 
 	public OutdatedReceiver(Activity activity) {
 		this.activity = activity;
@@ -22,8 +22,8 @@ public class OutdatedReceiver extends BroadcastReceiver {
 		String tag = activity.getClass().getName();
 		Log.d(tag, "onReceive, OutdatedReceiver");
 
-		activity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
-		Utils.removeValuesFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_URL);
+        Utils.hideProgressIndicator(activity);
+        Utils.removeValuesFromPreferences(context, Utils.CONFIGURATION, Utils.CONFIGURATION_URL);
 		
 		// launch an Activity to allow the use of an AlertDialog
 		Intent i = new Intent(context, OutdatedReceiverActivity.class);

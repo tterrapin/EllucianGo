@@ -4,8 +4,8 @@
 
 package com.ellucian.mobile.android.directory;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +51,7 @@ public class DirectoryListActivity  extends EllucianActivity {
 			}
 		}
         
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (DirectoryListFragment) manager.findFragmentByTag("directoryListFragment");
 		

@@ -10,7 +10,6 @@
 #import "MapPOI.h"
 #import "AsynchronousImageView.h"
 #import <MapKit/MapKit.h>
-#import "UIColor+SchoolCustomization.h"
 #import "Module.h"
 #import "PseudoButtonView.h"
 

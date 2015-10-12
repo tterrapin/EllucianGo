@@ -4,10 +4,6 @@
 
 package com.ellucian.mobile.android.maps;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.ContentProviderOperation;
 import android.content.OperationApplicationException;
@@ -35,6 +31,10 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsBuildings;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.util.Utils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = BuildingDetailFragment.class.getSimpleName();
@@ -152,7 +152,7 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 		if (args != null) {
 			setFields(args);
 			if ( latitude == null || longitude == null || (latitude == 0.0 && longitude == 0.0)) {
-				Log.d(TAG, "latitute or longitude is missing, setting views from buildingId");
+				Log.d(TAG, "latitude or longitude is missing, setting views from buildingId");
 				if (!TextUtils.isEmpty(buildingId)) {
 					buildingUrl = Utils.getStringFromPreferences(getActivity(), Utils.CONFIGURATION, Utils.MAP_BUILDINGS_URL, null);
 					setViewsFromBuildingId();
@@ -199,7 +199,7 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 	/*
 	 * set the fragment fields from a building
 	 */
-	public void setFieldsFromClientBuilding(com.ellucian.mobile.android.client.maps.Building clientBuilding) {	
+	private void setFieldsFromClientBuilding(com.ellucian.mobile.android.client.maps.Building clientBuilding) {
 		Log.d(TAG, "setFieldsFromClientBuilding");
 		if (clientBuilding != null) {
 			if (clientBuilding.address != null) {
@@ -212,7 +212,7 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 			buildingId = clientBuilding.id;
 			campusId = clientBuilding.campusId;
 			
-			// Dont overwrite type if present
+			// Don't overwrite type if present
 			if (TextUtils.isEmpty(type)) {
 				String typeString = "";
 				for (String type : clientBuilding.type) {			
@@ -368,12 +368,12 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 			
 			if (cursor.moveToFirst()) {
 				Log.d(TAG, "Cursor returned a row");
-				// Dont overwrite name if present
+				// Don't overwrite name if present
 				if (TextUtils.isEmpty(name)) {
 					name = cursor.getString(cursor.getColumnIndex(MapsBuildings.BUILDING_NAME));
 				}
 				
-				// Dont overwrite type if present
+				// Don't overwrite type if present
 				if (TextUtils.isEmpty(type)) {
 					type = cursor.getString(cursor.getColumnIndex(MapsBuildings.BUILDING_CATEGORIES));
 				}
@@ -411,13 +411,13 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 	}
 
 
-	public void refresh() {
+	private void refresh() {
 		rootView.invalidate();
 	}
 
 
 	private class RetrieveBuildingInfoTask extends AsyncTask<String, Void, BuildingsResponse> {
-		Activity activity;
+		final Activity activity;
 		
 		public RetrieveBuildingInfoTask(Activity activity) {
 			this.activity = activity;
@@ -443,13 +443,13 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 					Log.d(TAG, "buildingResponse is null or length of 0");
 				}
 			} else {
-				Log.d(TAG, "AyncTask returned null response");
+				Log.d(TAG, "AsyncTask returned null response");
 			}
 			setViews();
 			refresh();
 		}
 		
-		protected void insertIntoDatabase(BuildingsResponse response) {
+		void insertIntoDatabase(BuildingsResponse response) {
 			BuildingsBuilder builder = new BuildingsBuilder(activity, null);
 			Log.d(TAG, "Building content provider operations");
 			ArrayList<ContentProviderOperation> operations = builder.buildOperations(response);

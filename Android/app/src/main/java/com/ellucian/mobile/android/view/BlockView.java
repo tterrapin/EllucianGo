@@ -29,7 +29,7 @@ public class BlockView extends Button {
     private long mEndTime;
     private int mColumn;
 
-    public static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
+    private static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
 
     public BlockView(Context context) {
     	super(context);

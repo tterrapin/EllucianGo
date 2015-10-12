@@ -4,7 +4,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"  >
         
@@ -27,12 +28,13 @@
 		        android:id="@+id/meetings_type_separator"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="@string/line_speparator"
+		        android:text="@string/line_separator"
 		        android:textStyle="bold"
 		        android:paddingLeft="4dp"
 	            android:paddingStart="4dp" 		       
 	            android:paddingRight="4dp"
-	            android:paddingEnd="4dp" />
+	            android:paddingEnd="4dp"
+			tools:ignore="NewApi" />
 	    
 	    <TextView 
 	        android:id="@+id/type"

@@ -4,13 +4,20 @@
 
 package com.ellucian.mobile.android.maps;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,63 +27,132 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.maps.LayersDialogFragment.LayersDialogFragmentListener;
+import com.ellucian.mobile.android.util.PermissionUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsSingleLocationActivity extends EllucianActivity
 		implements LayersDialogFragmentListener, LocationSource,
-		LocationListener {
+		LocationListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
-	private GoogleMap map;
+    public static final String TAG = "MapsSingleLocationActivity";
+
+    // WRITE is required by Google Maps API to store map tiles.
+    private static final int STORAGE_REQUEST_ID = 0;
+    private static String[] STORAGE_PERMISSIONS =
+            {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    // LOCATION is optional - user can deny and still use maps.
+    private static final int LOCATION_REQUEST_ID = 1;
+    private static String[] LOCATION_PERMISSIONS =
+            {Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION};
+
+    private GoogleMap map;
 	private OnLocationChangedListener mapLocationListener = null;
 	private LocationManager locMgr = null;
-	private Criteria crit = new Criteria();
+	private final Criteria crit = new Criteria();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (readyToGo()) {
-			setContentView(R.layout.activity_maps_single_location);
-			setUpMapIfNeeded();
-			Intent intent = getIntent();
-			final String title = intent.getStringExtra("title");
-			LatLng location = new LatLng(intent.getDoubleExtra("latitude", 0),
-					intent.getDoubleExtra("longitude", 0));
-			setTitle(title);
-			
-			map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater()));
-			Marker marker = map.addMarker(new MarkerOptions().position(location).title(title));
-			
-			locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-			crit.setAccuracy(Criteria.ACCURACY_COARSE);
 
-			map.setMyLocationEnabled(true);
-			map.getUiSettings().setMyLocationButtonEnabled(true);
-
-			CameraUpdate cu = CameraUpdateFactory.newLatLng(location);
-			map.moveCamera(cu);
-			marker.showInfoWindow();
-		}
+        // Check if the Storage permission is already available. READ is implicitly granted if WRITE is.
+        if (!hasStoragePermission()) {
+            // Storage permission have not been granted
+            requestStoragePermissions();
+        } else {
+            handleIntent();
+        }
 	}
+
+    private boolean hasLocationPermission() {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private boolean hasStoragePermission() {
+        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    /**
+     * (Android M+ only)
+     * Before user is prompted to grant permission, explain why we need it.
+     * If they choose to never be asked again, they will see this message
+     * and then be returned to where they came from.
+     */
+    private void requestStoragePermissions() {
+        Log.d(TAG, "Explain and request storage permission.");
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.maps_storage_alert_title)
+                .setMessage(R.string.maps_storage_alert_message)
+                .setPositiveButton(R.string.dialog_continue,
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                ActivityCompat.requestPermissions(MapsSingleLocationActivity.this,
+                                        STORAGE_PERMISSIONS, STORAGE_REQUEST_ID);
+                            }
+                        }).create().show();
+    }
+
+    /**
+     * (Android M+ only)
+     * Request location permission. No explanation to user is needed.
+     */
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(this, LOCATION_PERMISSIONS, LOCATION_REQUEST_ID);
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult");
+        if (requestCode == STORAGE_REQUEST_ID) {
+            if (!PermissionUtil.verifyPermissions(grantResults)) {
+                // Not all required permissions were granted.
+                Log.w(TAG, "The Required STORAGE permission was NOT granted.");
+                Toast.makeText(this, R.string.maps_storage_not_granted, Toast.LENGTH_LONG).show();
+                finish();  // Close activity.
+            } else {
+                Log.d(TAG, "Storage permissions have been granted.");
+                handleIntent();
+            }
+
+        } else if (requestCode == LOCATION_REQUEST_ID) {
+            if (PermissionUtil.verifyPermissions(grantResults)) {
+                // All required permissions have been granted.
+                getLocation();
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (locMgr != null) {
-			try {
-				locMgr.requestLocationUpdates(0L, 0.0f, crit, this, null);
-			} catch (IllegalArgumentException e) {
-				//java.lang.IllegalArgumentException: no providers found for criteria
-			}
-		}
+        if (hasLocationPermission()) {
+            getLocation();
+        }
+
 		if (map != null) {
 			map.setLocationSource(this);
 			map.setIndoorEnabled(true);
@@ -91,7 +167,11 @@ public class MapsSingleLocationActivity extends EllucianActivity
 			map.setIndoorEnabled(false);
 		}
 		if (locMgr != null)
-			locMgr.removeUpdates(this);
+            try {
+                locMgr.removeUpdates(this);
+            } catch (Exception e) {
+                Log.e(TAG, "Location is not available" + e.getMessage());
+            }
 
 		super.onPause();
 	}
@@ -130,15 +210,58 @@ public class MapsSingleLocationActivity extends EllucianActivity
 
 	private void setUpMapIfNeeded() {
 		if (map == null) {
-			map = ((MapFragment) getFragmentManager()
+			map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
-			if (map != null) {
-				// map.setOnInfoWindowClickListener(this);
-			}
 		}
 	}
 
-	protected boolean readyToGo() {
+    private void handleIntent() {
+        if (readyToGo()) {
+
+            if (!hasLocationPermission()) {
+                // Location permissions have not been granted
+                requestLocationPermission();
+            }
+
+            setContentView(R.layout.activity_maps_single_location);
+            setUpMapIfNeeded();
+
+            Intent intent = getIntent();
+            final String title = intent.getStringExtra("title");
+            LatLng location = new LatLng(intent.getDoubleExtra("latitude", 0),
+                    intent.getDoubleExtra("longitude", 0));
+            setTitle(title);
+
+            map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater()));
+            Marker marker = map.addMarker(new MarkerOptions().position(location).title(title));
+
+            locMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+            crit.setAccuracy(Criteria.ACCURACY_COARSE);
+
+            // Don't get user's location if they haven't granted it.
+            if (hasLocationPermission()) {
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(location, 17);
+            map.moveCamera(cu);
+            marker.showInfoWindow();
+        }
+    }
+
+    private void getLocation() {
+        if(locMgr != null) {
+            try {
+                locMgr.requestLocationUpdates(0L, 0.0f, crit, this, null);
+            } catch (Exception e) {
+                Log.e(TAG, "Location not available. " + e.getMessage());
+            }
+        }
+    }
+
+
+    private boolean readyToGo() {
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
 		if (status == ConnectionResult.SUCCESS) {
@@ -229,7 +352,7 @@ public class MapsSingleLocationActivity extends EllucianActivity
 			break;
 		}
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();

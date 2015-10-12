@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SlidingViewController.h"
+#import "ECSlidingViewController.h"
+
+#define kSlidingViewOpenMenuAppearsNotification @"SlidingViewOpenMenuAppearsNotification"
+#define kSlidingViewTopResetNotification @"SlidingViewTopResetNotification"
+#define kSlidingViewOpenTopControllerNotification @"SlidingViewOpenTopControllerNotification"
+#define kSlidingViewChangeTopControllerNotification @"SlidingViewChangeTopControllerNotification"
 
 @interface UIViewController (SlidingViewExtension)
-
-- (SlidingViewController *)slidingViewController;
 
 - (IBAction)revealMenu:(id)sender;
 

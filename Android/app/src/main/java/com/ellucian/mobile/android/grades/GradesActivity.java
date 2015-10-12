@@ -4,15 +4,9 @@
 
 package com.ellucian.mobile.android.grades;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,9 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -48,7 +46,11 @@ import com.ellucian.mobile.android.provider.EllucianContract.Grades;
 import com.ellucian.mobile.android.provider.EllucianContract.GradesCourses;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
-import com.ellucian.mobile.android.view.PagerTitleStrip;
+import com.ellucian.mobile.android.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Main activity for displaying a student's grades.  UI uses a view pager to allow the user to swipe through
@@ -58,29 +60,30 @@ import com.ellucian.mobile.android.view.PagerTitleStrip;
  */
 public class GradesActivity extends EllucianActivity {
 
-	TermsPagerAdapter termsPageAdapter;
-	ViewPager viewPager;
-	PagerTitleStrip titleStrip;
+	private final Activity activity = this;
+    private TermsPagerAdapter termsPageAdapter;
+	private ViewPager viewPager;
 	private static final String VIEWPAGER_TERM = "viewpagerTerm";
 	private GradesIntentServiceReceiver gradesServiceReceiver;
-	
-	@Override
+	private OnPageChangeListener pageChangeListener;
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("GradesActivity", "onCreate()");
-		setContentView(R.layout.activity_grades);
-		
-		setTitle(moduleName);
-		
-		// Create the adapter that will return a fragment for each term
-		// of the app.
-		termsPageAdapter = new TermsPagerAdapter(
-				getFragmentManager());
+        setContentView(R.layout.activity_grades);
 
-		// Set up the ViewPager with the sections adapter.
+		setTitle(moduleName);
+
+        // Create the adapter that will return a fragment for each term
+        termsPageAdapter = new TermsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
 		viewPager = (ViewPager) findViewById(R.id.pager);
-		viewPager.setAdapter(termsPageAdapter);
-		viewPager.setOnPageChangeListener(new OnPageChangeListener(){
+
+        viewPager.setAdapter(termsPageAdapter);
+//		viewPager.setOnPageChangeListener(new OnPageChangeListener(){
+		pageChangeListener = new OnPageChangeListener() {
 
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
@@ -94,18 +97,16 @@ public class GradesActivity extends EllucianActivity {
 			public void onPageSelected(int arg0) {
 				GradesActivity.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SLIDE_ACTION, "Swipe Terms", null, moduleName);
 			}
-		});
-		
-		
-		// Save reference to the title strip for updates
-		titleStrip = (PagerTitleStrip) findViewById(R.id.grades_pager_title_strip);
-		
+		};
+		viewPager.addOnPageChangeListener(pageChangeListener);
+
 		if(savedInstanceState == null) {
 			Log.d("GradesActivity", "No saved instance state.  Grabbing data.");
-			viewPager.setCurrentItem(viewPager.getChildCount() - 1);
-			
+            Utils.showProgressIndicator(this);
+            viewPager.setCurrentItem(viewPager.getChildCount() - 1);
+
 			registerGradesServiceReceiver();
-			
+
 			Intent intent = new Intent(this, GradesIntentService.class);
 			intent.putExtra(Extra.MODULE_ID, moduleId);
 			intent.putExtra(Extra.REQUEST_URL, requestUrl);
@@ -114,47 +115,47 @@ public class GradesActivity extends EllucianActivity {
 			// Load terms from the database asynchronously
 			String viewpagerItem = savedInstanceState.getString(VIEWPAGER_TERM);
 			LoadTermsFromDatabaseTask loadTerms = new LoadTermsFromDatabaseTask();
-			if(viewpagerItem != null) {
-				loadTerms.setCurrentTermId(viewpagerItem);
+            if (viewpagerItem != null) {
+                loadTerms.setCurrentTermId(viewpagerItem);
 				Log.d("GradesActivity.onCreate", "Setting current term to in LoadTermsFromDatabaseTask to: " + viewpagerItem);
 			}
 			loadTerms.execute();
 		}
-	}
+    }
 
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_grades, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.menu_grades_term_picker:
-	        	List<TermModel> terms = termsPageAdapter.getTerms();
-	        	List<String> termNames = new ArrayList<String>();
-	        	for(TermModel model : terms) {
-	        		termNames.add(model.getName());
-	        	}
-	        	AlertDialog.Builder builder = new AlertDialog.Builder(this)
-	            .setItems(termNames.toArray(new String[termNames.size()]), new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int which) {
-	                	viewPager.setCurrentItem(which);
-	                	sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Select Term", null, moduleName);
-	                }
-	            });
-	        	Dialog dialog = builder.create();
-	        	dialog.show();
-	        	sendView("Term List", moduleName);
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+			case R.id.menu_grades_term_picker:
+				List<TermModel> terms = termsPageAdapter.getTerms();
+				List<String> termNames = new ArrayList<>();
+				for(TermModel model : terms) {
+					termNames.add(model.getName());
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(this)
+						.setItems(termNames.toArray(new String[termNames.size()]), new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								viewPager.setCurrentItem(which);
+								sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_LIST_SELECT, "Select Term", null, moduleName);
+							}
+						});
+				Dialog dialog = builder.create();
+				dialog.show();
+				sendView("Term List", moduleName);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	/**
 	 * On saving, get the term id currently displayed by the view pager.  This is used to select the term if the 
 	 * activity is recreated from saved state
@@ -169,7 +170,7 @@ public class GradesActivity extends EllucianActivity {
 			outState.putString(VIEWPAGER_TERM, termId);
 		}
 	}
-	
+
 	private void registerGradesServiceReceiver() {
 		if(gradesServiceReceiver == null) {
 			Log.d("GradesActivity.RegisterGradesServiceReceiver", "Registering new service receiver");
@@ -178,7 +179,7 @@ public class GradesActivity extends EllucianActivity {
 			LocalBroadcastManager.getInstance(this).registerReceiver(gradesServiceReceiver, filter);
 		}
 	}
-	
+
 	private void unregisterGradesServiceReceiver() {
 		if(gradesServiceReceiver != null) {
 			LocalBroadcastManager.getInstance(this).unregisterReceiver(gradesServiceReceiver);
@@ -191,7 +192,7 @@ public class GradesActivity extends EllucianActivity {
 	 */
 	public class TermsPagerAdapter extends FragmentPagerAdapter {
 		/** Store the list of terms that are supported by the page */
-		List<TermModel> terms = new ArrayList<TermModel>();
+		List<TermModel> terms = new ArrayList<>();
 
 		public TermsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -227,7 +228,7 @@ public class GradesActivity extends EllucianActivity {
 		public List<TermModel> getTerms() {
 			return this.terms;
 		}
-		
+
 		/**
 		 * Sets the terms that are serviced by the adapter
 		 * @param terms model
@@ -236,7 +237,7 @@ public class GradesActivity extends EllucianActivity {
 			if(terms != null) {
 				this.terms = terms;
 			} else {
-				this.terms = new ArrayList<TermModel>();
+				this.terms = new ArrayList<>();
 			}
 		}
 	}
@@ -246,9 +247,10 @@ public class GradesActivity extends EllucianActivity {
 	 * @author sdk
 	 *
 	 */
+	@SuppressWarnings("JavaDoc")
 	public static class GradeSectionFragment extends EllucianListFragment {
 		private GradesListAdapter adapter;
-		private List<CourseModel> courses = new ArrayList<CourseModel>(); 
+		private List<CourseModel> courses = new ArrayList<>();
 		private LoadCoursesFromDatabaseTask task;
 
 		/**
@@ -265,10 +267,9 @@ public class GradesActivity extends EllucianActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = inflater.inflate(R.layout.fragment_grades, container,
+								 Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.fragment_grades, container,
 					false);
-			return view;
 		}
 
 		/**
@@ -285,12 +286,12 @@ public class GradesActivity extends EllucianActivity {
 			}
 			for(CourseModel course : getCourses()) {
 				if(course.getGrades() != null) {
-					Log.d("GradesSectionFragment.onDestroy", "Closing grades cursors");		
+					Log.d("GradesSectionFragment.onDestroy", "Closing grades cursors");
 					course.getGrades().close();
 				}
 			}
 		}
-		
+
 		/**
 		 * Gets the data model for the fragment
 		 * @return
@@ -298,45 +299,45 @@ public class GradesActivity extends EllucianActivity {
 		public List<CourseModel> getCourses() {
 			return this.courses;
 		}
-		
+
 		/**
 		 * Sets the data model for the fragment
 		 * @param courses
 		 */
- 		public void setCourses(List<CourseModel> courses) {
+		public void setCourses(List<CourseModel> courses) {
 			if(courses != null) {
 				this.courses = courses;
 			} else {
-				this.courses = new ArrayList<CourseModel>();
+				this.courses = new ArrayList<>();
 			}
 		}
- 		
- 		/**
- 		 * Used during display of the view to modify the date and time output for the view
- 		 * @author sdk
- 		 */
+
+		/**
+		 * Used during display of the view to modify the date and time output for the view
+		 * @author sdk
+		 */
 		private class GradeViewBinder implements SimpleCursorAdapter.ViewBinder {
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int index) {
 				if(index == cursor.getColumnIndex(Grades.GRADE_UPDATED)) {
 					String dateString = cursor.getString(index);
-					
+
 					Date date = CalendarUtils.parseFromUTC(dateString);
-					
+
 					// TODO - Set this back when the main format gets fixed
 					//Date date = EllucianDatabase.toDate(cursor.getString(index));
-					
+
 					String output = getString(R.string.unavailable);
-					if(date != null) {	
+					if(date != null) {
 						output = CalendarUtils.getDefaultDateTimeString(getActivity(), date);
-					} 
-					
+					}
+
 					((TextView) view).setText(output);
 					return true;
 				} else {
 					return false;
 				}
-				
+
 			}
 		}
 
@@ -350,7 +351,7 @@ public class GradesActivity extends EllucianActivity {
 			 * task is executing
 			 */
 			final ContentResolver resolver = GradeSectionFragment.this.getActivity().getContentResolver();
-			
+
 			/**
 			 * Creates the CourseModel from data in the database.  This is accomplished in two steps.
 			 * The first step is to get the courses for a specific term and store that in a model and then
@@ -360,7 +361,7 @@ public class GradesActivity extends EllucianActivity {
 			@Override
 			protected List<CourseModel> doInBackground(Void... params) {
 				Log.d("LoadCoursesFromDatabaseTask", "doInBackground");
-				List<CourseModel> courses = new ArrayList<CourseModel>();
+				List<CourseModel> courses = new ArrayList<>();
 				Cursor cursor = resolver
 						.query(GradeTerms.buildCoursesUri(getArguments().getString("term")), null, null,
 								null, GradesCourses.DEFAULT_SORT);
@@ -375,25 +376,18 @@ public class GradesActivity extends EllucianActivity {
 						String sectionNumber = cursor.getString(cursor
 								.getColumnIndex(GradesCourses.COURSE_SECTION));
 						if(courseName != null && courseId != null) { //sql statement may return a term with no courses
-							String label = "";
-							
-							if(title != null) {
-								label = getString(R.string.default_course_section_title_format,
-												courseName,
-												sectionNumber,
-												title);
-							} else {
-								label = getString(R.string.default_course_section_format,
-												courseName,
-												sectionNumber);
-							}
-							
-							courses.add(new CourseModel(courseId, label, null));
+							String label;
+
+                            label = getString(R.string.default_course_section_format,
+										courseName,
+										sectionNumber);
+
+							courses.add(new CourseModel(courseId, label, title, null));
 						}
 					} while (cursor.moveToNext());
 				}
 				cursor.close();
-				
+
 				// Add Sections
 				for (CourseModel course : courses) {
 					if(isCancelled()) {
@@ -401,21 +395,21 @@ public class GradesActivity extends EllucianActivity {
 						break;
 					}
 					Cursor gradesCursor = resolver
-							.query(Grades.CONTENT_URI, null, GradesCourses.COURSE_ID+"=?", 
+							.query(Grades.CONTENT_URI, null, GradesCourses.COURSE_ID+"=?",
 									new String[] {course.getId()}, Grades.DEFAULT_SORT);
 					Log.d("LoadCoursesFromDatabaseTask", "Querying for grades: " + Grades.buildGradeUri(course.getId()));
 					if(gradesCursor.moveToFirst()) {
 						do {
-							Log.d("LoadCoursesFromDatabaseTask", "Grade: " 
-									+ gradesCursor.getString(gradesCursor.getColumnIndex(Grades.GRADE_NAME)) + " " 
-									+ gradesCursor.getString(gradesCursor.getColumnIndex(Grades.GRADE_VALUE)) + " " 
+							Log.d("LoadCoursesFromDatabaseTask", "Grade: "
+									+ gradesCursor.getString(gradesCursor.getColumnIndex(Grades.GRADE_NAME)) + " "
+									+ gradesCursor.getString(gradesCursor.getColumnIndex(Grades.GRADE_VALUE)) + " "
 									+ gradesCursor.getString(gradesCursor.getColumnIndex(Grades.GRADE_UPDATED)));
 						} while (gradesCursor.moveToNext());
 					} else {
 						Log.d("LoadCoursesFromDatabaseTask", "Grades cursors empty.");
 					}
 					gradesCursor.moveToFirst();
-				
+
 					course.setGrades(gradesCursor);
 				}
 				return courses;
@@ -432,7 +426,7 @@ public class GradesActivity extends EllucianActivity {
 				setCourses(result);
 				// checks if the async task has been cancelled before processing the model
 				if(activity != null && !isCancelled()) {
-					adapter = new GradesListAdapter(GradeSectionFragment.this.getActivity());
+					adapter = new GradesListAdapter();
 					if(result.size() == 0) {
 						setListAdapter(null);
 					} else {
@@ -440,26 +434,30 @@ public class GradesActivity extends EllucianActivity {
 							Adapter gradesAdapter;
 							if(course.getGrades().getCount() > 0) {
 								SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(GradeSectionFragment.this.getActivity(),
-										R.layout.grade_row, course.getGrades(), 
-										new String[] {Grades.GRADE_NAME, Grades.GRADE_VALUE, Grades.GRADE_UPDATED}, 
+										R.layout.grade_row, course.getGrades(),
+										new String[] {Grades.GRADE_NAME, Grades.GRADE_VALUE, Grades.GRADE_UPDATED},
 										new int[] {R.id.grade_row_label, R.id.grade_row_value, R.id.grade_row_date}, 0);
-								
+
 								cursorAdapter.setViewBinder(new GradeViewBinder());
 								gradesAdapter = cursorAdapter;
 							} else {
-								ArrayAdapter<String> emptyAdapter = new ArrayAdapter<String>(GradeSectionFragment.this.getActivity(),
+								ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(GradeSectionFragment.this.getActivity(),
 										R.layout.grade_no_grade_row, R.id.grade_row_label);
 								emptyAdapter.add(getResources().getString(R.string.grades_no_grades));
 								gradesAdapter = emptyAdapter;
-								
+
 							}
-							adapter.addSection(course.getTitle(), gradesAdapter);
+                            GradesSectionHeader[] gradesSectionHeaders = {new GradesSectionHeader(course.getLabel(), course.getTitle())};
+                            GradesSectionHeaderAdapter headerAdapter =
+                                    new GradesSectionHeaderAdapter(activity, gradesSectionHeaders);
+
+                            adapter.addSection(headerAdapter, gradesAdapter);
 						}
 						setListAdapter(adapter);
 					}
 				}
 			}
-			
+
 			/**
 			 * If the task is cancelled attempt to close any cursors that have been created so far
 			 */
@@ -480,16 +478,17 @@ public class GradesActivity extends EllucianActivity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Loads the terms from the SQLite database.  This may be called for a brand new activity or resuming 
 	 * an activity.  If resuming, the name of the current term can be passed in to set the right term to 
 	 * display once the terms are read.
 	 * @author sdk
 	 */
+	@SuppressWarnings("JavaDoc")
 	private class LoadTermsFromDatabaseTask extends AsyncTask<Void, Void, List<TermModel>> {
 		private String currentTermId;
-		
+
 		/**
 		 * Queries the database for all terms and puts them into a model
 		 */
@@ -498,14 +497,14 @@ public class GradesActivity extends EllucianActivity {
 			Cursor cursor = GradesActivity.this.getContentResolver().query(
 					EllucianContract.GradeTerms.CONTENT_URI, null, null, null,
 					EllucianContract.GradeTerms.DEFAULT_SORT);
-			List<TermModel> terms = new ArrayList<TermModel>();
+			List<TermModel> terms = new ArrayList<>();
 			if (cursor.moveToFirst()) {
 				do {
 					String name = cursor.getString(cursor
 							.getColumnIndex(GradeTerms.TERM_NAME));
 					String id = cursor.getString(cursor
 							.getColumnIndex(GradeTerms.TERM_ID));
-					terms.add(new TermModel(id, name)); 
+					terms.add(new TermModel(id, name));
 				} while (cursor.moveToNext());
 			}
 			cursor.close();
@@ -529,11 +528,15 @@ public class GradesActivity extends EllucianActivity {
 					}
 				}
 			}
-			
+
 			viewPager.invalidate();
-			// Hack to force the title strip to redraw
-			titleStrip.requestLayout();
-		}
+			// Setup the Sliding Tabs
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout.setVisibility(View.VISIBLE);
+            tabLayout.setupWithViewPager(viewPager);
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        }
 
 		/**
 		 * Gets the current term to display
@@ -565,14 +568,14 @@ public class GradesActivity extends EllucianActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			boolean updated = intent.getBooleanExtra(GradesIntentService.PARAM_OUT_DATABASE_UPDATED, false);
-			Log.d("GradesIntentServiceReceiver", "onReceive: databse updated = " + updated);
+			Log.d("GradesIntentServiceReceiver", "onReceive: database updated = " + updated);
 			if(updated) {
 				Log.d("GradesIntentServiceReceiver.onReceive", "All grades retrieved and database updated");
-				setProgressBarIndeterminateVisibility(Boolean.FALSE);
-				new LoadTermsFromDatabaseTask().execute();
+                Utils.hideProgressIndicator(activity);
+                new LoadTermsFromDatabaseTask().execute();
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -592,6 +595,10 @@ public class GradesActivity extends EllucianActivity {
 		super.onStart();
 		sendView("Grades list", moduleName);
 	}
-	
-	
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		viewPager.removeOnPageChangeListener(pageChangeListener);
+	}
 }

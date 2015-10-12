@@ -12,6 +12,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 
@@ -45,13 +46,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
+@SuppressWarnings("JavaDoc")
 public class EllucianApplication extends Application {
-	public static final String TAG = EllucianApplication.class.getSimpleName();
+	private static final String TAG = EllucianApplication.class.getSimpleName();
 
-	private HashMap<String, Object> liveObjects = new HashMap<String, Object>();
+	private final HashMap<String, Object> liveObjects = new HashMap<String, Object>();
 	private User user;
 	private IdleTimer idleTimer;
-	private long idleTime = 30 * 60 * 1000; // 30 Minutes
+	private final long idleTime = 30 * 60 * 1000; // 30 Minutes
 	private DeviceNotifications deviceNotifications;
 	private long lastNotificationsCheck;
 	public static final long DEFAULT_NOTIFICATIONS_REFRESH = 60 * 60 * 1000; // 60 minutes
@@ -129,7 +131,7 @@ public class EllucianApplication extends Application {
         }
 	}
 
-    public boolean widgetInstalled() {
+    private boolean widgetInstalled() {
         int ids[] = AppWidgetManager.getInstance(this).getAppWidgetIds(
                 new ComponentName(this, AssignmentsWidgetProvider.class));
         if (ids != null && ids.length > 0) {
@@ -164,7 +166,7 @@ public class EllucianApplication extends Application {
         }
     }
 
-	public void loadSavedUser() {
+	private void loadSavedUser() {
 		String userId = Utils.getSavedUserId(this);
 		if (userId != null) {
 			String username = Utils.getSavedUserName(this);
@@ -235,7 +237,7 @@ public class EllucianApplication extends Application {
 		idleTimer.start();
 	}
 
-	public void stopIdleTimer() {
+	private void stopIdleTimer() {
 		idleTimer.stopTimer();
 	}
 
@@ -244,13 +246,26 @@ public class EllucianApplication extends Application {
 
 	}
 
-	public void startNotifications() {
+    public void startNotifications() {
+        startNotifications(null);
+    }
+
+    /**
+     *
+     * @param requestedNotificationId User is viewing details for this specific
+     *    notification. Do not broadcast a local notification if this is the
+     *    only new notification.
+     */
+	public void startNotifications(String requestedNotificationId) {
 		if (Utils.isNotificationsPresent(this)) {
 			Log.d(TAG, "Starting Notifications");
 			resetLastNotificationsCheck();
 			Intent intent = new Intent(this, NotificationsIntentService.class);
 			intent.putExtra(Extra.REQUEST_URL, getNotificationsUrl());
-			startService(intent);
+            if (!TextUtils.isEmpty(requestedNotificationId)) {
+                intent.putExtra(Extra.NOTIFICATIONS_NOTIFICATION_ID, requestedNotificationId);
+            }
+            startService(intent);
 		}
 	}
 
@@ -270,11 +285,11 @@ public class EllucianApplication extends Application {
 		return lastNotificationsCheck;
 	}
 
-	public void resetLastNotificationsCheck() {
+	private void resetLastNotificationsCheck() {
 		this.lastNotificationsCheck = System.currentTimeMillis();
 	}
 
-	public String getNotificationsUrl() {
+	private String getNotificationsUrl() {
 		return Utils.getStringFromPreferences(this, Utils.NOTIFICATION,
                 Utils.NOTIFICATION_NOTIFICATIONS_URL, null);
 	}
@@ -320,7 +335,7 @@ public class EllucianApplication extends Application {
 		return false;
 	}
 
-	public synchronized Tracker getTracker1() {
+	private synchronized Tracker getTracker1() {
 		if (gaTracker1 == null) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 			String trackerId1 = Utils.getStringFromPreferences(this,
@@ -332,7 +347,7 @@ public class EllucianApplication extends Application {
 		return gaTracker1;
 	}
 
-	public synchronized Tracker getTracker2() {
+	private synchronized Tracker getTracker2() {
 		if (gaTracker2 == null) {
 			GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
 			String trackerId2 = Utils.getStringFromPreferences(this,
@@ -390,8 +405,8 @@ public class EllucianApplication extends Application {
 	 * @param value
 	 * @param moduleName
 	 */
-	public void sendEventToTracker(Tracker tracker, String categoryId,
-			String actionId, String labelId, Long value, String moduleName) {
+	private void sendEventToTracker(Tracker tracker, String categoryId,
+									String actionId, String labelId, Long value, String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
                     Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
@@ -447,8 +462,8 @@ public class EllucianApplication extends Application {
 	 * @param appScreen
 	 * @param moduleName
 	 */
-	public void sendViewToTracker(Tracker tracker, String appScreen,
-			String moduleName) {
+	private void sendViewToTracker(Tracker tracker, String appScreen,
+								   String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
                     Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);
@@ -506,8 +521,8 @@ public class EllucianApplication extends Application {
 	 * @param label
 	 * @param moduleName
 	 */
-	public void sendUserTimingToTracker(Tracker tracker, String category, long value, String name, String label,
-			String moduleName) {
+	private void sendUserTimingToTracker(Tracker tracker, String category, long value, String name, String label,
+										 String moduleName) {
 		if (tracker != null) {
 			String configurationName = Utils.getStringFromPreferences(this,
                     Utils.CONFIGURATION, Utils.CONFIGURATION_NAME, null);

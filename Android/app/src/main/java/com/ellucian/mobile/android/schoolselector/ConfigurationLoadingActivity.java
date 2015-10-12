@@ -4,8 +4,7 @@
 
 package com.ellucian.mobile.android.schoolselector;
 
-import java.util.List;
-
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +13,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -25,10 +25,13 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.List;
+
 public class ConfigurationLoadingActivity extends EllucianActivity {
 	private static final String TAG = ConfigurationLoadingActivity.class.getSimpleName();
-	
-	private UnableToDownloadReceiver unableToDownloadReceiver;
+    private final Activity activity = this;
+
+    private UnableToDownloadReceiver unableToDownloadReceiver;
 	private String configurationUrl;
 
 	@Override
@@ -36,17 +39,18 @@ public class ConfigurationLoadingActivity extends EllucianActivity {
 		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 
-		setProgressBarIndeterminateVisibility(true);
-
 		setContentView(R.layout.activity_configuration_loading);
-		
-		// set the colors directly, not going through preferences
+        Utils.showProgressIndicator(activity);
+
+        // set the colors directly, not going through preferences
 		int primaryColor = getResources().getColor(R.color.ellucian_primary_color);
 		int headerTextColor = getResources().getColor(R.color.ellucian_header_text_color);
 		configureActionBarDirect(primaryColor, headerTextColor);
-		getActionBar().setIcon(getResources().getDrawable(R.drawable.default_home_icon));
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(false);
+        bar.setLogo(R.drawable.default_home_logo);
 
-		configurationUrl = getIntent().getStringExtra(
+        configurationUrl = getIntent().getStringExtra(
 				Utils.CONFIGURATION_URL);
 		Uri data = getIntent().getData();
 		if (data != null) {
@@ -118,10 +122,10 @@ public class ConfigurationLoadingActivity extends EllucianActivity {
 		@Override
 		public void onReceive(Context context, Intent incomingIntent) {
 			Log.d(TAG, "onReceive, UnableToDownloadReceiver");
-			
-			setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-			Log.d("ConfigurationLoadingActivity.ConfigurationUpdateReceiver",
+            Utils.hideProgressIndicator(activity);
+
+            Log.d("ConfigurationLoadingActivity.ConfigurationUpdateReceiver",
 					"Configuration update failed");
 			AQuery aq = new AQuery(ConfigurationLoadingActivity.this);
 			aq.id(R.id.configuration_loading_message).text(

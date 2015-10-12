@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
@@ -148,7 +149,7 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
 
         /** Getting the actionprovider associated with the menu item whose id is share */
         ShareActionProvider shareActionProvider =
-                (ShareActionProvider) sharedMenuItem.getActionProvider();
+                (ShareActionProvider) MenuItemCompat.getActionProvider(sharedMenuItem);
         shareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
 
             @Override

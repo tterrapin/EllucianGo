@@ -6,6 +6,7 @@ package com.ellucian.mobile.android.util;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.ellucian.elluciango.R;
@@ -22,7 +23,7 @@ import java.util.TimeZone;
 public class CalendarUtils {
     // indices follow the Calendar constants... example Calendar.SUNDAY
 
-    private static SimpleDateFormat UtcFormatPrototype;// = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final SimpleDateFormat UtcFormatPrototype;// = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     static {
         UtcFormatPrototype = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
@@ -50,6 +51,18 @@ public class CalendarUtils {
                 dateFormatter.format(date),
                 timeFormatter.format(date));
         return output;
+    }
+
+    public static String getMonthDateString(Context context, Date date) {
+        String output;
+//        DateFormat dateFormatter = android.text.format.DateFormat.getMediumDateFormat(context);
+//        DateFormat timeFormatter = android.text.format.DateFormat.getTimeFormat(context);
+//        output = context.getString(R.string.date_time_format,
+//                dateFormatter.format(date),
+//                timeFormatter.format(date));
+//        return output;
+        return DateUtils.getRelativeDateTimeString(context, date.getTime(), DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0).toString();
+
     }
 
     public static String getDefaultDateString(Context context, Date date) {

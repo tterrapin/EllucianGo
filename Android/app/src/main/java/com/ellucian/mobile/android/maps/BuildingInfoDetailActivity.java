@@ -14,10 +14,10 @@ import com.ellucian.mobile.android.app.EllucianActivity;
 
 public class BuildingInfoDetailActivity extends EllucianActivity {
 
-	public static final String TAG = BuildingInfoDetailActivity.class.getSimpleName();
-	BuildingDetailFragment detailFragment;
+	private static final String TAG = BuildingInfoDetailActivity.class.getSimpleName();
+	private BuildingDetailFragment detailFragment;
 	
-	Bundle arguments;
+	private Bundle arguments;
 	
 	public BuildingInfoDetailActivity() {
 	}
@@ -39,11 +39,11 @@ public class BuildingInfoDetailActivity extends EllucianActivity {
 		} else {
 			arguments = bundle;
 		}
-		detailFragment = (BuildingDetailFragment) getFragmentManager().findFragmentById(R.id.frame_extra);
+		detailFragment = (BuildingDetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_extra);
 		if (detailFragment == null) {
 			detailFragment = new BuildingDetailFragment();
 			detailFragment.setArguments(arguments);
-			getFragmentManager()
+			getSupportFragmentManager()
 			 .beginTransaction()
 			 .add(R.id.frame_extra, detailFragment)
 			 .commit();

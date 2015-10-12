@@ -1,18 +1,27 @@
 <!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
-
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
 
-    <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_with_dropdown" />
+
+        <fragment
+              class="com.google.android.gms.maps.SupportMapFragment"
+              android:id="@+id/map"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <include layout="@layout/drawer_list" />
 

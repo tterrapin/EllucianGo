@@ -7,7 +7,6 @@
 //
 
 #import "WebViewController.h"
-#import "SafariActivity.h"
 #import "CurrentUser.h"
 #import "AppDelegate.h"
 #import "LoginExecutor.h"
@@ -15,7 +14,7 @@
 #import "LoginViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "WebViewJavascriptInterface.h"
-#import "SlidingViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface WebViewController ()
 
@@ -125,7 +124,7 @@
     NSArray *activityItems = [NSArray arrayWithObjects:[self.URL absoluteString], nil];
     UIActivityViewController *avc = [[UIActivityViewController alloc]
                                          initWithActivityItems: activityItems applicationActivities:@[[[SafariActivity alloc] init]]];
-    [avc setCompletionHandler:^(NSString *activityType, BOOL completed) {
+    [avc setCompletionWithItemsHandler:^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
             NSString *label = [NSString stringWithFormat:@"Tap Share Icon - %@", activityType];
             [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionInvoke_Native withLabel:label withValue:nil forModuleNamed:self.analyticsLabel];
         self.popover = nil;

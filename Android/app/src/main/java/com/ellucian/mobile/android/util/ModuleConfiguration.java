@@ -15,8 +15,8 @@ public class ModuleConfiguration {
 	public String configType;
 	public String packageName;
 	public String activityName;
-	public HashMap<String, String> intentExtras;
-	public List<Integer> intentFlags;
+	public final HashMap<String, String> intentExtras;
+	public final List<Integer> intentFlags;
 	public boolean secure;
 	
 	public ModuleConfiguration() {

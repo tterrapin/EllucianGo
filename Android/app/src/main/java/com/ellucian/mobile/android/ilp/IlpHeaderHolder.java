@@ -6,9 +6,6 @@ package com.ellucian.mobile.android.ilp;
 
 import com.ellucian.mobile.android.adapter.EllucianRecyclerAdapter;
 
-/**
- * Created by jhigley on 2/26/15.
- */
 public class IlpHeaderHolder implements EllucianRecyclerAdapter.ItemInfoHolder {
     public String day;
     public String date;

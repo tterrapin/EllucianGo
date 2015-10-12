@@ -8,7 +8,7 @@ import android.os.Parcelable;
 public class RegisterSection implements Parcelable {
 	public String termId;
 	public String sectionId;
-	public String action;
+	private String action;
 	public String courseName;
 	public String courseSectionNumber;
 	public String courseTitle;
@@ -33,7 +33,6 @@ public class RegisterSection implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

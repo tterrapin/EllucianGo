@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.client.numbers;
 
-public class ImportantNumber {
+class ImportantNumber {
 	public String name;
 	public String category;
 	public String phone;

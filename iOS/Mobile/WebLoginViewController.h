@@ -12,7 +12,7 @@
 @interface WebLoginViewController : UIViewController<UIWebViewDelegate, LoginProtocol>
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (nonatomic, strong) NSArray *access;
+@property (nonatomic, copy) void (^completionBlock)(void);
 
 - (IBAction)cancel:(id)sender;
 

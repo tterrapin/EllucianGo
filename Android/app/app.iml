@@ -12,10 +12,12 @@
         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleEllucianGoDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileEllucianGoDebugSources" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateEllucianGoDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleEllucianGoDebugAndroidTest" />
         <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileEllucianGoDebugAndroidTestSources" />
-        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateEllucianGoDebugAndroidTestSources" />
+        <afterSyncTasks>
+          <task>generateEllucianGoDebugAndroidTestSources</task>
+          <task>generateEllucianGoDebugSources</task>
+        </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -24,7 +26,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/ellucianGo/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/androidTest/ellucianGo/debug" />
     <exclude-output />
@@ -34,7 +36,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/ellucianGo/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/ellucianGo/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/ellucianGo/debug" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/ellucianGo/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/ellucianGo/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGoDebug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGoDebug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGoDebug/assets" type="java-resource" />
@@ -47,7 +49,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/ellucianGo/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/ellucianGo/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/ellucianGo/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/androidTest/ellucianGo/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/ellucianGo/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGo/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGo/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/ellucianGo/assets" type="java-resource" />
@@ -90,6 +92,16 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/design/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v13/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.8.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.8.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.8.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.8.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaResources" />
@@ -105,38 +117,22 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="cardview-v7-21.0.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-wallet-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-drive-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-appstate-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-games-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-fitness-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-maps-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-gcm-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-cast-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-ads-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-identity-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-wearable-7.3.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-analytics-7.8.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-base-7.8.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="android-query-0.25.9" level="project" />
-    <orderEntry type="library" exported="" name="play-services-safetynet-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-plus-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="commons-io-1.3.2" level="project" />
-    <orderEntry type="library" exported="" name="play-services-base-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-appindexing-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-panorama-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-21.0.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-location-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-analytics-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-appinvite-7.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.1.1" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-22.1.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v13-21.0.2" level="project" />
-    <orderEntry type="library" exported="" name="play-services-nearby-7.3.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="play-services-gcm-7.8.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v13-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.8.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-1.3.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
-    <orderEntry type="library" exported="" name="play-services-7.3.0" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="play-services-maps-7.8.0" level="project" />
   </component>
 </module>

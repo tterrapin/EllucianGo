@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.grades;
 
-public class TermModel {
+class TermModel {
 
 	private String id;
 	private String name;
@@ -18,7 +18,7 @@ public class TermModel {
 		return id;
 	}
 
-	public void setId(String id) {
+	private void setId(String id) {
 		this.id = id;
 	}
 
@@ -26,7 +26,7 @@ public class TermModel {
 		return name;
 	}
 
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 }

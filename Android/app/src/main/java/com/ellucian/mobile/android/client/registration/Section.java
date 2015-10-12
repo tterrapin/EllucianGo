@@ -20,7 +20,7 @@ public class Section implements Parcelable {
 	
 	public String termId;
 	public String sectionId;
-	public String courseId;
+	private String courseId;
 	public String sectionTitle;
 	public String courseName;
 	public String courseDescription;
@@ -29,7 +29,7 @@ public class Section implements Parcelable {
 	public String lastMeetingDate;
 	public float credits;
 	public float ceus;
-	public String status;
+	private String status;
 	public String gradingType;
 	public Instructor[] instructors;
 	public MeetingPattern[] meetingPatterns;
@@ -38,9 +38,9 @@ public class Section implements Parcelable {
 	public float maximumCredits;
 	public float variableCreditIncrement;
 	public String variableCreditOperator;
-	public boolean allowPassNoPass;
-	public boolean allowAudit;
-	public boolean onlyPassNoPass;
+	private boolean allowPassNoPass;
+	private boolean allowAudit;
+	private boolean onlyPassNoPass;
 	public float selectedCredits = -1;
 	public String location;
 	public String[] academicLevels;
@@ -84,7 +84,6 @@ public class Section implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.util.Utils;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MapUtils {
-	private static String TAG = MapUtils.class.getSimpleName();
+	private static final String TAG = MapUtils.class.getSimpleName();
 	
 	private MapUtils() {
 	}
@@ -55,7 +55,7 @@ public class MapUtils {
 			boolean showName, boolean showBuildingInfo
 			) { 
 	
-		Log.v(TAG, "buildBuildingDetilIntent: Name: " + name + " type: " + type + " address: " + address
+		Log.v(TAG, "buildBuildingDetailIntent: Name: " + name + " type: " + type + " address: " + address
 				+ " description: " + description + " imageUrl: " + imageUrl 
 				+ " email: " + email + " phone: " + phone
 				+ " lat: " + latitude + " long: " + longitude
@@ -139,7 +139,7 @@ public class MapUtils {
 		return b;
 		
 	}
-	public static Intent buildDirectionsIntent(LatLng geoPoint) {
+	private static Intent buildDirectionsIntent(LatLng geoPoint) {
 		final Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
 
 		Uri.parse("http://maps.google.com/maps?saddr=" + "&daddr="

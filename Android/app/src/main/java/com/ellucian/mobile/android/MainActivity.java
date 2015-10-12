@@ -40,8 +40,8 @@ import java.util.List;
 public class MainActivity extends EllucianActivity {
 
     public static final String SHOW_LOGIN = "showLogin";
-	public boolean useDefaultConfiguration; 
-	public String defaultConfigurationUrl; 
+	private boolean useDefaultConfiguration;
+	private String defaultConfigurationUrl;
 
 	private Button signInButton;
 
@@ -134,7 +134,7 @@ public class MainActivity extends EllucianActivity {
 
                     LoginDialogFragment loginFragment = new LoginDialogFragment();
                     loginFragment.queueIntent(qih.queuedIntent, roles);
-                    loginFragment.show(getFragmentManager(), LoginDialogFragment.LOGIN_DIALOG);
+                    loginFragment.show(getSupportFragmentManager(), LoginDialogFragment.LOGIN_DIALOG);
             } else {
                 showLoginDialog();
             }
@@ -157,7 +157,7 @@ public class MainActivity extends EllucianActivity {
 		sendView("Show Home Screen", "");
 	}
 
-    protected void configure() {
+    private void configure() {
 
 		SharedPreferences preferences = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE);
 		String configUrl = preferences.getString(Utils.CONFIGURATION_URL, null);
@@ -191,7 +191,7 @@ public class MainActivity extends EllucianActivity {
 		handleSignIn();
 	}
 	
-	public void handleSignIn() {
+	private void handleSignIn() {
 		if (getEllucianApp().isUserAuthenticated()) {
 			// Sign Out
 			
@@ -219,7 +219,7 @@ public class MainActivity extends EllucianActivity {
 	
 	private void showLoginDialog() {
 		LoginDialogFragment loginFragment = new LoginDialogFragment();
-		loginFragment.show(getFragmentManager(), LoginDialogFragment.LOGIN_DIALOG);
+		loginFragment.show(getSupportFragmentManager(), LoginDialogFragment.LOGIN_DIALOG);
 	    
 	}
 	

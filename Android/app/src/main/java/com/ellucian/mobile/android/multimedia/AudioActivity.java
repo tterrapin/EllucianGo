@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.multimedia;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
 import com.ellucian.elluciango.R;
@@ -12,7 +12,7 @@ import com.ellucian.mobile.android.app.EllucianActivity;
 
 public class AudioActivity extends EllucianActivity {
 	
-	Fragment fragment;
+	private Fragment fragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class AudioActivity extends EllucianActivity {
 		setTitle(moduleName);
 	}
 	
-	protected void setFragment(Fragment fragment) {
+	void setFragment(Fragment fragment) {
 		this.fragment = fragment;
 	}
 	

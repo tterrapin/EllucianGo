@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.maps;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,7 +17,7 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 public class BuildingDetailActivity extends EllucianDefaultDetailActivity {
 
 	private static final String TAG = BuildingDetailActivity.class.getSimpleName();
-	Bundle arguments;
+	private Bundle arguments;
 	
 	@Override
 	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
@@ -31,7 +31,7 @@ public class BuildingDetailActivity extends EllucianDefaultDetailActivity {
 		if(savedInstanceState == null) {
 			final Intent intent = getIntent();
 			arguments = intent.getExtras();
-			FragmentManager manager = getFragmentManager();
+			FragmentManager manager = getSupportFragmentManager();
 			EllucianDefaultDetailFragment fragment = (EllucianDefaultDetailFragment) manager.findFragmentByTag("BuildingDetailFragment");
 			if (fragment == null) {
 				fragment = new BuildingDetailFragment();

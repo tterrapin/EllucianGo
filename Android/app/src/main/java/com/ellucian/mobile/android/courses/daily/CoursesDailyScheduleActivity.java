@@ -90,11 +90,11 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 	}
 	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	public void checkButtonIcons() {
+	private void checkButtonIcons() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			// In RTL mode in order for the buttons to look right after they flip the icons need to be switched
 			if (TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL) {
-				ImageView forwardButton = (ImageView) findViewById(R.id.courses_daily_date_foward_button);
+				ImageView forwardButton = (ImageView) findViewById(R.id.courses_daily_date_forward_button);
 				forwardButton.setImageResource(R.drawable.ic_calendar_nav_left);
 				ImageView backButton = (ImageView) findViewById(R.id.courses_daily_date_back_button);
 				backButton.setImageResource(R.drawable.ic_calendar_nav_right);
@@ -191,7 +191,7 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 		displayDate();
 	}
 	
-	public String createRequestUrl() {
+	private String createRequestUrl() {
 		// ask for the date of interest +/- 1 day, which allows us to catch meetings that might
 		// be date shifted due to translation to Zulu time.
 		Calendar cal = Calendar.getInstance();

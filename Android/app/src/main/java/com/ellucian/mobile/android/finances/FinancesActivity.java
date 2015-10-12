@@ -4,18 +4,19 @@
 
 package com.ellucian.mobile.android.finances;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
+import com.ellucian.mobile.android.util.Utils;
 
 public class FinancesActivity extends EllucianActivity {
 
-    public static final String TAG = "FinancesActivity";
+    private static final String TAG = "FinancesActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +26,11 @@ public class FinancesActivity extends EllucianActivity {
 
         setTitle(moduleName);
 
-        FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         Fragment financesFragment = manager.findFragmentById(R.id.finances_frame);
         if (financesFragment == null) {
+            Utils.showProgressIndicator(this);
             financesFragment = new FinancesFragment();
             financesFragment.setArguments(getIntent().getExtras());
             transaction.add(R.id.finances_frame, financesFragment);

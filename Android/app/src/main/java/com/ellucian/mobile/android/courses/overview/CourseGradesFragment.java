@@ -4,13 +4,11 @@
 
 package com.ellucian.mobile.android.courses.overview;
 
-import java.util.Date;
-
-import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +22,8 @@ import com.ellucian.mobile.android.provider.EllucianContract.Grades;
 import com.ellucian.mobile.android.provider.EllucianContract.GradesCourses;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+
+import java.util.Date;
 
 
 public class CourseGradesFragment extends EllucianListFragment implements LoaderManager.LoaderCallbacks<Cursor> {

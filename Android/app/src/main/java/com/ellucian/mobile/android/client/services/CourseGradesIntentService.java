@@ -21,8 +21,8 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 
 public class CourseGradesIntentService extends IntentService {
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseGradesIntentService.action.updated";
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseGradesIntentService.action.updated";
 	
 	public CourseGradesIntentService() {
 		super("CourseGradesIntentService");

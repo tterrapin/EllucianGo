@@ -10,10 +10,10 @@ import android.os.CountDownTimer;
 import android.widget.Toast;
 
 public class CustomToast {
-	Toast toast;
-	CountDownTimer timer;
-    int mDuration;
-    boolean mShowing = false;
+	private final Toast toast;
+	private CountDownTimer timer;
+    private int mDuration;
+    private boolean mShowing = false;
     
     
     @SuppressLint("ShowToast")

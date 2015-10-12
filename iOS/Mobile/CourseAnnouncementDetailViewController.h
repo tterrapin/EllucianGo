@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIColor+SchoolCustomization.h"
 #import "Module.h"
 #import "CourseAnnouncement.h"
 #import "DetailSelectionDelegate.h"

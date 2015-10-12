@@ -16,6 +16,17 @@
 
 #define kAES256Key @"key"
 
+NSString* const kSignInReturnToHomeNotification = @"SignInReturnToHomeNotification";
+NSString* const kSignOutNotification = @"SignOutNotification";
+NSString* const kSignInNotification = @"SignInNotification";
+
+NSString* const kLoginRoles = @"login-roles";
+NSString* const kLoginRemember = @"login-remember";
+NSString* const kLoginUserauth = @"login-userauth";
+NSString* const kLoginUserid = @"login-userid";
+
+NSString* const kLoginExecutorSuccess = @"Login Executor Success";
+
 @implementation CurrentUser
 
 @synthesize email;
@@ -98,6 +109,8 @@
     if(postNotification) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kSignOutNotification object:nil];
     }
+    
+    [[WatchConnectivityManager instance] userLoggedOut: true];
 }
 
 - (void) login: (NSString *) auth andPassword: (NSString *) pass andUserid: (NSString *) uID andRoles: (NSSet *) roleSet andRemember: (BOOL) remember
@@ -139,6 +152,8 @@
     self.lastLoggedInDate = [NSDate date];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
+    
+    [[WatchConnectivityManager instance] userLoggedIn: [self userAsPropertyListDictionary] notifyOtherSide: true];
 }
 
 - (void) login: (NSString *) auth andUserid: (NSString *) uID andRoles: (NSSet *) roleSet
@@ -171,6 +186,33 @@
     self.lastLoggedInDate = [NSDate date];
           
     [[NSNotificationCenter defaultCenter] postNotificationName:kSignInNotification object:nil];
+    
+    [[WatchConnectivityManager instance] userLoggedIn: [self userAsPropertyListDictionary] notifyOtherSide:true];
+}
+
+- (NSDictionary*)userAsPropertyListDictionary {
+    
+    NSMutableDictionary *userDictionary = [NSMutableDictionary new];
+    if ( self.userid ) {
+        [userDictionary setValue:self.userid forKey:@"userid"];
+    }
+    [userDictionary setValue:[NSNumber numberWithBool: self.isLoggedIn] forKey:@"isLoggedIn"];
+    if ( self.roles ) {
+        NSMutableArray* roles = [[NSMutableArray alloc] init];
+        for(NSString *role in self.roles) {
+            [roles addObject:role];
+        }
+        
+        [userDictionary setValue:roles forKey:@"roles"];
+    }
+    if ( self.email ) {
+        [userDictionary setValue:self.email forKey:@"email"];
+    }
+    if ( self.lastLoggedInDate ) {
+        [userDictionary setValue:self.lastLoggedInDate forKey:@"lastLoggedInDate"];
+    }
+    
+    return userDictionary;
 }
 
 -(NSString *)getPassword

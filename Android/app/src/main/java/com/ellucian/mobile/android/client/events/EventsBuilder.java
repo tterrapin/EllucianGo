@@ -17,7 +17,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.EventsEventsCategor
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 
 public class EventsBuilder extends ContentProviderOperationBuilder<EventsResponse> {
-	private String module;
+	private final String module;
 	// TODO - Remove this when the events code gets fixed
 	//private final SimpleDateFormat eventsFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	

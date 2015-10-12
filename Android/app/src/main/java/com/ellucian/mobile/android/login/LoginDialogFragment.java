@@ -11,6 +11,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ellucian.elluciango.R;
@@ -45,8 +45,8 @@ import java.util.List;
 
 public class LoginDialogFragment extends EllucianDialogFragment {
 	public static final String LOGIN_DIALOG = "login_dialog";
-	public AlertDialog loginDialog;
-	private Intent queuedIntent;
+	private AlertDialog loginDialog;
+    private Intent queuedIntent;
 	private List<String> roles;
 
 	private MainAuthenticationReceiver mainAuthenticationReceiver;
@@ -63,7 +63,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		if(loginType.equals(Utils.NATIVE_LOGIN_TYPE)) {
 			createBasicAuthenticationLoginDialog();
 		} else {
-			createWebAuthentiationLoginDialog();
+			createWebAuthenticationLoginDialog();
 		}
 
 		return loginDialog;
@@ -74,26 +74,31 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	// WebSettings.setDatabasePath - This method was deprecated in API level 19
 	// Database paths are managed by the implementation and calling this method
 	// will have no effect.
-	private void createWebAuthentiationLoginDialog() {
+	private void createWebAuthenticationLoginDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		final ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.fragment_login_web_dialog, null);
 		builder.setView(dialogView);
-		
-		loginDialog = builder.create();
-		
-		Button cancelButton = (Button)dialogView.findViewById(R.id.login_button_cancel);
-		cancelButton.setOnClickListener(
-                new View.OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
-						view.setEnabled(false);
-						doCancel();
-					}
-                }
-        );
-		
+        builder.setNegativeButton(android.R.string.cancel, null);
+        loginDialog = builder.create();
+
+        loginDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button negative = loginDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.setEnabled(false);
+                        doCancel();
+                    }
+                });
+
+            }
+        });
+
 		WebView webView = (WebView) dialogView.findViewById(R.id.login_webview);
 	
 		webView.setWebChromeClient(new WebChromeClient());
@@ -132,58 +137,59 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
 		final ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.fragment_login_dialog, null);
-		
-		TextView title = (TextView) dialogView.findViewById(R.id.login_dialog_title);
-		title.setTextColor(Utils.getPrimaryColor(getActivity()));
-		
-		builder.setView(dialogView);
-		
-		loginDialog = builder.create();
-		
-		Button okButton = (Button)dialogView.findViewById(R.id.login_button_ok);
-		okButton.setOnClickListener(
-                 new View.OnClickListener() {
+        builder.setView(dialogView);
 
-					@Override
-					public void onClick(View arg0) {
-						arg0.setEnabled(false);
-						Dialog loginDialog = getDialog();
-						EditText usernameView =  (EditText) ((Dialog) loginDialog).findViewById(R.id.login_dialog_username);
-						String username = usernameView.getText().toString();
-						EditText passwordView =  (EditText) ((Dialog) loginDialog).findViewById(R.id.login_dialog_password);
-						String password = passwordView.getText().toString();
-						CheckBox staySignedIn = (CheckBox) ((Dialog) loginDialog).findViewById(R.id.login_dialog_checkbox);
-						
-						if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-							Toast emptyMessage = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.dialog_sign_in_empty, Toast.LENGTH_LONG);
-							emptyMessage.setGravity(Gravity.CENTER, 0, 0);
-							emptyMessage.show();
-							arg0.setEnabled(true);
-						} else {
-							boolean staySignedInChecked = staySignedIn.isChecked();
-							if(staySignedInChecked) {
-								sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication with save credential", null, null);
-							} else {
-								sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication without save credential", null, null);
-							}
-							loginUser(username, password, staySignedInChecked);
-						}
-						
-					}
-                     
-                 }
-         );
-		Button cancelButton = (Button)dialogView.findViewById(R.id.login_button_cancel);
-		cancelButton.setOnClickListener(
-                new View.OnClickListener() {
+        builder.setNegativeButton(android.R.string.cancel, null);
+		builder.setPositiveButton(R.string.dialog_sign_in, null);
 
-					@Override
-					public void onClick(View view) {
-						view.setEnabled(false);
-						doCancel();
-					}
-                }
-        );
+        loginDialog = builder.create();
+
+        loginDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button positive = loginDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button negative = loginDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.setEnabled(false);
+                        doCancel();
+                    }
+                });
+
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.setEnabled(false);
+                        Dialog loginDialog = getDialog();
+                        EditText usernameView = (EditText) loginDialog.findViewById(R.id.login_dialog_username);
+                        String username = usernameView.getText().toString();
+                        EditText passwordView = (EditText) loginDialog.findViewById(R.id.login_dialog_password);
+                        String password = passwordView.getText().toString();
+                        CheckBox staySignedIn = (CheckBox) loginDialog.findViewById(R.id.login_dialog_checkbox);
+
+                        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+                            Toast emptyMessage = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.dialog_sign_in_empty, Toast.LENGTH_LONG);
+                            emptyMessage.setGravity(Gravity.CENTER, 0, 0);
+                            emptyMessage.show();
+                            view.setEnabled(true);
+                        } else {
+                            boolean staySignedInChecked = staySignedIn.isChecked();
+                            if (staySignedInChecked) {
+                                sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication with save credential", null, null);
+                            } else {
+                                sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication without save credential", null, null);
+                            }
+                            loginDialog.findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
+                            loginUser(username, password, staySignedInChecked);
+                        }
+
+                    }
+                });
+            }
+        });
+
 	}
 
 	@Override
@@ -275,7 +281,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		}
 	}
 	
-	public void loginUser(String username, String password, boolean staySignedInChecked) {
+	private void loginUser(String username, String password, boolean staySignedInChecked) {
 		Intent intent = new Intent(LoginDialogFragment.this.getActivity(), AuthenticateUserIntentService.class);
 		intent.putExtra(Extra.LOGIN_USERNAME, username);
 		intent.putExtra(Extra.LOGIN_PASSWORD, password);
@@ -303,11 +309,16 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 
 		@Override
 		public void onReceive(Context context, Intent incomingIntent) {
-			Toast signInMessage = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.dialog_sign_in_failed, Toast.LENGTH_LONG);
+            // Progress spinner only occurs on Native (Basic) Auth login dialog.
+            View progressSpinner = loginDialog.findViewById(R.id.progress_spinner);
+            if (progressSpinner != null) {
+                progressSpinner.setVisibility(View.GONE);
+            }
+
+            Toast signInMessage = Toast.makeText(LoginDialogFragment.this.getActivity(), R.string.dialog_sign_in_failed, Toast.LENGTH_LONG);
 			signInMessage.setGravity(Gravity.CENTER, 0, 0);
-			Dialog loginDialog = getDialog();
-			View loginButton = loginDialog.findViewById(R.id.login_button_ok);
-			CheckBox staySignedIn = (CheckBox) ((Dialog) loginDialog).findViewById(R.id.login_dialog_checkbox);
+			AlertDialog loginDialog = (AlertDialog) getDialog();
+			CheckBox staySignedIn = (CheckBox) loginDialog.findViewById(R.id.login_dialog_checkbox);
 			
 			
 			String result = incomingIntent.getStringExtra(Extra.LOGIN_SUCCESS);
@@ -324,15 +335,15 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 				}
 				signInMessage.show();
 				//signInButton.setText(R.string.main_sign_out);
-				
+
 				ellucianApp.startNotifications();
-				
-				// Checks to see if the dialog was opened by a request for a auth-neccessary activity
+
+				// Checks to see if the dialog was opened by a request for a auth-necessary activity
 				startQueuedIntent();
 
 			} else {
 				signInMessage.show();
-				if(loginButton != null) loginButton.setEnabled(true);
+                loginDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 			}
 			
 		}		
@@ -347,7 +358,7 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	 * 
 	 * This will be used when the user is prompted because of an unauthorized or session timeout, and need to login again.
 	 * By finishing the activity, and with the same activity queued, it will restart the activity without the item on the stack.
-	 * @param b
+	 * @param b boolean
 	 */
 	public void forcedLogin(boolean b) {
 		this.forcedLogin = b;

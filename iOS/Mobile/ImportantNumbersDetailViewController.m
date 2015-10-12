@@ -22,7 +22,7 @@
     
     self.backgroundView.backgroundColor = [UIColor accentColor];
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.nameLabel.textAlignment = NSTextAlignmentRight;
         self.typeLabel.textAlignment = NSTextAlignmentRight;
         self.phoneLabelLabel.textAlignment = NSTextAlignmentRight;

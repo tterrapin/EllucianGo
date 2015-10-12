@@ -10,6 +10,6 @@
 
 @protocol LoginProtocol <NSObject>
 
-@property (nonatomic, strong) NSArray *access;
+@property (nonatomic, copy) void (^completionBlock)(void);
 
 @end

@@ -12,10 +12,6 @@ static const unsigned int MINIMUM_ALL_DAY_HEIGHT         = 60;
 static const unsigned int ARROW_LEFT                     = 0;
 static const unsigned int ARROW_RIGHT                    = 1;
 
-#define DATE_COMPONENTS (NSYearCalendarUnit| NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit |  NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit)
-#define CURRENT_CALENDAR [NSCalendar currentCalendar]
-
-
 @interface CalendarView_AllDayGridView : UIView {
 	CalendarViewDayView *_dayView;
 	unsigned int _eventCount;
@@ -123,7 +119,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds),
 											 CGRectGetHeight(self.allDayGridView.bounds) + CGRectGetHeight(self.gridView.bounds));
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         [self.leftArrow setImage:[UIImage imageNamed:@"calendarview_rightArrow"] forState:UIControlStateNormal];
         [self.rightArrow setImage:[UIImage imageNamed:@"calendarview_leftArrow"] forState:UIControlStateNormal];
     }
@@ -183,11 +179,11 @@ static const unsigned int ARROW_RIGHT                    = 1;
 }
 
 - (void)setDay:(NSDate *)date {
-	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
 	[components setHour:0];
 	[components setMinute:0];
 	[components setSecond:0];
-	_day = [CURRENT_CALENDAR dateFromComponents:components];
+	_day = [[NSCalendar currentCalendar] dateFromComponents:components];
 	
 	self.allDayGridView.day = self.day;
 	self.dateLabel.text = [self titleText];
@@ -306,27 +302,27 @@ static const unsigned int ARROW_RIGHT                    = 1;
 }
 
 - (NSDate *)nextDayFromDate:(NSDate *)date {
-	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
 	[components setDay:[components day] + 1];
 	[components setHour:0];
 	[components setMinute:0];
 	[components setSecond:0];
-	return [CURRENT_CALENDAR dateFromComponents:components];
+	return [[NSCalendar currentCalendar] dateFromComponents:components];
 }
 
 - (NSDate *)previousDayFromDate:(NSDate *)date {
-	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:date];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
 	[components setDay:[components day] - 1];
 	[components setHour:0];
 	[components setMinute:0];
 	[components setSecond:0];
-	return [CURRENT_CALENDAR dateFromComponents:components];
+	return [[NSCalendar currentCalendar] dateFromComponents:components];
 }
 
 - (NSString *)titleText {
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateStyle:NSDateFormatterMediumStyle];
-	NSDateComponents *components = [CURRENT_CALENDAR components:DATE_COMPONENTS fromDate:_day];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_day];
 	
 	NSArray *weekdaySymbols = [formatter shortWeekdaySymbols];
 	
@@ -344,7 +340,7 @@ static const unsigned int ARROW_RIGHT                    = 1;
         NSMutableArray *dates = [[NSMutableArray alloc] init];
         NSDate *date = [NSDate date];
         NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
-        NSUInteger preservedComponents = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
+        NSUInteger preservedComponents = (NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay);
         date = [calendar dateFromComponents:[calendar components:preservedComponents fromDate:date]];
         register unsigned int i;
         
@@ -471,7 +467,11 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	register unsigned int i;
 	
 	for (i=0; i < HOURS_IN_DAY; i++) {
-		hourSize[i] = [[[CalendarViewDayView hourLabels] objectAtIndex:i ] sizeWithFont:self.textFont];
+        NSString *hourLabelText = [[CalendarViewDayView hourLabels] objectAtIndex:i ] ;
+		//hourSize[i] = [hourLabelText sizeWithFont:self.textFont];
+        
+        hourSize[i] = [hourLabelText sizeWithAttributes:@{NSFontAttributeName: self.textFont}];
+        
 		totalTextHeight += hourSize[i].height;
 		
 		if (hourSize[i].width > maxTextWidth) {
@@ -579,10 +579,15 @@ static const unsigned int ARROW_RIGHT                    = 1;
 	CGContextBeginPath(c);
 	
 	for (i=0; i < HOURS_IN_DAY; i++) {
-		[[[CalendarViewDayView hourLabels] objectAtIndex:i ] drawInRect: _textRect[i]
-					withFont:self.textFont
-			   lineBreakMode:NSLineBreakByTruncatingTail
-				   alignment:NSTextAlignmentRight];
+        NSString *hourLabelText = [[CalendarViewDayView hourLabels] objectAtIndex:i ] ;
+//		[hourLabelText drawInRect: _textRect[i]
+//					withFont:self.textFont
+//			   lineBreakMode:NSLineBreakByTruncatingTail
+//				   alignment:NSTextAlignmentRight];
+        NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+        textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        textStyle.alignment = NSTextAlignmentRight;
+        [hourLabelText drawInRect:_textRect[i] withAttributes:@{NSFontAttributeName:self.textFont, NSParagraphStyleAttributeName:textStyle}];
 		
 		CGContextMoveToPoint(c, _lineX, _lineY[i]);
 		CGContextAddLineToPoint(c, self.bounds.size.width, _lineY[i]);

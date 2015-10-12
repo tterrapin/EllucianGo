@@ -6,24 +6,44 @@ package com.ellucian.mobile.android.grades;
 
 import android.database.Cursor;
 
-public class CourseModel {
-	private String title;
-	private String id;
+@SuppressWarnings("JavaDoc")
+class CourseModel {
+    private String id;
+    private String label;
+    private String title;
 	private Cursor grades;
-	
+
 	/**
 	 * Constructor for convenience
 	 * @param id id of the course
-	 * @param title of the course
+     * @param label courseName + section number
+     * @param title title of the course
 	 * @param grades cursor for the grades
 	 */
-	CourseModel(String id, String title, Cursor grades) {
+	CourseModel(String id, String label, String title, Cursor grades) {
 		this.id = id;
+        this.label = label;
 		this.title = title;
 		this.grades = grades;
 	}
-	
-	/**
+
+    /**
+     * Gets the label
+     * @return
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Sets the label
+     * @param label
+     */
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    /**
 	 * Gets the title
 	 * @return
 	 */
@@ -54,7 +74,7 @@ public class CourseModel {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Gets the grades cursor
 	 * @return

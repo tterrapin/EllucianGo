@@ -11,6 +11,6 @@
 @interface LoginExecutor : NSObject
 
 +(NSInteger) getUserInfo:(BOOL)refreshOnly;
-+ (UIViewController *) loginController;
++ (UINavigationController *) loginController;
 
 @end

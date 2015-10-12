@@ -22,7 +22,7 @@ class AboutVersionPageController: WKInterfaceController {
             let url = NSURL(string: urlString)
             let task =  NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler : {data, response, error -> Void in
                 if let httpRes = response as? NSHTTPURLResponse {
-                    if httpRes.statusCode == 200 {
+                    if let data = data where httpRes.statusCode == 200 {
                         let json = JSON(data: data)
                         let application = json["application"]
                         let version = application["version"].stringValue

@@ -19,7 +19,7 @@
         android:paddingLeft="6sp"
         android:paddingStart="6sp"
         android:textDirection="firstStrong"
-        tools:ignore="UselessParent" >
+        tools:ignore="RtlSymmetry,UselessParent" >
 
         <TextView
             android:id="@+id/course_name"
@@ -52,12 +52,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0"
 		        android:maxLines="1"
-		        android:text="@string/line_speparator"
+		        android:text="@string/line_separator"
 		        android:textStyle="bold"		   
 		        android:paddingLeft="4dp"
 	            android:paddingStart="4dp" 
 		        android:paddingRight="4dp"
-	            android:paddingEnd="4dp" />
+	            android:paddingEnd="4dp"
+				tools:ignore="NewApi" />
 	          
 	        <TextView
 		        android:id="@+id/credits"

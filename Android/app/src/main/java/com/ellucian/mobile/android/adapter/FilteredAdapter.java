@@ -32,6 +32,7 @@ import android.widget.TextView;
  * 
  * @author Jason Hocker
  */
+@SuppressWarnings("JavaDoc")
 public abstract class FilteredAdapter<T> extends BaseAdapter implements Filterable {
 	/**
 	 * <p>

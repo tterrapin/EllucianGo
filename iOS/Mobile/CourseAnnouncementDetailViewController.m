@@ -7,7 +7,6 @@
 //
 
 #import "CourseAnnouncementDetailViewController.h"
-#import "SafariActivity.h"
 #import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
@@ -36,7 +35,7 @@
     
     self.navigationController.navigationBar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.descriptionTextView.textAlignment = NSTextAlignmentRight;
     }
@@ -57,6 +56,7 @@
         self.padToolBar.translucent = NO;
         UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
         [self.padToolBar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        self.padToolBar.tintColor = [UIColor whiteColor];
     }
     
     self.titleLabel.text = self.itemTitle;

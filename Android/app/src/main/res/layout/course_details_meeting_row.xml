@@ -4,7 +4,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/rounded_rectangle_overlay"
@@ -33,12 +34,13 @@
 		        android:singleLine="true"
 	    		android:ellipsize="end"
         		android:maxLines="1"
-		        android:text="@string/line_speparator"
+		        android:text="@string/line_separator"
 		        android:textStyle="bold"		   
 		        android:paddingLeft="4dp"
 	            android:paddingStart="4dp" 
 		        android:paddingRight="4dp"
-	            android:paddingEnd="4dp" />
+	            android:paddingEnd="4dp"
+			tools:ignore="NewApi" />
 	    
 	    <TextView 
 	        android:id="@+id/course_details_meeting_row_type"

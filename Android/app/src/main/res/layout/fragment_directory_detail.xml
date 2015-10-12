@@ -65,7 +65,7 @@
 		            <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_social_person" />
@@ -112,7 +112,7 @@
            		    <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_social_person" />
@@ -156,7 +156,7 @@
            		    <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_device_access_call" />
@@ -199,7 +199,7 @@
 		            <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_hardware_phone" />               
@@ -242,7 +242,7 @@
                     <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_content_email" />
@@ -287,7 +287,7 @@
                 	<ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_location_web_site" />
@@ -331,7 +331,7 @@
 				    <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_location_web_site" /><!-- need icon -->
@@ -375,7 +375,7 @@
 	                    style="@style/tableIconRight"
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_desk" />
@@ -418,7 +418,7 @@
 				    <ImageView
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:layout_gravity="right|center_vertical"
+	                    android:layout_gravity="end|center_vertical"
 	                    android:layout_weight="1"
 	                    android:contentDescription="@string/directory_icon_description"
 	                    android:src="@drawable/ic_door" />

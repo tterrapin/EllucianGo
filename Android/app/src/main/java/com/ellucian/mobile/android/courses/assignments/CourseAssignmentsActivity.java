@@ -4,11 +4,9 @@
 
 package com.ellucian.mobile.android.courses.assignments;
 
-import java.util.Date;
-
 import android.app.IntentService;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -25,8 +23,10 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.util.Date;
+
 public class CourseAssignmentsActivity extends EllucianDefaultDualPaneActivity {
-	protected String courseId;
+	private String courseId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,8 @@ public class CourseAssignmentsActivity extends EllucianDefaultDualPaneActivity {
 				((TextView) view).setText(output);
 				
 				View parent = (View) view.getParent();
-				TextView dateLableView = (TextView) parent.findViewById(R.id.row_date_label);
-				dateLableView.setText(getString(R.string.row_due_label));
+				TextView dateLabelView = (TextView) parent.findViewById(R.id.row_date_label);
+				dateLabelView.setText(getString(R.string.row_due_label));
 				return true;
 			} else {
 				return false;

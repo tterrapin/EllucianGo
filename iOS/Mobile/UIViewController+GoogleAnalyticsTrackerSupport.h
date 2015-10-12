@@ -25,24 +25,24 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-#define kAnalyticsCategoryAuthentication @"Authentication"
-#define kAnalyticsCategoryCourses @"Courses"
-#define kAnalyticsCategoryUI_Action @"UI_Action"
-#define kAnalyticsCategoryPushNotification @"Push_Notification"
-#define kAnalyticsCategoryWidget @"Widget"
+extern NSString* const kAnalyticsCategoryAuthentication;
+extern NSString* const kAnalyticsCategoryCourses;
+extern NSString* const kAnalyticsCategoryUI_Action;
+extern NSString* const kAnalyticsCategoryPushNotification;
+extern NSString* const kAnalyticsCategoryWidget;
 
-#define kAnalyticsActionButton_Press @"Button_Press"
-#define kAnalyticsActionCancel @"Cancel"
-#define kAnalyticsActionFollow_web @"Follow_web"
-#define kAnalyticsActionInvoke_Native @"Invoke_Native"
-#define kAnalyticsActionList_Select @"List_Select"
-#define kAnalyticsActionLogin @"Login"
-#define kAnalyticsActionLogout @"Logout"
-#define kAnalyticsActionMenu_selection @"Menu_selection"
-#define kAnalyticsActionSearch @"Search"
-#define kAnalyticsActionSlide_Action @"Slide_Action"
-#define kAnalyticsActionTimeout @"Timeout"
-#define kAnalyticsActionReceivedMessage @"Received_Message"
+extern NSString* const kAnalyticsActionButton_Press;
+extern NSString* const kAnalyticsActionCancel;
+extern NSString* const kAnalyticsActionFollow_web;
+extern NSString* const kAnalyticsActionInvoke_Native;
+extern NSString* const kAnalyticsActionList_Select;
+extern NSString* const kAnalyticsActionLogin;
+extern NSString* const kAnalyticsActionLogout;
+extern NSString* const kAnalyticsActionMenu_selection;
+extern NSString* const kAnalyticsActionSearch;
+extern NSString* const kAnalyticsActionSlide_Action;
+extern NSString* const kAnalyticsActionTimeout;
+extern NSString* const kAnalyticsActionReceivedMessage;
 
 @interface UIViewController (GoogleAnalyticsTrackerSupport)
 

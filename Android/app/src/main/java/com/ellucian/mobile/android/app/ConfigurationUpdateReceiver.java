@@ -10,10 +10,11 @@ import android.util.Log;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.MainActivity;
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
+import com.ellucian.mobile.android.util.Utils;
 
 public class ConfigurationUpdateReceiver extends BroadcastReceiver {
 	
-	private Activity activity;
+	private final Activity activity;
 
 	public ConfigurationUpdateReceiver(Activity activity) {
 		this.activity = activity;
@@ -23,7 +24,7 @@ public class ConfigurationUpdateReceiver extends BroadcastReceiver {
 	public void onReceive(final Context context, Intent incomingIntent) {
 		String tag = activity.getClass().getName();
 		Log.d(tag, "onReceive, ConfigurationUpdateReceiver");
-		activity.setProgressBarIndeterminateVisibility(Boolean.FALSE);
+        Utils.hideProgressIndicator(activity);
 
 		boolean upgradeAvailable = incomingIntent.getBooleanExtra(
 				ConfigurationUpdateService.PARAM_UPGRADE_AVAILABLE, false);

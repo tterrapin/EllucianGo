@@ -2,14 +2,17 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item 
-	    android:showAsAction="always"
+	    app:showAsAction="never"
 	    android:id="@+id/view_by_date" 
-	 	android:title="@string/ilp_view_by_date" />
+	 	android:title="@string/ilp_view_by_date"
+		tools:ignore="AlwaysShowAction" />
 	 	<item 
-	    android:showAsAction="always"
+	    app:showAsAction="never"
 	    android:id="@+id/view_no_date" 
-	 	android:title="@string/ilp_view_by_no_date" />
+	 	android:title="@string/ilp_view_by_no_date"
+			tools:ignore="AlwaysShowAction" />
 </menu>

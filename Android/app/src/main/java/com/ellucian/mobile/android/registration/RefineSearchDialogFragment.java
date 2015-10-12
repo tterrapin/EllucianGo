@@ -26,22 +26,22 @@ import com.ellucian.mobile.android.util.Utils;
 public class RefineSearchDialogFragment extends EllucianDialogFragment {
 	public static final String TAG = RefineSearchDialogFragment.class.getSimpleName();
 	
-	protected RegistrationActivity activity;
+	private RegistrationActivity activity;
 	private OnDoneFilteringListener listener;
-	protected View rootView;
-	protected ListView locationList;
-	protected ListAdapter locationAdapter;
+	private View rootView;
+	private ListView locationList;
+	private ListAdapter locationAdapter;
 	protected TextView headerView;
-	protected ListView levelList;
-	protected ListAdapter levelAdapter;
-	protected Button okButton;
-	protected Button cancelButton;
+	private ListView levelList;
+	private ListAdapter levelAdapter;
+	private Button okButton;
+	private Button cancelButton;
 	private boolean okButtonEnabled;
 	private ArrayList<String> selectedLocations;
 	private ArrayList<String> selectedLevels;
 	
 	public interface OnDoneFilteringListener {
-		public void onDoneFiltering(ArrayList<String> locationFilters, ArrayList<String> levelFilters);
+		void onDoneFiltering(ArrayList<String> locationFilters, ArrayList<String> levelFilters);
 	}
 	
 	@Override

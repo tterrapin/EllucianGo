@@ -3,7 +3,7 @@
 package com.ellucian.mobile.android.registration;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	private RegistrationActivity activity;
 	private Button registerButton;
 	private View eligibilityErrorView;
-	protected boolean showEligibilityError;
+	private boolean showEligibilityError;
 	private String errorMessages;
 	
 	public RegistrationCartListFragment () {	
@@ -54,7 +54,7 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_registration_cart_list, container, false);
 		registerButton = (Button) rootView.findViewById(R.id.register);
-		eligibilityErrorView = rootView.findViewById(R.id.eligibility_error_messsage_view);
+		eligibilityErrorView = rootView.findViewById(R.id.eligibility_error_message_view);
 		
 		registerButton.setBackgroundColor(Utils.getPrimaryColor(activity));
 		registerButton.setTextColor(Utils.getHeaderTextColor(activity));
@@ -125,7 +125,7 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.replace(R.id.frame_extra, details);
 
-			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 			ft.commit();
 
 		} else {
@@ -192,7 +192,7 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 		registerButton.setEnabled(enabled);
 	}
 	
-	protected void showEligibilityErrorView(boolean show) {
+	private void showEligibilityErrorView(boolean show) {
 		if (show) {
 			if (!TextUtils.isEmpty(errorMessages)) {
 				TextView messagesView = (TextView) rootView.findViewById(R.id.messages);

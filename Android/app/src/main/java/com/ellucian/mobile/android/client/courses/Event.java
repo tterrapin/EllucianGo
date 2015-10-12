@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.client.courses;
 
-public class Event {
+class Event {
 	public String summary;
 	public String start;
 	public String end;

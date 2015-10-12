@@ -4,6 +4,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +22,8 @@
             android:paddingLeft="6sp"
             android:paddingStart="6sp"
             android:textIsSelectable="false"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:ignore="NewApi,RtlSymmetry" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,6 +47,7 @@
         android:paddingLeft="6sp"
         android:paddingStart="6sp"
         android:textIsSelectable="false"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:ignore="NewApi,RtlSymmetry" />
 
 </LinearLayout>

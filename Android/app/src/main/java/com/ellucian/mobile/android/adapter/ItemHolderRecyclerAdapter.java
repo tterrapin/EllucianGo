@@ -18,10 +18,10 @@ import com.ellucian.elluciango.R;
 
 public class ItemHolderRecyclerAdapter extends EllucianRecyclerAdapter {
 	
-	protected Context context;
-	protected final ArrayList<ItemInfoHolder> items = new ArrayList<ItemInfoHolder>();
-	protected int itemLayoutResId;
-	protected int itemResId;
+	private final Context context;
+	private final ArrayList<ItemInfoHolder> items = new ArrayList<ItemInfoHolder>();
+	private final int itemLayoutResId;
+	private final int itemResId;
 
     /**
      * Adapter created with the Default constructor will use default layouts for item rows.
@@ -81,7 +81,7 @@ public class ItemHolderRecyclerAdapter extends EllucianRecyclerAdapter {
         onBindItemViewHolder(holder, position);
     }
 
-    public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
+    private void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         ItemInfoHolder infoHolder = (ItemInfoHolder) getItem(position);

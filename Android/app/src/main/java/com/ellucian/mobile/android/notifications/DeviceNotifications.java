@@ -4,10 +4,6 @@
 
 package com.ellucian.mobile.android.notifications;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,17 +13,21 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.ellucian.mobile.android.MainActivity;
 import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.MainActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DeviceNotifications {
 	private static final String TAG = DeviceNotifications.class.getName();
 	private static final int BASE_NOTIFICATION_ID = 0;
 
-	private Context context;
-	private NotificationManager manager;
+	private final Context context;
+	private final NotificationManager manager;
 	private List<android.app.Notification> notificationList;
-	private int notificationIcon = R.drawable.ic_notifications;
+	private final int notificationIcon = R.drawable.ic_notifications;
 	
 	public DeviceNotifications(Context context) {
 		this.context = context;
@@ -102,7 +102,7 @@ public class DeviceNotifications {
 		
 	}
 	
-	public android.app.Notification buildiGcmNotification(String message, Map<String, String> extras) {
+	public android.app.Notification buildGcmNotification(String message, Map<String, String> extras) {
 		android.app.Notification notification = null;
 		
 		// Build a PendingIntent to fire when the user clicks the notification in the drawer

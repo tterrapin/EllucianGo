@@ -4,25 +4,25 @@
 
 package com.ellucian.mobile.android.provider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class SelectionBuilder {
 
     private String mTable = null;
-    private Map<String, String> mProjectionMap = new HashMap<String, String>();
-    private StringBuilder mSelection = new StringBuilder();
-    private ArrayList<String> mSelectionArgs = new ArrayList<String>();
+    private final Map<String, String> mProjectionMap = new HashMap<String, String>();
+    private final StringBuilder mSelection = new StringBuilder();
+    private final ArrayList<String> mSelectionArgs = new ArrayList<String>();
 
     /**
      * Reset any internal state, allowing this builder to be recycled.
@@ -87,7 +87,7 @@ public class SelectionBuilder {
      *
      * @see #getSelectionArgs()
      */
-    public String getSelection() {
+    private String getSelection() {
         return mSelection.toString();
     }
 
@@ -96,7 +96,7 @@ public class SelectionBuilder {
      *
      * @see #getSelection()
      */
-    public String[] getSelectionArgs() {
+    private String[] getSelectionArgs() {
         return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
     }
 
@@ -125,8 +125,8 @@ public class SelectionBuilder {
     /**
      * Execute query using the current internal state as {@code WHERE} clause.
      */
-    public Cursor query(SQLiteDatabase db, String[] columns, String groupBy,
-            String having, String orderBy, String limit) {
+    private Cursor query(SQLiteDatabase db, String[] columns, String groupBy,
+                         String having, String orderBy, String limit) {
     	return query(db, false, columns, groupBy, having, orderBy, limit);
     }
     

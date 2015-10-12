@@ -4,12 +4,12 @@
 
 package com.ellucian.mobile.android.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.widget.Adapter;
 import android.widget.CheckBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckableSectionedListAdapter extends SectionedListAdapter {
 	
@@ -75,7 +75,7 @@ public class CheckableSectionedListAdapter extends SectionedListAdapter {
 			int size = adapter.getCount() + 1;
 
 			if (position < size) {
-				return adapter.getCheckBoxAtPostition(position);
+				return adapter.getCheckBoxAtPosition(position);
 			}
 			// otherwise jump into next section
 			position -= size;

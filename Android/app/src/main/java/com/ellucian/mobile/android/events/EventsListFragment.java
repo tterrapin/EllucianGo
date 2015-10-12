@@ -55,9 +55,9 @@ public class EventsListFragment extends EllucianDefaultListFragment {
 			Date endDate = end != null ? activity.toEventDate(end) : null;
 			String dateString;
 			if( allDay == 0) {		
-				dateString = activity.getEventDateFormatedString(startDate, endDate, false);					
+				dateString = activity.getEventDateFormattedString(startDate, endDate, false);
 			} else {
-				dateString = activity.getEventDateFormatedString(startDate, null, true);
+				dateString = activity.getEventDateFormattedString(startDate, null, true);
 			}
 			bundle.putString(Extra.DATE, dateString);
 			

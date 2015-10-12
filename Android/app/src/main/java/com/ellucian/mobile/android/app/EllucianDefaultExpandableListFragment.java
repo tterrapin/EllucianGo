@@ -7,8 +7,8 @@ package com.ellucian.mobile.android.app;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,16 +30,16 @@ import com.ellucian.mobile.android.util.Extra;
 public abstract class EllucianDefaultExpandableListFragment extends EllucianExpandableListFragment {
 	private static final String TAG = EllucianDefaultExpandableListFragment.class.getSimpleName();
 
-	protected View rootView;
-	protected OnItemClickListener listener;
-	protected ViewBinder viewBinder; 
+	private View rootView;
+	private OnItemClickListener listener;
+	private ViewBinder viewBinder;
 
-	protected boolean mDualPane;
-	protected int mCurCheckPosition = 0;
-	protected int mCurGroupPosition = 0;
-	protected Bundle detailBundle;
+	private boolean mDualPane;
+	private int mCurCheckPosition = 0;
+	private int mCurGroupPosition = 0;
+	private Bundle detailBundle;
 	
-	protected boolean initialLoad;
+	private boolean initialLoad;
 
 	public EllucianDefaultExpandableListFragment() {
 	}
@@ -53,7 +53,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 	/** Variable "fname" should be the class name of an EllucianDefaultListFragment subclass
 	 *  example -  SubclassFragmentOfDefaultListFragment.class.getName()
 	 */
-	public static EllucianDefaultExpandableListFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
+	private static EllucianDefaultExpandableListFragment newInstance(Context context, String fname, Bundle args, int emptyTextResId) {
 		Log.d(TAG, "newInstance (2)");
 		EllucianDefaultExpandableListFragment fragment;
 
@@ -178,7 +178,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
         
 	}
 	
-	public void collapseTree() {
+	private void collapseTree() {
 		Log.d(TAG, "collapseTree");
 		ExpandableListView listView = getExpandableListView();
 		//int groupCount = listView.getExpandableListAdapter().getGroupCount();
@@ -188,7 +188,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 		}
 	}
 	
-	public void collapseTree(int excludedPosition) {
+	private void collapseTree(int excludedPosition) {
 		Log.d(TAG, "collapseTree");
 		ExpandableListView listView = getExpandableListView();
 		int groupCount = listView.getExpandableListAdapter().getGroupCount();
@@ -200,7 +200,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 		}		
 	}
 
-	public void expandTree() {
+	private void expandTree() {
 		Log.d(TAG, "expandTree");
 		ExpandableListView listView = getExpandableListView();
 		for (int i = 0; i < listView.getCount(); i++) {
@@ -208,7 +208,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 		}
 	}
 	
-	public void expandGroups(List<Boolean> expandedGroups) {
+	private void expandGroups(List<Boolean> expandedGroups) {
 		if (expandedGroups != null && !expandedGroups.isEmpty()) {
 			ExpandableListView listView = getExpandableListView();
 			int groupCount = listView.getExpandableListAdapter().getGroupCount();
@@ -220,7 +220,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 		}
 	}
 	
-	public List<Boolean> getExpandedGroups() {
+	private List<Boolean> getExpandedGroups() {
 		List<Boolean> expandedGroups = new ArrayList<Boolean>();
 		ExpandableListView listView = getExpandableListView();
 		int groupCount = listView.getExpandableListAdapter().getGroupCount();
@@ -251,7 +251,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
      * displaying a fragment in-place in the current UI, or starting a
      * whole new activity in which it is displayed.
      */
-    void showDetails(int index) {
+	private void showDetails(int index) {
 		Log.d(TAG, "showDetails");
         mCurCheckPosition = index;
         
@@ -321,7 +321,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
     	} 	
     }
     
-    public void setSelected() {
+    private void setSelected() {
     	Log.d(TAG, "Group position: " + mCurGroupPosition);
 		Log.d(TAG, "Check position: " + mCurCheckPosition);
 		if (mDualPane) {
@@ -344,7 +344,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
     	}
     }
     
-    public Bundle getDefaultBundle() {
+    private Bundle getDefaultBundle() {
 		Log.d(TAG, "getDefaultBundle");
     	Bundle bundle = new Bundle();
 		String title = "TITLE";
@@ -359,7 +359,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
     }
     
     /** Override to return custom Bundle */
-    public Bundle buildDetailBundle(Cursor cursor) {
+	protected Bundle buildDetailBundle(Cursor cursor) {
 		Log.d(TAG, "buildDetailBundle");
 		Bundle bundle = null;
 		return bundle;
@@ -369,7 +369,7 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
      *  See EllucianDefaultDetailFragment.newInstance for more information
      *  If you are only making changes to the class name, override getDetailFragmentClass() instead
      */
-	public EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
+	private EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
 		Log.d(TAG, "getDetailFragment");
 		
 		return EllucianDefaultDetailFragment.newInstance(getActivity(), 
@@ -377,19 +377,19 @@ public abstract class EllucianDefaultExpandableListFragment extends EllucianExpa
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailFragment subclass */
-	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
+	protected Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
 		Log.d(TAG, "getDetailFragmentClass");
 		return EllucianDefaultDetailFragment.class;	
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailActivity subclass */
-	public Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
+	protected Class<? extends EllucianDefaultDetailActivity> getDetailActivityClass() {
 		Log.d(TAG, "getDetailActivityClass");
 		return EllucianDefaultDetailActivity.class;	
 	}
 
 	/** Override to return additional extras */
-	public Intent addExtras(Intent intent) {
+	private Intent addExtras(Intent intent) {
 		Log.d(TAG, "addExtras");
 		return intent;
 	}

@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SlidingViewController.h"
 #import "CurrentUser.h"
 #import "AppearanceChanger.h"
 #import "MobileUIApplication.h"
+#import "ECSlidingViewController.h"
 
 #define kRefreshConfigurationListIfPresent @"RefreshConfigurationListIfPresent"
 
@@ -23,8 +23,10 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *privateWriterContext;
 @property(nonatomic, readonly) BOOL useDefaultConfiguration;
+@property (strong, nonatomic) ECSlidingViewController *slidingViewController;
+@property (strong, nonatomic) NSObject *watchConnectivityManager;
+@property (strong, nonatomic) NSObject *configurationManager;
 
-- (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (void)reset;
 

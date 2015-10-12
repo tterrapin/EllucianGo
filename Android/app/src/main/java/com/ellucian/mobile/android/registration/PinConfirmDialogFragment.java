@@ -2,10 +2,6 @@
 
 package com.ellucian.mobile.android.registration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +19,10 @@ import android.widget.Toast;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDialogFragment;
 import com.ellucian.mobile.android.registration.RegistrationActivity.TermInfoHolder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class PinConfirmDialogFragment extends EllucianDialogFragment {
 	
@@ -66,8 +66,10 @@ public class PinConfirmDialogFragment extends EllucianDialogFragment {
 			TextView label = (TextView) rowLayout.findViewById(R.id.label);		
 			EditText input = (EditText) rowLayout.findViewById(R.id.input);
 			input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			
-			label.setText(holder.termName + ":");
+
+            // Use label_format so the colon appears on the left for RTL languages.
+            String labelText = getString(R.string.label_format, holder.termName);
+            label.setText(labelText);
 			labelViews.add(label);
 			inputViews.add(input);
 			

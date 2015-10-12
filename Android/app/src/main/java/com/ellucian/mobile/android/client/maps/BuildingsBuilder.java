@@ -19,7 +19,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 
 public class BuildingsBuilder extends ContentProviderOperationBuilder<BuildingsResponse> {
 	private static final String FROM_NUMBERS = "from_numbers";
-	private String module;
+	private final String module;
 
 	public BuildingsBuilder(Context context, String module) {
 		super(context);

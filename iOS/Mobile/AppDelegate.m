@@ -7,16 +7,11 @@
 //
 
 #import "AppDelegate.h"
-#import "MenuViewController.h"
 #import "ImageCache.h"
-#import "ConfigurationSelectionViewController.h"
 #import "URLParser.h"
 #import "MBProgressHUD.h"
-#import "GAI.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "NotificationManager.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
 #import "Notification.h"
 #import "NotificationsFetcher.h"
 #import "Ellucian_GO-Swift.h"
@@ -53,6 +48,9 @@ BOOL logoutOnStartup = YES;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.watchConnectivityManager = [[WatchConnectivityManager instance] ensureWatchConnectivityInitialized];
+    self.configurationManager = [ConfigurationManager instance];
+    
     NSSetUncaughtExceptionHandler(&onUncaughtException);
     
     //Google Analytics
@@ -61,11 +59,9 @@ BOOL logoutOnStartup = YES;
     [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelError];
     
     //Notifications registration
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-    }
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"didMigrateToAppGroups"])
     {
@@ -81,35 +77,31 @@ BOOL logoutOnStartup = YES;
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"didMigrateToAppGroups"];
     }
     
-    SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
-    slidingViewController.managedObjectContext = self.managedObjectContext;
+    self.slidingViewController = (ECSlidingViewController *)self.window.rootViewController;
+    self.slidingViewController.anchorRightRevealAmount = 276;
+    self.slidingViewController.anchorLeftRevealAmount = 276;
+    self.slidingViewController.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGestureTapping | ECSlidingViewControllerAnchoredGesturePanning;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeStoryboard" bundle:nil];
+    UIViewController *menu = [storyboard instantiateViewControllerWithIdentifier:@"Menu"];
     
-    NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
-    
-    NSString *_configurationUrl = [prefs stringForKey:@"configurationUrl"];
-    
-    BOOL useDefaultConfigUrl = self.useDefaultConfiguration;
-    if(!_configurationUrl && !useDefaultConfigUrl) {
-        UINavigationController *navcontroller = [slidingViewController.storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
-        navcontroller.navigationBar.translucent = NO;
-        ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
-        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-        vc.managedObjectContext = self.managedObjectContext;
-        [self.window setRootViewController:navcontroller];
-        [AppearanceChanger applyAppearanceChanges:self.window];
-    }
-    else if (!_configurationUrl && useDefaultConfigUrl) {
-        [prefs setObject:self.defaultConfigUrl forKey:@"configurationUrl"];
-        [prefs synchronize];
-        [self loadDefaultConfiguration:self.defaultConfigUrl inView:slidingViewController];
-    }
-    else {
-        [AppearanceChanger applyAppearanceChanges:self.window];
+    if ([UIView respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        UIUserInterfaceLayoutDirection direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.window.rootViewController.view.semanticContentAttribute];
+        if (direction == UIUserInterfaceLayoutDirectionRightToLeft) {
+            self.slidingViewController.underRightViewController = menu;
+        } else {
+            self.slidingViewController.underLeftViewController = menu;
+        }
+    } else { // iOS8
+        self.slidingViewController.underLeftViewController = menu;
     }
     
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidTimeout:) name:kApplicationDidTimeoutNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidTouch:) name:kApplicationDidTouchNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDataModelChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:self.managedObjectContext];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(returnHome:) name:kSignOutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(returnHome:) name:kSignInReturnToHomeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(forceConfigurationSelection:) name:kConfigurationFetcherError object:nil];
     
     CurrentUser *currentUser = [CurrentUser sharedInstance];
     if(currentUser && [currentUser isLoggedIn ] && ![currentUser remember] && logoutOnStartup != NO) {
@@ -118,7 +110,48 @@ BOOL logoutOnStartup = YES;
     
     // for when swapping the application in, honor the current logged in/out state
     logoutOnStartup = NO;
+
+    NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
+    
+    NSString *_configurationUrl = [prefs stringForKey:@"configurationUrl"];
+    
+    BOOL useDefaultConfigUrl = self.useDefaultConfiguration;
+    if(!_configurationUrl && !useDefaultConfigUrl) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConfigurationSelectionStoryboard" bundle:nil];
+        UINavigationController *navcontroller = [storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
+        ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
+        [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+        [self.window setRootViewController:navcontroller];
+        [AppearanceChanger applyAppearanceChanges:self.window];
+    }
+    else if (!_configurationUrl && useDefaultConfigUrl) {
+        [prefs setObject:self.defaultConfigUrl forKey:@"configurationUrl"];
+        [prefs synchronize];
+        [self loadDefaultConfiguration:self.defaultConfigUrl inView:self.slidingViewController];
+    }
+    else {
+        [AppearanceChanger applyAppearanceChanges:self.window];
+        [[NSOperationQueue mainQueue] addOperation:[OpenModuleHomeOperation new]];
+
+    }
+    
+    
     return YES;
+}
+
+-(void) returnHome:(id)sender
+{
+    [AppearanceChanger applyAppearanceChanges:self.window];
+    [[NSOperationQueue mainQueue] addOperation:[OpenModuleHomeOperation new]];
+}
+
+-(void) forceConfigurationSelection:(id)sender
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [ConfigurationFetcher showErrorAlertView];
+        [AppearanceChanger applyAppearanceChanges:self.window];
+        [[NSOperationQueue mainQueue] addOperation:[OpenModuleConfigurationSelectionOperation new]];
+    });
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -131,8 +164,7 @@ BOOL logoutOnStartup = YES;
     NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
     NSString *_configurationUrl = [prefs stringForKey:@"configurationUrl"];
     if (!_configurationUrl && self.useDefaultConfiguration) {
-        SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
-        slidingViewController.managedObjectContext = self.managedObjectContext;
+        ECSlidingViewController *slidingViewController = (ECSlidingViewController *)self.window.rootViewController;
         [self loadDefaultConfiguration:self.defaultConfigUrl inView:slidingViewController];
     }
     
@@ -170,117 +202,7 @@ BOOL logoutOnStartup = YES;
 
 - (NSManagedObjectContext *)managedObjectContext
 {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        __managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [__managedObjectContext setParentContext:self.privateWriterContext];
-    }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(saveContext:)
-                                                 name:NSManagedObjectContextDidSaveNotification
-                                               object:__managedObjectContext];
-    return __managedObjectContext;
-}
-
-- (NSManagedObjectContext *)privateWriterContext
-{
-    if (__privateWriterContext != nil) {
-        return __privateWriterContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        __privateWriterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        [__privateWriterContext setPersistentStoreCoordinator:coordinator];
-    }
-    return __privateWriterContext;
-}
-
-// Returns the managed object model for the application.
-// If the model doesn't already exist, it is created from the application's model.
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (__managedObjectModel != nil) {
-        return __managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Mobile" withExtension:@"momd"];
-    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return __managedObjectModel;
-}
-
-
-// Returns the persistent store coordinator for the application.
-// If the coordinator doesn't already exist, it is created and the application's store added to it.
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (__persistentStoreCoordinator != nil) {
-        return __persistentStoreCoordinator;
-    }
-    
-    NSError *error = nil;
-    
-    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    // create a new URL
-    NSURL *newStoreURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Mobile.sqlite"];
-    
-    
-    NSURL *applicationDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    
-    NSURL *oldStoreURL = [applicationDocumentsDirectory URLByAppendingPathComponent:@"Mobile.sqlite"];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Mobile.sqlite"];
-    
-    // Change journal mode from WAL to MEMORY
-    NSDictionary *pragmaOptions = [NSDictionary dictionaryWithObject:@"MEMORY" forKey:@"journal_mode"];
-    
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-                             pragmaOptions, NSSQLitePragmasOption, nil];
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[oldStoreURL path]]) {
-        
-        //migrate
-        
-        
-        if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:oldStoreURL options:options error:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } else {
-            NSPersistentStore *sourceStore = [__persistentStoreCoordinator persistentStoreForURL:oldStoreURL];
-            if(sourceStore) {
-                NSPersistentStore *destinationStore = [self.persistentStoreCoordinator migratePersistentStore:sourceStore toURL:newStoreURL options:options withType:NSSQLiteStoreType error:nil];
-                if(destinationStore) {
-                    [[NSFileManager defaultManager] removeItemAtURL: oldStoreURL error: &error];
-                }
-                
-            }
-        }
-    } else {
-        //no migrate - store normal
-        if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:newStoreURL options:options error:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-        
-    }
-    
-    NSDictionary *fileAttributes = [NSDictionary
-                                    dictionaryWithObject:NSFileProtectionComplete
-                                    forKey:NSFileProtectionKey];
-    if(![[NSFileManager defaultManager] setAttributes:fileAttributes
-                                         ofItemAtPath:[storeURL path] error: &error]) {
-        NSLog(@"Unresolved error with store encryption %@, %@",
-              error, [error userInfo]);
-        abort();
-    }
-    
-    return __persistentStoreCoordinator;
+    return CoreDataManager.shared.managedObjectContext;
 }
 
 -(void)saveContext:(id)sender
@@ -290,20 +212,10 @@ BOOL logoutOnStartup = YES;
 
 - (void)saveContext
 {
-    [self.privateWriterContext performBlock:^{
-        NSError *error = nil;
-        [self.privateWriterContext save:&error];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:self.privateWriterContext];
-    }];
+    [CoreDataManager.shared save];
 }
 
 #pragma mark - Application's Documents directory
-
-// Returns the URL to the application's Documents directory.
-//- (NSURL *)applicationDocumentsDirectory
-//{
-//    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-//}
 
 - (NSURL *)applicationDocumentsDirectory
 {
@@ -350,56 +262,6 @@ BOOL logoutOnStartup = YES;
     }
     [[ImageCache sharedCache] reset];
     
-    /*
-     // retrieve the store URL
-     storeURL = [[self.managedObjectContext persistentStoreCoordinator] URLForPersistentStore:[[[self.managedObjectContext persistentStoreCoordinator] persistentStores] lastObject]];
-     // lock the current context
-     [self.managedObjectContext lock];
-     [self.managedObjectContext reset];//to drop pending changes
-     //delete the store from the current managedObjectContext
-     if ([[self.managedObjectContext persistentStoreCoordinator] removePersistentStore:[[[self.managedObjectContext persistentStoreCoordinator] persistentStores] lastObject] error:&error])
-     {
-     // remove the file containing the data
-     [[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error];
-     //recreate the store like in the  appDelegate method
-     [[self.managedObjectContext persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];//recreates the persistent store
-     }
-     [self.managedObjectContext unlock];
-     
-     */
-    
-    if (error) {
-        NSLog(@"Failed to remove persistent store: %@", [error localizedDescription]);
-        NSArray *detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
-        if (detailedErrors != nil && [detailedErrors count] > 0) {
-            for (NSError *detailedError in detailedErrors) {
-                NSLog(@" DetailedError: %@", [detailedError userInfo]);
-            }
-        }
-        else {
-            NSLog(@" %@", [error userInfo]);
-        }
-    }
-    NSDictionary *pragmaOptions = [NSDictionary dictionaryWithObject:@"MEMORY" forKey:@"journal_mode"];
-    
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-                             pragmaOptions, NSSQLitePragmasOption, nil];
-    if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-        NSLog(@"Error adding persistent store coordinator: %@", error);
-    }
-    
-    NSDictionary *fileAttributes = [NSDictionary
-                                    dictionaryWithObject:NSFileProtectionComplete
-                                    forKey:NSFileProtectionKey];
-    if(![[NSFileManager defaultManager] setAttributes:fileAttributes
-                                         ofItemAtPath:[storeURL path] error: &error]) {
-        NSLog(@"Unresolved error with store encryption %@, %@",
-              error, [error userInfo]);
-        abort();
-    }
-    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
@@ -445,11 +307,10 @@ BOOL logoutOnStartup = YES;
         NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
         [defaults setObject:[newUrl absoluteString] forKey:@"mobilecloud-url"];
         [defaults synchronize];
-        UINavigationController *navcontroller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
-        navcontroller.navigationBar.translucent = NO;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConfigurationSelectionStoryboard" bundle:nil];
+        UINavigationController *navcontroller = [storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
         ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
         [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-        vc.managedObjectContext = self.managedObjectContext;
         [self.window setRootViewController:navcontroller];
     } else if([type isEqualToString:@"configuration"]) {
         NSString *scheme = [pathComponents objectAtIndex:1];
@@ -460,11 +321,14 @@ BOOL logoutOnStartup = YES;
         [[CurrentUser sharedInstance] logoutWithoutUpdatingUI];
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
         NSString *passcode = [parser valueForVariable:@"passcode"];
-        UIViewController *vc = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Loading"];
-        [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self loadConfigurationInBackground:scheme host:host newPath:newPath passcode:passcode];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeStoryboard" bundle:nil];
+            UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"Loading"];
+            [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+            dispatch_async(dispatch_get_global_queue(0,0), ^{
+                [self loadConfigurationInBackground:scheme host:host newPath:newPath passcode:passcode];
+            });
         });
         
     } else if([type isEqualToString:@"module-type"]) {
@@ -475,17 +339,15 @@ BOOL logoutOnStartup = YES;
             [self sendEventWithCategory:kAnalyticsCategoryWidget withAction:kAnalyticsActionList_Select withLabel:@"Assignments" withValue:nil];
             
             [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
-            
-            SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
-            slidingViewController.managedObjectContext = self.managedObjectContext;
-            
-            [slidingViewController showAssignments:urlToAssignment];
-            
-            [self.window setRootViewController:slidingViewController];
+
+            OpenModuleOperation* operation = [[OpenModuleOperation alloc] initWithType:@"ilp"];
+            if (urlToAssignment) { //sign in will not pass a url to open
+                operation.properties =  @ {@"requestedAssignmentId" : urlToAssignment } ;
+            }
+            [[NSOperationQueue mainQueue] addOperation:operation];
         }
     }
-    
-    
+
     return YES;
 }
 
@@ -502,30 +364,59 @@ BOOL logoutOnStartup = YES;
     [prefs setObject:[newUrl absoluteString] forKey:@"configurationUrl"];
     [prefs synchronize];
     
-    BOOL success = [ConfigurationFetcher fetchConfigurationFromURL:[newUrl absoluteString] WithManagedObjectContext:self.managedObjectContext ];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(success || self.useDefaultConfiguration) {
-            [AppearanceChanger applyAppearanceChanges:self.window];
+    ConfigurationManager *manager = [ConfigurationManager instance];
+    [manager loadConfigurationWithConfigurationUrl:[newUrl absoluteString] completionHandler:^(id result){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSNumber *resultNumber = nil;
+            if ([result isKindOfClass:[NSNumber class]]) {
+                resultNumber = result;
+            }
+            BOOL resultBool = false;
+            if (resultNumber) {
+                resultBool = [resultNumber boolValue];
+            }
+            if (resultBool || self.useDefaultConfiguration) {
+                [AppearanceChanger applyAppearanceChanges:self.window];
             
-            //the case may be that the user was on the modal "configuration selection" screen.  dismiss in case that's the case.
-            [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
-            
-            SlidingViewController *vc = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"SlidingViewController"];
-            vc.managedObjectContext = self.managedObjectContext;
-            [self.window setRootViewController:vc];
-        } else {
-            [prefs removeObjectForKey:@"configurationUrl"];
-            [prefs synchronize];
-            UINavigationController *navcontroller = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
-            navcontroller.navigationBar.translucent = NO;
-            ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
-            [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-            vc.managedObjectContext = self.managedObjectContext;
-            [self.window setRootViewController:navcontroller];
-            [ConfigurationFetcher showErrorAlertView];
-        }
-    });
+                //the case may be that the user was on the modal "configuration selection" screen.  dismiss in case that's the case.
+                [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
+                
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeStoryboard" bundle:nil];
+                ECSlidingViewController *slidingVC = [storyboard instantiateViewControllerWithIdentifier:@"SlidingViewController"];
+                slidingVC.anchorRightRevealAmount = 276;
+                slidingVC.anchorLeftRevealAmount = 276;
+                slidingVC.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGestureTapping | ECSlidingViewControllerAnchoredGesturePanning;
+                UIViewController *menu = [storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+                
+                if ([UIView respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+                    UIUserInterfaceLayoutDirection direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:slidingVC.view.semanticContentAttribute];
+                    if (direction == UIUserInterfaceLayoutDirectionRightToLeft) {
+                        slidingVC.underRightViewController = menu;
+                    } else {
+                         slidingVC.underLeftViewController = menu;
+                    }
+                } else { // iOS8
+                     slidingVC.underLeftViewController = menu;
+                }
+                
+                [self.window setRootViewController:slidingVC];
+                self.slidingViewController = slidingVC;
+                [[NSOperationQueue mainQueue] addOperation:[OpenModuleHomeOperation new]];
+            } else {
+                [prefs removeObjectForKey:@"configurationUrl"];
+                [prefs synchronize];
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConfigurationSelectionStoryboard" bundle:nil];
+                UINavigationController *navcontroller = [storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
+                ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
+                [vc setModalPresentationStyle:UIModalPresentationFullScreen];
+
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [self.window setRootViewController:navcontroller];
+                    [ConfigurationFetcher showErrorAlertView];
+                });
+            }
+        });
+    }];
 }
 
 #pragma mark - Launch from local notification
@@ -556,23 +447,33 @@ BOOL logoutOnStartup = YES;
 #pragma mark - Hard-coded configuration launch
 // This function will only be called by customers that are hard coding a single
 // configuration URL from the cloud.
-- (void) loadDefaultConfiguration:(NSString *)defaultConfigUrl inView:(SlidingViewController *) slidingViewController
+- (void) loadDefaultConfiguration:(NSString *)defaultConfigUrl inView:(ECSlidingViewController *) slidingViewController
 {
     UIView * hudView = self.window.rootViewController.view;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: hudView animated:YES];
     hud.labelText = NSLocalizedString(@"Loading", @"loading message while waiting for data to load");
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        BOOL success = [ConfigurationFetcher fetchConfigurationFromURL:defaultConfigUrl WithManagedObjectContext:self.managedObjectContext ];
-        [MBProgressHUD hideHUDForView:hudView animated:YES];
-        if(success) {
-            
-            [AppearanceChanger applyAppearanceChanges:self.window];
-            [slidingViewController showHome];
-            
-        } else {
-            //[ConfigurationFetcher showErrorAlertView];
-        }
+        ConfigurationManager *manager = [ConfigurationManager instance];
+        [manager loadConfigurationWithConfigurationUrl:defaultConfigUrl completionHandler:^(id result){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:hudView animated:YES];
+                
+                NSNumber *resultNumber = nil;
+                if ([result isKindOfClass:[NSNumber class]]) {
+                    resultNumber = result;
+                }
+                BOOL resultBool = false;
+                if (resultNumber) {
+                    resultBool = [resultNumber boolValue];
+                }
+
+                if(resultBool) {
+                    [AppearanceChanger applyAppearanceChanges:self.window];
+                    [[NSOperationQueue mainQueue] addOperation:[OpenModuleHomeOperation new]];
+                }
+            });
+        }];
     });
 }
 
@@ -642,9 +543,11 @@ void onUncaughtException(NSException* exception)
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+//-(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     
     NSString* uuid = [userInfo objectForKey:@"uuid"];
+    NSLog(@"didReceiveRemoteNotification - for uuid: %@", uuid);
     
     UIApplicationState state = [application applicationState];
     if (state == UIApplicationStateActive) {
@@ -654,24 +557,47 @@ void onUncaughtException(NSException* exception)
         [self sendEventWithCategory:kAnalyticsCategoryPushNotification withAction:kAnalyticsActionReceivedMessage withLabel:@"whileActive" withValue:nil];
         
         NSString* alertMessage = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-        SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
+        UIAlertController * alert=   [UIAlertController
+                                      alertControllerWithTitle:NSLocalizedString(@"New Notification", @"new notification has arrived")
+                                      message:alertMessage
+                                      preferredStyle:UIAlertControllerStyleAlert];
         
-        [slidingViewController showNotificationAlert:alertMessage withNotificationId:uuid];
+        UIAlertAction* view = [UIAlertAction
+                             actionWithTitle:NSLocalizedString(@"View", @"view label")
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 OpenModuleOperation* operation = [[OpenModuleOperation alloc] initWithType:@"notifications"];
+                                 operation.properties =  @ {@"uuid" : uuid } ;
+                                 [[NSOperationQueue mainQueue] addOperation:operation];
+                                 
+                             }];
+        UIAlertAction* cancel = [UIAlertAction
+                                 actionWithTitle:NSLocalizedString(@"Close", @"Close")
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [alert addAction:cancel];
+        [alert addAction:view];
+        
+        [self.window makeKeyAndVisible];
+        [self.window.rootViewController presentViewController:alert animated:YES completion:NULL];
     } else {
         // navigate to notifications
-        NSLog(@"application not active - open notifications");
+        NSLog(@"application not active - open from notifications");
         
         // log activity to Google Analytics
         [self sendEventWithCategory:kAnalyticsCategoryPushNotification withAction:kAnalyticsActionReceivedMessage withLabel:@"whileInActive" withValue:nil];
         
         [self.window.rootViewController dismissViewControllerAnimated:NO completion:nil];
         
-        SlidingViewController *slidingViewController = (SlidingViewController *)self.window.rootViewController;
-        slidingViewController.managedObjectContext = self.managedObjectContext;
-        
-        [slidingViewController showNotifications:uuid];
-        
-        [self.window setRootViewController:slidingViewController];
+        OpenModuleOperation* operation = [[OpenModuleOperation alloc] initWithType:@"notifications"];
+        operation.properties =  @ {@"uuid" : uuid } ;
+        [[NSOperationQueue mainQueue] addOperation:operation];
     }
 }
 
@@ -704,161 +630,5 @@ void onUncaughtException(NSException* exception)
     
 }
 
-#pragma mark - Apple Watch
-
-- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void (^)(NSDictionary *))reply {
-    NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
-    
-    NSString *action = userInfo[@"action"];
-    if ([action isEqualToString:@"fetch configuration"]) {
-        NSString *configurationUrl = [prefs stringForKey:@"configurationUrl"];
-        
-        if(configurationUrl) {
-            NSDate *updateDate = [prefs objectForKey:@"menu updated date"];
-            int days = [[[NSDate alloc] init] timeIntervalSinceDate:updateDate]/24/60/60;
-            if(days > 0 || updateDate == nil) {
-                [ConfigurationFetcher fetchConfigurationFromURL:configurationUrl WithManagedObjectContext:self.managedObjectContext];
-            }
-        }
-        NSSet *roles = nil;
-        CurrentUser *currentUser = [CurrentUser sharedInstance];
-        if(currentUser && [currentUser isLoggedIn ]) {
-            roles = currentUser.roles;
-        }
-        NSArray *definedModules = [MenuManager findUserModules:self.managedObjectContext withRoles:roles];
-        NSMutableArray *moduleDicts = [NSMutableArray new];
-        for(Module *module in definedModules) {
-            NSMutableDictionary *properties = [NSMutableDictionary new];
-            for(ModuleProperty *prop in module.properties) {
-                [properties setValue:prop.value  forKey:prop.name];
-                
-            }
-            NSMutableArray *roles = [NSMutableArray new];
-            for(ModuleRole *role in module.roles) {
-                [roles addObject:role.role];
-                
-            }
-            NSDictionary *dict = [NSMutableDictionary new];
-            [dict setValue:module.hideBeforeLogin forKey:@"hideBeforeLogin"];
-            [dict setValue:module.index forKey:@"index"];
-            [dict setValue:module.internalKey forKey:@"internalKey"];
-            [dict setValue:module.name forKey:@"name"];
-            [dict setValue:module.type forKey:@"type"];
-            [dict setValue:properties forKey:@"properties"];
-            [dict setValue:roles forKey:@"roles"];
-            if (module.iconUrl ) {
-                [dict setValue:module.iconUrl forKey:@"iconUrl"];
-                
-            }
-            NSLog(@"%@", dict);
-            [moduleDicts addObject:dict];
-        }
-        NSDictionary *response = @{@"modules":moduleDicts};
-        reply(response);
-    } else if ([action isEqualToString:@"fetch maps"]) {
-        
-        NSString *internalKey = userInfo[@"internalKey"];
-        NSString *urlString = userInfo[@"url"];
-        [MapsFetcher fetch:self.managedObjectContext WithURL:urlString moduleKey:internalKey];
-        
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Map"];
-        request.predicate = [NSPredicate predicateWithFormat:@"moduleName = %@", internalKey];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"moduleName" ascending:YES];
-        request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        
-        NSMutableArray *campuesDicts = [NSMutableArray new];
-        NSError *error;
-        NSArray *matches = [self.managedObjectContext executeFetchRequest:request error:&error];
-        for (Map *map in matches) {
-            for(MapCampus *mc in map.campuses) {
-                
-                NSMutableDictionary *dict = [NSMutableDictionary new];
-                [dict setValue:mc.name forKey:@"name"];
-                
-                NSMutableArray *points = [NSMutableArray new];
-                for(MapPOI *point in mc.points) {
-                    NSMutableDictionary *poiDict = [NSMutableDictionary new];
-                    poiDict[@"name"] = point.name;
-                    if (point.additionalServices ) {
-                        poiDict[@"additionalServices"] = point.additionalServices;
-                    }
-                    if (point.address ) {
-                        poiDict[@"address"] = point.address;
-                    }
-                    if (point.description_ ) {
-                        poiDict[@"description"] = point.description_;
-                    }
-                    if (point.latitude ) {
-                        poiDict[@"latitude"] = point.latitude;
-                    }
-                    if (point.longitude ) {
-                        poiDict[@"longitude"] = point.longitude;
-                    }
-                    [points addObject:poiDict];
-                    
-                }
-                [dict setValue:points forKey:@"buildings"];
-                
-                [campuesDicts addObject:dict];
-            }
-         
-        }
-        
-        
-        NSDictionary *response = @{@"campuses":campuesDicts};
-        reply(response);
-    } else if ([action isEqualToString:@"fetch assignments"]) {
-        NSString *urlString = userInfo[@"url"];
-        [AssignmentsFetcher fetch:self.managedObjectContext url:urlString];
-
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"CourseAssignment"];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dueDate" ascending:YES];
-        request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        
-        NSMutableArray *assignmentsDict = [NSMutableArray new];
-        NSError *error;
-        NSArray *matches = [self.managedObjectContext executeFetchRequest:request error:&error];
-        
-        for(CourseAssignment *assignment in matches) {
-                
-            NSMutableDictionary *assignmentDict = [NSMutableDictionary new];
-            if (assignment.sectionId ) {
-                [assignmentDict setValue:assignment.sectionId forKey:@"sectionId"];
-            }
-            if (assignment.assignmentDescription ) {
-                [assignmentDict setValue:assignment.assignmentDescription forKey:@"assignmentDescription"];
-            }
-            if (assignment.dueDate ) {
-                [assignmentDict setValue:assignment.dueDate forKey:@"dueDate"];
-            }
-
-            if (assignment.name ) {
-                [assignmentDict setValue:assignment.name forKey:@"name"];
-            }
-
-            if (assignment.courseName ) {
-                [assignmentDict setValue:assignment.courseName forKey:@"courseName"];
-            }
-
-            if (assignment.courseSectionNumber ) {
-                [assignmentDict setValue:assignment.courseSectionNumber forKey:@"courseSectionNumber"];
-            }
-
-            if (assignment.url ) {
-                [assignmentDict setValue:assignment.url forKey:@"url"];
-            }
-
-
-            [assignmentsDict addObject:assignmentDict];
-            
-        }
-        
-        
-        NSDictionary *response = @{@"assignments":assignmentsDict, @"loggedInStatus": [NSNumber numberWithBool:[[CurrentUser sharedInstance] isLoggedIn ]]};
-        reply(response);
-    }
-    
-    
-}
 
 @end

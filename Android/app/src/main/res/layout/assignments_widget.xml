@@ -39,7 +39,7 @@
         >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/widget_not_connected"
             android:layout_weight="1"
@@ -53,8 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/widget_sign_in"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:textColor="#000000"
+            android:drawableEnd="@drawable/ic_widget_refresh"
             android:drawableRight="@drawable/ic_widget_refresh"
             android:drawablePadding="5dp"/>
 
@@ -84,8 +85,10 @@
         android:background="@drawable/widget_bg_semi_transparent"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        android:paddingStart="10dp"
         android:paddingLeft="10dp"
-        android:text="@string/widget_no_assignments" >
+        android:text="@string/widget_no_assignments"
+        tools:ignore="NewApi,RtlSymmetry">
     </TextView>
 
 </LinearLayout>

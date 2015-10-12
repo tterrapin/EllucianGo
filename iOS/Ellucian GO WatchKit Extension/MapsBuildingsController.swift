@@ -26,13 +26,13 @@ class MapsBuildingsController: WKInterfaceController {
             setTitle(campus["name"] as? String)
             self.poiArray = campus["buildings"]  as! [Dictionary<String, AnyObject>]
             
-            self.poiArray = sorted(self.poiArray) {
+            self.poiArray = self.poiArray.sort {
                 return ($0["name"] as! String) < ($1["name"] as! String)
              }
             
             buildingsTable.setNumberOfRows(self.poiArray.count, withRowType: "BuildingTableRowController")
             
-            for (index, poi) in enumerate(self.poiArray) {
+            for (index, poi) in self.poiArray.enumerate() {
                 let row = buildingsTable.rowControllerAtIndex(index) as! BuildingTableRowController
                 row.buildingNameLabel.setText(poi["name"] as? String)
             }

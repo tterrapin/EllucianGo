@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Notification.h"
 #import "WebViewController.h"
-#import "UIColor+SchoolCustomization.h"
 #import "Module.h"
 
 @interface NotificationNoDescriptionDetailViewController : UIViewController

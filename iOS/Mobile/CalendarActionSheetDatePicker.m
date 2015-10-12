@@ -150,12 +150,6 @@
     }
 
     CGSize size = [UIScreen mainScreen].bounds.size;
-    if(SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-        {
-            size = CGSizeMake(size.height, size.width);
-        }
-    }
     return size;
 }
 

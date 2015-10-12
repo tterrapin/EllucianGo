@@ -1,4 +1,4 @@
-//
+     //
 //  SwiftDailyViewController.swift
 //  Mobile
 //
@@ -10,11 +10,12 @@ import Foundation
 import UIKit
 
 
-var requestedAssignmentId: String? = nil
 
 class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureRecognizerDelegate, UISplitViewControllerDelegate
 {
-    
+
+    var requestedAssignmentId: String? = nil
+
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var assignmentsCardTitle: UILabel!
@@ -41,9 +42,9 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     
     var cardInsetConstant:CGFloat = 0
     //Landscape Constraints
-    var landscapeConstraintArray:NSMutableArray = []
+    var landscapeConstraintArray = [NSLayoutConstraint]()
     //Portrait Constraints
-    var portraitConstraintArray:NSMutableArray = []
+    var portraitConstraintArray = [NSLayoutConstraint]()
     
     var assignmentsFetchedResultController: NSFetchedResultsController?
     var assignmentsTableViewDelegate: AssignmentTableViewDelegate?
@@ -68,11 +69,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     }
     
     override func viewDidLoad() {
-        
-        var assignmentError:NSError?
-        var announcementError:NSError?
-        var eventError:NSError?
-        
+
         super.viewDidLoad()
         showAllAnnouncementsView.userInteractionEnabled = true
         
@@ -80,23 +77,34 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         self.title = self.module!.name;
 
         assignmentsFetchedResultController = getAssignmentsFetchedResultsController()
-        var assignmentTableWidth = assignmentCardView.frame.width
         assignmentsTableViewDelegate = AssignmentTableViewDelegate(tableView: assignmentTableView, resultsController: assignmentsFetchedResultController!, heightConstraint: assignmentTableHeightConstraint, widthConstraint: assignmentTableWidthConstraint, parentModule:self.module, viewController:self)
-        if (!assignmentsFetchedResultController!.performFetch(&assignmentError)) {
-            NSLog("Unersolved error fetching assignments: fetch error: \(assignmentError!.localizedDescription)")
+        
+        do {
+            try assignmentsFetchedResultController!.performFetch()
+            
+            if requestedAssignmentId != nil {
+                self.showDetailForRequestedAssignment()
+            }
+        } catch let assignmentError as NSError {
+            NSLog("Unresolved error fetching assignments: fetch error: \(assignmentError.localizedDescription)")
         }
         
         announcementsFetchedResultsController = getAnnouncementsFetchedResultsController()
         announcementsTableViewDelegate = AnnouncementTableViewDelegate(tableView: announcementTableView, controller: announcementsFetchedResultsController!, heightConstraint:announcementTableHeightConstraint, widthConstraint: announcementTableWidthConstraint, parentModule:module)
-        if (!announcementsFetchedResultsController!.performFetch(&announcementError)) {
-            NSLog("Unresolved error fetching announcements: fetch error: \(announcementError!.localizedDescription)")
+        do {
+            try announcementsFetchedResultsController!.performFetch()
+        } catch let announcementError as NSError {
+            NSLog("Unresolved error fetching announcements: fetch error: \(announcementError.localizedDescription)")
         }
         
         eventsFetchedResultsController = getEventsFetchedResultsController()
         eventsTableViewDelegate = EventTableViewDelegate(tableView: eventTableView, controller: eventsFetchedResultsController!, heightConstraint: eventTableHeightConstraint, widthConstraint: eventTableWidthConstraint, parentModule:module)
-        if (!eventsFetchedResultsController!.performFetch(&eventError)) {
-            NSLog("Unresolved error fetching events: fetch error: \(eventError!.localizedDescription)")
+        do {
+            try eventsFetchedResultsController!.performFetch()
+        } catch let eventError as NSError {
+            NSLog("Unresolved error fetching events: fetch error: \(eventError.localizedDescription)")
         }
+
         
         let currentUser = CurrentUser.sharedInstance()
         
@@ -106,7 +114,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
             fetchAssignments(self)
         }
         
-        var screenWidth = AppearanceChanger.currentScreenBoundsDependOnOrientation().width
+        let screenWidth = AppearanceChanger.currentScreenBoundsDependOnOrientation().width
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad
         {
             cardInsetConstant = 25.0
@@ -115,32 +123,32 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
 
             switch UIDevice.currentDevice().orientation{
             case .Portrait:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
             case .PortraitUpsideDown:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
             case .LandscapeLeft:
-                scrollView.removeConstraints(portraitConstraintArray as [AnyObject])
-                scrollView.addConstraints(landscapeConstraintArray as [AnyObject])
+                scrollView.removeConstraints(portraitConstraintArray)
+                scrollView.addConstraints(landscapeConstraintArray)
                 assignmentTableWidthConstraint.constant = (screenWidth - 100)/3
                 announcementTableWidthConstraint.constant = (screenWidth - 100)/3
                 eventTableWidthConstraint.constant = (screenWidth - 100)/3
             case .LandscapeRight:
-                scrollView.removeConstraints(portraitConstraintArray as [AnyObject])
-                scrollView.addConstraints(landscapeConstraintArray as [AnyObject])
+                scrollView.removeConstraints(portraitConstraintArray)
+                scrollView.addConstraints(landscapeConstraintArray)
                 assignmentTableWidthConstraint.constant = (screenWidth - 100)/3
                 announcementTableWidthConstraint.constant = (screenWidth - 100)/3
                 eventTableWidthConstraint.constant = (screenWidth - 100)/3
             default:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
@@ -178,7 +186,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         
         assignmentsCardTitle.text = NSLocalizedString("Assignments", comment:"ILP View: Assignments Card Title")
         announcementsCardTitle.text = NSLocalizedString("Announcements", comment:"ILP View: Announcements Card Title")
-        eventsCardTitle.text = NSLocalizedString("Today's Events", comment:"ILP View: Events Card Title")
+        eventsCardTitle.text = NSLocalizedString("Events", comment:"ILP View: Events Card Title")
         
         styleCardHeaders()
         
@@ -188,10 +196,6 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.sendView("ILP view", forModuleNamed:self.module.name)
-        
-        if requestedAssignmentId != nil {
-            self.showDetailForRequestedAssignment()
-        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -237,20 +241,19 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     
     func fetchAssignments(sender:AnyObject) {
         
-        var importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         
         importContext.parentContext = self.module.managedObjectContext
         
-        var urlString = NSString( format:"%@/%@/assignments", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
-        var url: NSURL? = NSURL(string: urlString as String)
+        let urlString = NSString( format:"%@/%@/assignments", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
+        let url: NSURL? = NSURL(string: urlString as String)
         
         importContext.performBlock( {
             
-            var error:NSError?
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             
-            var authenticatedRequest = AuthenticatedRequest()
-            var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
+            let authenticatedRequest = AuthenticatedRequest()
+            let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
             
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if let response = responseData
@@ -259,17 +262,21 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 
                 let json = JSON(data: response)
                 
-                var request = NSFetchRequest(entityName:"CourseAssignment")
-                var oldObjects = importContext.executeFetchRequest(request, error:&error)
+                let request = NSFetchRequest(entityName:"CourseAssignment")
+                var oldObjects: [AnyObject]?
+                do {
+                    oldObjects = try importContext.executeFetchRequest(request)
+                } catch {
+                }
                 
                 for oldObject in oldObjects! {
                     importContext.deleteObject(oldObject as! NSManagedObject)
                 }
-                
+
                 let assignmentList: Array<JSON> = json["assignments"].arrayValue
                 
                 for  jsonDictionary in assignmentList {
-                    var entry:CourseAssignment = NSEntityDescription.insertNewObjectForEntityForName("CourseAssignment", inManagedObjectContext: importContext) as! CourseAssignment
+                    let entry:CourseAssignment = NSEntityDescription.insertNewObjectForEntityForName("CourseAssignment", inManagedObjectContext: importContext) as! CourseAssignment
                     entry.sectionId = jsonDictionary["sectionId"].stringValue
                     entry.courseName = jsonDictionary["courseName"].stringValue
                     entry.courseSectionNumber = jsonDictionary["courseSectionNumber"].stringValue
@@ -279,17 +286,20 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     entry.url = jsonDictionary["url"].stringValue
                 }
                 
-                var saveError: NSError?
-                importContext.save(&saveError)
-                if !importContext.save(&saveError) {
-                    NSLog("save error: \(saveError!.localizedDescription)")
+                do {
+                    try importContext.save()
+                } catch let saveError as NSError {
+                    NSLog("save error: \(saveError.localizedDescription)")
+                } catch {
                 }
             }
             importContext.parentContext?.performBlock({
-                var parentError: NSError?
-                if !importContext.parentContext!.save(&parentError)
-                {
-                    NSLog("Could not save to store after update to course assignments: \(parentError!.localizedDescription)")
+                do {
+                    try importContext.parentContext!.save()
+                } catch let parentError as NSError {
+                    NSLog("Could not save to store after update to course assignments: \(parentError.localizedDescription)")
+                } catch {
+                    
                 }
             })
         })
@@ -322,20 +332,19 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     }
     
     func fetchAnnouncements(sender:AnyObject) {
-        var importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         
         importContext.parentContext = self.module.managedObjectContext
         
-        var urlString = NSString( format:"%@/%@/announcements", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
-        var url: NSURL? = NSURL(string: urlString as String)
+        let urlString = NSString( format:"%@/%@/announcements", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
+        let url: NSURL? = NSURL(string: urlString as String)
 
         importContext.performBlock( {
-            
-            var error:NSError?
+        
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             
-            var authenticatedRequest = AuthenticatedRequest()
-            var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
+            let authenticatedRequest = AuthenticatedRequest()
+            let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
             
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             
@@ -345,8 +354,12 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 
                 let json = JSON(data: response)
                 
-                var request = NSFetchRequest(entityName:"CourseAnnouncement")
-                var oldObjects = importContext.executeFetchRequest(request, error:&error)
+                let request = NSFetchRequest(entityName:"CourseAnnouncement")
+                var oldObjects: [AnyObject]?
+                do {
+                    oldObjects = try importContext.executeFetchRequest(request)
+                } catch {
+                }
                 
                 for oldObject in oldObjects! {
                     importContext.deleteObject(oldObject as! NSManagedObject)
@@ -355,7 +368,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 let announcementList: Array<JSON> = json["items"].arrayValue
                 
                 for  jsonDictionary in announcementList {
-                    var entry:CourseAnnouncement = NSEntityDescription.insertNewObjectForEntityForName("CourseAnnouncement", inManagedObjectContext: importContext) as! CourseAnnouncement
+                    let entry:CourseAnnouncement = NSEntityDescription.insertNewObjectForEntityForName("CourseAnnouncement", inManagedObjectContext: importContext) as! CourseAnnouncement
                     
                     entry.sectionId = jsonDictionary["sectionId"].stringValue
                     entry.courseName = jsonDictionary["courseName"].stringValue
@@ -367,8 +380,8 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     } else {
                         
                         let date = NSDate()
-                        let cal = NSCalendar(calendarIdentifier: NSGregorianCalendar)
-                        let components = cal!.components(.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear, fromDate: date)
+                        let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+                        let components = cal!.components([.Day, .Month, .Year], fromDate: date)
                         let todayAtMidnight = cal!.dateFromComponents(components)
 
                         entry.date = todayAtMidnight
@@ -377,17 +390,20 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     entry.website = jsonDictionary["website"].stringValue
                 }
                 
-                var saveError: NSError?
-                importContext.save(&saveError)
-                if !importContext.save(&saveError) {
-                    NSLog("save error: \(saveError!.localizedDescription)")
+
+                do {
+                    try importContext.save()
+                } catch let error as NSError {
+                    NSLog("save error: \(error.localizedDescription)")
+                } catch {
                 }
             }
             importContext.parentContext?.performBlock({
-                var parentError: NSError?
-                if !importContext.parentContext!.save(&parentError)
-                {
-                    NSLog("Could not save to store after update to course announcements: \(parentError!.localizedDescription)")
+                do {
+                    try importContext.parentContext!.save()
+                } catch let parentError as NSError {
+                    NSLog("Could not save to store after update to course announcements: \(parentError.localizedDescription)")
+                } catch {
                 }
             })
         })
@@ -398,12 +414,12 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         let timezone = NSTimeZone.systemTimeZone()
         cal.timeZone = timezone
         
-        var beginComps = cal.components(NSCalendarUnit.YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit | .SecondCalendarUnit, fromDate: NSDate())
+        let beginComps = cal.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: NSDate())
         beginComps.hour = 0
         beginComps.minute = 0
         beginComps.second = 0
         
-        var endComps = cal.components(NSCalendarUnit.YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit | .SecondCalendarUnit, fromDate: NSDate())
+        let endComps = cal.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: NSDate())
         endComps.hour = 23
         endComps.minute = 59
         endComps.second = 59
@@ -440,20 +456,19 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     
     
     func fetchEvents(sender:AnyObject) {
-        var importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         
         importContext.parentContext = self.module.managedObjectContext
         
-        var urlString = NSString( format:"%@/%@/events", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
-        var url: NSURL? = NSURL(string: urlString as String)
+        let urlString = NSString( format:"%@/%@/events", self.module.propertyForKey("ilp"), CurrentUser.sharedInstance().userid )
+        let url: NSURL? = NSURL(string: urlString as String)
         
         importContext.performBlock( {
-            
-            var error:NSError?
+
             UIApplication.sharedApplication().networkActivityIndicatorVisible = true
             
-            var authenticatedRequest = AuthenticatedRequest()
-            var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
+            let authenticatedRequest = AuthenticatedRequest()
+            let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
             
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if let response = responseData {
@@ -462,8 +477,12 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 
                 let json = JSON(data: response)
                 
-                var request = NSFetchRequest(entityName:"CourseEvent")
-                var oldObjects = importContext.executeFetchRequest(request, error:&error)
+                let request = NSFetchRequest(entityName:"CourseEvent")
+                var oldObjects: [AnyObject]?
+                do {
+                    oldObjects = try importContext.executeFetchRequest(request)
+                } catch {
+                }
                 
                 for oldObject in oldObjects! {
                     importContext.deleteObject(oldObject as! NSManagedObject)
@@ -472,7 +491,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 let assignmentList: Array<JSON> = json["events"].arrayValue
                 
                 for  jsonDictionary in assignmentList {
-                    var entry:CourseEvent = NSEntityDescription.insertNewObjectForEntityForName("CourseEvent", inManagedObjectContext: importContext) as! CourseEvent
+                    let entry:CourseEvent = NSEntityDescription.insertNewObjectForEntityForName("CourseEvent", inManagedObjectContext: importContext) as! CourseEvent
                     
                     entry.sectionId = jsonDictionary["sectionId"].stringValue
                     entry.courseName = jsonDictionary["courseName"].stringValue
@@ -484,17 +503,21 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     entry.location = jsonDictionary["location"].stringValue
                 }
                 
-                var saveError: NSError?
-                importContext.save(&saveError)
-                if !importContext.save(&saveError) {
-                    NSLog("save error: \(saveError!.localizedDescription)")
+                do {
+                    try importContext.save()
+                } catch let error as NSError {
+                    NSLog("save error: \(error.localizedDescription)")
+                } catch {
+                    
                 }
             }
             importContext.parentContext?.performBlock({
-                var parentError: NSError?
-                if !importContext.parentContext!.save(&parentError)
-                {
-                    NSLog("Could not save to store after update to course events: \(parentError!.localizedDescription)")
+                do {
+                    try importContext.parentContext!.save()
+                } catch let error as NSError {
+                    NSLog("Could not save to store after update to course events: \(error.localizedDescription)")
+                } catch {
+                    
                 }
             })
         })
@@ -512,7 +535,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     assignmentTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition:UITableViewScrollPosition.Top)
                 }
             }
-            let indexPath: NSIndexPath! = assignmentTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = assignmentTableView.indexPathForSelectedRow
             let assignment = assignmentsFetchedResultController!.objectAtIndexPath(indexPath) as! CourseAssignment
             let detailController = segue.destinationViewController as! CourseAssignmentDetailViewController
             detailController.courseName = assignment.courseName
@@ -534,7 +557,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         
         }
         else if (segue.identifier == "Show ILP Announcement Detail") {
-            let indexPath: NSIndexPath! = announcementTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = announcementTableView.indexPathForSelectedRow
             let announcement = announcementsFetchedResultsController!.objectAtIndexPath(indexPath) as! CourseAnnouncement
             let detailController = segue.destinationViewController as! CourseAnnouncementDetailViewController
             detailController.courseName = announcement.courseName
@@ -556,7 +579,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
             self.sendEventToTracker1WithCategory(kAnalyticsCategoryUI_Action, withAction:kAnalyticsActionSearch, withLabel:"Show ILP Announcement Detail", withValue:nil, forModuleNamed:"ILP");
         }
         else if (segue.identifier == "Show ILP Event Detail") {
-            let indexPath: NSIndexPath! = eventTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = eventTableView.indexPathForSelectedRow
             let event = eventsFetchedResultsController!.objectAtIndexPath(indexPath) as! CourseEvent
             let detailController = segue.destinationViewController as! CourseEventsDetailViewController
             detailController.eventTitle = event.title
@@ -608,7 +631,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                     assignmentTableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition:UITableViewScrollPosition.Top)
                 }
             }
-            let indexPath: NSIndexPath! = assignmentTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = assignmentTableView.indexPathForSelectedRow
             let assignment = assignmentsFetchedResultController!.objectAtIndexPath(indexPath) as! CourseAssignment
             let tabBarController = segue.destinationViewController as! UITabBarController
             self.initManagedObjectContextInSplitViewControllers(tabBarController, selectedItem:assignment)
@@ -619,7 +642,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         }
         else if (segue.identifier == "Show ILP Event Split View For Event" )
         {
-            let indexPath: NSIndexPath! = eventTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = eventTableView.indexPathForSelectedRow
             let event = eventsFetchedResultsController!.objectAtIndexPath(indexPath) as! CourseEvent
             let tabBarController = segue.destinationViewController as! UITabBarController
             self.initManagedObjectContextInSplitViewControllers(tabBarController, selectedItem:event)
@@ -629,7 +652,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         }
         else if (segue.identifier == "Show ILP Announcement Split View For Announcement")
         {
-            let indexPath: NSIndexPath! = announcementTableView.indexPathForSelectedRow()
+            let indexPath: NSIndexPath! = announcementTableView.indexPathForSelectedRow
             let announcement = announcementsFetchedResultsController!.objectAtIndexPath(indexPath) as! CourseAnnouncement
             let tabBarController = segue.destinationViewController as! UITabBarController
             self.initManagedObjectContextInSplitViewControllers(tabBarController, selectedItem:announcement)
@@ -664,9 +687,9 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
             
             let splitViewController = tabbedViewController as! UISplitViewController
             
-            var navController = splitViewController.viewControllers[0] as! UINavigationController
-            var rootViewController = navController.viewControllers[0] as! UIViewController
-            var detailViewController = splitViewController.viewControllers[1] as! UIViewController
+            let navController = splitViewController.viewControllers[0] as! UINavigationController
+            let rootViewController = navController.viewControllers[0] as UIViewController
+            let detailViewController = splitViewController.viewControllers[1] as UIViewController
             
             if rootViewController is AllAssignmentsViewController ||
                 rootViewController is AllEventsViewController ||
@@ -689,17 +712,8 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
                 let viewController = rootViewController as! AllAnnouncementsViewController
                     viewController.selectedAnnouncement = selectedItem as? CourseAnnouncement
             }
-    
-            switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-            case .OrderedSame, .OrderedDescending:
-                //iOS >= 8.0
-                splitViewController.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
-            case .OrderedAscending:
-                //iOS < 8.0
-                if splitViewController.delegate == nil {
-                    splitViewController.delegate = self
-                }
-            }
+            
+            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible
         }
     }
     
@@ -730,29 +744,29 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     
     func styleCardHeaders() {
         
-        var allAssignmentButtonBounds = showAllAssignmentsView.layer.bounds
-        var allAssignmentButtonRect:CGRect = CGRect(x:allAssignmentButtonBounds.origin.x, y:allAssignmentButtonBounds.origin.y, width:assignmentTableWidthConstraint.constant, height:allAssignmentButtonBounds.height)
+        let allAssignmentButtonBounds = showAllAssignmentsView.layer.bounds
+        let allAssignmentButtonRect:CGRect = CGRect(x:allAssignmentButtonBounds.origin.x, y:allAssignmentButtonBounds.origin.y, width:assignmentTableWidthConstraint.constant, height:allAssignmentButtonBounds.height)
         
-        var allEventsButtonBounds = showAllEventsView.layer.bounds
-        var allEventsButtonRect:CGRect = CGRect(x:allEventsButtonBounds.origin.x, y:allEventsButtonBounds.origin.y, width:eventTableWidthConstraint.constant, height:allEventsButtonBounds.height)
+        let allEventsButtonBounds = showAllEventsView.layer.bounds
+        let allEventsButtonRect:CGRect = CGRect(x:allEventsButtonBounds.origin.x, y:allEventsButtonBounds.origin.y, width:eventTableWidthConstraint.constant, height:allEventsButtonBounds.height)
         
-        var allAnnouncementsButtonBounds = showAllAnnouncementsView.layer.bounds
-        var allAnnouncementsButtonRect:CGRect = CGRect(x:allAnnouncementsButtonBounds.origin.x, y:allAnnouncementsButtonBounds.origin.y, width:announcementTableWidthConstraint.constant, height:allAnnouncementsButtonBounds.height)
+        let allAnnouncementsButtonBounds = showAllAnnouncementsView.layer.bounds
+        let allAnnouncementsButtonRect:CGRect = CGRect(x:allAnnouncementsButtonBounds.origin.x, y:allAnnouncementsButtonBounds.origin.y, width:announcementTableWidthConstraint.constant, height:allAnnouncementsButtonBounds.height)
         
         // Create the path (with only the top-left corner rounded
-        let assignmentPath = UIBezierPath(roundedRect: allAssignmentButtonRect, byRoundingCorners:.TopLeft | .TopRight, cornerRadii: CGSize(width: 3.0, height: 3.0))
+        let assignmentPath = UIBezierPath(roundedRect: allAssignmentButtonRect, byRoundingCorners:[.TopLeft, .TopRight], cornerRadii: CGSize(width: 3.0, height: 3.0))
         let assignmentMask = CAShapeLayer()
         assignmentMask.path = assignmentPath.CGPath
         showAllAssignmentsView.layer.mask = assignmentMask
         
         // Create the path (with only the top-left corner rounded
-        let eventPath = UIBezierPath(roundedRect: allEventsButtonRect, byRoundingCorners:.TopLeft | .TopRight, cornerRadii: CGSize(width: 3.0, height: 3.0))
+        let eventPath = UIBezierPath(roundedRect: allEventsButtonRect, byRoundingCorners:[.TopLeft, .TopRight], cornerRadii: CGSize(width: 3.0, height: 3.0))
         let eventMask = CAShapeLayer()
         eventMask.path = eventPath.CGPath
         showAllEventsView.layer.mask = eventMask
         
         // Create the path (with only the top-left corner rounded
-        let announcementPath = UIBezierPath(roundedRect: allAnnouncementsButtonRect, byRoundingCorners:.TopLeft | .TopRight, cornerRadii: CGSize(width: 3.0, height: 3.0))
+        let announcementPath = UIBezierPath(roundedRect: allAnnouncementsButtonRect, byRoundingCorners:[.TopLeft, .TopRight], cornerRadii: CGSize(width: 3.0, height: 3.0))
         let announcementMask = CAShapeLayer()
         announcementMask.path = announcementPath.CGPath
         showAllAnnouncementsView.layer.mask = announcementMask
@@ -770,50 +784,50 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         
         if ( portraitConstraintArray.count == 0) {
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[assignmentCardView]-25-[eventCardView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["assignmentCardView":assignmentCardView, "eventCardView":eventCardView]))
+            portraitConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[assignmentCardView]-25-[eventCardView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["assignmentCardView":assignmentCardView, "eventCardView":eventCardView]))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[eventCardView]-25-[announcementCardView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["eventCardView":eventCardView, "announcementCardView":announcementCardView]))
+            portraitConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[eventCardView]-25-[announcementCardView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["eventCardView":eventCardView, "announcementCardView":announcementCardView]))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObject(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
+            portraitConstraintArray.append(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
             
-            portraitConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[announcementCardView]-25-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["announcementCardView":announcementCardView]))
+            portraitConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[announcementCardView]-25-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["announcementCardView":announcementCardView]))
         }
     }
     
     func initIPadLandscapeConstraints() {
         
         if landscapeConstraintArray.count == 0 {
-            landscapeConstraintArray.addObject(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
+            landscapeConstraintArray.append(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Leading, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Leading, multiplier:1.0, constant:cardInsetConstant))
             
-            landscapeConstraintArray.addObject(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
+            landscapeConstraintArray.append(NSLayoutConstraint(item:assignmentCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
             
-            landscapeConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[assignmentCardView]->=25-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["assignmentCardView":assignmentCardView]))
+            landscapeConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[assignmentCardView]->=25-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["assignmentCardView":assignmentCardView]))
 
-            landscapeConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("H:[assignmentCardView]-25-[eventCardView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["assignmentCardView":assignmentCardView, "eventCardView":eventCardView]))
+            landscapeConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[assignmentCardView]-25-[eventCardView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["assignmentCardView":assignmentCardView, "eventCardView":eventCardView]))
 
-            landscapeConstraintArray.addObject(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
+            landscapeConstraintArray.append(NSLayoutConstraint(item:eventCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
             
-            landscapeConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[eventCardView]->=25-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["eventCardView":eventCardView]))
+            landscapeConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[eventCardView]->=25-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["eventCardView":eventCardView]))
             
-            landscapeConstraintArray.addObject(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
+            landscapeConstraintArray.append(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Top, multiplier:1.0, constant:cardInsetConstant))
             
-            landscapeConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("V:[announcementCardView]->=25-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["announcementCardView":announcementCardView]))
+            landscapeConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("V:[announcementCardView]->=25-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["announcementCardView":announcementCardView]))
             
-            landscapeConstraintArray.addObject(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
+            landscapeConstraintArray.append(NSLayoutConstraint(item:announcementCardView, attribute:NSLayoutAttribute.Trailing, relatedBy:NSLayoutRelation.Equal, toItem:scrollView, attribute:NSLayoutAttribute.Trailing, multiplier:1.0, constant:cardInsetConstant))
             
-            landscapeConstraintArray.addObjectsFromArray(NSLayoutConstraint.constraintsWithVisualFormat("H:[eventCardView]-25-[announcementCardView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["eventCardView":eventCardView, "announcementCardView":announcementCardView]))
+            landscapeConstraintArray.appendContentsOf(NSLayoutConstraint.constraintsWithVisualFormat("H:[eventCardView]-25-[announcementCardView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["eventCardView":eventCardView, "announcementCardView":announcementCardView]))
         }
     }
     
@@ -829,15 +843,9 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
         }
     }
     
-    class func requestAssignmentDetailById(assignmentUrl: String) {
-        requestedAssignmentId = assignmentUrl
-    }
-    
     func showDetailForRequestedAssignment() {
-        if(requestedAssignmentId != nil) {
-            let indexPath = indexPathForAssignmentWithUrl(requestedAssignmentId)
-            
-            if let indexPath = indexPath {
+        if let requestedAssignmentId = requestedAssignmentId {
+            if let _ = indexPathForAssignmentWithUrl(requestedAssignmentId) {
                 if ( UIDevice.currentDevice().userInterfaceIdiom == .Pad ) {
                     self.performSegueWithIdentifier("Show ILP Assignment Split View For Assignment", sender: self)
                 } else {
@@ -848,7 +856,7 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
     }
     
     func resizeAfterOrientationChange() {
-        var screenWidth = AppearanceChanger.currentScreenBoundsDependOnOrientation().width
+        let screenWidth = AppearanceChanger.currentScreenBoundsDependOnOrientation().width
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             
@@ -857,32 +865,32 @@ class ILPViewController : UIViewController, UIActionSheetDelegate, UIGestureReco
             
             switch UIDevice.currentDevice().orientation{
             case .Portrait:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
             case .PortraitUpsideDown:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
             case .LandscapeLeft:
-                scrollView.removeConstraints(portraitConstraintArray as [AnyObject])
-                scrollView.addConstraints(landscapeConstraintArray as [AnyObject])
+                scrollView.removeConstraints(portraitConstraintArray)
+                scrollView.addConstraints(landscapeConstraintArray)
                 assignmentTableWidthConstraint.constant = (screenWidth - 100)/3
                 announcementTableWidthConstraint.constant = (screenWidth - 100)/3
                 eventTableWidthConstraint.constant = (screenWidth - 100)/3
             case .LandscapeRight:
-                scrollView.removeConstraints(portraitConstraintArray as [AnyObject])
-                scrollView.addConstraints(landscapeConstraintArray as [AnyObject])
+                scrollView.removeConstraints(portraitConstraintArray)
+                scrollView.addConstraints(landscapeConstraintArray)
                 assignmentTableWidthConstraint.constant = (screenWidth - 100)/3
                 announcementTableWidthConstraint.constant = (screenWidth - 100)/3
                 eventTableWidthConstraint.constant = (screenWidth - 100)/3
             default:
-                scrollView.removeConstraints(landscapeConstraintArray as [AnyObject])
-                scrollView.addConstraints(portraitConstraintArray as [AnyObject])
+                scrollView.removeConstraints(landscapeConstraintArray)
+                scrollView.addConstraints(portraitConstraintArray)
                 assignmentTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 announcementTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)
                 eventTableWidthConstraint.constant = screenWidth - (cardInsetConstant * 2.0)

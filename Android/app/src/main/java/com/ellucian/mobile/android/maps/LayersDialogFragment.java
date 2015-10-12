@@ -4,13 +4,13 @@
 
 package com.ellucian.mobile.android.maps;
 
-import com.ellucian.elluciango.R;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.ellucian.elluciango.R;
 
 public class LayersDialogFragment extends DialogFragment implements
 		DialogInterface.OnClickListener {
@@ -27,12 +27,12 @@ public class LayersDialogFragment extends DialogFragment implements
 	}
 
 	public interface LayersDialogFragmentListener {
-		public static final int MAP_TYPE_HYBRID = 3;
-		public static final int MAP_TYPE_NORMAL = 0;
-		public static final int MAP_TYPE_SATELLITE = 1;
-		public static final int MAP_TYPE_TERRAIN = 2;
+		int MAP_TYPE_HYBRID = 3;
+		int MAP_TYPE_NORMAL = 0;
+		int MAP_TYPE_SATELLITE = 1;
+		int MAP_TYPE_TERRAIN = 2;
 		
-		public void setLayer(int layer);
+		void setLayer(int layer);
 	}
 
 	public void setLayersDialogFragmentListener(

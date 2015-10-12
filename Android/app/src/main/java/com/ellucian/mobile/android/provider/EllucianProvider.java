@@ -4,10 +4,6 @@
 
 package com.ellucian.mobile.android.provider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -56,6 +52,10 @@ import com.ellucian.mobile.android.provider.EllucianDatabase.EventsSearchColumns
 import com.ellucian.mobile.android.provider.EllucianDatabase.NewsSearchColumns;
 import com.ellucian.mobile.android.provider.EllucianDatabase.Tables;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 
 public class EllucianProvider extends ContentProvider {
 
@@ -69,7 +69,7 @@ public class EllucianProvider extends ContentProvider {
 	
 	private static final int MODULES = 100;
 	private static final int MODULESPROPERTIES = 110;
-	private static final int MODULESPORPERTIES_ID = 111;
+	private static final int MODULESPROPERTIES_ID = 111;
 	private static final int MODULESROLES = 120;
 	private static final int MODULESROLES_ID = 121;
 	private static final int GRADETERMS = 200;
@@ -135,7 +135,7 @@ public class EllucianProvider extends ContentProvider {
 		final String authority = EllucianContract.CONTENT_AUTHORITY;
 		matcher.addURI(authority, EllucianContract.PATH_MODULES, MODULES);
 		matcher.addURI(authority, EllucianContract.PATH_MODULESPROPERTIES, MODULESPROPERTIES);
-		matcher.addURI(authority, EllucianContract.PATH_MODULESPROPERTIES+"/*", MODULESPORPERTIES_ID);
+		matcher.addURI(authority, EllucianContract.PATH_MODULESPROPERTIES+"/*", MODULESPROPERTIES_ID);
 		matcher.addURI(authority, EllucianContract.PATH_MODULESROLES, MODULESROLES);
 		matcher.addURI(authority, EllucianContract.PATH_MODULESROLES+"/*", MODULESROLES_ID);
 		matcher.addURI(authority, EllucianContract.PATH_GRADETERMS, GRADETERMS);
@@ -260,7 +260,7 @@ public class EllucianProvider extends ContentProvider {
 				return Modules.CONTENT_TYPE;
 			case MODULESPROPERTIES:
 				return ModulesProperties.CONTENT_TYPE;
-			case MODULESPORPERTIES_ID:
+			case MODULESPROPERTIES_ID:
 				return ModulesProperties.CONTENT_ITEM_TYPE;
 			case MODULESROLES:
 				return ModulesRoles.CONTENT_TYPE;
@@ -622,7 +622,7 @@ public class EllucianProvider extends ContentProvider {
 				return builder.table(Tables.MODULES);
 			case MODULESPROPERTIES:
 				return builder.table(Tables.MODULES_PROPERTIES);
-			case MODULESPORPERTIES_ID: {
+			case MODULESPROPERTIES_ID: {
 				final String id = ModulesProperties.getPropertyId(uri);
 				return builder.table(Tables.MODULES_PROPERTIES)
 						.where(ModulesProperties._ID + "=?", id);
@@ -843,7 +843,7 @@ public class EllucianProvider extends ContentProvider {
 			return builder.table(Tables.MODULES);
 		case MODULESPROPERTIES:
 			return builder.table(Tables.MODULES_PROPERTIES);
-		case MODULESPORPERTIES_ID: {
+		case MODULESPROPERTIES_ID: {
 			final String id = ModulesProperties.getPropertyId(uri);
 			return builder.table(Tables.MODULES_PROPERTIES)
 					.where(ModulesProperties._ID + "=?", id);

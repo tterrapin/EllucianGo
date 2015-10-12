@@ -4,10 +4,10 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentTabHost;
+import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
@@ -21,7 +21,7 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.util.Utils;
 
 public class IlpListActivity extends EllucianActivity implements TabHost.OnTabChangeListener {
-    public static final String TAG = IlpListActivity.class.getSimpleName();
+    private static final String TAG = IlpListActivity.class.getSimpleName();
     public static final String SHOW_DETAIL = "ilpShowDetail";
     public static final String SELECTED_INDEX = "ilpSelectedIndex";
 
@@ -31,12 +31,12 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
     public static final int TAB_ANNOUNCEMENTS = 2;
 
     private FragmentTabHost tabHost;
-    public TabInfo[] tabs;
+    private TabInfo[] tabs;
 
     private class TabInfo {
-        public int index;
-        public Class clazz;
-        public String name;
+        public final int index;
+        public final Class clazz;
+        public final String name;
 
         public TabInfo(int index, Class clazz, String name) {
             this.index = index;
@@ -88,7 +88,7 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
 
         tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
 
-        tabHost.setup(this, getFragmentManager(), android.R.id.tabcontent);
+        tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
 
         View tabsLayout = findViewById(R.id.tabs_layout);
         tabsLayout.setBackgroundColor(Utils.getPrimaryColor(this));
@@ -127,11 +127,11 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
 
 	}
 
-    public void clearCurrentDetailFragment() {
+    private void clearCurrentDetailFragment() {
         EllucianDefaultDetailFragment details = (EllucianDefaultDetailFragment)
-                getFragmentManager().findFragmentById(R.id.frame_extra);
+                getSupportFragmentManager().findFragmentById(R.id.frame_extra);
         if (details != null) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.remove(details);
             ft.commit();
         }

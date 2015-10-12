@@ -3,7 +3,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/grade_row_layout"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/grade_row_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
@@ -16,7 +17,8 @@
         android:textDirection="firstStrong"
         android:orientation="vertical" 
         android:paddingLeft="6sp"
-        android:paddingStart="6sp" >
+        android:paddingStart="6sp"
+		tools:ignore="RtlSymmetry">
         
 	    <TextView
 	        android:id="@+id/grade_row_label"
@@ -25,7 +27,8 @@
 	        android:paddingLeft="6sp"
 	        android:paddingStart="6sp"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textIsSelectable="true" >
+	        android:textIsSelectable="true"
+			tools:ignore="NewApi,RtlSymmetry">
 	    </TextView>
 	
 	    <LinearLayout
@@ -33,7 +36,8 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" 
 	        android:paddingLeft="6sp" 
-	        android:paddingStart="6sp" >
+	        android:paddingStart="6sp"
+			tools:ignore="RtlSymmetry">
 	
 	        <TextView
 	            android:id="@+id/grade_row_date_label"
@@ -42,7 +46,8 @@
 	            android:gravity="center_vertical"
 	            android:paddingRight="2sp"
 	            android:paddingEnd="2sp"
-	            android:text="@string/grades_last_updated" >
+	            android:text="@string/grades_last_updated"
+				tools:ignore="RtlSymmetry">
 	        </TextView>
 	
 	        <TextView

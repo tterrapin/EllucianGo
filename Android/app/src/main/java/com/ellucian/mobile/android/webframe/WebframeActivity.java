@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,8 +26,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.ShareActionProvider;
-import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
@@ -49,7 +50,7 @@ public class WebframeActivity extends EllucianActivity {
 		setContentView(R.layout.activity_webframe);
 
 		if (!TextUtils.isEmpty(moduleName)) {
-			this.setTitle(moduleName);
+			setTitle(moduleName);
 		}
 
 		webView = new WebView(this);
@@ -137,17 +138,17 @@ public class WebframeActivity extends EllucianActivity {
 	}
 	
 	
-	protected void handleError(SslErrorHandler handler) {
+	private void handleError(SslErrorHandler handler) {
 		this.handler = handler;
 		securityDialogFragment = new SecurityDialogFragment();
-		securityDialogFragment.show(getFragmentManager(), SecurityDialogFragment.SECURITY_DIALOG);
+		securityDialogFragment.show(getSupportFragmentManager(), SecurityDialogFragment.SECURITY_DIALOG);
 	}
 	
-	protected void onContinueClicked() {
+	void onContinueClicked() {
 		handler.proceed();
 	}
 	
-	protected void onGoBackClicked() {
+	void onGoBackClicked() {
 		dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		dispatchKeyEvent(new KeyEvent (KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
 	}
@@ -163,7 +164,7 @@ public class WebframeActivity extends EllucianActivity {
         
         // Getting the actionprovider associated with the menu item whose id is share
         ShareActionProvider shareActionProvider = 
-        		(ShareActionProvider) sharedMenuItem.getActionProvider();
+        		(ShareActionProvider) MenuItemCompat.getActionProvider(sharedMenuItem);
         shareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
 			
 			@Override
@@ -188,7 +189,7 @@ public class WebframeActivity extends EllucianActivity {
         }
 
         MenuItem viewMenuItem = menu.findItem(R.id.view_target);
-        viewMenuItem.setIcon(R.drawable.ic_location_web_site_white);
+        viewMenuItem.setIcon(R.drawable.ic_menu_browser);
         Intent viewIntent = new Intent(Intent.ACTION_VIEW);
         viewIntent.setData(Uri.parse(url));
         if (Utils.isIntentAvailable(this, viewIntent)) {

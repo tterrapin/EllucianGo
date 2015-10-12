@@ -6,12 +6,13 @@ package com.ellucian.mobile.android.news;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,9 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ShareActionProvider;
-import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -29,8 +28,8 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.util.Extra;
-import com.ellucian.mobile.android.util.URLImageParser;
 import com.ellucian.mobile.android.util.Utils;
+import com.ellucian.mobile.android.view.SquareImageView;
 
 public class NewsDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = NewsDetailFragment.class.getSimpleName();
@@ -71,43 +70,41 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
 		
 		rootView = inflater.inflate(R.layout.fragment_news_detail, container, false);
 		
-		View outerHeader = rootView.findViewById(R.id.news_detail_header_layout);
-        outerHeader.setBackgroundColor(Utils.getAccentColor(activity));
-        
         Bundle args = getArguments();
-  
+
         if (args.containsKey(Extra.LOGO)) {
         	String logo = args.getString(Extra.LOGO);
-        	Log.d(TAG, "Downloading logo: " + logo);
-			AQuery aq = new AQuery(activity);
-			aq.id(R.id.news_detail_logo).image(logo);
-        } else {
-        	ImageView iView = (ImageView) rootView.findViewById(R.id.news_detail_logo);
-        	iView.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(logo)) {
+                Log.d(TAG, "Downloading logo: " + logo);
+                SquareImageView iView = (SquareImageView) rootView.findViewById(R.id.news_detail_logo);
+//                new DownloadImageTask(iView).execute(logo);
+                AQuery aq = new AQuery(activity);
+                aq.id(iView).image(logo);
+                iView.setVisibility(View.VISIBLE);
+            }
         }
         
         TextView titleView = (TextView) rootView.findViewById(R.id.news_detail_title);
         titleView.setText(args.getString(Extra.TITLE));
-        titleView.setTextColor(Utils.getSubheaderTextColor(activity));
-        
+
         if (args.containsKey(Extra.DATE)) {
         	TextView dateView = (TextView) rootView.findViewById(R.id.news_detail_date);
         	dateView.setText(args.getString(Extra.DATE));
         }
-        if (args.containsKey(Extra.CONTENT) && args.getString(Extra.CONTENT) != null) { 
-	        TextView contentView = (TextView) rootView.findViewById(R.id.news_detail_content);
-	        URLImageParser parser = new URLImageParser(contentView, activity);
-	        Spanned formatedHtml = Html.fromHtml(args.getString(Extra.CONTENT), parser, null);
-	        contentView.setText(formatedHtml, TextView.BufferType.SPANNABLE );
-	        contentView.setMovementMethod(LinkMovementMethod.getInstance());
+        if (args.containsKey(Extra.CONTENT) && args.getString(Extra.CONTENT) != null) {
+            String content = args.getString(Extra.CONTENT).replace("\n", "<br/>");
+            // Replace TextView with WebView.
+//	        TextView contentView = (TextView) rootView.findViewById(R.id.news_detail_content);
+//	        URLImageParser parser = new URLImageParser(contentView, activity);
+//	        Spanned formattedHtml = Html.fromHtml(content, parser, null);
+//	        contentView.setText(formattedHtml, TextView.BufferType.SPANNABLE);
+//	        contentView.setMovementMethod(LinkMovementMethod.getInstance());
+
+            WebView webContentView = (WebView) rootView.findViewById((R.id.news_detail_web_content));
+            // Use CSS to set webView's body to have no padding/margins and images not to exceed view width.
+            webContentView.loadDataWithBaseURL(null, "<style>html,body{margin:0px;padding:0px;} img{display: inline;height: auto;max-width: 100%;}</style>" + content, "text/html", "UTF-8", null);
+            webContentView.setBackgroundColor(Color.TRANSPARENT);
         }
-        if (args.containsKey(Extra.LINK)) {
-        	TextView linkView = (TextView) rootView.findViewById(R.id.news_detail_link);
-        	linkView.setAutoLinkMask(Utils.getAvailableLinkMasks(
-        			activity, new Integer[] { Linkify.EMAIL_ADDRESSES, Linkify.WEB_URLS }));
-        	linkView.setText(args.getString(Extra.LINK));
-        }
-        
         return rootView;
 	}
 	
@@ -126,7 +123,7 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
         
         /** Getting the actionprovider associated with the menu item whose id is share */
         ShareActionProvider shareActionProvider = 
-        		(ShareActionProvider) sharedMenuItem.getActionProvider();
+        		(ShareActionProvider) MenuItemCompat.getActionProvider(sharedMenuItem);
         
         shareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
 			
@@ -143,6 +140,11 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
         String text = title;
         if(!TextUtils.isEmpty(link)) {
         	text += " - " + link;
+        } else {
+            // hide "open in browser" menu options if there is no link
+            MenuItem openInBrowser = menu.findItem(R.id.browser);
+            openInBrowser.setVisible(false);
+            openInBrowser.setEnabled(false);
         }
         Intent shareIntent = getDefaultShareIntent(title, text);
  
@@ -152,11 +154,11 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
         } else {
         	sharedMenuItem.setVisible(false).setEnabled(false);
         }
- 
+
     }
     
     private Intent getDefaultShareIntent(String subject, String text){
-    	 
+
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -166,7 +168,15 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.share:
+                return super.onOptionsItemSelected(item);
+            case R.id.browser:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getArguments().getString(Extra.LINK)));
+                startActivity(browserIntent);
+                return true;
+        }
+        return false;
     }
 	
 	@Override

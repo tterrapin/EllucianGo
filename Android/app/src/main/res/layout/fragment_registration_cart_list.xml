@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true">
     
 	    <LinearLayout
-	        android:id="@+id/eligibility_error_messsage_view"
+	        android:id="@+id/eligibility_error_message_view"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:background="@drawable/bottom_border_1dp"
@@ -68,7 +68,8 @@
 		    	android:paddingTop="4dp"
 		    	android:singleLine="false"
 		    	android:maxLines="4"
-		    	android:scrollbars="vertical" />
+		    	android:scrollbars="vertical"
+				tools:ignore="NewApi,RtlSymmetry" />
 		    
 		</LinearLayout>
 	

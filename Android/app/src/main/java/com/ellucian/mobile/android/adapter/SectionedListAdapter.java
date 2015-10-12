@@ -21,11 +21,11 @@ public class SectionedListAdapter extends BaseAdapter {
 	public final ArrayList<String> identifiers = new ArrayList<String>();
 	public final static int TYPE_SECTION_HEADER = 0;
 
-	public SectionedListAdapter(Context context) {
+	SectionedListAdapter(Context context) {
 		headers = new ArrayAdapter<String>(context, R.layout.list_header);
 	}
 	
-	public SectionedListAdapter(Context context, int headerResId) {
+	SectionedListAdapter(Context context, int headerResId) {
 		headers = new ArrayAdapter<String>(context, headerResId);
 	}
 

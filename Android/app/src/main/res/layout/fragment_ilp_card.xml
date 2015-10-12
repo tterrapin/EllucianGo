@@ -29,12 +29,11 @@
 		        android:orientation="vertical" >
 
                 <android.support.v7.widget.Toolbar
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/assignments_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:theme="@style/Theme.AppCompat.NoActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:theme="@style/Theme.AppCompat.NoActionBar"
+                    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:background="@color/card_toolbar_bg">
 
                     <TextView
@@ -86,8 +85,8 @@
                     android:id="@+id/events_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:theme="@style/Theme.AppCompat.NoActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:theme="@style/Theme.AppCompat.NoActionBar"
+                    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:background="@color/card_toolbar_bg">
 
                     <TextView
@@ -139,8 +138,8 @@
                     android:id="@+id/announcements_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:theme="@style/Theme.AppCompat.NoActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    android:theme="@style/Theme.AppCompat.NoActionBar"
+                    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:background="@color/card_toolbar_bg">
 
                     <TextView

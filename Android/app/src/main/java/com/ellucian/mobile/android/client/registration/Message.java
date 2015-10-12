@@ -7,8 +7,8 @@ import android.os.Parcelable;
 
 public class Message implements Parcelable{
 	public String message;
-	public String courseName;
-	public String courseSectionNumber;
+	private String courseName;
+	private String courseSectionNumber;
 	
 	public Message() { 
 	}
@@ -26,7 +26,6 @@ public class Message implements Parcelable{
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

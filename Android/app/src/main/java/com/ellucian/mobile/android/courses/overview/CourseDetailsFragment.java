@@ -5,9 +5,9 @@
 package com.ellucian.mobile.android.courses.overview;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -57,7 +57,7 @@ public class CourseDetailsFragment extends EllucianFragment implements
 	private final int INSTRUCTORS_LOADER = 2;
 	private final int COURSE_LOADER = 3;
 	private final int MEETINGS_LOADER = 4;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -354,11 +354,6 @@ public class CourseDetailsFragment extends EllucianFragment implements
         
         titleTextView.setText( cursor.getString(cursor.getColumnIndex(CourseCourses.COURSE_TITLE)));
         descriptionTextView.setText( cursor.getString(cursor.getColumnIndex(CourseCourses.COURSE_DESCRIPTION)));
-        
-        boolean isILPConfigured = getActivity().getIntent().getExtras().containsKey(Extra.COURSES_ILP_URL);
-        if(isILPConfigured) { 
-        	((CourseOverviewActivity)activity).addMoreTab();
-        }
     }
     
     private void onMeetingsQueryComplete(Cursor cursor) {

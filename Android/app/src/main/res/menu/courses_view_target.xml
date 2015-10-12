@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item 
-	    android:showAsAction="ifRoom|withText"
-	    android:id="@+id/view_target" 
-	 	android:title="@string/courses_menu_view_target" />   
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/view_target"
+        android:title="@string/courses_menu_view_target"
+        app:showAsAction="ifRoom|withText" />
 
 </menu>

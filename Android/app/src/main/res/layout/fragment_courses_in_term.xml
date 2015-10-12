@@ -4,6 +4,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -21,6 +22,7 @@
         android:layout_height="fill_parent"
         android:paddingLeft="6dp"
         android:paddingStart="6dp"
-        android:text="@string/courses_no_courses_message" />
+        android:text="@string/courses_no_courses_message"
+        tools:ignore="NewApi,RtlSymmetry" />
 
 </LinearLayout>

@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.client.services;
 
-import java.util.List;
-
 import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +16,8 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.ellucian.mobile.android.util.Extra;
+
+import java.util.List;
 
 public class ImageLoaderService extends IntentService {
 	private static final String TAG = ImageLoaderService.class.getSimpleName();
@@ -34,8 +34,8 @@ public class ImageLoaderService extends IntentService {
 		new ImageLoaderAsyncTask(imageUrlList, broadcastWhenDone).execute();
 	}
 	
-	public void sendBroadcast() {
-		Log.d(TAG, "Images dowload sending broadcast");
+	private void sendBroadcast() {
+		Log.d(TAG, "Images download sending broadcast");
 		Intent broadcastIntent = new Intent();
 		broadcastIntent.setAction(ACTION_FINISHED);
 		LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(ImageLoaderService.this);
@@ -44,8 +44,8 @@ public class ImageLoaderService extends IntentService {
 	
 	public class ImageLoaderAsyncTask extends AsyncTask<Void, Void, Void> {
 
-		private boolean broadcastWhenDone;
-		private List<String> imageUrlList;
+		private final boolean broadcastWhenDone;
+		private final List<String> imageUrlList;
 		private int imagesToDownload = 0;
 		private int imageCounter = 0;
 		
@@ -62,7 +62,7 @@ public class ImageLoaderService extends IntentService {
 			for (String imageUrl : imageUrlList) {
 				Bitmap bit = aq.getCachedImage(imageUrl);
 				if (bit == null) {
-					// If cached imaged does not exist add to number to be dowloaded and
+					// If cached imaged does not exist add to number to be downloaded and
 					// start asynchronous download of that image
 					Log.d(TAG, "Image could not be found in cache, starting download of: \n" + imageUrl);
 					imagesToDownload++;

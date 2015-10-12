@@ -48,9 +48,10 @@
     self.navigationItem.title = [self.module name];
     
     UIBarButtonItem *flexibleItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    self.dropButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Drop", "Registration Drop button") style:UIBarButtonItemStyleBordered target:self action:@selector(dropRegistration:)];
+    self.dropButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Drop", "Registration Drop button") style:UIBarButtonItemStylePlain target:self action:@selector(dropRegistration:)];
     UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
     [self.navigationController.toolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    self.navigationController.toolbar.tintColor = [UIColor whiteColor];
     
     self.toolbarItems = [NSArray arrayWithObjects:flexibleItem, self.dropButton, flexibleItem, nil];
     self.navigationController.navigationBar.translucent = NO;
@@ -366,7 +367,7 @@
 -(void) dropSelectedCourses
 {
     [self.navigationController setToolbarHidden:YES animated:YES];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: [UIApplication sharedApplication].keyWindow animated:YES];
     hud.labelText = NSLocalizedString(@"Dropping", @"loading message while waiting for dropping");
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -440,11 +441,11 @@
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
             [self.registrationTabController fetchRegistrationPlans:self];
             [self performSegueWithIdentifier:@"Show Drop Results" sender:jsonResponse];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
         } else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
         }
     });
 }

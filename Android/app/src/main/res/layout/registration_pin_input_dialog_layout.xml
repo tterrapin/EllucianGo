@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/list_title_text_size"
         android:paddingLeft="4dp"
-        android:paddingStart="4dp" />
+        android:paddingStart="4dp"
+        tools:ignore="NewApi,RtlSymmetry" />
     
     <LinearLayout
         android:id="@+id/pin_rows_layout"

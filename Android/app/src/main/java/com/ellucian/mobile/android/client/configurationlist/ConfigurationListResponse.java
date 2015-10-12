@@ -12,7 +12,7 @@ import java.util.List;
 import com.ellucian.mobile.android.client.ResponseObject;
 
 public class ConfigurationListResponse implements ResponseObject<ConfigurationListResponse>{
-	public Institution[] institutions;
+	private Institution[] institutions;
 	public Version versions;
 	public Analytics analytics;
 	

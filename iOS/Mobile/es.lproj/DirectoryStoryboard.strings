@@ -1,0 +1,48 @@
+/* Class = "UILabel"; text = "Label"; ObjectID = "22m-2H-nRN"; */
+"22m-2H-nRN.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Mobile"; ObjectID = "AhB-UD-EFQ"; */
+"AhB-UD-EFQ.text" = "Tel. móvil";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "DrJ-Gz-5n3"; */
+"DrJ-Gz-5n3.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "EJW-yt-Me7"; */
+"EJW-yt-Me7.text" = "Correo-e";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Fjx-Sb-trp"; */
+"Fjx-Sb-trp.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Phone"; ObjectID = "HPb-ye-lMK"; */
+"HPb-ye-lMK.text" = "Teléfono";
+
+/* Class = "UILabel"; text = "Department"; ObjectID = "Jd4-mQ-4DT"; */
+"Jd4-mQ-4DT.text" = "Departamento";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Jkp-ub-6IH"; */
+"Jkp-ub-6IH.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Address"; ObjectID = "NOY-pJ-hQP"; */
+"NOY-pJ-hQP.text" = "Dirección";
+
+/* Class = "UILabel"; text = "Office"; ObjectID = "Rtd-54-HAz"; */
+"Rtd-54-HAz.text" = "Oficina";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
+"aNm-pv-19M.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fQo-KN-f2k"; */
+"fQo-KN-f2k.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gKk-NO-EDm"; */
+"gKk-NO-EDm.text" = "Etiqueta";
+
+/* Class = "UISearchBar"; placeholder = "Search directory"; ObjectID = "iS4-ME-cUg"; */
+"iS4-ME-cUg.placeholder" = "Buscar en directorio";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "t3y-Ba-Rux"; */
+"t3y-Ba-Rux.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "z0S-RM-XG6"; */
+"z0S-RM-XG6.text" = "Etiqueta";
+

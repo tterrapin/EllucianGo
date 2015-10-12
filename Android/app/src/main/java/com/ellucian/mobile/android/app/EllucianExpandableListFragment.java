@@ -8,7 +8,7 @@ import com.ellucian.mobile.android.util.ConfigurationProperties;
 
 import android.widget.ExpandableListView;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,7 +25,8 @@ import android.widget.TextView;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 
-public abstract class EllucianExpandableListFragment extends Fragment 
+@SuppressWarnings("JavaDoc")
+public abstract class EllucianExpandableListFragment extends Fragment
 	implements	OnCreateContextMenuListener,
 				ExpandableListView.OnChildClickListener,
 				ExpandableListView.OnGroupCollapseListener,
@@ -45,7 +46,7 @@ public abstract class EllucianExpandableListFragment extends Fragment
     final private AdapterView.OnItemClickListener mOnClickListener
             = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            onListItemClick((ExpandableListView)parent, v, position, id);
+            onListItemClick((ExpandableListView) parent, v, position, id);
         }
     };
     
@@ -57,16 +58,16 @@ public abstract class EllucianExpandableListFragment extends Fragment
     	}
     };
 
-    ExpandableListAdapter mAdapter;
-    ExpandableListView mList;
-    View mEmptyView;
-    TextView mStandardEmptyView;
-    View mProgressContainer;
-    View mListContainer;
-    CharSequence mEmptyText;
+    private ExpandableListAdapter mAdapter;
+    private ExpandableListView mList;
+    private View mEmptyView;
+    private TextView mStandardEmptyView;
+    private View mProgressContainer;
+    private View mListContainer;
+    private CharSequence mEmptyText;
     boolean mSetEmptyText;
-    boolean mListShown;
-    boolean mFinishedStart = false;
+    private boolean mListShown;
+    private boolean mFinishedStart = false;
     
     public EllucianExpandableListFragment() {
     	Log.d(TAG, "constructor (null)");
@@ -83,7 +84,7 @@ public abstract class EllucianExpandableListFragment extends Fragment
      * @param position The position of the view in the list
      * @param id The row id of the item that was clicked
      */
-    public void onListItemClick(ExpandableListView l, View v, int position, long id) {
+    private void onListItemClick(ExpandableListView l, View v, int position, long id) {
     	Log.d(TAG, "onListItemClick default no-op");
     }
 
@@ -381,7 +382,7 @@ public abstract class EllucianExpandableListFragment extends Fragment
         mHandler.post(mRequestFocus);
     }
 
-	public EllucianActivity getEllucianActivity() {
+	protected EllucianActivity getEllucianActivity() {
     	Log.d(TAG, "getEllucianActivity");
 		return (EllucianActivity)getActivity();
 	}
@@ -434,7 +435,7 @@ public abstract class EllucianExpandableListFragment extends Fragment
      * @param appScreen
      * @param moduleName
      */
-    public void sendView(String appScreen, String moduleName) {
+    protected void sendView(String appScreen, String moduleName) {
     	Log.d(TAG, "sendView");
     	getEllucianActivity().sendView(appScreen, moduleName);
     }

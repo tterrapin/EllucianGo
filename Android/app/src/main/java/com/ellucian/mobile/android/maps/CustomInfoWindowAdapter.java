@@ -12,8 +12,8 @@ import com.ellucian.elluciango.R;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
-public class CustomInfoWindowAdapter implements InfoWindowAdapter {
-	LayoutInflater inflater=null;
+class CustomInfoWindowAdapter implements InfoWindowAdapter {
+	private LayoutInflater inflater=null;
 
 	CustomInfoWindowAdapter(LayoutInflater inflater) {
 		this.inflater = inflater;

@@ -26,9 +26,9 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationSearchResultsListFragment extends EllucianDefaultListFragment {
 	
-	protected RegistrationActivity activity;
-	protected Button addToCartButton;
-	protected boolean newSearch;
+	private RegistrationActivity activity;
+	private Button addToCartButton;
+	private boolean newSearch;
 	
 	public RegistrationSearchResultsListFragment () {	
 	}

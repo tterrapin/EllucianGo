@@ -19,10 +19,10 @@ import java.util.Date;
 import java.util.List;
 
 public class AssignmentListsHolder {
-    private List<AssignmentItemHolder> assignmentsToday;
-    private List<AssignmentItemHolder> assignmentsNoDate;
-    private List<AssignmentItemHolder> assignmentsOverdue;
-    private List<AssignmentItemHolder> widgetAssignments;
+    private final List<AssignmentItemHolder> assignmentsToday;
+    private final List<AssignmentItemHolder> assignmentsNoDate;
+    private final List<AssignmentItemHolder> assignmentsOverdue;
+    private final List<AssignmentItemHolder> widgetAssignments;
 
     public AssignmentListsHolder(Context context, Cursor cursor) {
         assignmentsToday = new ArrayList<AssignmentItemHolder>();
@@ -95,6 +95,7 @@ public class AssignmentListsHolder {
         return assignmentsToday;
     }
 
+    @SuppressWarnings("unused")
     public List<AssignmentItemHolder> getAssignmentsNoDate(){
         return assignmentsNoDate;
     }

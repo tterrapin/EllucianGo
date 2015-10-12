@@ -4,12 +4,6 @@
 
 package com.ellucian.mobile.android.client.news;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 
@@ -17,8 +11,14 @@ import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.News;
 import com.ellucian.mobile.android.provider.EllucianContract.NewsCategories;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 public class NewsBuilder extends ContentProviderOperationBuilder<NewsResponse> {
-	private String module;
+	private final String module;
 	
 	public NewsBuilder(Context context, String module) {
 		super(context);
@@ -27,7 +27,7 @@ public class NewsBuilder extends ContentProviderOperationBuilder<NewsResponse> {
 	
 	@Override
 	public ArrayList<ContentProviderOperation> buildOperations(NewsResponse model) {
-		final ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+		final ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 		
 		// TODO: Only delete the data specific to a module
 		batch.add(ContentProviderOperation.newDelete(News.CONTENT_URI)

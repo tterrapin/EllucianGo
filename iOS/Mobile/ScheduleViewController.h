@@ -15,7 +15,6 @@
 #import "ScheduleCell.h"
 #import "CourseDetailViewController.h"
 #import "CoursesPageSelectionViewController.h"
-@class SegmentsController;
 
 @interface ScheduleViewController : UIViewController <UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, ChangePageDelegate, CourseTermDelegate> {
     BOOL pageControlBeingUsed;

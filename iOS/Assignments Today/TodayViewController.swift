@@ -9,7 +9,7 @@
 import UIKit
 import NotificationCenter
 
-class TodayViewController: UITableViewController, NCWidgetProviding, UITableViewDataSource, UITableViewDelegate {
+class TodayViewController: UITableViewController, NCWidgetProviding {
     
     var items : [NSDictionary]?
     var noILP : Bool = false
@@ -26,16 +26,16 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
         let defaults = AppGroupUtilities.userDefaults()
         items = defaults?.objectForKey("today-widget-assignments") as! [NSDictionary]?
         self.reloadTable()
-        
-        let url = defaults?.objectForKey("ilp-url") as! NSString?
+
         self.disconnected = UserInfo.userauth() == nil
         
         addButtonToDisconnectedFooter()
-        fetch()
 
     }
     
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
+    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
+        fetch()
+        
         completionHandler(NCUpdateResult.NewData)
     }
     
@@ -47,8 +47,8 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var itemNumber = indexPath.row
-        let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Assignment Today Cell", forIndexPath: indexPath) as! UITableViewCell
+        let itemNumber = indexPath.row
+        let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Assignment Today Cell", forIndexPath: indexPath) as UITableViewCell
         
         if let items = self.items {
             let item = items[itemNumber]
@@ -61,7 +61,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var itemNumber = indexPath.row
+        let itemNumber = indexPath.row
         if let items = self.items {
             let item = items[itemNumber]
             let itemUrl = item["url"] as! String
@@ -71,25 +71,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
             self.extensionContext!.openURL(url!, completionHandler: nil)
         }
     }
-    
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
-    {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        
-        if let safeCoordinator = coordinator as UIViewControllerTransitionCoordinator?
-        {
-            println("coordinator != nil")
-            safeCoordinator.animateAlongsideTransition({ context in
-                self.tableView.frame = CGRectMake(0, 0, size.width, size.height)
-                }, completion: nil)
 
-        }
-        else
-        {
-            println("coordinator == nil")
-        }
-    }
-    
     func reload() {
         self.tableView.reloadData()
         self.preferredContentSize = self.tableView.contentSize
@@ -97,15 +79,15 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
     }
     
     func filterItems(items: [NSDictionary]) -> [NSDictionary]? {
-        println("Start filtering")
+        print("Start filtering")
         let sourceToDateFormatter = NSDateFormatter()
         sourceToDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         sourceToDateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         
-        var comparisonFormatter = NSDateFormatter()
+        let comparisonFormatter = NSDateFormatter()
         comparisonFormatter.dateFormat = "yyyy-MM-dd"
         comparisonFormatter.timeZone = NSTimeZone.localTimeZone()
-        var dateNow = NSDate()
+        let dateNow = NSDate()
         
         let dateNowString = comparisonFormatter.stringFromDate(dateNow)
         
@@ -118,7 +100,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
                 return false
             }
         }
-        println("End filtering")
+        print("End filtering")
         return filteredArray
     }
     
@@ -178,7 +160,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
         CGContextAddPath(ctx, path.CGPath);
         CGContextFillPath(ctx);
         
-        CGContextSetBlendMode(ctx, kCGBlendModeDestinationOut);
+        CGContextSetBlendMode(ctx, CGBlendMode.DestinationOut);
         let center = CGPointMake((size.width - textSize.width) / 2.0, (size.height - textSize.height) / 2.0);
         string.drawAtPoint(center, withAttributes: textAttributes)
         
@@ -209,7 +191,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
     }
     
     private func addButtonToDisconnectedFooter() {
-        let button = UIButton.buttonWithType(.System) as! UIButton
+        let button = UIButton(type: .System) as UIButton
         button.frame = CGRectMake(0, 0, disconnectedButtonView.frame.width, disconnectedButtonView.frame.height)
         button.contentHorizontalAlignment = .Center
         button.backgroundColor = UIColor.clearColor()
@@ -221,7 +203,7 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
         button.setImage(imageCutout, forState: UIControlState.Highlighted)
         button.addTarget(self, action: "signIn:", forControlEvents: .TouchUpInside)
         
-        var visualEffectView = UIVisualEffectView(effect: UIVibrancyEffect.notificationCenterVibrancyEffect())
+        let visualEffectView = UIVisualEffectView(effect: UIVibrancyEffect.notificationCenterVibrancyEffect())
         visualEffectView.frame = CGRectMake(0, 0, disconnectedButtonView.frame.size.width, disconnectedButtonView.frame.height)
         visualEffectView.contentView.addSubview(button)
         
@@ -231,41 +213,43 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
     func fetch() {
         let defaults = AppGroupUtilities.userDefaults()
         let url = defaults?.objectForKey("ilp-url") as! NSString?
-        println("Assignments Today widgetPerformUpdateWithCompletionHandler")
+        print("Assignments Today widgetPerformUpdateWithCompletionHandler")
         
         items = defaults?.objectForKey("today-widget-assignments") as! [NSDictionary]?
         
-        var storage : NSHTTPCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        for cookie in storage.cookies as! [NSHTTPCookie]{
-            storage.deleteCookie(cookie)
+        let storage : NSHTTPCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        if let cookies = storage.cookies {
+            for cookie in cookies {
+                storage.deleteCookie(cookie)
+            }
         }
 
-        var cookiesArray : NSArray? = defaults?.objectForKey("cookieArray") as! NSArray?
+        let cookiesArray : NSArray? = defaults?.objectForKey("cookieArray") as! NSArray?
         if let cookiesArray = cookiesArray {
             for cookieItem in cookiesArray  {
-                let cookieDictionary = cookieItem as! [NSObject : AnyObject]
+                let cookieDictionary = cookieItem as! [String : AnyObject]
                 let cookie = NSHTTPCookie(properties: cookieDictionary)
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie!)
             }
         }
 
         if let ilpUrl = url {
-            println("Assignments Today url: \(ilpUrl)")
+            print("Assignments Today url: \(ilpUrl)")
             if let username = UserInfo.userauth() {
-                println("Assignments Today has username")
+                print("Assignments Today has username")
                 let config = NSURLSessionConfiguration.defaultSessionConfiguration()
                 let password = UserInfo.password()
                 if let password = password {
                     let userPasswordString = "\(username):\(password)"
                     let userPasswordData = userPasswordString.dataUsingEncoding(NSUTF8StringEncoding)
-                    let base64EncodedCredential = userPasswordData!.base64EncodedStringWithOptions(nil)
+                    let base64EncodedCredential = userPasswordData!.base64EncodedStringWithOptions([])
                     let authString = "Basic \(base64EncodedCredential)"
                     config.HTTPAdditionalHeaders = ["Authorization" : authString]
                 }
                 let session = NSURLSession(configuration: config)
                 
                 if let studentId = UserInfo.userid() {
-                    println("Assignments Today has studentId")
+                    print("Assignments Today has studentId")
                     let fullUrl = NSURL(string: "\(ilpUrl)/\(studentId)/assignments")!
                     
                     
@@ -273,20 +257,20 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
                         (let data, let response, let error) in
                         
                         if let httpRes = response as? NSHTTPURLResponse {
-                            println("Assignments Today response code: \(httpRes.statusCode)")
+                            print("Assignments Today response code: \(httpRes.statusCode)")
                             if httpRes.statusCode == 200 {
-                                let json = JSON(data: data)
+                                let json = JSON(data: data!)
                                 
                                 
                                 if(json == nil) {
-                                    println("Assignments Today disconnected")
+                                    print("Assignments Today disconnected")
                                     self.disconnected = true
                                     self.reloadTable()
                                 } else {
                                     var items = [NSDictionary]()
                                     let assignmentList: Array<JSON> = json["assignments"].arrayValue
                                     
-                                    for assignmentJson in json["assignments"].arrayValue {
+                                    for assignmentJson in assignmentList {
                                         items.append(["sectionId" : assignmentJson["sectionId"].stringValue,
                                             "courseName": assignmentJson["courseName"].stringValue, "courseSectionNumber": assignmentJson["courseSectionNumber"].stringValue, "name": assignmentJson["name"].stringValue, "assignmentDescription": assignmentJson["description"].stringValue, "dueDate": assignmentJson["dueDate"].stringValue, "url": assignmentJson["url"].stringValue])
                                     }
@@ -295,35 +279,35 @@ class TodayViewController: UITableViewController, NCWidgetProviding, UITableView
                                     
                                     self.reloadTable()
                                     defaults?.setObject(self.items, forKey: "today-widget-assignments")
-                                    println("Assignments Today count: \(self.items!.count)")
+                                    print("Assignments Today count: \(self.items!.count)")
                                 }
                             } else {
                                 self.disconnected = true
                                 self.reloadTable()
                             }
                         } else {
-                            println("error \(error)")
+                            print("error \(error)")
                         }
                     }
                     task.resume()
                 }
             } else {
-                println("Assignments Today disconnected")
+                print("Assignments Today disconnected")
                 self.disconnected = true
                 reloadTable()
             }
         } else {
-            println("Assignments Today no ILP")
+            print("Assignments Today no ILP")
             self.noILP = true
             reloadTable()
         }
     }
     
     func reloadTable() {
-        println("Start reload")
+        print("Start reload")
         dispatch_async(dispatch_get_main_queue()) {
             self.reload()
-            println("End reload")
+            print("End reload")
         }
     }
 }

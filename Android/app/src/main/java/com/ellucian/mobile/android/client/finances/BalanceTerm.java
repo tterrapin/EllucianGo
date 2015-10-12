@@ -8,7 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BalanceTerm implements Parcelable {
-    public String description;
+    private String description;
     public String termId;
     public Double balance;
 
@@ -18,7 +18,7 @@ public class BalanceTerm implements Parcelable {
         this.balance = balance;
     }
 
-    public BalanceTerm(Parcel in) {
+    private BalanceTerm(Parcel in) {
         readFromParcel(in);
     }
 

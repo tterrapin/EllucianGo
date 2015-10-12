@@ -26,9 +26,9 @@ public class DirectoryCategoriesFragment extends EllucianListFragment {
 	public static final String DIRECTORY_TYPE_ALL = "All";
 	public static final String DIRECTORY_TYPE_STUDENT = "Student";
 	public static final String DIRECTORY_TYPE_FACULTY = "Faculty";
-	protected static final int DIRECTORY_ALL_POSITION = 0;
-	protected static final int DIRECTORY_STUDENT_POSITION = 1;
-	protected static final int DIRECTORY_FACULTY_POSITION = 2;
+	private static final int DIRECTORY_ALL_POSITION = 0;
+	private static final int DIRECTORY_STUDENT_POSITION = 1;
+	private static final int DIRECTORY_FACULTY_POSITION = 2;
 	public static final String DIRECTORY_STUDENT_VISIBLE = "directoryStudentVisible";
 	public static final String DIRECTORY_FACULTY_VISIBLE = "directoryFacultyVisible";
 	
@@ -65,7 +65,7 @@ public class DirectoryCategoriesFragment extends EllucianListFragment {
 		}
 		cursor.close();
 		
-		// Test if there is certain directory type missing if so call goToDirectory on the one that isnt.
+		// Test if there is certain directory type missing if so call goToDirectory on the one that isn't.
 		if (!studentDirectoryVisible && !facultyDirectoryVisible) {
 			goToDirectory(DIRECTORY_TYPE_ALL);
 			activity.finish();

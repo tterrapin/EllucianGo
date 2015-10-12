@@ -21,14 +21,15 @@
         android:paddingTop="13dp"
         android:paddingLeft="13dp"
         android:paddingStart="13dp"
-    />
+        tools:ignore="NewApi,RtlSymmetry" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/assignment_widget_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingEnd="14dp"
         android:paddingRight="14dp"
-        />
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>

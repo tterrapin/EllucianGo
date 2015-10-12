@@ -7,7 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "SlidingViewController.h"
 #import "Base64.h"
 #import "AppDelegate.h"
 #import "CurrentUser.h"
@@ -28,8 +27,7 @@
 @end
 
 @implementation LoginViewController
-@synthesize usernameField;
-@synthesize passwordField;
+
 
 - (void)viewDidLoad
 {
@@ -42,26 +40,9 @@
     self.passwordField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_password"]];
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     
-    self.signInButton.tintColor =  [UIColor primaryColor];
-    [[self.signInButton layer] setCornerRadius:10.0f];
-    [[self.signInButton layer] setBorderWidth:5.0f];
-    [self.signInButton.layer setBorderColor:[[UIColor grayColor] CGColor]];
-    self.signInButton.backgroundColor = [UIColor primaryColor];
-    [self.signInButton setTitleColor:[UIColor whiteColor] forState: UIControlStateNormal];
-    [self.signInButton setTitleColor:[UIColor headerTextColor] forState: UIControlStateHighlighted];
-    
-    self.cancelButton.tintColor =  [UIColor primaryColor];
-    [[self.cancelButton layer] setCornerRadius:10.0f];
-    [[self.cancelButton layer] setBorderWidth:5.0f];
-    [self.cancelButton.layer setBorderColor:[[UIColor grayColor] CGColor]];
-    self.cancelButton.backgroundColor = [UIColor primaryColor];
-    [self.cancelButton setTitleColor:[UIColor whiteColor] forState: UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor headerTextColor] forState: UIControlStateHighlighted];
+    [self.signInButton addBorderAndColor];
+    [self.cancelButton addBorderAndColor];
 
-    self.view.backgroundColor = [UIColor accentColor];
-    self.rememberMeLabel.textColor = [UIColor subheaderTextColor];
-    self.contactInstitutionLabel.textColor = [UIColor subheaderTextColor];
-    
     NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     self.url = [defaults objectForKey:@"login-url"];
     
@@ -94,18 +75,14 @@
 
 - (IBAction)progressToPasswordField:(id)sender
 {
-    [usernameField resignFirstResponder];
-    [passwordField becomeFirstResponder];
-}
-
-- (IBAction)backgroundTap:(id)sender
-{
-    [usernameField resignFirstResponder];
-    [passwordField resignFirstResponder];
+    [self.usernameField resignFirstResponder];
+    [self.passwordField becomeFirstResponder];
 }
 
 - (IBAction)signIn:(id)sender {
-    [self.activityIndicator startAnimating];
+     dispatch_async(dispatch_get_main_queue(), ^{
+         [self.activityIndicator startAnimating];
+     });
     if(self.rememberUserSwitch.isOn) {
         [self sendEventWithCategory:kAnalyticsCategoryAuthentication withAction:kAnalyticsActionLogin withLabel:@"Authentication with save credential" withValue:nil forModuleNamed:nil];
     } else {
@@ -115,61 +92,46 @@
     
     __block NSHTTPURLResponse *blockResponse = self.httpResponse;
     dispatch_async(dispatch_get_global_queue(0,0), ^{
-        blockResponse = [self performLogin:self.url forUser:usernameField.text andPassword:passwordField.text andRememberUser:self.rememberUserSwitch.isOn];
+        blockResponse = [self performLogin:self.url forUser:self.usernameField.text andPassword:self.passwordField.text andRememberUser:self.rememberUserSwitch.isOn];
         self.httpResponse = blockResponse;
-        [self finishSignIn];
-    });
-}
-
--(void) finishSignIn {
-    [self.activityIndicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:YES];
-    if(self.canceled) {
-        return;
-    } else if ([self.httpResponse statusCode] == LOGIN_SUCCESS)
-    {
-        BOOL match = NO;
-        if(self.access) {
-            for(ModuleRole *role in self.access) {
-                if([[CurrentUser sharedInstance].roles containsObject:role.role]) {
-                    match = YES;
-                    break;
-                } else if ([role.role isEqualToString:@"Everyone"]) {
-                    match = YES;
-                    break;
-                }
-            }
-            if([self.access count] == 0) { //upgrades from 3.0 or earlier
-                match = YES;
-            }
-            if(!match) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
-                                                                    message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                          otherButtonTitles:nil];
-                    [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kSignInReturnToHomeNotification object:nil];
-                });
-                
-            }
-        }
-        [self dismissViewControllerAnimated:YES completion: nil];
-    }
-    else //display an alert
-    {
-        UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"Sign In Failed", @"title for failed sign in")
-                              message:NSLocalizedString(@"The password or user name you entered is incorrect. Please try again.", @"message for failed sign in")
-                              delegate:self
-                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                              otherButtonTitles:nil];
-        self.signInButton.enabled = YES;
         
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-    }
+        __block NSHTTPURLResponse *httpResponse = self.httpResponse;
+        __block BOOL canceled = self.canceled;
+        __block UIActivityIndicatorView *activityIndicator = self.activityIndicator;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [activityIndicator stopAnimating];
+            
+            if(canceled) {
+                return;
+            } else if ([httpResponse statusCode] == LOGIN_SUCCESS)
+            {
+                if (self.completionBlock) {
+                    self.completionBlock();
+                }
+                [self dismissViewControllerAnimated:YES completion: nil];
+            }
+            else //display an alert
+            {
+                UIAlertController *alertController = [UIAlertController
+                                                       alertControllerWithTitle:NSLocalizedString(@"Sign In Failed", @"title for failed sign in")
+                                                       message:NSLocalizedString(@"The password or user name you entered is incorrect. Please try again.", @"message for failed sign in")
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction
+                                           actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                                           style:UIAlertActionStyleDefault
+                                           handler:^(UIAlertAction *action)
+                                           {
+                                               self.signInButton.enabled = YES;
+                                           }];
+                
+                [alertController addAction:okAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+                
+            }
+        });
 
+    });
 }
 
 -(NSInteger) backgroundLogin

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <scenes>
+        <!--Web View Controller-->
+        <scene sceneID="MyY-kk-Fp6">
+            <objects>
+                <viewController storyboardIdentifier="Web" id="MxD-XS-qCU" customClass="WebViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WQa-eL-EUG"/>
+                        <viewControllerLayoutGuide type="bottom" id="KR7-dd-Vfb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="a53-Bf-X9t">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a9a-pk-7fJ">
+                                <rect key="frame" x="0.0" y="536" width="600" height="64"/>
+                                <items>
+                                    <barButtonItem tag="2" enabled="NO" image="icon_back" style="plain" id="8uI-Xo-oZ9">
+                                        <connections>
+                                            <action selector="didTapBackButton:" destination="MxD-XS-qCU" id="Jo2-eC-lp9"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="DIG-Av-EHO"/>
+                                    <barButtonItem tag="1" enabled="NO" image="icon_forward" style="plain" id="RBR-wj-W3C">
+                                        <connections>
+                                            <action selector="didTapForwardButton:" destination="MxD-XS-qCU" id="QIE-mZ-rU7"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CPy-2b-pxN"/>
+                                    <barButtonItem tag="3" style="plain" systemItem="refresh" id="vwj-KL-xLC">
+                                        <connections>
+                                            <action selector="didTapRefreshButton:" destination="MxD-XS-qCU" id="ify-Bz-cFI"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="8EK-2c-YiP"/>
+                                    <barButtonItem tag="4" style="plain" systemItem="action" id="6Gr-wG-iLx">
+                                        <connections>
+                                            <action selector="didTapShareButton:" destination="MxD-XS-qCU" id="L3p-g0-PS6"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="prB-El-9Rx">
+                                <rect key="frame" x="0.0" y="20" width="600" height="516"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="MxD-XS-qCU" id="wKn-T3-9DO"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="a9a-pk-7fJ" secondAttribute="centerX" id="6nR-0v-vZp"/>
+                            <constraint firstAttribute="centerY" secondItem="prB-El-9Rx" secondAttribute="centerY" constant="22" id="BYb-UK-fy5"/>
+                            <constraint firstItem="a9a-pk-7fJ" firstAttribute="top" secondItem="prB-El-9Rx" secondAttribute="bottom" id="Ek4-m2-eAa"/>
+                            <constraint firstItem="KR7-dd-Vfb" firstAttribute="top" secondItem="a9a-pk-7fJ" secondAttribute="bottom" id="OF1-aC-lcG"/>
+                            <constraint firstAttribute="centerX" secondItem="prB-El-9Rx" secondAttribute="centerX" id="SM5-5b-lKw"/>
+                            <constraint firstItem="prB-El-9Rx" firstAttribute="top" secondItem="WQa-eL-EUG" secondAttribute="bottom" id="Udb-b8-Dsc"/>
+                            <constraint firstAttribute="trailing" secondItem="prB-El-9Rx" secondAttribute="trailing" id="ZDA-zU-gmi"/>
+                            <constraint firstAttribute="trailing" secondItem="a9a-pk-7fJ" secondAttribute="trailing" id="agU-fk-U69"/>
+                            <constraint firstItem="a9a-pk-7fJ" firstAttribute="leading" secondItem="a53-Bf-X9t" secondAttribute="leading" id="ha5-1Q-n1M"/>
+                            <constraint firstItem="prB-El-9Rx" firstAttribute="leading" secondItem="a53-Bf-X9t" secondAttribute="leading" id="zmp-wv-vBX"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" id="ZOk-mE-eG7"/>
+                    <connections>
+                        <outlet property="actionButton" destination="6Gr-wG-iLx" id="NMr-OL-i36"/>
+                        <outlet property="backButton" destination="8uI-Xo-oZ9" id="7bY-zC-mVA"/>
+                        <outlet property="forwardButton" destination="RBR-wj-W3C" id="n7Z-xW-9jf"/>
+                        <outlet property="refreshButton" destination="vwj-KL-xLC" id="Zun-VO-fRy"/>
+                        <outlet property="stopButton" destination="82s-49-CUT" id="Mm0-OD-S1i"/>
+                        <outlet property="toolbar" destination="a9a-pk-7fJ" id="i9y-ZI-cya"/>
+                        <outlet property="webView" destination="prB-El-9Rx" id="Wkh-To-bVp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="61I-rm-Cbc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem tag="3" image="icon_stop" style="plain" id="82s-49-CUT">
+                    <connections>
+                        <action selector="didTapStopButton:" destination="MxD-XS-qCU" id="iGM-Wo-32F"/>
+                    </connections>
+                </barButtonItem>
+            </objects>
+            <point key="canvasLocation" x="-1471" y="-7264"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="icon_back" width="20" height="20"/>
+        <image name="icon_forward" width="20" height="20"/>
+        <image name="icon_stop" width="20" height="20"/>
+    </resources>
+</document>

@@ -12,6 +12,25 @@
 #import "GAIDictionaryBuilder.h"
 #import "Ellucian_GO-Swift.h"
 
+NSString* const kAnalyticsCategoryAuthentication = @"Authentication";
+NSString* const kAnalyticsCategoryCourses = @"Courses";
+NSString* const kAnalyticsCategoryUI_Action = @"UI_Action";
+NSString* const kAnalyticsCategoryPushNotification = @"Push_Notification";
+NSString* const kAnalyticsCategoryWidget = @"Widget";
+
+NSString* const kAnalyticsActionButton_Press = @"Button_Press";
+NSString* const kAnalyticsActionCancel = @"Cancel";
+NSString* const kAnalyticsActionFollow_web = @"Follow_web";
+NSString* const kAnalyticsActionInvoke_Native = @"Invoke_Native";
+NSString* const kAnalyticsActionList_Select = @"List_Select";
+NSString* const kAnalyticsActionLogin = @"Login";
+NSString* const kAnalyticsActionLogout = @"Logout";
+NSString* const kAnalyticsActionMenu_selection = @"Menu_selection";
+NSString* const kAnalyticsActionSearch = @"Search";
+NSString* const kAnalyticsActionSlide_Action = @"Slide_Action";
+NSString* const kAnalyticsActionTimeout = @"Timeout";
+NSString* const kAnalyticsActionReceivedMessage = @"Received_Message";
+
 @implementation UIViewController (GoogleAnalyticsTrackerSupport)
 
 - (void)sendView:(NSString *)screen forModuleNamed:(NSString *)moduleName
@@ -81,7 +100,6 @@
                               withLabel:(NSString *)label
                               withValue:(NSNumber *)value forModuleNamed:(NSString *)moduleName
 {
-    
     NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = nil;
@@ -146,14 +164,13 @@
                                    withLabel:(NSString *)label
                               forModuleNamed:(NSString *)moduleName
 {
-    
     NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = [defaults objectForKey:@"gaTracker1"];
     NSString *trackingId2 = nil;
     NSString *configurationName = [defaults objectForKey:@"configurationName"];
     
     [self sendUserTimingToGoogleAnalyticsWithCategory:category withTimeInterval:time withName:name withLabel:label forModuleNamed:moduleName usingTracker1Id:trackingId1 usingTracker2Id:trackingId2 forConfigurationNamed:configurationName];
-    
+//
     
 }
 - (void)sendUserTimingToTracker2WithCategory:(NSString *)category
@@ -162,7 +179,6 @@
                                    withLabel:(NSString *)label
                               forModuleNamed:(NSString *)moduleName
 {
-    
     NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
     NSString *trackingId1 = nil;
     NSString *trackingId2 = [defaults objectForKey:@"gaTracker2"];

@@ -22,9 +22,9 @@ import com.ellucian.mobile.android.util.Extra;
 import java.util.ArrayList;
 
 public class CourseAssignmentsIntentService extends IntentService {
-	public static final String TAG = CourseAssignmentsIntentService.class.getSimpleName();
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseAssignmentsIntentService.action.updated";
+	private static final String TAG = CourseAssignmentsIntentService.class.getSimpleName();
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseAssignmentsIntentService.action.updated";
 	
 	public CourseAssignmentsIntentService() {
 		super("CourseAssignmentsIntentService");

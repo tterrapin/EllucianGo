@@ -8,11 +8,10 @@
 
 #import "WebViewJavascriptInterface.h"
 #import "LoginExecutor.h"
-#import "SlidingViewController.h"
 #import "AppDelegate.h"
 #import "Module.h"
-#import "MenuViewController.h"
 #import "WebViewController.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation WebViewJavascriptInterface
 
@@ -36,59 +35,31 @@
 
 + (void) openMenuItem:(NSString *)name type:(NSString *)type
 {
-    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *managedObjectContext = [delegate managedObjectContext];
-    
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Module" inManagedObjectContext:managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    CurrentUser *currentUser = [CurrentUser sharedInstance];
-    NSPredicate *rolesPredicate;
-    if(currentUser && [currentUser isLoggedIn ]) {
-        NSSet *roles = currentUser.roles;
-        NSMutableArray *parr = [NSMutableArray array];
-        [parr addObject: [NSPredicate predicateWithFormat:@"roles.@count == 0"] ];
-        [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", @"Everyone"] ];
-        for(NSString *role in roles) {
-            [parr addObject: [NSPredicate predicateWithFormat:@"ANY roles.role like %@", role] ];
-        }
-        rolesPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:parr];
-    }
-    NSPredicate *namePredicate = [NSPredicate predicateWithFormat:@"name == %@", name];
-    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"type == %@", [type lowercaseString]];
-    NSArray *predicates = [NSArray arrayWithObjects:namePredicate, typePredicate, rolesPredicate, nil];
-    fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    
-    NSError *error;
-    NSArray *definedModules = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    Module* module = nil;
-    for(Module* tempModule in definedModules ) {
-        if([self.slidingViewController.menuViewController isSupportedModule:tempModule]) {
-            module = tempModule;
-            break;
-        }
-        
-    }
-    
-    if(module) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.slidingViewController.menuViewController showModule:module];
-        });
-    } else {
-        NSLog(@"Could not launch menu item: '%@' type: '%@'", name, type);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
-                                                        message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
+    OpenModuleOperation* operation = [[OpenModuleOperation alloc] initWithName:name type:type];
+    [[NSOperationQueue mainQueue] addOperation:operation];
+
+//    Module* module = nil;
+//    for(Module* tempModule in definedModules ) {
+//        if([self.slidingViewController.menuViewController isSupportedModule:tempModule]) {
+//            module = tempModule;
+//            break;
+//        }
+//        
+//    }
+//    
+//    if(module) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.slidingViewController.menuViewController showModule:module];
+//        });
+//    } else {
+//        NSLog(@"Could not launch menu item: '%@' type: '%@'", name, type);
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
+//                                                        message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
+//                                                       delegate:nil
+//                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//    }
 }
 
 + (void) reloadWebModule
@@ -97,10 +68,10 @@
     [webView loadRequest:[NSURLRequest requestWithURL:self.webViewController.originalUrl]];
 }
 
-+ (SlidingViewController *) slidingViewController
++ (ECSlidingViewController *) slidingViewController
 {
-    SlidingViewController *slidingViewController = (SlidingViewController *)[[[[[UIApplication sharedApplication] keyWindow] subviews] objectAtIndex:0] nextResponder];
-    return slidingViewController;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.slidingViewController;
 }
 
 + (WebViewController *) webViewController

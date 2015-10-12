@@ -57,19 +57,20 @@ class ILPAssignmentsDetailController: WKInterfaceController {
     }
     
     @IBAction func addReminder() {
-        var eventStore : EKEventStore = EKEventStore()
-        eventStore.requestAccessToEntityType(EKEntityTypeReminder, completion: {
-            granted, error in
-            if (granted) && (error == nil) {
-                var reminder:EKReminder = EKReminder(eventStore: eventStore)
+        let eventStore : EKEventStore = EKEventStore()
+        
+        eventStore.requestAccessToEntityType(.Reminder) { (granted, error) -> Void in
+            //
+            if granted {
+                let reminder:EKReminder = EKReminder(eventStore: eventStore)
                 reminder.title = self.assignment!["name"] as! String!
                 reminder.calendar = eventStore.defaultCalendarForNewReminders()
                 
                 let date = self.assignment!["dueDate"] as! NSDate!
                 let calendar = NSCalendar.currentCalendar()
-                let dueDateComponents = calendar.components(.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay | .CalendarUnitHour | .CalendarUnitMinute | .CalendarUnitSecond, fromDate: date)
+                let dueDateComponents = calendar.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: date)
                 reminder.dueDateComponents = dueDateComponents
-                var alarm:EKAlarm = EKAlarm(absoluteDate: date)
+                let alarm:EKAlarm = EKAlarm(absoluteDate: date)
                 reminder.alarms = [alarm]
                 let formattedDate = NSDateFormatter.localizedStringFromDate(date, dateStyle: .ShortStyle, timeStyle: .ShortStyle)
                 let localizedDue = NSString.localizedStringWithFormat(NSLocalizedString("Due: %@", comment: "due date label with date"), formattedDate)
@@ -83,24 +84,63 @@ class ILPAssignmentsDetailController: WKInterfaceController {
                     reminderCourseName = (self.assignment!["courseName"] as! String!)
                 }
                 
-                var description = self.assignment!["assignmentDescription"] as! String!
+                let description = self.assignment!["assignmentDescription"] as! String!
                 reminder.notes = "\(reminderCourseName)\n\(localizedDue)\n\(description) as! String!)"
-                var error : NSError?
-                eventStore.saveReminder(reminder, commit: true, error: &error)
+//                do {
+//                    try eventStore.saveReminder(reminder, commit: true)
+//                } catch {
+//                }
             } else {
-                 //todo add modal message to tell them to go iphone to change permissions
+                //todo add modal message to tell them to go iphone to change permissions
             }
-        })
+
+            //
+        }
+        
+        eventStore.requestAccessToEntityType(.Reminder) { (granted, error) -> Void in
+            if granted {
+                let reminder:EKReminder = EKReminder(eventStore: eventStore)
+                reminder.title = self.assignment!["name"] as! String!
+                reminder.calendar = eventStore.defaultCalendarForNewReminders()
+                
+                let date = self.assignment!["dueDate"] as! NSDate!
+                let calendar = NSCalendar.currentCalendar()
+                let dueDateComponents = calendar.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: date)
+                reminder.dueDateComponents = dueDateComponents
+                let alarm:EKAlarm = EKAlarm(absoluteDate: date)
+                reminder.alarms = [alarm]
+                let formattedDate = NSDateFormatter.localizedStringFromDate(date, dateStyle: .ShortStyle, timeStyle: .ShortStyle)
+                let localizedDue = NSString.localizedStringWithFormat(NSLocalizedString("Due: %@", comment: "due date label with date"), formattedDate)
+                
+                var reminderCourseName : String?
+                if self.assignment!["courseName"] != nil && self.assignment!["courseSectionNumber"] != nil {
+                    if let courseNameString = self.assignment!["courseName"] as! String!, courseSectionNumberString = self.assignment!["courseSectionNumber"] as! String! {
+                        reminderCourseName = ("\(courseNameString)-\(courseSectionNumberString)")
+                    }
+                } else if self.assignment!["courseName"] != nil {
+                    reminderCourseName = (self.assignment!["courseName"] as! String!)
+                }
+                
+                let description = self.assignment!["assignmentDescription"] as! String!
+                reminder.notes = "\(reminderCourseName)\n\(localizedDue)\n\(description) as! String!)"
+//                do {
+//                    try eventStore.saveReminder(reminder, commit: true)
+//                } catch {
+//                    //
+//                }
+
+            }
+        }
     }
     
     @IBAction func addToCalendar() {
         
-        var eventStore : EKEventStore = EKEventStore()
-        eventStore.requestAccessToEntityType(EKEntityTypeEvent, completion: {
+        let eventStore : EKEventStore = EKEventStore()
+        eventStore.requestAccessToEntityType(.Event, completion: {
             granted, error in
             if (granted) && (error == nil) {
                 
-                var event:EKEvent = EKEvent(eventStore: eventStore)
+                let event:EKEvent = EKEvent(eventStore: eventStore)
                 event.title = self.assignment!["name"] as! String!
                 if let dueDate = self.assignment!["dueDate"] as! NSDate! {
                     event.startDate = dueDate
@@ -119,9 +159,12 @@ class ILPAssignmentsDetailController: WKInterfaceController {
                 }
                 
                 event.location = location
-                var error : NSError?
                 
-                let result = eventStore.saveEvent(event, span: EKSpanThisEvent, error: &error)
+//                do {
+//                    try eventStore.saveEvent(event, span: .ThisEvent)
+//                } catch {
+//                    fatalError()
+//                }
             } else {
                 //todo add modal message to tell them to go iphone to change permissions
             }

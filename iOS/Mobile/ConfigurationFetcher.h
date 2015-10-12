@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "Module+Create.h"
-#import "UIColor+HexString.h"
 
 #define kConfigurationFetcherError @"ConfigurationFetcherErrorNotification"
 
 @interface ConfigurationFetcher : NSObject<UIAlertViewDelegate>
-
-+ (BOOL) fetchConfigurationFromURL:(NSString *) url WithManagedObjectContext:(NSManagedObjectContext *)context;
 
 + (void) showErrorAlertView;
 @end

@@ -49,16 +49,12 @@ class StudentFinancialsViewController: UIViewController, UITableViewDataSource, 
         } else {
             linkButton.setTitle(linkLabel, forState: .Normal)
             linkButton.setTitle(linkLabel, forState: .Selected)
+            linkButton.addBorderAndColor()
         }
         
-        if CurrentUser.sharedInstance().isLoggedIn {
-            self.fetchData()
-        }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "fetchData",
-            name: kLoginExecutorSuccess,
-            object: nil)
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        self.fetchData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -77,33 +73,58 @@ class StudentFinancialsViewController: UIViewController, UITableViewDataSource, 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if transactions.count > 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("Recent Payment Cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Recent Payment Cell", forIndexPath: indexPath) as UITableViewCell
             
             let transaction = transactions[indexPath.row]
-            var descriptionLabel = cell.viewWithTag(1) as! UILabel
+            let descriptionLabel = cell.viewWithTag(1) as! UILabel
             descriptionLabel.text = transaction.description
-            var dateLabel = cell.viewWithTag(2) as! UILabel
+            let dateLabel = cell.viewWithTag(2) as! UILabel
             dateLabel.text = displayDateFormatter.stringFromDate(transaction.entryDate)
-            var amountLabel = cell.viewWithTag(3) as! UILabel
+            let amountLabel = cell.viewWithTag(3) as! UILabel
             amountLabel.text = currencyFormatter.stringFromNumber(transaction.amount)
             
             
             return cell
         } else {
-            return tableView.dequeueReusableCellWithIdentifier("No Transactions Cell", forIndexPath: indexPath) as! UITableViewCell
+            return tableView.dequeueReusableCellWithIdentifier("No Transactions Cell", forIndexPath: indexPath) as UITableViewCell
         }
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor.accentColor()
-        header.textLabel.textColor = UIColor.subheaderTextColor()
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let view = UIView(frame: CGRectMake(0, 0, CGRectGetWidth(tableView.frame), 30))
+        let label = UILabel(frame: CGRectMake(8,0,CGRectGetWidth(tableView.frame), 30))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.text =  NSLocalizedString("RECENT PAYMENTS", comment: "Table section header RECENT PAYMENTS")
+        
+        label.textColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        view.backgroundColor = UIColor(rgba: "#e6e6e6")
+        label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+        
+        view.addSubview(label)
+        
+        let viewsDictionary = ["label": label, "view": view]
+        
+        // Create and add the vertical constraints
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-1-[label]-1-|",
+            options: NSLayoutFormatOptions.AlignAllBaseline,
+            metrics: nil,
+            views: viewsDictionary))
+        
+        // Create and add the horizontal constraints
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-20-[label]",
+            options: NSLayoutFormatOptions.AlignAllBaseline,
+            metrics: nil,
+            views: viewsDictionary))
+        return view;
+        
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return NSLocalizedString("RECENT PAYMENTS", comment: "Table section header RECENT PAYMENTS")
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
-    
+
     func fetchData() {
         let loadingNotification = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         loadingNotification.labelText = NSLocalizedString("Loading", comment: "loading message while fetching recent transactions");
@@ -122,14 +143,15 @@ class StudentFinancialsViewController: UIViewController, UITableViewDataSource, 
     
     func fetchTransactions() {
         
-        var urlString = NSString( format:"%@/%@/transactions", self.module.propertyForKey("financials")!, CurrentUser.sharedInstance().userid )
-        var url: NSURL? = NSURL(string: urlString as String)
+        let urlBase = self.module.propertyForKey("financials")!
+        let userid =  CurrentUser.sharedInstance().userid.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        let urlString = "\(urlBase)/\(userid!)/transactions"
+        let url: NSURL? = NSURL(string: urlString as String)
         
-        var error:NSError?
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
-        var authenticatedRequest = AuthenticatedRequest()
-        var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
+        let authenticatedRequest = AuthenticatedRequest()
+        let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         if let response = responseData {
@@ -148,7 +170,7 @@ class StudentFinancialsViewController: UIViewController, UITableViewDataSource, 
                     self.transactions.append(transaction)
                 }
             }
-            self.transactions.sort {
+            self.transactions.sortInPlace {
                 item1, item2 in
                 let date1 = item1.entryDate as NSDate
                 let date2 = item2.entryDate as NSDate
@@ -159,14 +181,13 @@ class StudentFinancialsViewController: UIViewController, UITableViewDataSource, 
     
     func fetchBalance() {
         
-        var urlString = NSString( format:"%@/%@/balances", self.module.propertyForKey("financials"), CurrentUser.sharedInstance().userid )
-        var url: NSURL? = NSURL(string: urlString as String)
-        
-        var error:NSError?
+        let urlString = NSString( format:"%@/%@/balances", self.module.propertyForKey("financials"), CurrentUser.sharedInstance().userid )
+        let url: NSURL? = NSURL(string: urlString as String)
+
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
-        var authenticatedRequest = AuthenticatedRequest()
-        var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
+        let authenticatedRequest = AuthenticatedRequest()
+        let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: self)
         
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         if let response = responseData {

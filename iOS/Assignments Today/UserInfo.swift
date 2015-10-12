@@ -11,9 +11,14 @@ import Foundation
 public struct UserInfo {
     
     public static func userauth() -> String? {
-        var defaults = AppGroupUtilities.userDefaults()
+        let defaults = AppGroupUtilities.userDefaults()
         if let defaults = defaults, stored = defaults.objectForKey("login-userauth") as! NSData? {
-                let decryptedData = RNDecryptor.decryptData(stored, withPassword: "key", error: nil)
+            let decryptedData: NSData!
+            do {
+                decryptedData = try RNDecryptor.decryptData(stored, withPassword: "key")
+            } catch _ {
+                decryptedData = nil
+            }
                 let nsstring = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
                 if let userauth = nsstring as? String {
                     return userauth
@@ -23,9 +28,14 @@ public struct UserInfo {
     }
     
     public static func userid() -> String? {
-        var defaults = AppGroupUtilities.userDefaults()
+        let defaults = AppGroupUtilities.userDefaults()
         if let defaults = defaults, stored = defaults.objectForKey("login-userid") as! NSData? {
-            let decryptedData = RNDecryptor.decryptData(stored, withPassword: "key", error: nil)
+            let decryptedData: NSData!
+            do {
+                decryptedData = try RNDecryptor.decryptData(stored, withPassword: "key")
+            } catch _ {
+                decryptedData = nil
+            }
             let nsstring = NSString(data: decryptedData, encoding: NSUTF8StringEncoding)
             if let userid = nsstring as? String {
                 return userid
@@ -35,7 +45,7 @@ public struct UserInfo {
     }
     
     public static func roles() -> Set<String>? {
-        var defaults = AppGroupUtilities.userDefaults()
+        let defaults = AppGroupUtilities.userDefaults()
         if let defaults = defaults , data = defaults.objectForKey("login-roles") as? Set<String> {
             return data
         }
@@ -44,12 +54,16 @@ public struct UserInfo {
     
     public static func password() -> String? {
         if let userauth = UserInfo.userauth() {
-            var error : NSError?
             let shaUserauth = UserInfo.sha1(userauth)
             let identifier = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleIdentifier") as! String!
             let index = identifier.rangeOfString(".", options: .BackwardsSearch)?.startIndex
             let service = identifier.substringToIndex(index!)
-            let p = KeychainWrapper.getPasswordForUsername(shaUserauth, andServiceName: service, error: &error)
+            let p: String!
+            do {
+                p = try KeychainWrapper.getPasswordForUsername(shaUserauth, andServiceName: service)
+            } catch {
+                p = nil
+            }
             return p
         }
         

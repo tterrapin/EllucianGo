@@ -1,26 +1,35 @@
 <!--
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
-
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/directory_categories"
-            android:name="com.ellucian.mobile.android.directory.DirectoryCategoriesFragment"
+        <include layout="@layout/toolbar" />
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" >
-        </fragment>
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/directory_categories"
+                android:name="com.ellucian.mobile.android.directory.DirectoryCategoriesFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"></fragment>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <include layout="@layout/drawer_list" />

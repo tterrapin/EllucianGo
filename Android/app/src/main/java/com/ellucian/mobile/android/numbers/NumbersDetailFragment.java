@@ -4,12 +4,9 @@
 
 package com.ellucian.mobile.android.numbers;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.ContentProviderOperation;
+import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -22,7 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
@@ -37,10 +34,14 @@ import com.ellucian.mobile.android.provider.EllucianContract.MapsBuildings;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
 public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = NumbersDetailFragment.class.getSimpleName();
 
-	private Activity activity;
+    private Context context;
 	private View rootView;
 	private String name;
 	private String phone;
@@ -53,21 +54,17 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 	private String buildingName;
 	private String campusId;
 	private String type;
-	@SuppressWarnings("unused")
-	private boolean showDirections = false;
-	@SuppressWarnings("unused")
-	private boolean showMap = false;
 	private String buildingUrl;
 
 	public NumbersDetailFragment() {
 	}
-	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
-	}
-	
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -95,13 +92,11 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		buildingName = null;
 		campusId = null;
 		type = null;
-		showDirections = false;
-		showMap = false;
 		if (args != null) {
 			setFields(args);
 
 			if ( latitude == null || longitude == null || (latitude == 0.0 && longitude == 0.0)) {
-				Log.d(TAG, "latitute or longitude is missing, setting views from buildingId");
+				Log.d(TAG, "latitude or longitude is missing, setting views from buildingId");
 				
 				if (!TextUtils.isEmpty(buildingId)) {
 					buildingUrl = Utils.getStringFromPreferences(getActivity(), Utils.CONFIGURATION, Utils.MAP_BUILDINGS_URL, null);
@@ -139,7 +134,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		}
 	}
 
-	public void setFieldsFromClientBuilding(com.ellucian.mobile.android.client.maps.Building clientBuilding) {		
+	private void setFieldsFromClientBuilding(com.ellucian.mobile.android.client.maps.Building clientBuilding) {
 		Log.d(TAG, "setFieldsFromClientBuilding");
 		if (clientBuilding != null) {
 			
@@ -153,7 +148,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 			buildingId = clientBuilding.id;
 			campusId = clientBuilding.campusId;
 			
-			// Dont overwrite type if present
+			// Don't overwrite type if present
 			if (TextUtils.isEmpty(type)) {
 				String typeString = "";
 				for (String type : clientBuilding.type) {			
@@ -173,19 +168,18 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		Log.d(TAG, "setViews");
 		
 		if (!TextUtils.isEmpty(name)) {
-			rootView.findViewById(R.id.nameLayout).setVisibility(View.VISIBLE);
 			((TextView) rootView.findViewById(R.id.name)).setText(name);
 		} 
 		
 		if (!TextUtils.isEmpty(type)) {
-			rootView.findViewById(R.id.typeLayout).setVisibility(View.VISIBLE);
+			rootView.findViewById(R.id.type).setVisibility(View.VISIBLE);
 			((TextView) rootView.findViewById(R.id.type)).setText(type);
 		}
 
 		if (phone != null) {
 			rootView.findViewById(R.id.phoneLayout).setVisibility(View.VISIBLE);
 			TextView phoneView = (TextView) rootView.findViewById(R.id.phone);
-			phoneView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.PHONE_NUMBERS));
+			phoneView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.PHONE_NUMBERS));
             if (extension != null) {
                 phoneView.setText(getString(R.string.default_phone_with_extension_format,phone,extension));
             } else {
@@ -202,7 +196,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		if (!TextUtils.isEmpty(email)) {
 			rootView.findViewById(R.id.emailLayout).setVisibility(View.VISIBLE);
 			TextView emailView = (TextView) rootView.findViewById(R.id.email);
-			emailView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.EMAIL_ADDRESSES));
+			emailView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.EMAIL_ADDRESSES));
 			emailView.setText(email);
 		}
 
@@ -216,15 +210,13 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		if (!TextUtils.isEmpty(fullAddressString)) {
 			rootView.findViewById(R.id.addressLayout).setVisibility(View.VISIBLE);
 			TextView addressView = (TextView) rootView.findViewById(R.id.address);
-			addressView.setAutoLinkMask(Utils.getAvailableLinkMasks(activity, Linkify.MAP_ADDRESSES));
+			addressView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.MAP_ADDRESSES));
 			addressView.setText(fullAddressString);
 		}
 		
 		if (latitude != null && longitude != null && !(latitude == 0.0 && longitude == 0.0) 
-				&& Utils.isGoogleMapsInstalled(activity)) {
-			showMap = true;
-			Button mapButton = (Button) rootView.findViewById(R.id.showMap);
-			mapButton.setVisibility(View.VISIBLE);
+				&& Utils.isGoogleMapsInstalled(context)) {
+			ImageView mapButton = (ImageView) rootView.findViewById(R.id.showMap);
 			mapButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View arg0) {
 					startActivity(MapUtils.buildMapPinIntent(getActivity(),
@@ -232,31 +224,25 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 				}
 			});
 
-			showDirections = true;
-			Button directionsButton = (Button) rootView.findViewById(R.id.showDirections);
-			directionsButton.setVisibility(View.VISIBLE);
-			directionsButton.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					NumbersDetailFragment.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Get Directions", null, getEllucianActivity().moduleName);
-					startActivity(MapUtils.buildDirectionsIntent(latitude,
-							longitude));
-				}
-			});
+			View directionsRow = rootView.findViewById(R.id.directionsLayout);
+            directionsRow.setVisibility(View.VISIBLE);
+			directionsRow.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    NumbersDetailFragment.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Get Directions", null, getEllucianActivity().moduleName);
+                    startActivity(MapUtils.buildDirectionsIntent(latitude,
+                            longitude));
+                }
+            });
 
 		} else if (!TextUtils.isEmpty(address)) {
-			showMap = false;
-			showDirections = true;
-			Button directionsButton = (Button) rootView.findViewById(R.id.showDirections);
-			directionsButton.setVisibility(View.VISIBLE);
-			directionsButton.setOnClickListener(new View.OnClickListener() {
+            View directionsRow = rootView.findViewById(R.id.directionsLayout);
+            directionsRow.setVisibility(View.VISIBLE);
+            directionsRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					NumbersDetailFragment.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Get Directions", null, getEllucianActivity().moduleName);
 					startActivity(MapUtils.buildDirectionsIntent(address));
 				}
 			});
-		} else {
-			showMap = false;
-			showDirections = false;
 		}
 	}
 	
@@ -282,13 +268,13 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 			
 			if (cursor.moveToFirst()) {
 				Log.d(TAG, "Cursor returned a row");
-				// Dont overwrite name if present
+				// Don't overwrite name if present
 				if (TextUtils.isEmpty(name)) {
 					name = cursor.getString(cursor.getColumnIndex(MapsBuildings.BUILDING_NAME));
 				}
 				buildingName = cursor.getString(cursor.getColumnIndex(MapsBuildings.BUILDING_NAME));
 				
-				// Dont overwrite type if present
+				// Don't overwrite type if present
 				if (TextUtils.isEmpty(type)) {
 					type = cursor.getString(cursor.getColumnIndex(MapsBuildings.BUILDING_CATEGORIES));
 				}
@@ -326,13 +312,13 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		}
 	}
 	
-	public void refresh() {
+	private void refresh() {
 		Log.d(TAG, "refresh");
 		rootView.invalidate();
 	}
 	
 	private class RetrieveBuildingInfoTask extends AsyncTask<String, Void, BuildingsResponse> {
-		Activity activity;
+		final Activity activity;
 		
 		public RetrieveBuildingInfoTask(Activity activity) {
 			this.activity = activity;
@@ -361,14 +347,14 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 					Log.d(TAG, "buildingResponse is null or length of 0");
 				}
 			} else {
-				Log.d(TAG, "AyncTask returned null response");
+				Log.d(TAG, "AsyncTask returned null response");
 			}
 			
 			setViews();
 			refresh();
 		}
 		
-		protected void insertIntoDatabase(BuildingsResponse response) {
+		void insertIntoDatabase(BuildingsResponse response) {
 			
 			BuildingsBuilder builder = new BuildingsBuilder(activity, null);
 			Log.d(TAG, "Building content provider operations");

@@ -5,14 +5,14 @@
 package com.ellucian.mobile.android.ilp;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -48,16 +48,16 @@ public class IlpCardFragment extends EllucianFragment implements
 	private static final int EVENTS_LOADER = 1;
 	private static final int ANNOUNCEMENTS_LOADER = 2;
 
-	protected IlpCardActivity activity;
-	protected View rootView;
-	protected CardView assignmentsCard;
-	protected CardView eventsCard;
-	protected CardView announcementsCard;
-	protected List<AssignmentItemHolder> assignmentsToday = new ArrayList<AssignmentItemHolder>();
-    protected List<AssignmentItemHolder> assignmentsOverdue = new ArrayList<AssignmentItemHolder>();
-	protected List<EventItemHolder> events = new ArrayList<EventItemHolder>();
-	protected List<AnnouncementItemHolder> announcements = new ArrayList<AnnouncementItemHolder>();
-	protected Bundle detailBundle;
+	private IlpCardActivity activity;
+	private View rootView;
+	private CardView assignmentsCard;
+	private CardView eventsCard;
+	private CardView announcementsCard;
+	private List<AssignmentItemHolder> assignmentsToday = new ArrayList<AssignmentItemHolder>();
+    private List<AssignmentItemHolder> assignmentsOverdue = new ArrayList<AssignmentItemHolder>();
+	private List<EventItemHolder> events = new ArrayList<EventItemHolder>();
+	private List<AnnouncementItemHolder> announcements = new ArrayList<AnnouncementItemHolder>();
+	private Bundle detailBundle;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -222,8 +222,12 @@ public class IlpCardFragment extends EllucianFragment implements
         if (assignmentsOverdue != null && assignmentsOverdue.size() > 0) {
             TextView overdueSubheader = (TextView) inflater.inflate(R.layout.ilp_card_sub_header_row, assignmentsLayout, false);
             overdueSubheader.setTextColor(getResources().getColor(R.color.warning_text_color));
-            Drawable dw = getResources().getDrawable(R.drawable.icon_warning_red);
-            overdueSubheader.setCompoundDrawablesWithIntrinsicBounds(dw, null, null, null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                overdueSubheader.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.icon_warning_red, 0, 0, 0);
+            } else {
+                overdueSubheader.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_warning_red, 0, 0, 0);
+            }
+
             overdueSubheader.setCompoundDrawablePadding(12);
             overdueSubheader.setText(R.string.ilp_overdue);
             assignmentsLayout.addView(overdueSubheader);
@@ -338,7 +342,7 @@ public class IlpCardFragment extends EllucianFragment implements
         }
     }
 	
-	public void buildEventsList(Cursor cursor) {
+	private void buildEventsList(Cursor cursor) {
 		events = new ArrayList<EventItemHolder>();
 		
 		Calendar todayCal = Calendar.getInstance();
@@ -566,7 +570,7 @@ public class IlpCardFragment extends EllucianFragment implements
         }
 	}
 	
-    public Bundle buildDetailBundle(Object... objects) {
+    private Bundle buildDetailBundle(Object... objects) {
     	IlpItemHolder infoHolder = (IlpItemHolder) objects[0];
 
     	Bundle bundle = new Bundle();
@@ -602,7 +606,7 @@ public class IlpCardFragment extends EllucianFragment implements
 		return bundle;
 	}
 	
-	public void showDetails(int index) {
+	private void showDetails(int index) {
 		
 		Intent intent = new Intent();
         intent.setClass(activity, IlpListActivity.class);

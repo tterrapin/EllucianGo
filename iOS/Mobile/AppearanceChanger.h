@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "UIColor+SchoolCustomization.h"
+#import <UIKit/UIKit.h>
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -23,6 +23,6 @@
 @interface AppearanceChanger : NSObject
 
 +(void) applyAppearanceChanges:(UIView *)window;
-+ (BOOL) isRTL;
++ (BOOL) isIOS8AndRTL;
 +(CGSize) currentScreenBoundsDependOnOrientation;
 @end

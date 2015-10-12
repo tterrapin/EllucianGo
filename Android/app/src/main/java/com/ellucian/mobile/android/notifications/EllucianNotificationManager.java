@@ -21,15 +21,15 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 
 public class EllucianNotificationManager {
-	public static final String TAG = EllucianNotificationManager.class.getSimpleName();
+	private static final String TAG = EllucianNotificationManager.class.getSimpleName();
 
-	private EllucianApplication ellucianApplication;
+	private final EllucianApplication ellucianApplication;
 	
 	private long lastRegisterWithGCMTime;
-	private long MIN_REGISTRATION_REFRESH_TIME = 1000L * 60 * 60 * 24;
-	private static String REGISTERED_DEVICE_ID_KEY = "deviceId";
-	private static String REGISTERED_APP_VERSION_KEY = "registeredAppVersion";
-	private static String REGISTERED_USER_ID_KEY = "registeredUserId";
+	private final long MIN_REGISTRATION_REFRESH_TIME = 1000L * 60 * 60 * 24;
+	private static final String REGISTERED_DEVICE_ID_KEY = "deviceId";
+	private static final String REGISTERED_APP_VERSION_KEY = "registeredAppVersion";
+	private static final String REGISTERED_USER_ID_KEY = "registeredUserId";
 	private static String GCM_SENDER_ID;
 	
 	public EllucianNotificationManager(EllucianApplication ellucianApplication) {
@@ -37,7 +37,7 @@ public class EllucianNotificationManager {
 		GCM_SENDER_ID = ellucianApplication.getConfigurationProperties().gcmSenderId;
 	}
 	
-	public boolean isPlayServicesAvailable() {
+	private boolean isPlayServicesAvailable() {
 		int code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(ellucianApplication.getApplicationContext());
 		
 		if (code != ConnectionResult.SUCCESS) {

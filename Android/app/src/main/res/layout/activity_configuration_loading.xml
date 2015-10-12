@@ -8,12 +8,17 @@
     android:layout_height="match_parent"
     tools:context=".ConfigurationLoadingActivity" >
 
+    <include layout="@layout/toolbar" />
+    <include layout="@layout/progress_indicator" />
+
     <TextView
         android:id="@+id/configuration_loading_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/configuration_loading_message" />
+        android:paddingBottom="150dp"
+        android:text="@string/configuration_loading_message"
+        android:fitsSystemWindows="true" />
 
 </RelativeLayout>

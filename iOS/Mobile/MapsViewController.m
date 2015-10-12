@@ -16,7 +16,7 @@
 #import "POIDetailViewController.h"
 #import "MapPOIType.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
-#import "SlidingViewController.h"
+//#import "SlidingViewController.h"
 #import "Ellucian_GO-Swift.h"
 
 @interface MapsViewController ()
@@ -579,9 +579,7 @@
 {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusNotDetermined) {
-        if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-            [self.locationManager requestWhenInUseAuthorization];
-        }
+        [self.locationManager requestWhenInUseAuthorization];
     }
     else if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways) {
         [self.locationManager startUpdatingLocation];
@@ -601,9 +599,7 @@
             self.mapView.showsUserLocation = YES;
             break;
         case kCLAuthorizationStatusNotDetermined:
-            if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-                [self.locationManager requestWhenInUseAuthorization];
-            }
+            [self.locationManager requestWhenInUseAuthorization];
             break;
         default:
             break;

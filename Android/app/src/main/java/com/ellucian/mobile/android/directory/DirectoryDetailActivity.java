@@ -6,6 +6,7 @@ package com.ellucian.mobile.android.directory;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
@@ -31,9 +32,22 @@ public class DirectoryDetailActivity extends EllucianActivity {
             // During initial setup, plug in the details fragment.
 
         	DirectoryDetailFragment details = DirectoryDetailFragment.newInstance(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.detail_container, details).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.detail_container, details).commit();
         }
     }
 
-	
+    /** Override to check if the user selects the UP/home menu option.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, finish this Detail activity and return to Master activity.
+            finish();
+            return true;
+        }
+        return false;
+    }
+
 }

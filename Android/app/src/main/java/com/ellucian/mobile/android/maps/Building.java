@@ -5,7 +5,7 @@
 package com.ellucian.mobile.android.maps;
 
 
-public class Building {
+class Building {
 	public String name;
 	public String address;
 	public String description;

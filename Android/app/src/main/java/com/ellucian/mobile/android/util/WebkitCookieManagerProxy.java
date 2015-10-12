@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class WebkitCookieManagerProxy extends CookieManager 
 {
-    private android.webkit.CookieManager webkitCookieManager;
+    private final android.webkit.CookieManager webkitCookieManager;
 
     public WebkitCookieManagerProxy()
     {

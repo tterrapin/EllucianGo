@@ -1,9 +1,5 @@
 package com.ellucian.mobile.android.sample;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +15,10 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This activity is for a sample custom module.
@@ -43,10 +43,10 @@ public class SampleFlickrActivity extends EllucianActivity {
 		// In this case we want the import to com.ellucian.elluciango.R and not android.R
 		setContentView(R.layout.activity_sample_flickr);
 		
-		// You can set the title of the module to display in the actionbar either here programmatically or 
+		// You can set the title of the module to display in the toolbar either here programmatically or
 		// in the AndroidManifest using android:label property.
 		// moduleName is a preset variable in the parent EllucianActivity class
-		getActionBar().setTitle(moduleName);
+		setTitle(moduleName);
 		
 		// Get intent-extras out of intent
 		// These are set in either configuration xml or the Mobile Cloud Application

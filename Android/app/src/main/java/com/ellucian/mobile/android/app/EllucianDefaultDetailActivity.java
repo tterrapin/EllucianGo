@@ -6,6 +6,7 @@ package com.ellucian.mobile.android.app;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.ellucian.elluciango.R;
 
@@ -40,7 +41,7 @@ public class EllucianDefaultDetailActivity extends EllucianActivity {
 			// During initial setup, plug in the details fragment.
 			EllucianDefaultDetailFragment details = getDetailFragment(getIntent().getExtras(), -1);
 
-			getFragmentManager().beginTransaction().add(R.id.detail_container, details).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.detail_container, details).commit();
 		}
 	}
 	
@@ -48,7 +49,7 @@ public class EllucianDefaultDetailActivity extends EllucianActivity {
      *  See EllucianDefaultDetailFragment.newInstance for more information
      *  If you are only making changes to the class name, override getDetailFragmentClass() instead
      */
-	public EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
+	private EllucianDefaultDetailFragment getDetailFragment(Bundle args, int index) {
 		
 		return EllucianDefaultDetailFragment.newInstance(this, 
 				getDetailFragmentClass().getName(), args, index);
@@ -56,9 +57,22 @@ public class EllucianDefaultDetailActivity extends EllucianActivity {
 	}
 	
 	/** Override to return the class of an EllucianDefaultDetailFragment subclass */
-	public Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
+	protected Class<? extends EllucianDefaultDetailFragment> getDetailFragmentClass() {
 		return EllucianDefaultDetailFragment.class;	
 	}
-	
+
+    /** Override to check if the user selects the UP/home menu option.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, finish this Detail activity and return to Master activity.
+            finish();
+            return true;
+        }
+        return false;
+    }
 
 }

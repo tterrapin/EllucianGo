@@ -14,9 +14,7 @@
 #import "RegistrationPlannedSection.h"
 #import "RegistrationPlannedSectionMeetingPattern.h"
 #import "RegistrationPlannedSectionInstructor.h"
-
-#import "UIViewController+SlidingViewExtension.h"
-#import "UIColor+SchoolCustomization.h"
+#import "UIViewController+ECSlidingViewController.h"
 #import "RegistrationSearchResultsViewController.h"
 #import "RegistrationTabBarController.h"
 #import "RegistrationTerm.h"

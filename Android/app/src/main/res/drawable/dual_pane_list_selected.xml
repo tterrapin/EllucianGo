@@ -29,7 +29,7 @@
 	<!-- bitmap image for the arrow -->
 	<item
 	    android:right="4dp">
-	    <bitmap android:src="@drawable/list_selected_arrow" android:gravity="right" />
+	    <bitmap android:src="@drawable/list_selected_arrow" android:gravity="end" />
 	</item>
     
 </layer-list>

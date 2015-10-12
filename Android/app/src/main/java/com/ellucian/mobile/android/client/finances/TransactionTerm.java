@@ -8,7 +8,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TransactionTerm implements Parcelable {
-    public String description;
+    private String description;
     public String termId;
     public Transaction[] transactions;
 
@@ -18,7 +18,7 @@ public class TransactionTerm implements Parcelable {
         this.transactions = transactions;
     }
 
-    public TransactionTerm(Parcel in) {
+    private TransactionTerm(Parcel in) {
         readFromParcel(in);
     }
 

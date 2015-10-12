@@ -2,9 +2,6 @@
 
 package com.ellucian.mobile.android.registration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -31,25 +28,29 @@ import com.ellucian.mobile.android.client.registration.TermsResponse;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLevels;
 import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocations;
+import com.ellucian.mobile.android.util.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegistrationSearchFragment extends EllucianFragment  {
 	private static final String TAG = RegistrationSearchFragment.class.getSimpleName();
 	
-	protected RegistrationActivity activity;
-	protected View rootView;
-	protected Spinner termsSpinner;
-	protected EditText searchField;
-	protected Button searchButton;
-	protected TextView refineSearchView;
-	protected RetrieveSearchableTermsTask termsTask;
-	protected ArrayAdapter<String> termsAdapter;
-	protected String[] termNames;
-	protected OpenTerm[] terms;
-	protected int selectedSpinnerItem = -1;
-	protected List<SearchFilter> locationFilters = new ArrayList<SearchFilter>();
-	protected List<SearchFilter> levelFilters = new ArrayList<SearchFilter>();
-	protected ArrayList<String> selectedLocations;
-	protected ArrayList<String> selectedLevels;
+	private RegistrationActivity activity;
+	private View rootView;
+	private Spinner termsSpinner;
+	private EditText searchField;
+	private Button searchButton;
+	private TextView refineSearchView;
+	private RetrieveSearchableTermsTask termsTask;
+	private ArrayAdapter<String> termsAdapter;
+	private String[] termNames;
+	private OpenTerm[] terms;
+	private int selectedSpinnerItem = -1;
+	private List<SearchFilter> locationFilters = new ArrayList<SearchFilter>();
+	private List<SearchFilter> levelFilters = new ArrayList<SearchFilter>();
+	ArrayList<String> selectedLocations;
+	ArrayList<String> selectedLevels;
 	
 
 	@Override
@@ -198,8 +199,8 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		if (termNames == null || termNames.length == 0) {
 			termsTask = new RetrieveSearchableTermsTask();
 			termsTask.execute(getEllucianActivity().requestUrl);
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			searchButton.setEnabled(false);
+            Utils.showProgressIndicator(getActivity());
+            searchButton.setEnabled(false);
 		} else {
 			setTermsSpinnerAdapter(selectedSpinnerItem);
 		}
@@ -282,14 +283,14 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 					searchButton.setEnabled(true);
 					
 				} else {
-					Log.e(TAG, "Terms array null or emtpy");
+					Log.e(TAG, "Terms array null or empty");
 				}
 				
 			} else {
 				Log.e(TAG, "Terms response is null");
 			}
-			
-			getActivity().setProgressBarIndeterminateVisibility(false);
+
+            Utils.hideProgressIndicator(getActivity());
 		}
 	}
 	
@@ -299,12 +300,12 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		sendView("Registration Search", getEllucianActivity().moduleName);
 	}
 	
-	protected void setSearchFilters(ArrayList<String> selectedLocations, ArrayList<String> selectedLevels) {
+	void setSearchFilters(ArrayList<String> selectedLocations, ArrayList<String> selectedLevels) {
 		this.selectedLocations = selectedLocations;
 		this.selectedLevels = selectedLevels;
 	}
 	
-	protected ArrayList<String> getLocationNames() {
+	ArrayList<String> getLocationNames() {
 		if (locationFilters == null) {
 			return null;
 		}
@@ -315,7 +316,7 @@ public class RegistrationSearchFragment extends EllucianFragment  {
 		return locationNames;
 	}
 	
-	protected ArrayList<String> getLevelNames() {
+	ArrayList<String> getLevelNames() {
 		if (levelFilters == null) {
 			return null;
 		}

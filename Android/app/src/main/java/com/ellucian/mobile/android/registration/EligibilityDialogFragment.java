@@ -13,7 +13,7 @@ import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianDialogFragment;
 
 public class EligibilityDialogFragment extends EllucianDialogFragment {
-	public static final String TAG = EligibilityDialogFragment.class.getSimpleName();
+	private static final String TAG = EligibilityDialogFragment.class.getSimpleName();
 
 	public static EligibilityDialogFragment newInstance(String message) {
 		EligibilityDialogFragment fragment = new EligibilityDialogFragment();

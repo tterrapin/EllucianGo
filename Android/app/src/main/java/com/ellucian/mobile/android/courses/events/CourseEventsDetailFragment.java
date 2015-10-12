@@ -7,12 +7,13 @@ package com.ellucian.mobile.android.courses.events;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ShareActionProvider;
-import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider.OnShareTargetSelectedListener;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
@@ -59,7 +60,7 @@ public class CourseEventsDetailFragment extends IlpDetailFragment {
         
         /** Getting the actionprovider associated with the menu item whose id is share */
         ShareActionProvider shareActionProvider = 
-        		(ShareActionProvider) sharedMenuItem.getActionProvider();
+        		(ShareActionProvider) MenuItemCompat.getActionProvider(sharedMenuItem);
         shareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
 			
 			@Override

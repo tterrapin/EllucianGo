@@ -5,19 +5,23 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <permission android:name="com.ellucian.elluciango.qa.C2D_MESSAGE"
+    <permission android:name="com.ellucian.elluciango.qa.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.ellucian.elluciango.qa.permission.C2D_MESSAGE"/>
 
     <application
         android:name="com.ellucian.mobile.android.EllucianApplication">
+
+        <!-- Content Provider -->
+        <provider
+            android:name="com.ellucian.mobile.android.provider.EllucianProvider"
+            android:authorities="com.ellucian.elluciango.qa.contentprovider"
+            android:exported="false" />
+
         <!-- GCM receiver -->
-        <receiver android:name="com.ellucian.mobile.android.notifications.GcmBroadcastReceiver"
+        <receiver android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                <category android:name="com.ellucian.elluciango.qa"/>
-            </intent-filter>
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <category android:name="com.ellucian.elluciango.qa"/>

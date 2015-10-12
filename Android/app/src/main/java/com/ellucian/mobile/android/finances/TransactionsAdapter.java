@@ -18,10 +18,10 @@ import com.ellucian.mobile.android.util.CurrencyUtils;
 
 import java.util.Currency;
 
-public class TransactionsAdapter extends ArrayAdapter<Transaction> {
+class TransactionsAdapter extends ArrayAdapter<Transaction> {
 
-    private Context context;
-    private Currency currency;
+    private final Context context;
+    private final Currency currency;
 
     public TransactionsAdapter(Context context, Currency currency, Transaction[] transactions) {
         super(context, 0, transactions);

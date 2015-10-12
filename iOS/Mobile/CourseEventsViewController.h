@@ -15,7 +15,6 @@
 #import <Twitter/Twitter.h>
 #import <Accounts/Accounts.h>
 #import "Event.h"
-#import "UIColor+SchoolCustomization.h"
 
 @interface CourseEventsViewController : EllucianUITableViewController<NSFetchedResultsControllerDelegate>
 

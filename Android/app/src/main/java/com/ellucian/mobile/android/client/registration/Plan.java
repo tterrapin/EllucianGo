@@ -7,7 +7,7 @@ import android.os.Parcelable;
 
 public class Plan implements Parcelable {
 	public String planId;
-	public String studentId;
+	private String studentId;
 	public Term[] terms;
 	
 	public Plan() {
@@ -25,7 +25,6 @@ public class Plan implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

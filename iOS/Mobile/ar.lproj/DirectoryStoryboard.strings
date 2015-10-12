@@ -1,0 +1,48 @@
+/* Class = "UILabel"; text = "Label"; ObjectID = "22m-2H-nRN"; */
+"22m-2H-nRN.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Mobile"; ObjectID = "AhB-UD-EFQ"; */
+"AhB-UD-EFQ.text" = "رقم الجوال";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "DrJ-Gz-5n3"; */
+"DrJ-Gz-5n3.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "EJW-yt-Me7"; */
+"EJW-yt-Me7.text" = "البريد الإلكتروني";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Fjx-Sb-trp"; */
+"Fjx-Sb-trp.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Phone"; ObjectID = "HPb-ye-lMK"; */
+"HPb-ye-lMK.text" = "رقم الهاتف";
+
+/* Class = "UILabel"; text = "Department"; ObjectID = "Jd4-mQ-4DT"; */
+"Jd4-mQ-4DT.text" = "القسم";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Jkp-ub-6IH"; */
+"Jkp-ub-6IH.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Address"; ObjectID = "NOY-pJ-hQP"; */
+"NOY-pJ-hQP.text" = "العنوان";
+
+/* Class = "UILabel"; text = "Office"; ObjectID = "Rtd-54-HAz"; */
+"Rtd-54-HAz.text" = "المكتب";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "aNm-pv-19M"; */
+"aNm-pv-19M.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fQo-KN-f2k"; */
+"fQo-KN-f2k.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gKk-NO-EDm"; */
+"gKk-NO-EDm.text" = "المسمى";
+
+/* Class = "UISearchBar"; placeholder = "Search directory"; ObjectID = "iS4-ME-cUg"; */
+"iS4-ME-cUg.placeholder" = "دليل البحث";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "t3y-Ba-Rux"; */
+"t3y-Ba-Rux.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "z0S-RM-XG6"; */
+"z0S-RM-XG6.text" = "المسمى";
+

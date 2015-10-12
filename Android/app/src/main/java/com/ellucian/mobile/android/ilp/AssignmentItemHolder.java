@@ -7,9 +7,6 @@ package com.ellucian.mobile.android.ilp;
 
 public class AssignmentItemHolder extends IlpItemHolder {
 	public static final String TYPE_ASSIGNMENT = "typeAssignment";
-
-	public AssignmentItemHolder() {
-	}
 	
 	public AssignmentItemHolder(String sectionId, String sectionName, String title, String date, String displayDate,
                                 String content, String url) {

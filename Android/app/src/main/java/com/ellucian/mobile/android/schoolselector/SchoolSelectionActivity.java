@@ -5,11 +5,12 @@
 package com.ellucian.mobile.android.schoolselector;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
-import android.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnCloseListener;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
@@ -23,14 +24,16 @@ public class SchoolSelectionActivity extends EllucianActivity implements OnQuery
 		super.onCreate(savedInstanceState);
 		// activity_school_selection layout invokes SchoolSelectionFragment
 		setContentView(R.layout.activity_school_selection);
-		fragment = (SchoolSelectionFragment) getFragmentManager().findFragmentById(R.id.school_list_fragment);
+		fragment = (SchoolSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.school_list_fragment);
 
 		// set the colors directly, not going through preferences
 		int primaryColor = getResources().getColor(R.color.ellucian_primary_color);
 		int headerTextColor = getResources().getColor(R.color.ellucian_header_text_color);
 		configureActionBarDirect(primaryColor, headerTextColor);
-		getActionBar().setIcon(getResources().getDrawable(R.drawable.default_home_icon));
-	}
+        ActionBar bar = getSupportActionBar();
+        bar.setDisplayHomeAsUpEnabled(false);
+        bar.setLogo(R.drawable.default_home_logo);
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -6,7 +6,7 @@ package com.ellucian.mobile.android.notifications;
 
 import java.util.Date;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 
 public class NotificationsListFragment extends EllucianDefaultListFragment {
-	public static final String TAG = NotificationsListFragment.class.getSimpleName();
+	private static final String TAG = NotificationsListFragment.class.getSimpleName();
 	
 	public NotificationsListFragment() {
 	}

@@ -197,8 +197,8 @@ public class AssignmentsWidgetProvider extends AppWidgetProvider {
 
 	@SuppressLint("NewApi")
 	class DataProviderObserver extends ContentObserver {
-		private AppWidgetManager mAppWidgetManager;
-		private ComponentName mComponentName;
+		private final AppWidgetManager mAppWidgetManager;
+		private final ComponentName mComponentName;
 
 		DataProviderObserver(AppWidgetManager mgr, ComponentName cn, Handler h) {
 			super(h);

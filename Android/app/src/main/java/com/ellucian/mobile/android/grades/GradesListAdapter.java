@@ -4,41 +4,35 @@
 
 package com.ellucian.mobile.android.grades;
 
-import java.util.ArrayList;
-
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
-import com.ellucian.elluciango.R;
+import java.util.ArrayList;
 
-public class GradesListAdapter extends BaseAdapter {
-	public final ArrayList<Adapter> sections = new ArrayList<Adapter>();
-	public final ArrayAdapter<String> headers;
-	public final static int TYPE_SECTION_HEADER = 0;
+class GradesListAdapter extends BaseAdapter {
+	private final ArrayList<Adapter> sections = new ArrayList<Adapter>();
+    private final ArrayList<GradesSectionHeaderAdapter> headers = new ArrayList<>();
+	private final static int TYPE_SECTION_HEADER = 0;
 
-	public GradesListAdapter(Context context) {
-		headers = new ArrayAdapter<String>(context, R.layout.list_header);
-	}
+	public GradesListAdapter() {}
 
-	public void addSection(String section, Adapter adapter) {
-		this.headers.add(section);
+    public void addSection(GradesSectionHeaderAdapter headerAdapter, Adapter adapter) {
+        this.headers.add(headerAdapter);
 		this.sections.add(adapter);
 	}
 
 	public Object getItem(int position) {
-		for(int i = 0; i < this.headers.getCount(); i++) {
+		for(int i = 0; i < this.headers.size(); i++) {
 			Adapter section = sections.get(i);
-			String header = headers.getItem(i);
+            GradesSectionHeaderAdapter headerAdapter = headers.get(i);
 
 			int size = section.getCount() + 1;
 
 			// check if position inside this section
 			if (position == 0)
-				return header;
+				return headerAdapter;
 			if (position < size)
 				return section.getItem(position - 1);
 
@@ -68,7 +62,7 @@ public class GradesListAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		int type = 1;
-		for(int i = 0; i < this.headers.getCount(); i++) {
+		for(int i = 0; i < this.headers.size(); i++) {
 			Adapter section = sections.get(i);
 			int size = section.getCount() + 1;
 
@@ -93,14 +87,15 @@ public class GradesListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		int sectionnum = 0;
-		for(int i = 0; i < this.headers.getCount(); i++) {
+		for(int i = 0; i < this.headers.size(); i++) {
 			Adapter section = sections.get(i);
+            GradesSectionHeaderAdapter headerAdapter = headers.get(i);
 
 			int size = section.getCount() + 1;
 
 			// check if position inside this section
 			if (position == 0)
-				return headers.getView(sectionnum, convertView, parent);
+				return headerAdapter.getView(0, convertView, parent);
 			if (position < size)
 				return section.getView(position - 1, convertView, parent);
 

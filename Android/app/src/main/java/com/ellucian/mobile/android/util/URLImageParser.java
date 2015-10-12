@@ -4,17 +4,6 @@
 
 package com.ellucian.mobile.android.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -23,9 +12,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+@SuppressWarnings("JavaDoc")
 public class URLImageParser implements ImageGetter {
-    Context c;
-    View container;
+    private final Context c;
+    private final View container;
 
     /***
      * Construct the URLImageParser which will execute AsyncTask and refresh the container
@@ -66,8 +64,9 @@ public class URLImageParser implements ImageGetter {
         return urlDrawable;
     }
 
+    @SuppressWarnings("JavaDoc")
     public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable>  {
-        URLDrawable urlDrawable;
+        final URLDrawable urlDrawable;
 
         public ImageGetterAsyncTask(URLDrawable d) {
             this.urlDrawable = d;
@@ -131,10 +130,24 @@ public class URLImageParser implements ImageGetter {
         }
 
         private InputStream fetch(String urlString) throws MalformedURLException, IOException {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet(urlString);
-            HttpResponse response = httpClient.execute(request);
-            return response.getEntity().getContent();
+            HttpURLConnection urlConnection = getConnection(urlString);
+            return urlConnection.getInputStream();
+        }
+
+        private HttpURLConnection getConnection(String requestUrl) {
+            HttpURLConnection urlConnection = null;
+            URL url;
+            try {
+                url = new URL(requestUrl);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setInstanceFollowRedirects(false);
+            } catch (MalformedURLException e) {
+                Log.e("URLImageParser", "MalformedURLException", e);
+            } catch (IOException e) {
+                Log.e("URLImageParser", "IOException", e);
+            }
+
+            return urlConnection;
         }
     }
 }

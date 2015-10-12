@@ -4,14 +4,15 @@
 
 package com.ellucian.mobile.android.app;
 
+import android.support.v4.app.DialogFragment;
+
 import com.ellucian.mobile.android.util.ConfigurationProperties;
 
-import android.app.DialogFragment;
 
-
+@SuppressWarnings("JavaDoc")
 public class EllucianDialogFragment extends DialogFragment {
 	
-	public EllucianActivity getEllucianActivity() {
+	protected EllucianActivity getEllucianActivity() {
 		return (EllucianActivity)getActivity();
 	}
 	
@@ -27,7 +28,7 @@ public class EllucianDialogFragment extends DialogFragment {
      * @param value
      * @param moduleName
      */
-    public void sendEvent(String category, String action, String label, Long value, String moduleName) {
+    protected void sendEvent(String category, String action, String label, Long value, String moduleName) {
     	 getEllucianActivity().sendEvent(category, action, label, value, moduleName);
     }
     
@@ -39,7 +40,7 @@ public class EllucianDialogFragment extends DialogFragment {
      * @param value
      * @param moduleName
      */
-    public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
+    protected void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
     	 getEllucianActivity().sendEventToTracker1(category, action, label, value, moduleName);
     }
     
@@ -60,7 +61,7 @@ public class EllucianDialogFragment extends DialogFragment {
      * @param appScreen
      * @param moduleName
      */
-    public void sendView(String appScreen, String moduleName) {
+    protected void sendView(String appScreen, String moduleName) {
     	getEllucianActivity().sendView(appScreen, moduleName);
     }
     

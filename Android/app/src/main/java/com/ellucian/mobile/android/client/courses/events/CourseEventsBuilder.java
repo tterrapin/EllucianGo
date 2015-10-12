@@ -4,19 +4,18 @@
 
 package com.ellucian.mobile.android.client.courses.events;
 
-import java.util.ArrayList;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.ellucian.mobile.android.client.ContentProviderOperationBuilder;
-import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseEvents;
 
+import java.util.ArrayList;
+
 public class CourseEventsBuilder extends ContentProviderOperationBuilder<CourseEventsResponse>{
-		String courseId;
+		private final String courseId;
 
 		public CourseEventsBuilder(Context context, String courseId) {
 			super(context);

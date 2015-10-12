@@ -4,11 +4,12 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.ellucian.elluciango.R;
@@ -23,15 +24,18 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 
 public class IlpCardActivity extends EllucianActivity {
-    public static final String TAG = IlpCardActivity.class.getSimpleName();
-	protected IlpCardFragment fragment;
+    private static final String TAG = IlpCardActivity.class.getSimpleName();
+	private IlpCardFragment fragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_default_frame);
 
-        setTitle(moduleName);
+        if (!TextUtils.isEmpty(moduleName)) {
+            // When coming from Widget, moduleName is not known.
+            setTitle(moduleName);
+        }
 
         if (getIntent().getBooleanExtra(AssignmentsWidgetService.LAUNCHED_FROM_APPWIDGET, false)) {
             // Click event on AppWidget started this activity
@@ -76,7 +80,7 @@ public class IlpCardActivity extends EllucianActivity {
             startActivity(intent);
         }
 
-		FragmentManager manager = getFragmentManager();
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		fragment =  (IlpCardFragment) manager.findFragmentByTag("IlpCardFragment");
 

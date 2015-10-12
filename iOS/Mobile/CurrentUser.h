@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-#define kSignInReturnToHomeNotification @"SignInReturnToHomeNotification"
-#define kSignOutNotification @"SignOutNotification"
-#define kSignInNotification @"SignInNotification"
+extern NSString* const kSignInReturnToHomeNotification;
+extern NSString* const kSignOutNotification;
+extern NSString* const kSignInNotification;
 
-#define kLoginRoles @"login-roles"
-#define kLoginRemember @"login-remember"
-#define kLoginUserauth @"login-userauth"
-#define kLoginUserid @"login-userid"
+extern NSString* const kLoginRoles;
+extern NSString* const kLoginRemember;
+extern NSString* const kLoginUserauth;
+extern NSString* const kLoginUserid;
 
-#define kLoginExecutorSuccess @"Login Executor Success"
+extern NSString* const kLoginExecutorSuccess;
 
 @interface CurrentUser : NSObject
 
@@ -33,6 +33,7 @@
 -(void)logoutWithoutUpdatingUI;
 -(void)logout:(BOOL)requestedByUser;
 -(void)logoutWithNotification:(BOOL)postNotification requestedByUser:(BOOL)requestedByUser;
+-(NSDictionary*)userAsPropertyListDictionary;
 - (void) login: (NSString *) auth
    andPassword: (NSString *) pass
      andUserid: (NSString *) uID

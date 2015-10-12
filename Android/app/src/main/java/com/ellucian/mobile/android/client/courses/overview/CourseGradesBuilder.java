@@ -19,7 +19,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.Grades;
 import com.ellucian.mobile.android.provider.EllucianContract.GradesCourses;
 
 public class CourseGradesBuilder extends ContentProviderOperationBuilder<GradesResponse> {
-	Context context;
+	private final Context context;
 	
 	public CourseGradesBuilder(Context context) {
 		super(context);

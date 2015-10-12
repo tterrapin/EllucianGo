@@ -4,7 +4,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+           xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
 
     <!-- Main -->
@@ -15,7 +15,7 @@
     <string name="main_switch_school">تغيير الجامعة</string>
 
     <!-- Menu -->
-    
+
     <string name="menu">القائمة</string>
     <string name="menu_item_maps_title">الخرائط</string>
     <string name="menu_item_grades_title">الدرجات</string>
@@ -37,22 +37,22 @@
     <string name="menu_header_indicator_description">مؤشر العنوان</string>
     <string name="drawer_open">فتح درج التنقل</string>
     <string name="drawer_close">إغلاق درج التنقل</string>
-    
+
     <!-- Configuration and Institutions -->
-    
+
     <string name="title_activity_school_selection">قم باختيار الجامعة</string>
     <string name="no_institutions">لا توجد جامعات للعرض حاليا.</string>
-    
+
     <!-- The translated string should keep \'%1$s\' as it is.  The backslash escapes the single quote and the %1$s is how java will import a substitution string -->
-    <string name="school_selection_confirmation">لقد قمت باختيار \'%1$s\'. هل هذا صحيح؟</string>  
+    <string name="school_selection_confirmation">لقد قمت باختيار \'%1$s\'. هل هذا صحيح؟</string>
     <string name="title_activity_configuration_loading">جاري تحميل التهيئة.</string>
     <string name="configuration_loading_failed">فشل تحميل التهيئة</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="configuration_loading_message">جاري تحميل التهيئة. يرجى الانتظار&#8230;</string>
-    <string name="configuration_loading_missing_config">"تعذر تحميل التهيئة من ذلك الرابط."</string> 
-    
+    <string name="configuration_loading_missing_config">"تعذر تحميل التهيئة من ذلك الرابط."</string>
+
     <!-- General Defaults, Dialogs, and Rows -->
-    
+
     <string name="label_name">الاسم</string>
     <string name="label_title">اللقب</string>
     <string name="label_phone">رقم الهاتف</string>
@@ -104,14 +104,14 @@
     <string name="dialog_select_categories">اختيار الفئات</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">إعادة المصادقة قيد التنفيذ، يرجى الانتظار&#8230;</string>
-	<string name="dialog_continue">المتابعة</string>
-	<string name="dialog_go_back">العودة</string>
-	<string name="dialog_security_warning">تحذير أمان</string>
-	<string name="dialog_cert_warning_statement">"هناك مشاكل متعلقة بشهادة الأمان لهذا الموقع."</string>
-	<string name="dialog_field_empty">لا يمكن أن يكون الحقل فارغا.</string>
-	<string name="unauthorized_feature">ليس لديك إذن لاستخدام هذه الخاصية.</string>
-	
-    <string name="row_category_label">الفئة:</string>
+    <string name="dialog_continue">المتابعة</string>
+    <string name="dialog_go_back">العودة</string>
+    <string name="dialog_security_warning">تحذير أمان</string>
+    <string name="dialog_cert_warning_statement">"هناك مشاكل متعلقة بشهادة الأمان لهذا الموقع."</string>
+    <string name="dialog_field_empty">لا يمكن أن يكون الحقل فارغا.</string>
+    <string name="unauthorized_feature">ليس لديك إذن لاستخدام هذه الخاصية.</string>
+
+    <string name="row_category_label">\u2022</string>  <!-- This is a bullet -->
     <string name="row_contact_label">التواصل مع:</string>
     <string name="row_email_label">البريد الإلكتروني:</string>
     <string name="row_date_label">التاريخ:</string>
@@ -126,7 +126,7 @@
     <string name="layers">الطبقات</string>
     <string name="unavailable">غير متوفر</string>
     <string name="dash_separator">"-"</string>
-    <string name="line_speparator">|</string>
+    <string name="line_separator">|</string>
     <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
     <string name="detail_page_title_format">تفاصيل %s</string>
     <string name="nothing_to_display">لا يوجد شيء للعرض</string>
@@ -183,9 +183,9 @@
         <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> تحويلة رقم: <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
     </string>
 
-	
+
     <!-- About -->
-    
+
     <string name="title_activity_about">عن التطبيق</string>
     <string name="about">عن التطبيق</string>
     <string name="about_logo_description">شعار الجامعة</string>
@@ -199,9 +199,9 @@
     <string name="about_ellucian_privacy_policy">سياسة خصوصية Ellucian</string>
     <string name="about_powered_by">مشغل بواسطة</string>
     <string name="about_powered_by_ellucian">مشغل بواسطة Ellucian</string>
-    
+
     <!-- Courses -->
-    
+
     <string name="title_activity_courses">المقررات</string>
     <string name="title_activity_courses_schedule">المقررات</string>
     <string name="title_activity_course_overview">نظرة عامة عن المقرر</string>
@@ -241,10 +241,10 @@
     <string name="course_assignments_due">المستحق:</string>
     <string name="course_assignments_none_assigned">لم يتم أي تخصيص</string>
     <string name="label_left_button">الزر الأيسر</string>
-	<string name="label_right_button">الزر الأيمن</string>
+    <string name="label_right_button">الزر الأيمن</string>
 
     <!-- Directory -->
-    
+
     <string name="title_activity_directory">فئات الدليل</string>
     <string name="title_activity_directory_detail">تفاصيل الدليل</string>
     <string name="title_activity_directory_list_all">الدليل</string>
@@ -278,7 +278,7 @@
     <string name="finances_balance">الرصيد</string>
 
     <!-- Grades -->
-    
+
     <string name="title_activity_grades">الدرجات</string>
     <string name="grades_last_updated">آخر تحديث:</string>
     <string name="no_grades_in_term">لا توجد درجات لهذا الفصل الدراسي</string>
@@ -286,11 +286,11 @@
 
     <!-- Ilp -->
 
-    <string name="title_activity_ilp">منصة التعلم الذكي</string>
-    <string name="title_activity_ilp_today">منصة التعلم الذكي اليوم</string>
-    <string name="title_activity_ilp_detail">تفاصيل منصة التعلم الذكي</string>
+    <string name="title_activity_ilp">نظام Intelligent Learning Platform الأساسي</string>
+    <string name="title_activity_ilp_today">نظام Intelligent Learning Platform الأساسي اليوم</string>
+    <string name="title_activity_ilp_detail">تفاصيل نظام Intelligent Learning Platform الأساسي</string>
     <string name="ilp_assignments_today">الواجبات</string>
-    <string name="ilp_events_today">فعاليات اليوم</string>
+    <string name="ilp_events_today">الفعاليات</string>
     <string name="ilp_announcements_today">الإعلانات</string>
     <string name="ilp_assignments">الواجبات</string>
     <string name="ilp_events">الفعاليات</string>
@@ -308,9 +308,9 @@
     <string name="ilp_events_none_today">لا توجد فعاليات اليوم</string>
     <string name="ilp_announcements_none_today">لا توجد إعلانات اليوم</string>
 
-    
+
     <!-- Maps -->
-    
+
     <string name="title_activity_maps">الخرائط</string>
     <string name="maps_campus_selection_title">اختيار الفرع</string>
     <string name="maps_get_directions_label">اتجاهات الطريق</string>
@@ -336,22 +336,25 @@
     <string name="legal">الشؤون القانونية</string>
     <string name="maps_feature_not_supported">هذه الخاصية غير مدعمة بهذا الجهاز.</string>
     <string name="maps_building_additional_services_label">خدمات إضافية:</string>
-    
+    <string name="maps_storage_alert_title">تم طلب الإذن</string>
+    <string name="maps_storage_alert_message">لاستخدام الخرائط داخل هذا التطبيق يتطلب API الخرائط الوصول إلى البيانات المبنية على الخرائط في جهازك. يرجى تمكين إعداد التخزين.</string>
+    <string name="maps_storage_not_granted">لا يمكن عرض الخرائط دون إذن التخزين لهذا التطبيق.</string>
+
     <!-- Multimedia -->
-    
+
     <string name="title_activity_video">مرئي</string>
     <string name="title_activity_audio">صوتي</string>
-    
+
     <!-- News -->
-    
+
     <string name="title_activity_news">الأخبار</string>
     <string name="title_activity_news_detail">تفاصيل الأخبار</string>
     <string name="news_no_news">لا توجد أخبار للعرض</string>
     <string name="searchable_news_hint">البحث في الأخبار</string>
     <string name="searchable_news_label">البحث في الأخبار</string>
-       
+
     <!-- Notifications -->
-    
+
     <string name="title_activity_notifications">التنبيهات</string>
     <string name="notifications_detail_date_posted">تاريخ المشاركة:</string>
     <string name="notifications_detail_link_action">اتخاذ إجراء</string>
@@ -361,28 +364,28 @@
     <string name="notifications_delete">حذف</string>
     <string name="notifications_unable_to_delete_message">تعذر حذف هذا التنبيه.</string>
     <string name="notifications_dialog_delete_message">هل أنت متأكد من حذف هذا التنبيه؟</string>
-    
+
     <!-- Numbers -->
-    
+
     <string name="title_number_list">الأرقام</string>
     <string name="title_number_detail">تفاصيل الأرقام</string>
     <string name="numbers_no_entries">لا توجد أرقام مهمة</string>
     <string name="searchable_numbers_hint">البحث في الأرقام</string>
     <string name="searchable_numbers_label">البحث في الأرقام</string>
-    
+
     <!-- Registration -->
-    
+
     <string name="title_activity_registration">التسجيل</string>
     <string name="title_activity_registration_detail">تفاصيل التسجيل</string>
     <string name="registration_tab_cart">سلة التسجيل</string>
     <string name="registration_tab_search">البحث</string>
-    <string name="registration_tab_registered">مسجَّل</string>
+    <string name="registration_tab_registered">مسجَّل</string>
     <string name="registration_register">تسجيل</string>
     <string name="registration_credits">الساعات المعتمدة</string>
     <string name="registration_results_important">هام</string>
     <string name="registration_results_important_sub">هذه المشاكل ربما حالت دون التسجيل.</string>
     <string name="registration_results_registered">تم التسجيل!</string>
-    <string name="registration_results_success_sub">أنت مسجَّل في هذه المقررات.</string>
+    <string name="registration_results_success_sub">أنت مسجَّل في هذه المقررات.</string>
     <string name="registration_results_warning">نأسف.</string>
     <string name="registration_results_failure_sub">تعذر تسجيل هذه المقررات.</string>
     <string name="registration_results_dropped_important_sub">هذه المشاكل ربما حالت دون الحذف.</string>
@@ -446,13 +449,13 @@
 	<string name="registration_label_credits_min_max_format">
 	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
 	</string>
-    
-        
-	<!-- Versioning -->
-	<string name="version_upgrade">تحديث</string>
-	<string name="version_outdated">قديم</string>
-	<string name="version_outdated_message">يوجد إصدار جديد لهذا التطبيق.</string>
-	<string name="version_force_upgrade_message">يجب تحديث التطبيق إلى آخر إصدار.</string>
+
+
+    <!-- Versioning -->
+    <string name="version_upgrade">تحديث</string>
+    <string name="version_outdated">قديم</string>
+    <string name="version_outdated_message">يوجد إصدار جديد لهذا التطبيق.</string>
+    <string name="version_force_upgrade_message">يجب تحديث التطبيق إلى آخر إصدار.</string>
 
     <!-- Widget -->
     <string name="widget_no_ilp">الواجبات غير متوفرة في هذه المؤسسة التعليمية</string>
@@ -460,6 +463,5 @@
     <string name="widget_not_connected">غير متصل</string>
     <string name="widget_header">الواجبات (اليوم)</string>
     <string name="widget_no_assignments">لا توجد واجبات تسليمها اليوم</string>
-
 
 </resources> 

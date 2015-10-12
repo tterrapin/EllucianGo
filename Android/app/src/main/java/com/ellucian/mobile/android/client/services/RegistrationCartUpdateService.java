@@ -14,7 +14,7 @@ import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Extra;
 
 public class RegistrationCartUpdateService extends IntentService {
-	public static final String TAG = RegistrationCartUpdateService.class.getSimpleName();
+	private static final String TAG = RegistrationCartUpdateService.class.getSimpleName();
 	public static final String ACTION_UPDATE_FINISHED = "com.ellucian.mobile.android.client.RegistrationCartUpdateService.action.update.finished";
 	public static final String UPDATE_RESULT = "updateResult";
 	public static final String SECTIONS_TO_UPDATE = "sectionsToUpdate";

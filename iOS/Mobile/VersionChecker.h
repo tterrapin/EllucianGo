@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define kVersionCheckerCurrentNotification @"VersionCheckerCurrentNotification"
-#define kVersionCheckerAppNewerNotification @"VersionCheckerAppNewerNotification"
-#define kVersionCheckerUpdateAvailableNotification @"VersionCheckerUpdateAvailableNotification"
-#define kVersionCheckerOutdatedNotification @"VersionCheckerOutdatedNotification"
+extern NSString* const kVersionCheckerCurrentNotification;
+extern NSString* const kVersionCheckerAppNewerNotification;
+extern NSString* const kVersionCheckerUpdateAvailableNotification;
+extern NSString* const kVersionCheckerOutdatedNotification;
 
-@interface VersionChecker : NSObject<UIAlertViewDelegate>
+
+@interface VersionChecker : NSObject
 
 +(BOOL) checkVersion:(NSArray *)supportedVersions;
 

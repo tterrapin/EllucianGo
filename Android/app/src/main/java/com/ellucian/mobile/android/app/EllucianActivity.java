@@ -4,19 +4,26 @@
 
 package com.ellucian.mobile.android.app;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +31,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
@@ -38,7 +45,8 @@ import com.ellucian.mobile.android.util.ConfigurationProperties;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
-public abstract class EllucianActivity extends Activity implements DrawerLayoutActivity {
+@SuppressWarnings("JavaDoc")
+public abstract class EllucianActivity extends AppCompatActivity implements DrawerLayoutActivity {
 	private static final String TAG = EllucianActivity.class.getSimpleName();
 
 	private static final long MILLISECONDS_PER_DAY = 24*60*60*1000;
@@ -51,6 +59,8 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
 	private SendToSelectionReceiver resetReceiver;
 	private OutdatedReceiver outdatedReceiver;
 	private UnauthenticatedUserReceiver unauthenticatedUserReceiver;
+    private int mPrimaryColor;
+    private int mHeaderTextColor;
 	
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +84,7 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
         } else {
         	requestUrl = "";
         }
-        
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		getActionBar();
-		setProgressBarIndeterminateVisibility(false);
-               
+
 	}
 
 	@Override
@@ -113,7 +119,7 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
 	 * 'standard' method that reads preferences for these values
 	 * valid after a configuration has been loaded
 	 */
-	public void configureActionBar() {
+	protected void configureActionBar() {
 	    int primaryColor = Utils.getPrimaryColor(this);
 	    int headerTextColor = Utils.getHeaderTextColor(this);
 	    
@@ -125,28 +131,44 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
 	 * school selection, which can be called before any config
 	 * has ever been loaded on the device
 	 */
-    public void configureActionBarDirect(int primaryColor, int headerTextColor) {
-    	ActionBar bar = getActionBar();
-    	bar.setBackgroundDrawable(new ColorDrawable(primaryColor));
-    	bar.setSplitBackgroundDrawable(new ColorDrawable(primaryColor));
-    	bar.setStackedBackgroundDrawable(new ColorDrawable(primaryColor));
-    	int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-    	TextView title = (TextView)findViewById(titleId);
-    	if(title != null) {
-    		title.setTextColor(headerTextColor);
-    	}
-    	if(Utils.hasDefaultMenuIcon(this)) {
-    		bar.setIcon(getResources().getDrawable(R.drawable.default_home_icon));
-    	} else {
+	protected void configureActionBarDirect(int primaryColor, int headerTextColor) {
+
+        mPrimaryColor = primaryColor;
+        mHeaderTextColor = headerTextColor;
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+
+    	ActionBar bar = getSupportActionBar();
+		if (bar != null) {
+			bar.setDisplayHomeAsUpEnabled(true);
+			bar.setBackgroundDrawable(new ColorDrawable(primaryColor));
+			bar.setSplitBackgroundDrawable(new ColorDrawable(primaryColor));
+			bar.setStackedBackgroundDrawable(new ColorDrawable(primaryColor));
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout.setBackgroundColor(primaryColor);
+		}
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float[] hsv = new float[3];
+            int darkerColor = primaryColor;
+            Color.colorToHSV(darkerColor, hsv);
+            hsv[2] *= 0.8f; // value component
+            darkerColor = Color.HSVToColor(hsv);
+
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(darkerColor);
+        }
+
+        setTitle(bar.getTitle());
+
+    	if(!Utils.hasDefaultMenuIcon(this)) {
     		Drawable menuIcon = Utils.getMenuIcon(this);
     		if (menuIcon != null) {
     			bar.setIcon(menuIcon);
-    		} else {
-    			bar.setIcon(getResources().getDrawable(R.drawable.default_home_icon));
     		}
-    		
     	}
-    	invalidateOptionsMenu();    	
+    	invalidateOptionsMenu();
     }
 
     public EllucianApplication getEllucianApp() {
@@ -159,6 +181,15 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
     
     public DrawerLayoutHelper getDrawerLayoutHelper() {
     	return drawerLayoutHelper;
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        if (!TextUtils.isEmpty(title)) {
+            Spannable titleText = new SpannableString(title);
+            titleText.setSpan(new ForegroundColorSpan(mHeaderTextColor), 0, titleText.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            getSupportActionBar().setTitle(titleText);
+        }
     }
 
     @Override
@@ -236,7 +267,7 @@ public abstract class EllucianActivity extends Activity implements DrawerLayoutA
 	 * @param label
 	 * @param moduleName
 	 */
-	public void sendUserTiming(String category, long value, String name, String label, String moduleName) {
+	protected void sendUserTiming(String category, long value, String name, String label, String moduleName) {
 		getEllucianApp().sendUserTiming(category, value, name, label, moduleName);
 	}
 

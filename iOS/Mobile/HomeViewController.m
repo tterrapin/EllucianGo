@@ -28,8 +28,12 @@
     
     self.navigationController.navigationBar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
-        self.topMessageLabel.textAlignment = NSTextAlignmentRight;
+    if ([UIView respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        
+        UIUserInterfaceLayoutDirection direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.view.semanticContentAttribute];
+        if(direction == UIUserInterfaceLayoutDirectionRightToLeft) {
+            self.arrowImageView.image = self.arrowImageView.image.imageFlippedForRightToLeftLayoutDirection;
+        }
     }
     
     NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
@@ -71,7 +75,7 @@
         self.backgroundImageView.image = image;
     }
     
-    if (schoolLogoStripe != nil)
+    if (schoolLogoStripe)
     {
         UIImage *image = [[ImageCache sharedCache] getCachedImage: schoolLogoStripe];
         image=[UIImage imageWithCGImage:[image CGImage] scale:2.0 orientation:UIImageOrientationUp];
@@ -98,8 +102,8 @@
 
 - (IBAction)signIn:(id)sender {
     [self sendEventWithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionLogin withLabel:@"Home-Click Sign In" withValue:nil forModuleNamed:nil];
-    UIViewController *vc = [LoginExecutor loginController];
-    [self presentViewController:vc animated:YES completion:nil];
+    LoginSignInOperation *operation = [[LoginSignInOperation alloc] initWithController:self];
+    [[NSOperationQueue mainQueue] addOperation:operation];
 }
 
 - (IBAction)signOut:(id)sender {
@@ -108,11 +112,11 @@
 }
 
 - (IBAction)switchSchools:(id)sender {
-    UINavigationController *navcontroller = [self.storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConfigurationSelectionStoryboard" bundle:nil];
+    UINavigationController *navcontroller = [storyboard instantiateViewControllerWithIdentifier:@"ConfigurationSelector"];
     navcontroller.navigationBar.translucent = NO;
     ConfigurationSelectionViewController *vc = navcontroller.childViewControllers[0];
     [vc setModalPresentationStyle:UIModalPresentationFullScreen];
-    vc.managedObjectContext = self.managedObjectContext;
     [self presentViewController:navcontroller animated:YES completion:nil];
 }
 
@@ -122,7 +126,7 @@
     if([CurrentUser sharedInstance].isLoggedIn) {
         self.signInLabel.text = NSLocalizedString(@"Sign Out", @"label to sign out");
          [self.signInButton addTarget:self action:@selector(signOut:) forControlEvents:UIControlEventTouchUpInside];
-        [NotificationsFetcher fetchNotifications:self.managedObjectContext];
+        [NotificationsFetcher fetchNotifications:CoreDataManager.shared.managedObjectContext];
     } else {
         self.signInLabel.text = NSLocalizedString(@"Sign In", @"label to sign in");
         [self.signInButton addTarget:self action:@selector(signIn:) forControlEvents:UIControlEventTouchUpInside];

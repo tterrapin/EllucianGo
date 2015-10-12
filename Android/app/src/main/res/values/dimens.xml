@@ -12,11 +12,13 @@
     <dimen name="content_padding_bottom">0dp</dimen>
     <dimen name="content_msg_padding">20dp</dimen>
     <dimen name="content_msg_text_size">16sp</dimen>
+    <dimen name="section_header_text_size">15dp</dimen>
     <dimen name="list_row_padding_top">2dp</dimen>
     <dimen name="list_row_padding_bottom">4dp</dimen>
-    <dimen name="list_title_text_size">18sp</dimen>
+    <dimen name="list_title_text_size">16sp</dimen>
     <dimen name="list_description_text_size">13sp</dimen>
     <dimen name="list_category_text_size">13sp</dimen>
+    <dimen name="list_summary_text_size">14sp</dimen>
     <dimen name="list_image_margin_top">5dp</dimen>
     <dimen name="list_image_margin_left">3dp</dimen>
     <dimen name="content_padding">8dp</dimen>
@@ -24,10 +26,14 @@
     <dimen name="detail_title_text_size">18sp</dimen>
     <dimen name="table_label_text">18sp</dimen>
     <dimen name="table_data_text_size">14sp</dimen>
+    <dimen name="card_label_text">14sp</dimen>
+    <dimen name="card_data_text_size">18sp</dimen>
     <dimen name="multimedia_text_padding_left">24dp</dimen>
     <dimen name="multimedia_text_padding_top">20dp</dimen>
     <dimen name="multimedia_text_padding_right">24dp</dimen>
     <dimen name="multimedia_text_padding_bottom">22dp</dimen>
     <dimen name="multimedia_text_line_spacing_size">8sp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="card_padding">24dp</dimen>
 
 </resources>

@@ -4,17 +4,18 @@
 
 package com.ellucian.mobile.android.app;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import com.ellucian.mobile.android.util.ConfigurationProperties;
 
+@SuppressWarnings("JavaDoc")
 public class EllucianFragment extends Fragment {
 	
-	public EllucianActivity getEllucianActivity() {
+	protected EllucianActivity getEllucianActivity() {
 		return (EllucianActivity)getActivity();
 	}
 	
-	public ConfigurationProperties getConfigurationProperties() {
+	protected ConfigurationProperties getConfigurationProperties() {
         return getEllucianActivity().getConfigurationProperties();
     }
 	
@@ -38,7 +39,7 @@ public class EllucianFragment extends Fragment {
      * @param value
      * @param moduleName
      */
-    public void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
+    protected void sendEventToTracker1(String category, String action, String label, Long value, String moduleName) {
     	 getEllucianActivity().sendEventToTracker1(category, action, label, value, moduleName);
     }
     
@@ -59,7 +60,7 @@ public class EllucianFragment extends Fragment {
      * @param appScreen
      * @param moduleName
      */
-    public void sendView(String appScreen, String moduleName) {
+    protected void sendView(String appScreen, String moduleName) {
     	getEllucianActivity().sendView(appScreen, moduleName);
     }
     

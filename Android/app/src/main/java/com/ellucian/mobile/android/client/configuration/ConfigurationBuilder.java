@@ -29,7 +29,7 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class ConfigurationBuilder extends ContentProviderOperationBuilder<JSONObject>{
 	@SuppressWarnings("unused")
-	private Context context;
+	private final Context context;
 	
 	public ConfigurationBuilder(Context context) {
 		super(context);

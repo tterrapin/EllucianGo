@@ -4,6 +4,7 @@
 
 package com.ellucian.mobile.android.multimedia;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.ellucian.elluciango.R;
@@ -16,6 +17,11 @@ public class VideoActivity extends EllucianActivity {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_video);
 		
-		setTitle(moduleName);
+        setTitle(moduleName);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getSupportActionBar().hide();
+        }
+
 	}
 }

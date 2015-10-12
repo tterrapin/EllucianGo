@@ -1,9 +1,6 @@
 // Copyright 2014 Ellucian Company L.P and its affiliates.
 package com.ellucian.mobile.android.webframe;
 
-import java.util.List;
-import java.util.Locale;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -32,9 +29,12 @@ import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
-public class WebframeJavascriptInterface {
+import java.util.List;
+import java.util.Locale;
+
+class WebframeJavascriptInterface {
 	private static final String TAG = "WebAppInterface";
-	private WebframeActivity webActivity;
+	private final WebframeActivity webActivity;
 	private AuthenticationReceiver authenticationReceiver;
 	private QueuedIntentAuthenticationReceiver queuedIntentAuthenticationReceiver;
 
@@ -181,7 +181,7 @@ public class WebframeJavascriptInterface {
 							if (!ellucianApplication.isUserAuthenticated()) {
 									LoginDialogFragment loginFragment = new LoginDialogFragment();
 									loginFragment.queueIntent(intent, roles);
-									loginFragment.show(webActivity.getFragmentManager(),
+									loginFragment.show(webActivity.getSupportFragmentManager(),
 											LoginDialogFragment.LOGIN_DIALOG);
 									found = true;
 							} else if (type.equals(ModuleType.WEB)) {

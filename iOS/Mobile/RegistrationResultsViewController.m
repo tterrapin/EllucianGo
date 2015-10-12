@@ -62,7 +62,7 @@
         {
             cell = [tableView dequeueReusableCellWithIdentifier:@"Registration Message Cell"];
             UILabel *label = (UILabel *)[cell viewWithTag:1];
-            if([AppearanceChanger isRTL]) {
+            if([AppearanceChanger isIOS8AndRTL]) {
                 label.textAlignment = NSTextAlignmentRight;
             }
             NSDictionary *selected = [self.importantMessages objectAtIndex:[indexPath row]];
@@ -90,7 +90,7 @@
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];
             NSString* termId = [selected objectForKey:@"termId"];
             termLabel.text = [self.delegate termName:termId];
-            if([AppearanceChanger isRTL]) {
+            if([AppearanceChanger isIOS8AndRTL]) {
                 label.textAlignment = NSTextAlignmentRight;
                 courseNameLabel.textAlignment = NSTextAlignmentRight;
                 titleLabel.textAlignment = NSTextAlignmentRight;
@@ -119,7 +119,7 @@
             UILabel *termLabel = (UILabel *)[cell viewWithTag:4];
             NSString* termId = [selected objectForKey:@"termId"];
             termLabel.text = [self.delegate termName:termId];
-            if([AppearanceChanger isRTL]) {
+            if([AppearanceChanger isIOS8AndRTL]) {
                 label.textAlignment = NSTextAlignmentRight;
                 courseNameLabel.textAlignment = NSTextAlignmentRight;
                 titleLabel.textAlignment = NSTextAlignmentRight;
@@ -270,7 +270,7 @@
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [h addSubview:label];
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         label.textAlignment = NSTextAlignmentRight;
     }
     
@@ -347,7 +347,7 @@
     label2.adjustsFontSizeToFitWidth = YES;
     [h addSubview:label2];
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         label.textAlignment = NSTextAlignmentRight;
         label2.textAlignment = NSTextAlignmentRight;
     }

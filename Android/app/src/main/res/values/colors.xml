@@ -5,9 +5,9 @@
 
 <resources>
     <color name="content_msg_color">#999999</color>
-    <color name="list_description_text_color">#666666</color>
-    <color name="list_category_text_color">#4d4d4d</color>
-    <color name="detail_date_text_color">#666666</color>
+    <color name="list_description_text_color">#b3b3b3</color>
+    <color name="list_category_text_color">#1a1a1a</color>
+    <color name="detail_date_text_color">#1a1a1a</color>
     <color name="ellucian_primary_color">#331640</color>
     <color name="ellucian_header_text_color">#FFFFFF</color>
     <color name="status_error_text_color">#ED1C24</color>
@@ -24,5 +24,12 @@
     <color name="due_today_green">#006837</color>
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#00838F</color>
-    <color name="finances_color">#54a8cc</color>
+
+    <!-- 4.1 UXD refresh -->
+    <color name="sub_header_bg">#E6E6E6</color>
+    <color name="sub_header_text_color">#333333</color>
+    <color name="list_title_text_color">#4d4d4d</color>
+    <color name="list_summary_text_color">#666666</color>
+    <color name="card_data_color">#1a1a1a</color>
+
 </resources>

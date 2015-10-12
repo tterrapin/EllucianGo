@@ -16,7 +16,7 @@ import com.ellucian.mobile.android.util.Extra;
 import com.google.gson.Gson;
 
 public class NotificationsUpdateServerService extends IntentService {
-	public static final String TAG = NotificationsUpdateServerService.class.getSimpleName();
+	private static final String TAG = NotificationsUpdateServerService.class.getSimpleName();
 	public static final String MODIFICATION_READ = "modificationRead";
 	public static final String MODIFICATION_DELETE = "modificationDelete";
 
@@ -48,7 +48,7 @@ public class NotificationsUpdateServerService extends IntentService {
 		
 	}
 	
-	protected JSONObject handleUpdateServerRead(Intent intent) {
+	private JSONObject handleUpdateServerRead(Intent intent) {
 		String id = intent.getStringExtra(Extra.ID);
 		MobileClient client = new MobileClient(this);
 		Gson gson = new Gson();
@@ -63,8 +63,8 @@ public class NotificationsUpdateServerService extends IntentService {
 	}
 	
 	public class MarkReadData {
-		public String uuid;
-		public String[] statuses;
+		public final String uuid;
+		public final String[] statuses;
 		
 		public MarkReadData(String value) {
 			uuid = value;
@@ -72,7 +72,7 @@ public class NotificationsUpdateServerService extends IntentService {
 		}
 	}
 	
-	protected JSONObject handleUpdateServerDelete(Intent intent) {
+	private JSONObject handleUpdateServerDelete(Intent intent) {
 		String id = intent.getStringExtra(Extra.ID);
 		MobileClient client = new MobileClient(this);
 

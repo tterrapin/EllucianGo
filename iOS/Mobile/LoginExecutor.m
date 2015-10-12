@@ -80,17 +80,11 @@
     return responseStatusCode;
 }
 
-+ (UIViewController *) loginController
++ (UINavigationController *) loginController
 {
-    NSString *storyboardName;
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        storyboardName = @"MainStoryboard_iPad";
-    } else {
-        storyboardName = @"MainStoryboard_iPhone";
-    }
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"LoginStoryboard" bundle:nil];
     
-    UIViewController *vc;
+    UINavigationController *vc;
     NSString *authenticationMode = [[AppGroupUtilities userDefaults] objectForKey:@"login-authenticationType"];
     if([authenticationMode isEqualToString:@"browser"]) {
         vc = [storyboard instantiateViewControllerWithIdentifier:@"Web Login"];

@@ -12,21 +12,17 @@ class AssignmentsFetcher: NSObject {
     
     class func fetch(context: NSManagedObjectContext, url: String) {
         
-        var importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         
         importContext.parentContext = context
         
         if let userid = CurrentUser.sharedInstance().userid {
             
-            var urlString = NSString( format:"%@/%@/assignments", url, userid )
-            var url: NSURL? = NSURL(string: urlString as String)
+            let urlString = NSString( format:"%@/%@/assignments", url, userid )
+            let url: NSURL? = NSURL(string: urlString as String)
             
-            
-            
-            var error:NSError?
-            
-            var authenticatedRequest = AuthenticatedRequest()
-            var responseData:NSData? = authenticatedRequest.requestURL(url, fromView: nil)
+            let authenticatedRequest = AuthenticatedRequest()
+            let responseData:NSData? = authenticatedRequest.requestURL(url, fromView: nil)
             
             if let response = responseData
             {
@@ -34,8 +30,12 @@ class AssignmentsFetcher: NSObject {
                 
                 let json = JSON(data: response)
                 
-                var request = NSFetchRequest(entityName:"CourseAssignment")
-                var oldObjects = importContext.executeFetchRequest(request, error:&error)
+                let request = NSFetchRequest(entityName:"CourseAssignment")
+                var oldObjects: [AnyObject]?
+                do {
+                    oldObjects = try importContext.executeFetchRequest(request)
+                } catch {
+                }
                 
                 for oldObject in oldObjects! {
                     importContext.deleteObject(oldObject as! NSManagedObject)
@@ -44,7 +44,7 @@ class AssignmentsFetcher: NSObject {
                 let assignmentList: Array<JSON> = json["assignments"].arrayValue
                 
                 for  jsonDictionary in assignmentList {
-                    var entry:CourseAssignment = NSEntityDescription.insertNewObjectForEntityForName("CourseAssignment", inManagedObjectContext: importContext) as! CourseAssignment
+                    let entry:CourseAssignment = NSEntityDescription.insertNewObjectForEntityForName("CourseAssignment", inManagedObjectContext: importContext) as! CourseAssignment
                     entry.sectionId = jsonDictionary["sectionId"].stringValue
                     entry.courseName = jsonDictionary["courseName"].stringValue
                     entry.courseSectionNumber = jsonDictionary["courseSectionNumber"].stringValue
@@ -59,17 +59,20 @@ class AssignmentsFetcher: NSObject {
                     entry.url = jsonDictionary["url"].stringValue
                 }
                 
-                var saveError: NSError?
-                importContext.save(&saveError)
-                if !importContext.save(&saveError) {
-                    NSLog("save error: \(saveError!.localizedDescription)")
+                do {
+                    try importContext.save()
+                } catch let saveError as NSError {
+                    NSLog("save error: \(saveError.localizedDescription)")
+                } catch {
+                    
                 }
             }
-            
-            var parentError: NSError?
-            if !importContext.parentContext!.save(&parentError)
-            {
-                NSLog("Could not save to store after update to course assignments: \(parentError!.localizedDescription)")
+
+            do {
+                try importContext.parentContext!.save()
+            } catch let parentError as NSError {
+                NSLog("Could not save to store after update to course assignments: \(parentError.localizedDescription)")
+            } catch {
             }
         }
         

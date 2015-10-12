@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.client.courses.overview;
 
-import java.util.ArrayList;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.text.TextUtils;
@@ -23,6 +21,8 @@ import com.ellucian.mobile.android.provider.EllucianContract.CoursePatterns;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseTerms;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsBuildings;
 import com.ellucian.mobile.android.provider.EllucianContract.MapsCampuses;
+
+import java.util.ArrayList;
 
 public class CourseDetailsBuilder extends ContentProviderOperationBuilder<CoursesResponse> {
 	
@@ -81,7 +81,7 @@ public class CourseDetailsBuilder extends ContentProviderOperationBuilder<Course
 							.withValue(CourseCourses.COURSE_ID, section.sectionId)
 							.withValue(CourseInstructors.INSTRUCTOR_ID, instructor.instructorId)
 							.withValue(CourseInstructors.INSTRUCTOR_FIRST_NAME, instructor.firstName)
-							.withValue(CourseInstructors.INSTRUCTOR_MIDDLE_NAME, instructor.middleIntial)
+							.withValue(CourseInstructors.INSTRUCTOR_MIDDLE_NAME, instructor.middleInitial)
 							.withValue(CourseInstructors.INSTRUCTOR_LAST_NAME, instructor.lastName)
 							.withValue(CourseInstructors.INSTRUCTOR_FORMATTED_NAME, instructor.formattedName)
 							.withValue(CourseInstructors.INSTRUCTOR_PRIMARY, instructor.primary ? 1 : 0)
@@ -90,7 +90,7 @@ public class CourseDetailsBuilder extends ContentProviderOperationBuilder<Course
 				
 				
 				for (MeetingPattern pattern : section.meetingPatterns) {
-					// Storing int[] as comma delimted string
+					// Storing int[] as comma delimited string
 					String daysString = "";
 					for (int dayNumber : pattern.daysOfWeek) {
 						daysString += "" + dayNumber + ",";

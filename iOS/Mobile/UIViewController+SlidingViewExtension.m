@@ -10,18 +10,9 @@
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "DetailSelectionDelegate.h"
 #import "Ellucian_GO-Swift.h"
+#import "UIViewController+ECSlidingViewController.h"
 
 @implementation UIViewController (SlidingViewExtension)
-
-- (SlidingViewController *)slidingViewController
-{
-    UIViewController *viewController = self.parentViewController;
-    while (!(viewController == nil || [viewController isKindOfClass:[SlidingViewController class]])) {
-        viewController = viewController.parentViewController;
-    }
-    
-    return (SlidingViewController *)viewController;
-}
 
 - (IBAction)revealMenu:(id)sender
 {
@@ -29,8 +20,19 @@
     [defaults setBool:YES forKey:@"menu-discovered"];
     [defaults synchronize];
     [self sendEventToTracker1WithCategory:kAnalyticsCategoryUI_Action withAction:kAnalyticsActionButton_Press withLabel:@"Click Menu Tray Icon" withValue:nil forModuleNamed:nil];
-    [self.slidingViewController slideTop];
+
+    if ([UIView respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        UIUserInterfaceLayoutDirection direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.view.semanticContentAttribute];
+        if (direction == UIUserInterfaceLayoutDirectionRightToLeft) {
+            [ self.slidingViewController anchorTopViewToLeftAnimated:YES];
+        } else {
+            [ self.slidingViewController anchorTopViewToRightAnimated:YES];
+        }
+    } else { // iOS8
+        [self.slidingViewController anchorTopViewToRightAnimated:YES];
+    }
     
+    //TODO remove after soft-deprecated popovers removed
     if ([self isKindOfClass:[UISplitViewController class]])
     {
         UISplitViewController *split = (UISplitViewController *) self;

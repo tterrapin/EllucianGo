@@ -6,10 +6,7 @@ package com.ellucian.mobile.android.ilp;
 
 
 public class AnnouncementItemHolder extends IlpItemHolder {
-	public static final String TYPE_ANNOUNCEMENT = "typeAnnouncement";
-
-	public AnnouncementItemHolder() {
-	}
+	private static final String TYPE_ANNOUNCEMENT = "typeAnnouncement";
 	
 	public AnnouncementItemHolder(String sectionId, String sectionName, String title, String date, String displayDate,
                                   String content, String url) {

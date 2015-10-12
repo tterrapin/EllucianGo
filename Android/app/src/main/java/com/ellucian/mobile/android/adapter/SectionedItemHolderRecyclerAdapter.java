@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,24 +12,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.util.Utils;
+
+import java.util.ArrayList;
 
 public class SectionedItemHolderRecyclerAdapter extends EllucianRecyclerAdapter {
     public final static int TYPE_SECTION_HEADER = 0;
     public final static int TYPE_SECTION_ITEM = 1;
 
-    protected Context context;
-	protected final ArrayList<ArrayList<? extends ItemInfoHolder>> sections = new ArrayList<ArrayList<? extends ItemInfoHolder>>();
+    protected final Context context;
+    protected final ArrayList<ArrayList<? extends ItemInfoHolder>> sections = new ArrayList<ArrayList<? extends ItemInfoHolder>>();
     protected final ArrayList<ItemInfoHolder> headers = new ArrayList<ItemInfoHolder>();
-	protected int headerLayoutResId;
-	protected int headerResId;
-	protected int itemLayoutResId;
-	protected int itemResId;
+    protected final int headerLayoutResId;
+    protected final int headerResId;
+    protected final int itemLayoutResId;
+    protected final int itemResId;
 
     /**
      * Adapter created with the Default constructor will use default layouts for header and item rows.
      */
-    public SectionedItemHolderRecyclerAdapter(Context context) {
+	public SectionedItemHolderRecyclerAdapter(Context context) {
     	this.context = context;
     	this.headerLayoutResId = R.layout.default_header_row;
     	this.headerResId = R.id.header;
@@ -184,13 +183,11 @@ public class SectionedItemHolderRecyclerAdapter extends EllucianRecyclerAdapter 
     
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
     	TextView headerView = (TextView) ((ItemViewHolder)holder).itemView.findViewById(headerResId);
-    	headerView.setBackgroundColor(Utils.getAccentColor(context));
-    	headerView.setTextColor(Utils.getSubheaderTextColor(context));
         ItemInfoHolder headerHolder = (ItemInfoHolder) getItem(position);
         String headerText = headerHolder.getDefaultText();
 		headerView.setText(headerText);
     }
-    
+
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
     	ItemInfoHolder itemHolder = (ItemInfoHolder) getItem(position);
 		

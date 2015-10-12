@@ -4,12 +4,12 @@
 
 package com.ellucian.mobile.android.app;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.app.IntentService;
-import android.app.LoaderManager;
+import android.support.v4.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,15 +33,15 @@ import com.ellucian.elluciango.R;
  */
 
 public abstract class EllucianDefaultDualPaneActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-	protected SimpleCursorAdapter adapter;
-	protected EllucianDefaultListFragment mainFragment;
+	private SimpleCursorAdapter adapter;
+	private EllucianDefaultListFragment mainFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_default_dual_pane);
 		
-		FragmentManager manager = getFragmentManager();
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag(getFragmentTag());
 
@@ -63,8 +63,7 @@ public abstract class EllucianDefaultDualPaneActivity extends EllucianActivity i
 		}
 		
 		transaction.commit();
-		
-		getLoaderManager().restartLoader(0, null, this);
+		getSupportLoaderManager().restartLoader(0, null, this);
 		
 		Intent intent = new Intent(this, getIntentServiceClass());
 		Bundle bundle = getIntentServiceExtras();
@@ -91,22 +90,22 @@ public abstract class EllucianDefaultDualPaneActivity extends EllucianActivity i
    		adapter.swapCursor(null);
    	}
    	
-   	abstract public String getFragmentTag();
+   	protected abstract String getFragmentTag();
 	
-	abstract public SimpleCursorAdapter getCursorAdapter();
+	protected abstract SimpleCursorAdapter getCursorAdapter();
 	
-	abstract public Class<? extends IntentService> getIntentServiceClass(); 
+	protected abstract Class<? extends IntentService> getIntentServiceClass();
 	
 	
 	/** Any variables used in the Loader creation will need to be set before the call to super.onCreate() 
 	 *  in the onCreate() method of the subclass. This insures the statement is correct before the loader
 	 *  is initialized
 	 */
-	abstract public Loader<Cursor> getCursorLoader(int id, Bundle args);
+	protected abstract Loader<Cursor> getCursorLoader(int id, Bundle args);
 	
 	
 	/** Override for custom extras for the intent service */
-	public Bundle getIntentServiceExtras() {
+	private Bundle getIntentServiceExtras() {
 		return getIntent().getExtras();
 	}
 	
@@ -114,26 +113,26 @@ public abstract class EllucianDefaultDualPaneActivity extends EllucianActivity i
      *  See EllucianDefaultListFragment.newInstance for more information
      *  If you are only making changes to the class name, override getListFragmentClass() instead
      */
-	public EllucianDefaultListFragment getListFragment() {
+	private EllucianDefaultListFragment getListFragment() {
 		
 		return EllucianDefaultListFragment.newInstance(this, 
 				getListFragmentClass().getName(), null);
 	}
 	
 	/** Override to return the class of an EllucianDefaultListFragment subclass */
-	public Class<? extends EllucianDefaultListFragment> getListFragmentClass() {
+	protected Class<? extends EllucianDefaultListFragment> getListFragmentClass() {
 		return EllucianDefaultListFragment.class;
 	}
 	
 	/** Override to return a custom ViewBinder */
-	public ViewBinder getCursorViewBinder() {
+	protected ViewBinder getCursorViewBinder() {
 		return null;
 	}
    	
    	/** Make sure to call this method in the LoaderManager.LoaderCallback.onLoadFinished method if  
    	 *  it is overridden in the subclass 
-   	 */ 	
-	protected void createNotifyHandler(final EllucianDefaultListFragment fragment) {
+   	 */
+	private void createNotifyHandler(final EllucianDefaultListFragment fragment) {
    		Handler handler = new Handler(Looper.getMainLooper());
    		handler.post(new Runnable(){
 

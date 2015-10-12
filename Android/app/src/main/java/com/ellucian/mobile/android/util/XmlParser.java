@@ -19,7 +19,7 @@ import com.ellucian.elluciango.R;
 
 public class XmlParser {
 	
-	public static final String TAG = XmlParser.class.getSimpleName();
+	private static final String TAG = XmlParser.class.getSimpleName();
 	
 	private static final String CONFIGURATION_LIST_URL = "configuration-list-url";
 	private static final String USE_DEFAULT_CONFIGURATION = "use-default-configuration";
@@ -211,7 +211,7 @@ public class XmlParser {
 		
 	}
 	
-	public static boolean isNewConfigStartTag(String tagName) {
+	private static boolean isNewConfigStartTag(String tagName) {
 		if (tagName.equals(MODULE_CONFIGURATIONS) || tagName.equals(PACKAGE) || tagName.equals(ACTIVITY) || 
 				tagName.equals(INTENT_EXTRA) || tagName.equals(INTENT_FLAG) || tagName.equals(SECURE) ) {
 			return false;

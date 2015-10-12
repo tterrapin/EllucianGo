@@ -5,21 +5,23 @@
 package com.ellucian.mobile.android.notifications;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.LoaderManager;
+import android.app.Activity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.CursorLoader;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -41,10 +43,12 @@ import com.ellucian.mobile.android.client.services.NotificationsUpdateServerServ
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 public class NotificationsActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	public static final String TAG = NotificationsActivity.class.getSimpleName();
+	private static final String TAG = NotificationsActivity.class.getSimpleName();
+    private final Activity activity = this;
 	public static final int NOTIFICATIONS_DETAIL_REQUEST_CODE = 8888;
 	public static final int RESULT_DELETE = 9999;
 	private EllucianDefaultListFragment mainFragment;
@@ -93,7 +97,7 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
             return;
 		}
 		
-		FragmentManager manager = getFragmentManager();
+		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag("notificationsListFragment");
 
@@ -120,15 +124,22 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 		if (viewBinder != null) {
 			mainFragment.setViewBinder(viewBinder);
 		}
-		
+
 		transaction.commit();
 		
-		getLoaderManager().restartLoader(0, null, this);
-				
-		// Only want to query server on first load, it might conflict with current database state
+		getSupportLoaderManager().restartLoader(0, null, this);
+
+        // See if user got here by selecting a specific notification alert.
+        // If so, do not rebroadcast a local notification if that's the
+        // only new notification in the database.
+        Intent incomingIntent = getIntent();
+        String requestedNotificationId = incomingIntent.getStringExtra(Extra.NOTIFICATIONS_NOTIFICATION_ID);
+        Log.d(TAG, "requestedNotificationId: " + requestedNotificationId);
+
+        // Only want to query server on first load, it might conflict with current database state
 		if (savedInstanceState == null  || !savedInstanceState.containsKey("loaded")) {
 			Log.d(TAG, "startingNotifications");
-			getEllucianApp().startNotifications();
+			getEllucianApp().startNotifications(requestedNotificationId);
 		} 
 		
 	}
@@ -185,7 +196,7 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
    	}
    	
 	
-	protected void createNotifyHandler(final EllucianDefaultListFragment fragment) {
+	private void createNotifyHandler(final EllucianDefaultListFragment fragment) {
    		Handler handler = new Handler(Looper.getMainLooper());
    		handler.post(new Runnable(){
 
@@ -249,7 +260,7 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
     	}
     }
     
-    protected void deleteNotification() {
+    void deleteNotification() {
 
     	int position = mainFragment.getCurrentPosition();
     	Cursor cursor  = (Cursor)mainFragment.getListView().getItemAtPosition(position);
@@ -266,18 +277,18 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
         updateServerIntent.putExtra(Extra.ID, id);
         updateServerIntent.putExtra(Extra.REQUEST_URL, getEllucianApp().getMobileNotificationsUrl());
         startService(updateServerIntent);
-    	
-    	setProgressBarIndeterminateVisibility(true);
+
+        Utils.showProgressIndicator(this);
     }    	
 
     private class NotificationsDatabaseUpdatedReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			setProgressBarIndeterminateVisibility(false);
-			// Only reset the list on delete 	
+            Utils.hideProgressIndicator(activity);
+            // Only reset the list on delete
 			resetPosition = intent.getBooleanExtra(NotificationsUpdateDatabaseService.ACTION_RESET_LIST, false);
-			getLoaderManager().restartLoader(0, null, NotificationsActivity.this);			
+			getSupportLoaderManager().restartLoader(0, null, NotificationsActivity.this);
 		}    	
 
     }
@@ -314,7 +325,9 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 				} else {
 					titleView.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
 				}
-				descriptionView.setText(description);
+                if (!TextUtils.isEmpty(description)) {
+                    descriptionView.setText(Html.fromHtml(description).toString());
+                }
 				
 				return true;
 			} else if (index == cursor.getColumnIndex(Notifications.NOTIFICATIONS_STICKY)) {	

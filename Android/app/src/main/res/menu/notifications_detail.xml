@@ -2,15 +2,17 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/share"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         android:title="@string/share"
-        android:showAsAction="ifRoom"
-        android:actionProviderClass="android.widget.ShareActionProvider"
-    />
-    <item 
-	    android:showAsAction="ifRoom|withText"
-	    android:id="@+id/notifications_delete" 
-	 	android:title="@string/notifications_delete" />  
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/notifications_delete"
+        android:title="@string/notifications_delete"
+        android:icon="@drawable/ic_delete_white_36dp"
+        app:showAsAction="always" />
 </menu>

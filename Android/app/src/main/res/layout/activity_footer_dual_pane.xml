@@ -1,0 +1,40 @@
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+
+  For Lollipop and above, we use CoordinatorLayout to allow the Toolbar
+  to collapse on ListViews and RecyclerViews (v21/activity_default_dual_pane).
+
+  However, we don't want this for activities with a fixed footer anchored to the
+  bottom of the view (like Registration, which has a button to allow for Add/Drop).
+  The button will not display unless AppLayout is collapsed. Google said we should
+  not contain the button view within the view with scrolling behavior, so we have
+  a layout for dual pane activities with footers that do not use CoordinatorLayout.
+
+  -->
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar"/>
+
+        <include layout="@layout/progress_indicator"/>
+
+        <FrameLayout
+            android:id="@+id/frame_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/drawer_list" />
+
+</android.support.v4.widget.DrawerLayout>
+

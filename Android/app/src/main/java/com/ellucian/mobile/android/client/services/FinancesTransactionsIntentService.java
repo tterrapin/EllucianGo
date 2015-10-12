@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.util.Extra;
 
 public class FinancesTransactionsIntentService extends IntentService {
 
-    public static final String TAG = "FinancesTransactions";
+    private static final String TAG = "FinancesTransactions";
     public static final String ACTION_UPDATE_FINISHED = "com.ellucian.mobile.android.client.FinancesTransactionsIntentService.action.update.finished";
     public static final String UPDATE_RESULT = "updateResult";
     public FinancesTransactionsIntentService() {

@@ -98,9 +98,9 @@
     <string name="dialog_password">Password</string>
     <string name="dialog_sign_in_empty">Username or Password can not be empty.</string>
     <string name="dialog_sign_in_failed">Sign In Failed. Please check the network connection and/or your Username and Password. Please contact your institution’s IT staff for assistance with login.</string>
-    <string name="dialog_signed_in">You have been Signed In.</string>
-    <string name="dialog_signed_out">You have Signed Out.</string>
-    <string name="dialog_idle_sign_out">You have idle too long and have been Signed Out.</string>
+    <string name="dialog_signed_in">You have signed in.</string>
+    <string name="dialog_signed_out">You have signed out.</string>
+    <string name="dialog_idle_sign_out">You have been idle too long and have signed out.</string>
     <string name="dialog_select_categories">Select Categories</string>
     <!-- Keep &#8230; as is to follow Android best practice of using the horizontal ellipse character -->
     <string name="dialog_re_authenticate">Re-authenticating, please wait&#8230;</string>
@@ -111,7 +111,7 @@
 	<string name="dialog_field_empty">Field cannot be empty</string>
 	<string name="unauthorized_feature">You do not have permission to use this feature.</string>
 	
-    <string name="row_category_label">Category:</string>
+    <string name="row_category_label">\u2022</string>  <!-- This is a bullet -->
     <string name="row_contact_label">Contact:</string>
     <string name="row_email_label">Email:</string>
     <string name="row_date_label">Date:</string>
@@ -126,7 +126,7 @@
     <string name="layers">Layers</string>
     <string name="unavailable">Unavailable</string>
     <string name="dash_separator">"-"</string>
-    <string name="line_speparator">|</string>
+    <string name="line_separator">|</string>
     <!-- The translated string should keep %s as it is.  The backslash escapes the single quote and the %s is how java will import a substitution string -->
     <string name="detail_page_title_format">%s Detail</string>
     <string name="nothing_to_display">Nothing to display</string>
@@ -290,7 +290,7 @@
     <string name="title_activity_ilp_today">Ilp Today</string>
     <string name="title_activity_ilp_detail">Ilp Detail</string>
     <string name="ilp_assignments_today">Assignments</string>
-    <string name="ilp_events_today">Today\'s Events</string>
+    <string name="ilp_events_today">Events</string>
     <string name="ilp_announcements_today">Announcements</string>
     <string name="ilp_assignments">Assignments</string>
     <string name="ilp_events">Events</string>
@@ -336,6 +336,9 @@
     <string name="legal">Legal</string>
     <string name="maps_feature_not_supported">Feature is not supported by this device.</string>
     <string name="maps_building_additional_services_label">Additional Services:</string>
+    <string name="maps_storage_alert_title">Permission Requested</string>
+    <string name="maps_storage_alert_message">To utilize Maps inside of this app the Maps API requires access to maps based data on your device. Please enable the Storage setting.</string>
+    <string name="maps_storage_not_granted">Maps cannot be displayed without Storage permission for this app.</string>
     
     <!-- Multimedia -->
     
@@ -460,10 +463,5 @@
     <string name="widget_not_connected">Not Connected</string>
     <string name="widget_header">Assignments (Today)</string>
     <string name="widget_no_assignments">No assignments due today</string>
-
-    <!-- Testing -->
-    <string name="test_configuration">Test Configuration</string>
-    <string name="configuration_list">Configuration List</string>
-
 
 </resources>

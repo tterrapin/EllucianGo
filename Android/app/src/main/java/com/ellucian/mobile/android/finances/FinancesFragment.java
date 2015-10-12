@@ -50,10 +50,10 @@ public class FinancesFragment extends EllucianFragment {
     private String buttonUrl;
     private Boolean useExternalBrowser;
     private FinancesActivity financesActivity;
-    private BalanceReceiever balanceReceiever;
-    private TransactionsReceiever transactionsReceiever;
-    public static final String PROXY_TERM_ID = "MOBILESERVER_PROXY_TERM_ID";
-    public static final String TAG = "FinancesFragment";
+    private BalanceReceiver balanceReceiver;
+    private TransactionsReceiver transactionsReceiver;
+    private static final String PROXY_TERM_ID = "MOBILESERVER_PROXY_TERM_ID";
+    private static final String TAG = "FinancesFragment";
 
     @Override
     public void onAttach(Activity activity) {
@@ -84,9 +84,6 @@ public class FinancesFragment extends EllucianFragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_finances, container, false);
             balanceView = (TextView) rootView.findViewById(R.id.balance_text_view);
-            TextView dividerBar = (TextView) rootView.findViewById(R.id.finances_divider_bar);
-            dividerBar.setBackgroundColor(Utils.getAccentColor(financesActivity));
-            dividerBar.setTextColor(Utils.getSubheaderTextColor(financesActivity));
             transactionsView = (ListView) rootView.findViewById(R.id.transactions_list_view);
             transactionsView.setEmptyView(rootView.findViewById(R.id.transactions_no_data));
 
@@ -129,21 +126,21 @@ public class FinancesFragment extends EllucianFragment {
     public void onResume() {
         super.onResume();
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(financesActivity);
-        balanceReceiever = new BalanceReceiever();
-        transactionsReceiever = new TransactionsReceiever();
-        lbm.registerReceiver(balanceReceiever, new IntentFilter(FinancesBalanceIntentService.ACTION_UPDATE_FINISHED));
-        lbm.registerReceiver(transactionsReceiever, new IntentFilter(FinancesTransactionsIntentService.ACTION_UPDATE_FINISHED));
+        balanceReceiver = new BalanceReceiver();
+        transactionsReceiver = new TransactionsReceiver();
+        lbm.registerReceiver(balanceReceiver, new IntentFilter(FinancesBalanceIntentService.ACTION_UPDATE_FINISHED));
+        lbm.registerReceiver(transactionsReceiver, new IntentFilter(FinancesTransactionsIntentService.ACTION_UPDATE_FINISHED));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(financesActivity);
-        lbm.unregisterReceiver(balanceReceiever);
-        lbm.unregisterReceiver(transactionsReceiever);
+        lbm.unregisterReceiver(balanceReceiver);
+        lbm.unregisterReceiver(transactionsReceiver);
     }
 
-    private class BalanceReceiever extends BroadcastReceiver {
+    private class BalanceReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -181,10 +178,11 @@ public class FinancesFragment extends EllucianFragment {
         }
     }
 
-    private class TransactionsReceiever extends BroadcastReceiver {
+    private class TransactionsReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Utils.hideProgressIndicator(financesActivity);
             TransactionsResponse transactionsResponse = null;
             transactionsResponse = intent.getParcelableExtra(FinancesTransactionsIntentService.UPDATE_RESULT);
 

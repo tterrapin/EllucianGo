@@ -5,10 +5,10 @@
 package com.ellucian.mobile.android.ilp;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -167,7 +167,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
 		setAdapter(null);	
 	}
 
-	protected void showType(int type) {
+	private void showType(int type) {
 
 		if (type == VIEW_BY_NO_DATE) {
 			showTypeIndex = VIEW_BY_NO_DATE;
@@ -178,7 +178,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
 		}
 	}
 
-    protected void showCurrentSelected() {
+    private void showCurrentSelected() {
         if (recyclerView.getSelectedIndex() == -1 && adapter != null && adapter.getItemCount() > 0) {
             Object itemHolder = adapter.getItem(1);
             detailBundle = buildDetailBundle(itemHolder);
@@ -202,7 +202,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
         }
     }
 	
-	public ArrayList<IlpItemHolder> buildAssignmentsList(Cursor cursor) {
+	private ArrayList<IlpItemHolder> buildAssignmentsList(Cursor cursor) {
 		ArrayList<IlpItemHolder> assignmentsList = new ArrayList<IlpItemHolder>();
 		
 		if (cursor.moveToFirst()) {
@@ -232,7 +232,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
 		return assignmentsList;		
 	}
 	
-	public void buildAdapters(ArrayList<IlpItemHolder> assignmentsList) {
+	private void buildAdapters(ArrayList<IlpItemHolder> assignmentsList) {
         ArrayList<IlpItemHolder> overdueItems = new ArrayList<IlpItemHolder>();
 		ArrayList<IlpItemHolder> todayItems = new ArrayList<IlpItemHolder>();
 		ArrayList<IlpItemHolder> tomorrowItems = new ArrayList<IlpItemHolder>();

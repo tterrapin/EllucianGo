@@ -16,6 +16,7 @@
 #import "CourseDetail.h"
 #import "RegistrationTabBarController.h"
 #import "RegistrationLocation.h"
+#import "Ellucian_GO-Swift.h"
 
 @interface RegistrationPlannedSectionDetailViewController ()
 @property (strong, nonatomic) NSOrderedSet *meetingPatterns;
@@ -48,6 +49,8 @@
 {
     [super viewDidLoad];
     
+    self.deleteButtonItem.tintColor = [UIColor whiteColor];
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         
         self.maskView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -59,6 +62,7 @@
     if(self.deleteFromCartToolbar) {
         UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
         [self.deleteFromCartToolbar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        self.navigationController.toolbar.tintColor = [UIColor whiteColor];
     }
     
     [self.scrollView invalidateIntrinsicContentSize];
@@ -67,7 +71,7 @@
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         
-        if([AppearanceChanger isRTL]) {
+        if([AppearanceChanger isIOS8AndRTL]) {
             self.courseSectionNumberLabel.textAlignment = NSTextAlignmentRight;
             self.courseNameLabel.textAlignment = NSTextAlignmentRight;
             self.descriptionContent.textAlignment = NSTextAlignmentRight;
@@ -179,7 +183,7 @@
         facultyLabel.translatesAutoresizingMaskIntoConstraints = NO;
         facultyLabel.text = instructor.formattedName;
         facultyLabel.font = [UIFont systemFontOfSize:fontSize];
-        facultyLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+        facultyLabel.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         [facultyLabel sizeToFit];
         [self.facultyContent addSubview:facultyLabel];
         
@@ -258,7 +262,7 @@
         facultyLabel.translatesAutoresizingMaskIntoConstraints = NO;
         facultyLabel.text = instructor.formattedName;
         facultyLabel.font = [UIFont systemFontOfSize:fontSize];
-        facultyLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+        facultyLabel.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         [facultyLabel sizeToFit];
         [self.facultyContent addSubview:facultyLabel];
         
@@ -447,7 +451,7 @@
         meetingLabel.translatesAutoresizingMaskIntoConstraints = NO;
         meetingLabel.text = meetingContent;
         meetingLabel.font = [UIFont systemFontOfSize:fontSize];
-        meetingLabel.textAlignment = [AppearanceChanger isRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
+        meetingLabel.textAlignment = [AppearanceChanger isIOS8AndRTL] ? NSTextAlignmentRight : NSTextAlignmentLeft;
         meetingLabel.numberOfLines = 0;
         [meetingLabel sizeToFit];
         [self.meetingContent addSubview:meetingLabel];
@@ -669,7 +673,7 @@
     
     self.navigationController.navigationBar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.courseSectionNumberLabel.textAlignment = NSTextAlignmentRight;
         self.courseNameLabel.textAlignment = NSTextAlignmentRight;
         self.descriptionContent.textAlignment = NSTextAlignmentRight;

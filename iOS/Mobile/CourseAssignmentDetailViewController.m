@@ -7,7 +7,6 @@
 //
 
 #import "CourseAssignmentDetailViewController.h"
-#import "SafariActivity.h"
 #import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
@@ -42,7 +41,7 @@
     }
     self.navigationController.navigationBar.translucent = NO;
     
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.titleLabel.textAlignment = NSTextAlignmentRight;
         self.descriptionTextView.textAlignment = NSTextAlignmentRight;
     }
@@ -63,6 +62,7 @@
         self.padToolBar.translucent = NO;
         UIImage *registerButtonImage = [UIImage imageNamed:@"Registration Button"];
         [self.padToolBar setBackgroundImage:registerButtonImage forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        self.padToolBar.tintColor = [UIColor whiteColor];
     }
 
     self.titleLabel.text = self.itemTitle;
@@ -308,44 +308,34 @@
 
 -(void) showPermissionNotGrantedAlert {
     
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        UIAlertController * alertController = [UIAlertController
-                                               alertControllerWithTitle: NSLocalizedString(@"Permission not granted", @"Permission not granted title")
-                                               message:NSLocalizedString(@"You must give permission in Settings to allow access", @"Permission not granted message")
-                                               preferredStyle:UIAlertControllerStyleAlert];
-        
-        
-        UIAlertAction* settingsAction = [UIAlertAction
-                             actionWithTitle:NSLocalizedString(@"Settings", @"Settings application name")
-                             style:UIAlertActionStyleDefault
-                             handler: ^(UIAlertAction * action)
-                             {
-                                 if (&UIApplicationOpenSettingsURLString != NULL) {
-                                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-                                 }
-                                 
-                             }];
-        
-        UIAlertAction* cancelAction = [UIAlertAction
-                                       actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                       style:UIAlertActionStyleDefault
-                                       handler: nil];
-        
-        [alertController addAction:settingsAction];
-        [alertController addAction:cancelAction];
-        dispatch_async(dispatch_get_main_queue(),
-                       ^{
-                           [self presentViewController:alertController animated:YES completion:nil];
-                       });
-    } else if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        UIAlertView * alert = [[UIAlertView alloc ] initWithTitle:NSLocalizedString(@"Permission not granted", @"Permission not granted title")
-                                                          message:NSLocalizedString(@"You must give permission in Settings to allow access", @"Permission not granted message")
-                                                         delegate:self
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles: nil];
-        alert.tag = 2;
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-    }
+    UIAlertController * alertController = [UIAlertController
+                                           alertControllerWithTitle: NSLocalizedString(@"Permission not granted", @"Permission not granted title")
+                                           message:NSLocalizedString(@"You must give permission in Settings to allow access", @"Permission not granted message")
+                                           preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    UIAlertAction* settingsAction = [UIAlertAction
+                                     actionWithTitle:NSLocalizedString(@"Settings", @"Settings application name")
+                                     style:UIAlertActionStyleDefault
+                                     handler: ^(UIAlertAction * action)
+                                     {
+                                         if (UIApplicationOpenSettingsURLString != NULL) {
+                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                         }
+                                         
+                                     }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                   style:UIAlertActionStyleDefault
+                                   handler: nil];
+    
+    [alertController addAction:settingsAction];
+    [alertController addAction:cancelAction];
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       [self presentViewController:alertController animated:YES completion:nil];
+                   });
 }
 
 @end

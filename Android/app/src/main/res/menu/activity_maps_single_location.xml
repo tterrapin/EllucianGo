@@ -2,15 +2,16 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/maps_layers"
-        android:showAsAction="never"
-        android:title="@string/layers"/>
+        android:title="@string/layers"
+        app:showAsAction="never" />
     <item
         android:id="@+id/maps_legal"
-        android:showAsAction="never"
-        android:title="@string/legal"/>
+        android:title="@string/legal"
+        app:showAsAction="never" />
 
 </menu>

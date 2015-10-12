@@ -21,17 +21,28 @@
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:padding="6dp" />
-    
-    <EditText 
-        android:id="@+id/search_field"
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="6dp"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-        android:hint="@string/registration_search_field_hint" />
-    
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
+            android:layout_gravity="start"
+            android:paddingLeft="6dp"
+            android:paddingStart="6dp"
+            android:paddingRight="6dp"
+            android:paddingEnd="6dp"
+            android:textAlignment="viewStart"
+            android:textDirection="locale"
+            android:hint="@string/registration_search_field_hint" />
+
+    </android.support.design.widget.TextInputLayout>
+
     <TextView
         android:id="@+id/refine_search_link"
         android:layout_width="match_parent"
@@ -39,7 +50,9 @@
         android:paddingTop="10dp"
         android:paddingBottom="6dp"
         android:paddingLeft="6dp"
+        android:paddingStart="6dp"
         android:paddingRight="6dp"
+        android:paddingEnd="6dp"
         android:text="@string/registration_search_refine_search"
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:clickable="true" /> 

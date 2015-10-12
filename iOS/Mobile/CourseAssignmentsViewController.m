@@ -189,7 +189,7 @@
     [self.tableView endUpdates];
 }
 
-#pragma mark - fetch assignements
+#pragma mark - fetch assignments
 - (void) fetchAssignments:(id)sender {
 
     NSManagedObjectContext *importContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];

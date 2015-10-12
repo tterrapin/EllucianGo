@@ -4,11 +4,15 @@
 
 package com.ellucian.mobile.android.courses.overview;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -30,13 +34,14 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseRoster;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CourseOverviewActivity extends EllucianActivity  {
 	private static final String TAG = CourseOverviewActivity.class.getSimpleName();
-	@SuppressWarnings("unused")
-	private String courseId;
-	private boolean moreTabPreviouslyAdded;
-	
-	@Override
+    private boolean moreTabPreviouslyAdded;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_course_overview);
@@ -44,12 +49,8 @@ public class CourseOverviewActivity extends EllucianActivity  {
 	    Bundle incomingExtras = getIntent().getExtras();
 		String courseName = incomingExtras.getString(Extra.COURSES_NAME);
 		String sectionNumber = incomingExtras.getString(Extra.COURSES_SECTION_NUMBER);
-		setTitle(getString(R.string.default_course_section_format,
-						courseName, 
-						sectionNumber));
 	    // Determine if the roster is shown
-	    courseId = incomingExtras.getString(Extra.COURSES_COURSE_ID);
-	    boolean isInstructor = incomingExtras.getBoolean(Extra.COURSES_IS_INSTRUCTOR);		
+	    boolean isInstructor = incomingExtras.getBoolean(Extra.COURSES_IS_INSTRUCTOR);
 		String rosterVisibility = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, 
 				Utils.COURSE_ROSTER_VISIBILITY, "");
 
@@ -62,44 +63,18 @@ public class CourseOverviewActivity extends EllucianActivity  {
 			showRoster = true;
 		}
 
-		
-	    // setup action bar for tabs
-	    ActionBar actionBar = getActionBar();
-	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	    //actionBar.setDisplayShowTitleEnabled(false);
-	    configureActionBar();
+	    setTitle(getString(R.string.default_course_section_format, courseName, sectionNumber));
 
-	    Tab detailsTab = actionBar.newTab()
-	            .setText(R.string.course_details)
-	            .setTabListener(new CoursesTabListener<CourseDetailsFragment>(
-	                    this, "detail", CourseDetailsFragment.class, getFragmentManager(),
-	                    R.id.courses_course_overview_frame));
-	    actionBar.addTab(detailsTab);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.courses_course_overview_viewpager);
+        if (viewPager != null) {
+            setupViewPager(viewPager, showRoster);
+        }
 
-	    Tab gradesTab = actionBar.newTab()
-	        .setText(R.string.course_grades)
-	        .setTabListener(new CoursesTabListener<CourseGradesFragment>(
-	                this, "grades", CourseGradesFragment.class, getFragmentManager(),
-	                R.id.courses_course_overview_frame));
-	    actionBar.addTab(gradesTab);
-	    
-	    if (showRoster) {
-		    Tab rosterTab = actionBar.newTab()
-			        .setText(R.string.course_roster)
-			        .setTabListener(new CoursesTabListener<CourseRosterFragment>(
-			                this, "roster", CourseRosterFragment.class, getFragmentManager(),
-			                R.id.courses_course_overview_frame));
-			    actionBar.addTab(rosterTab);	    
-	    }
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
 
-	    // Check for which tab was selected on re-create
-	    if ( savedInstanceState != null ) {
-	    	if (savedInstanceState.getBoolean("moreTabPreviouslyAdded")) {
-	    		addMoreTab();
-	    	}
-	    	getActionBar().setSelectedNavigationItem(savedInstanceState.getInt("tabState")); 
-	    }
-	    
 	    // Start services for each tab info
 		Intent detailsIntent = new Intent(this, CourseDetailsIntentService.class);
 		detailsIntent.putExtras(incomingExtras);
@@ -114,16 +89,26 @@ public class CourseOverviewActivity extends EllucianActivity  {
 			rosterIntent.putExtras(incomingExtras);
 			startService(rosterIntent);
 		}
+
+        tabLayout.setupWithViewPager(viewPager);
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) { 
-		super.onSaveInstanceState(outState);
-		outState.putInt("tabState", getActionBar().getSelectedTab().getPosition());
-		outState.putBoolean("moreTabPreviouslyAdded", moreTabPreviouslyAdded);
-	}
-	
-	
+
+    private void setupViewPager(ViewPager viewPager, Boolean showRoster) {
+        Adapter adapter = new Adapter(getSupportFragmentManager());
+        adapter.addFragment(new CourseDetailsFragment(), getString(R.string.course_details));
+        adapter.addFragment(new CourseGradesFragment(), getString(R.string.course_grades));
+        if (showRoster) {
+            adapter.addFragment(new CourseRosterFragment(), getString(R.string.course_roster));
+        }
+        boolean isILPConfigured = getIntent().getExtras().containsKey(Extra.COURSES_ILP_URL);
+        if (!moreTabPreviouslyAdded && isILPConfigured) {
+            moreTabPreviouslyAdded = true;
+            adapter.addFragment(new CourseMoreFragment(), getString(R.string.course_more));
+            viewPager.setAdapter(adapter);
+        }
+        viewPager.setAdapter(adapter);
+    }
+
 	// This method is trigger in the course_details_faculty_row layout
 	public void findFacultyMember(View view) {
     	String facultySearchUrl = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_FACULTY_SEARCH_URL, null);
@@ -194,7 +179,7 @@ public class CourseOverviewActivity extends EllucianActivity  {
     	}
 	}
 	
-	public void sendDirectoryQueryIntent(String queryType,  String query) { 
+	private void sendDirectoryQueryIntent(String queryType, String query) {
 		if (TextUtils.isEmpty(queryType)) {
 			queryType = DirectoryCategoriesFragment.DIRECTORY_TYPE_ALL;
 		}
@@ -204,16 +189,20 @@ public class CourseOverviewActivity extends EllucianActivity  {
     	intent.setAction(Intent.ACTION_SEARCH);
     	intent.putExtra(Extra.DIRECTORY_TYPE, queryType);
     	intent.putExtra(Extra.DIRECTORY_QUERY, query);
-    	
-    	if (queryType.equals(DirectoryCategoriesFragment.DIRECTORY_TYPE_STUDENT)) {
-    		intent.putExtra(Extra.DIRECTORY_STUDENT_URL, 
-    				Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_STUDENT_SEARCH_URL, null));
-    	} else if (queryType.equals(DirectoryCategoriesFragment.DIRECTORY_TYPE_FACULTY)) {
-    		intent.putExtra(Extra.DIRECTORY_FACULTY_URL, 
-    				Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_FACULTY_SEARCH_URL, null));
-    	} else {
-    		intent.putExtra(Extra.REQUEST_URL, 
-    				Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_ALL_SEARCH_URL, null));
+
+        switch (queryType) {
+            case DirectoryCategoriesFragment.DIRECTORY_TYPE_STUDENT :
+                intent.putExtra(Extra.DIRECTORY_STUDENT_URL,
+                        Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_STUDENT_SEARCH_URL, null));
+                break;
+            case DirectoryCategoriesFragment.DIRECTORY_TYPE_FACULTY :
+    		    intent.putExtra(Extra.DIRECTORY_FACULTY_URL,
+                        Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_FACULTY_SEARCH_URL, null));
+                break;
+    	    default:
+    		    intent.putExtra(Extra.REQUEST_URL,
+                        Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.DIRECTORY_ALL_SEARCH_URL, null));
+                break;
     	}
     	
     	startActivity(intent);
@@ -234,18 +223,33 @@ public class CourseOverviewActivity extends EllucianActivity  {
 		emptyMessage.setGravity(Gravity.CENTER, 0, 0);
 		emptyMessage.show();
 	}
-	
-	protected void addMoreTab() {
-		
-		if (!moreTabPreviouslyAdded ) {
-			moreTabPreviouslyAdded = true;
-			Tab moreTab = getActionBar().newTab()
-			        .setText(R.string.course_more)
-			        .setTabListener(new CoursesTabListener<CourseMoreFragment>(
-			                this, "more", CourseMoreFragment.class, getFragmentManager(),
-			                R.id.courses_course_overview_frame));
-	        	getActionBar().addTab(moreTab);
-		}
-	}
-	
+
+    static class Adapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragments = new ArrayList<>();
+        private final List<String> mFragmentTitles = new ArrayList<>();
+
+        public Adapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragments.add(fragment);
+            mFragmentTitles.add(title);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitles.get(position);
+        }
+    }
 }

@@ -18,5 +18,9 @@
 	<string></string>
 	<key>Custom Modules</key>
 	<dict/>
+	<key>Watch Menu Title</key>
+	<string>Ellucian GO</string>
+	<key>iOS Application Name</key>
+	<string>Ellucian GO</string>
 </dict>
 </plist>

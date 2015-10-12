@@ -20,7 +20,7 @@
 
     self.navigationController.navigationBar.translucent = NO;
 
-    if([AppearanceChanger isRTL]) {
+    if([AppearanceChanger isIOS8AndRTL]) {
         self.descriptionTextView.textAlignment = NSTextAlignmentRight;
         self.addressLabel.textAlignment = NSTextAlignmentRight;
     }

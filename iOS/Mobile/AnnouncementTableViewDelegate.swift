@@ -45,11 +45,7 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
     - when a new model is created
     - when an existing model is updated
     - when an existing model is deleted */
-    func controller(controller: NSFetchedResultsController,
-        didChangeObject object: AnyObject,
-        atIndexPath indexPath: NSIndexPath?,
-        forChangeType type: NSFetchedResultsChangeType,
-        newIndexPath: NSIndexPath?) {
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
             
             switch type {
             case .Insert:
@@ -63,8 +59,6 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
                 announcementTableView.insertRowsAtIndexPaths([newIndexPath as NSIndexPath!], withRowAnimation: .Fade)
             case .Delete:
                 announcementTableView.deleteRowsAtIndexPaths([indexPath as NSIndexPath!], withRowAnimation: .Fade)
-            default:
-                break
             }
     }
     
@@ -115,7 +109,7 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("Daily Announcement Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Daily Announcement Cell", forIndexPath: indexPath) as UITableViewCell
         configureCell(cell, atIndexPath:indexPath)
         return cell
     }
@@ -147,7 +141,7 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if let sections = announcementController!.sections as? [NSFetchedResultsSectionInfo] {
+        if let sections = announcementController!.sections {
             return sections[section].name
         } else {
             return nil
@@ -170,14 +164,14 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
             myNoDataView = UIView(frame: CGRect(x:0,y:0,width:announcementTableWidthConstraint.constant, height:40.0))
             
             let constrainedView = UIView()
-            constrainedView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            constrainedView.translatesAutoresizingMaskIntoConstraints = false
             myNoDataView?.addSubview(constrainedView)
             
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
-            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
+            myNoDataView?.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[constrainedView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["constrainedView":constrainedView]))
             
             
-            var noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:announcementTableWidthConstraint.constant, height:40.0))
+            let noMatchesLabel = UILabel(frame:CGRect(x:0,y:0,width:announcementTableWidthConstraint.constant, height:40.0))
             noMatchesLabel.font = UIFont.systemFontOfSize(14)
             noMatchesLabel.numberOfLines = 1;
             noMatchesLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
@@ -186,7 +180,7 @@ class AnnouncementTableViewDelegate: NSObject, UITableViewDataSource, UITableVie
             
             constrainedView.backgroundColor = UIColor.whiteColor()
             myNoDataView?.hidden = true
-            noMatchesLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+            noMatchesLabel.translatesAutoresizingMaskIntoConstraints = false
             constrainedView.addSubview(noMatchesLabel)
             constrainedView.addConstraint(NSLayoutConstraint(item:noMatchesLabel,
                 attribute:NSLayoutAttribute.CenterY,

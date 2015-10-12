@@ -22,9 +22,9 @@ import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 
 public class CourseAnnouncementsIntentService extends IntentService {
-	public static final String TAG = CourseAnnouncementsIntentService.class.getSimpleName();
-	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseAnnouncementsIntentService.action.updated";
+	private static final String TAG = CourseAnnouncementsIntentService.class.getSimpleName();
+	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseAnnouncementsIntentService.action.updated";
 	
 	public CourseAnnouncementsIntentService() {
 		super("CourseAnnouncementsIntentService");

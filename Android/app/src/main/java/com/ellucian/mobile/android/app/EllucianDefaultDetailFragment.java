@@ -5,7 +5,7 @@
 package com.ellucian.mobile.android.app;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,9 +23,7 @@ import com.ellucian.mobile.android.util.Utils;
 /**
  * This class can be extended for custom work like add action items to the actionbar/menu
  * The child class needs to follow the constructor rule below.
- * 
- * @author Jared Higley
- *
+ **
  */
 public class EllucianDefaultDetailFragment extends EllucianFragment {
 	private static final String TAG = EllucianDefaultDetailFragment.class.getSimpleName();

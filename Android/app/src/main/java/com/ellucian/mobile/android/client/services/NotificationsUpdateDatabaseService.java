@@ -17,7 +17,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.Notifications;
 import com.ellucian.mobile.android.util.Extra;
 
 public class NotificationsUpdateDatabaseService extends IntentService {
-	public static final String TAG = NotificationsUpdateDatabaseService.class.getSimpleName();
+	private static final String TAG = NotificationsUpdateDatabaseService.class.getSimpleName();
 	public static final String ACTION_DATABASE_UPDATED = "com.ellucian.mobile.android.client.NotificationsUpdateDatabaseReadService.action.database.updated";
 	public static final String ACTION_RESET_LIST = "com.ellucian.mobile.android.client.NotificationsUpdateDatabaseReadService.action.reset.list";
 	public static final String MODIFICATION_READ = "modificationRead";
@@ -56,7 +56,7 @@ public class NotificationsUpdateDatabaseService extends IntentService {
 		
 	}
 	
-	protected void handleUpdateRead (Intent intent) {
+	private void handleUpdateRead(Intent intent) {
 		String id = intent.getStringExtra(Extra.ID);
 		String statusesString = intent.getStringExtra(Extra.NOTIFICATIONS_STATUSES);
 		if (!TextUtils.isEmpty(statusesString)) {
@@ -64,7 +64,7 @@ public class NotificationsUpdateDatabaseService extends IntentService {
 		} else {
 			statusesString = Notification.STATUS_READ;
 		}
-		Log.d(TAG, "Trying to update read status on notifcation :" + id);
+		Log.d(TAG, "Trying to update read status on notification :" + id);
 		
 		ContentResolver cr = getContentResolver();
 		ContentValues values = new ContentValues();
@@ -74,10 +74,10 @@ public class NotificationsUpdateDatabaseService extends IntentService {
 		Log.d(TAG, "Rows updated:" + rows);	
 	}
 	
-	protected void handleDelete (Intent intent) {
+	private void handleDelete(Intent intent) {
 		String id = intent.getStringExtra(Extra.ID);
 		
-		Log.d(TAG, "Trying to delete notifcation :" + id);
+		Log.d(TAG, "Trying to delete notification :" + id);
 		
 		ContentResolver cr = getContentResolver();
 

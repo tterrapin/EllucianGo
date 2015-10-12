@@ -24,7 +24,7 @@ public class RegistrationDetailActivity extends EllucianDefaultDetailActivity {
 		return RegistrationDetailFragment.class;
 	}
 	
-	protected void removeItemFromCart() {
+	void removeItemFromCart() {
 		setResult(RegistrationActivity.RESULT_REMOVE);
 		finish();
 	}

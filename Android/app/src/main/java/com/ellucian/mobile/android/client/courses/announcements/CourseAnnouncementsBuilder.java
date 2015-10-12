@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 import java.util.ArrayList;
 
 public class CourseAnnouncementsBuilder extends ContentProviderOperationBuilder<CourseAnnouncementsResponse>{
-		String courseId;
+		private final String courseId;
 
 		public CourseAnnouncementsBuilder(Context context, String courseId) {
 			super(context);

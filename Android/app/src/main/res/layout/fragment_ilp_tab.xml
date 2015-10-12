@@ -3,7 +3,7 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<android.support.v13.app.FragmentTabHost xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.app.FragmentTabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -22,4 +22,4 @@
             android:layout_height="fill_parent"
             android:padding="5dp" />
     </LinearLayout>
-</android.support.v13.app.FragmentTabHost>
+</android.support.v4.app.FragmentTabHost>

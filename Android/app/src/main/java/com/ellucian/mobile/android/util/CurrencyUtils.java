@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 import java.util.Currency;
 
 public class CurrencyUtils {
-    public static String TAG = "CurrencyUtils";
+    private static final String TAG = "CurrencyUtils";
 
     public static String getCurrencyString(Double amount, Currency currency) {
         String output;

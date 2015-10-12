@@ -10,10 +10,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public class URLDrawable extends BitmapDrawable {
+class URLDrawable extends BitmapDrawable {
     // the drawable that you need to set, you could set the initial drawing
     // with the loading image if you need to
-    protected Drawable drawable;
+    Drawable drawable;
 
     public URLDrawable(Resources resources, Bitmap bitmap) {
 		super(resources, bitmap);

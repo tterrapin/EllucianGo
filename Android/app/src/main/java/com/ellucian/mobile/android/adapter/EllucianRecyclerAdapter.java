@@ -11,11 +11,11 @@ import android.view.View;
 public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected OnItemClickListener onItemClickListener;
-    protected View lastSelected;
-    protected int selectedIndex = -1;
+    private View lastSelected;
+    private int selectedIndex = -1;
 
     public interface OnItemClickListener {
-        public void onItemClicked(View view, int position);
+        void onItemClicked(View view, int position);
     }
 
     /**
@@ -23,7 +23,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
      * for an example.
      */
     public interface ItemInfoHolder {
-        public String getDefaultText();
+        String getDefaultText();
     }
 
     /**
@@ -31,9 +31,9 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
      * A class that extends EllucianRecyclerAdapter may use its own ViewHolder.
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public View itemView;
-        public OnItemClickListener listener;
-        public EllucianRecyclerAdapter parentAdapter;
+        public final View itemView;
+        public final OnItemClickListener listener;
+        public final EllucianRecyclerAdapter parentAdapter;
 
         public ItemViewHolder(EllucianRecyclerAdapter a, View v, OnItemClickListener l) {
             super(v);
@@ -69,7 +69,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
         return selectedIndex;
     }
 
-    public void itemSelected(View v, int position) {
+    private void itemSelected(View v, int position) {
         if (lastSelected != null) {
             lastSelected.setSelected(false);
         }
@@ -86,7 +86,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
         itemSelected(null, -1);
     }
 
-    public void checkViewForSelection(View v, int position) {
+    void checkViewForSelection(View v, int position) {
         if (position == selectedIndex) {
             itemSelected(v, position);
         } else {
@@ -108,7 +108,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
      * Default is to return true and all items in list will trigger on click.
      * Override in subclass to change.
      */
-    public boolean isClickable(int position) {
+    boolean isClickable(int position) {
         return true;
     }
 }

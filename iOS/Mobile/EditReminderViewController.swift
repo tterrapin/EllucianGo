@@ -33,9 +33,9 @@ public class EditReminderViewController: UITableViewController, UIAlertViewDeleg
         titleLabel.text = reminderTitle
         notesTextView.text = reminderNotes
         if let date = reminderDate {
-            datePicker.date = reminderDate!
+            datePicker.date = date
         }
-        eventStore.requestAccessToEntityType(EKEntityTypeReminder, completion: {
+        eventStore.requestAccessToEntityType(.Reminder) {
             granted, error in
             if (granted) && (error == nil) {
                 self.selectedCalendar = self.eventStore.defaultCalendarForNewReminders()
@@ -44,7 +44,7 @@ public class EditReminderViewController: UITableViewController, UIAlertViewDeleg
                 self.showPermissionNotGrantedAlert()
                 self.dismissViewControllerAnimated(true, completion: {});
             }
-        });
+        };
         didChangeDate()
         toggleDatePicker()
     }
@@ -60,30 +60,32 @@ public class EditReminderViewController: UITableViewController, UIAlertViewDeleg
     }
     
     @IBAction func add(sender: AnyObject) {
-        eventStore.requestAccessToEntityType(EKEntityTypeReminder, completion: {
+        eventStore.requestAccessToEntityType(.Reminder) {
             granted, error in
-            if (granted) && (error == nil) {
-                var reminder:EKReminder = EKReminder(eventStore: self.eventStore)
-                reminder.title = self.titleLabel.text
-                reminder.calendar = self.selectedCalendar
+            if granted {
+                let reminder:EKReminder = EKReminder(eventStore: self.eventStore)
+                reminder.title = self.titleLabel.text!
+                reminder.calendar = self.selectedCalendar!
                 
                 if self.reminderSwitch.on {
                     
                     let calendar = NSCalendar.currentCalendar()
-                    let dueDateComponents = calendar.components(.EraCalendarUnit | .YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit | .SecondCalendarUnit , fromDate: self.datePicker.date)
+                    let dueDateComponents = calendar.components([.Era, .Year, .Month, .Day, .Hour, .Minute, .Second] , fromDate: self.datePicker.date)
                     reminder.dueDateComponents = dueDateComponents
-                    var alarm:EKAlarm = EKAlarm(absoluteDate: self.datePicker.date)
+                    let alarm:EKAlarm = EKAlarm(absoluteDate: self.datePicker.date)
                     reminder.alarms = [alarm]
                 }
                 reminder.notes = self.notesTextView.text
-                var error : NSError?
-                self.eventStore.saveReminder(reminder, commit: true, error: &error)
+
+                do {
+                    try self.eventStore.saveReminder(reminder, commit: true)
+                } catch  {
+                }
                 self.dismissViewControllerAnimated(true, completion: {});
             } else {
                 self.showPermissionNotGrantedAlert()
             }
-        })
-
+        }
     }
     
     @IBAction func cancel(sender: AnyObject) {
@@ -130,80 +132,61 @@ public class EditReminderViewController: UITableViewController, UIAlertViewDeleg
     }
     
     private func showCalendarList() {
-        switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-        case .OrderedSame, .OrderedDescending:
-            let alertController = UIAlertController(title: NSLocalizedString("Reminder List", comment: "title of reminder list alert picker"), message: NSLocalizedString("Select the name of the reminder list to use.", comment: "Title of the action sheet to select a reminder list to save the reminder"), preferredStyle: .ActionSheet)
-            
-            let calendars = eventStore.calendarsForEntityType(EKEntityTypeReminder)
-            for calendar in calendars {
-                let ekCalendar = calendar as! EKCalendar
-                
-                var action = UIAlertAction(title: ekCalendar.title, style: .Default) { value in
-                    self.setCalendarWithName(value.title)
-                }
-                alertController.addAction(action)
+        
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Reminder List", comment: "title of reminder list alert picker"), message: NSLocalizedString("Select the name of the reminder list to use.", comment: "Title of the action sheet to select a reminder list to save the reminder"), preferredStyle: .ActionSheet)
+        
+        let calendars = eventStore.calendarsForEntityType(.Reminder)
+        for calendar in calendars {
+            let action = UIAlertAction(title: calendar.title, style: .Default) { value in
+                self.setCalendarWithName(value.title!)
             }
-            var cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            presentViewController(alertController, animated: true, completion: nil)
-        case .OrderedAscending:
-            let actionSheet = UIActionSheet(title: NSLocalizedString("Select the name of the reminder list to use.", comment: "Title of the action sheet to select a reminder list to save the reminder"), delegate: self, cancelButtonTitle: NSLocalizedString("Cancel", comment: "Cancel"), destructiveButtonTitle: nil)
-            let calendars = eventStore.calendarsForEntityType(EKEntityTypeReminder)
-            for calendar in calendars {
-                let ekCalendar = calendar as! EKCalendar
-                actionSheet.addButtonWithTitle(ekCalendar.title)
-            }
-            actionSheet.actionSheetStyle = .Default
-            actionSheet.showInView(self.view)
+            alertController.addAction(action)
         }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        presentViewController(alertController, animated: true, completion: nil)
+        
+        
     }
     
     public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         let calendarName = actionSheet.buttonTitleAtIndex(buttonIndex)
         
-        setCalendarWithName(calendarName)
+        setCalendarWithName(calendarName!)
     }
     
     private func setCalendarWithName(calendarName: String) {
-        let calendars = eventStore.calendarsForEntityType(EKEntityTypeReminder)
+        let calendars = eventStore.calendarsForEntityType(.Reminder)
         let filteredCalendars = calendars.filter({ (calendar: AnyObject) -> Bool in
             return calendar.title == calendarName
         })
         if(filteredCalendars.count > 0) {
-            selectedCalendar = filteredCalendars[0] as? EKCalendar
+            selectedCalendar = filteredCalendars[0]
             didChangeCalendar()
         }
     }
     
     private func showPermissionNotGrantedAlert() {
-        switch UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) {
-        case .OrderedSame, .OrderedDescending:
-            let alertController = UIAlertController(title: NSLocalizedString("Permission not granted", comment: "Permission not granted title"), message: NSLocalizedString("You must give permission in Settings to allow access", comment: "Permission not granted message"), preferredStyle: .Alert)
-            
-            var settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: "Settings application name"), style: .Default) { value in
-                let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
-                if let url = settingsUrl {
-                    UIApplication.sharedApplication().openURL(url)
-                }
-            }
-            var cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Default, handler: nil)
-            alertController.addAction(settingsAction)
-            alertController.addAction(cancelAction)
-            dispatch_async(dispatch_get_main_queue()) {
-                () -> Void in
-                self.presentViewController(alertController, animated: true, completion: nil)
-                
-            }
-        case .OrderedAscending:
-            var alertView = UIAlertView(
-                title:NSLocalizedString("Permission not granted", comment: "Permission not granted title"),
-                message:NSLocalizedString("You must give permission in Settings to allow access", comment: "Permission not granted message"),
-                delegate:self,
-                cancelButtonTitle:NSLocalizedString("Cancel", comment: "Cancel"))
-            dispatch_async(dispatch_get_main_queue()) {
-                () -> Void in
-                alertView.show()
+        
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Permission not granted", comment: "Permission not granted title"), message: NSLocalizedString("You must give permission in Settings to allow access", comment: "Permission not granted message"), preferredStyle: .Alert)
+        
+        
+        let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: "Settings application name"), style: .Default) { value in
+            let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
+            if let url = settingsUrl {
+                UIApplication.sharedApplication().openURL(url)
             }
         }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Default, handler: nil)
+        alertController.addAction(settingsAction)
+        alertController.addAction(cancelAction)
+        dispatch_async(dispatch_get_main_queue()) {
+            () -> Void in
+            self.presentViewController(alertController, animated: true, completion: nil)
+            
+        }
+        
     }
 }

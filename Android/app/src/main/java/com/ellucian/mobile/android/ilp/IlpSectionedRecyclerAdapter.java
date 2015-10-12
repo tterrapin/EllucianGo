@@ -4,10 +4,11 @@
 
 package com.ellucian.mobile.android.ilp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.provider.CalendarContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -24,7 +25,7 @@ import com.ellucian.mobile.android.util.Utils;
 import java.util.Date;
 
 public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdapter {
-    private boolean calendarAvailable;
+    private final boolean calendarAvailable;
 
 	public IlpSectionedRecyclerAdapter(Context context) {
         super(context);
@@ -43,6 +44,7 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
         return vh;
     }
 
+    @SuppressLint("NewApi")
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
         IlpHeaderHolder headerHolder = (IlpHeaderHolder) getItem(position);
 
@@ -52,16 +54,26 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
         TextView dayView = (TextView) headerContainer.findViewById(R.id.day);
         dayView.setTextColor(Utils.getSubheaderTextColor(context));
         dayView.setText(headerHolder.day);
+        int build = Build.VERSION.SDK_INT;
 
         String overdueText = context.getResources().getString(R.string.ilp_overdue);
         if (headerHolder.day.equals(overdueText)) {
-            Drawable dw = context.getResources().getDrawable(R.drawable.icon_warning_black);
-            dayView.setCompoundDrawablesWithIntrinsicBounds(dw, null, null, null);
+            if (build >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                dayView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.icon_warning_black, 0, 0, 0);
+            } else {
+                dayView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_warning_black, 0, 0, 0);
+            }
             dayView.setCompoundDrawablePadding(12);
         } else {
             // unset drawable in case recycled
-            if (dayView.getCompoundDrawables()[0] != null) {
-                dayView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            if (build >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (dayView.getCompoundDrawablesRelative()[0] != null) {
+                    dayView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
+                }
+            } else {
+                if (dayView.getCompoundDrawables()[0] != null) {
+                    dayView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                }
             }
         }
 

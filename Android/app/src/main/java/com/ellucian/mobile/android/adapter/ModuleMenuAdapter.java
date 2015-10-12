@@ -4,6 +4,7 @@
 
 package com.ellucian.mobile.android.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,19 +62,19 @@ import java.util.Map.Entry;
 
 public class ModuleMenuAdapter extends CursorTreeAdapter {
 	
-	public static final String TAG = ModuleMenuAdapter.class.getSimpleName();
-	public static final String IMAGE_RESOURCE = "imageResource";
+	private static final String TAG = ModuleMenuAdapter.class.getSimpleName();
+	private static final String IMAGE_RESOURCE = "imageResource";
 	public static final String EXTERNAL_WEB_BROWSER = "externalWebBrowser";
 	public static final String PLANNING_TOOL = "planningTool";
-	public static final String HEADER_COLLAPSIBLE = "headerCollapsible";
+	private static final String HEADER_COLLAPSIBLE = "headerCollapsible";
 	public static final String MODULE_ROLE_EVERYONE = "Everyone";
 	
 	private ArrayList<Cursor> childCursorList = new ArrayList<Cursor>();
-	private LayoutInflater inflater;
+	private final LayoutInflater inflater;
 
 		
 	
-	public ModuleMenuAdapter(Context context, Cursor groupCursor, ArrayList<Cursor> childCursorList) {
+	private ModuleMenuAdapter(Context context, Cursor groupCursor, ArrayList<Cursor> childCursorList) {
 		super(groupCursor, context);
 		this.childCursorList = childCursorList;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,13 +87,13 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 	 */
 	public static ModuleMenuAdapter buildInstance(Context context) {
 		
-		EllucianApplication ellucianApplicaton = (EllucianApplication) context.getApplicationContext();
+		EllucianApplication ellucianApplication = (EllucianApplication) context.getApplicationContext();
 		final ContentResolver contentResolver = context.getContentResolver();
 
 		boolean allowMaps = allowMaps(context);
 		String modulesSelection = "";
 		List<String> modulesSelectionArgs = new ArrayList<String>();
-		List<String> customTypes = ellucianApplicaton.getModuleConfigTypeList();
+		List<String> customTypes = ellucianApplication.getModuleConfigTypeList();
 		for (int i = 0; i < ModuleType.ALL.length; i++) {
 			String type = ModuleType.ALL[i];
 
@@ -155,7 +157,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 			/*
 			//Get notification count
 			String notificationsCount = null;
-			if (ellucianApplicaton.isUserAuthenticated()) {
+			if (ellucianApplication.isUserAuthenticated()) {
 				Cursor notificationsCursor = contentResolver.query(Notifications.CONTENT_URI, 
 						   new String[] { Notifications.NOTIFICATIONS_ID},
 						   Notifications.NOTIFICATIONS_STATUSES + " not like ? or " + Notifications.NOTIFICATIONS_STATUSES + " is null",
@@ -188,14 +190,14 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 				String secure = modulesCursor.getString(secureIndex);
 				int showGuestInt = modulesCursor.getInt(showGuestIndex);
 				boolean showGuest = showGuestInt == 1 ? true : false;
-				List<String> moduleRoles = getModuleRoles(ellucianApplicaton.getContentResolver(), moduleId);
-				boolean lock = ellucianApplicaton.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
+				List<String> moduleRoles = getModuleRoles(ellucianApplication.getContentResolver(), moduleId);
+				boolean lock = ellucianApplication.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
 				String rightText = null;
 //				if(type.equals(ModuleType.NOTIFICATIONS)) {
 //					rightText = notificationsCount;
 //				}
 				
-				if (doesModuleShowForUser(ellucianApplicaton, moduleId, showGuest)) {
+				if (doesModuleShowForUser(ellucianApplication, moduleId, showGuest)) {
 					currentChildCursor.addRow(new Object[] { "1", type, subType,
 							name, iconUrl, moduleId, secure, lock, rightText });
 				}
@@ -248,14 +250,14 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 					String secure = modulesCursor.getString(secureIndex);
 					int showGuestInt = modulesCursor.getInt(showGuestIndex);
 					boolean showGuest = showGuestInt == 1 ? true : false;
-					List<String> moduleRoles = getModuleRoles(ellucianApplicaton.getContentResolver(), moduleId);
-					boolean lock = ellucianApplicaton.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
+					List<String> moduleRoles = getModuleRoles(ellucianApplication.getContentResolver(), moduleId);
+					boolean lock = ellucianApplication.isUserAuthenticated() ? false : showLock(context, type, subType, secure, moduleRoles);
 					String rightText = null;
 //					if(type.equals(ModuleType.NOTIFICATIONS)) {
 //						rightText = notificationsCount;
 //					}
 
-					if (doesModuleShowForUser(ellucianApplicaton, moduleId, showGuest)) {
+					if (doesModuleShowForUser(ellucianApplication, moduleId, showGuest)) {
 						currentChildCursor.addRow(new Object[] { "" + currentChildRows++, type, subType,
 								name, iconUrl, moduleId, secure, lock, rightText });
 					}
@@ -308,7 +310,7 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		return new ModuleMenuAdapter(context, headersCursor, childCursorList);
 	}
 	
-	public static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
+	private static boolean doesModuleShowForUser(EllucianApplication ellucianApp, String moduleId, boolean showGuest) {
 		boolean showModule = false;
 		
 		List<String> moduleRoles = getModuleRoles(ellucianApp.getContentResolver(), moduleId);
@@ -361,8 +363,8 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		
 	}
 	
-	public static boolean showLock(Context context, String type, String subType, String secureString,
-			List<String> moduleRoles) {
+	private static boolean showLock(Context context, String type, String subType, String secureString,
+									List<String> moduleRoles) {
 
 		if (moduleRoles.size() > 0) {
 			if (moduleRoles.size() == 1
@@ -398,16 +400,23 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		int groupPosition = groupCursor.getPosition();
 		return childCursorList.get(groupPosition);	
 	}
-	
-	@Override
+
+    @SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+    @Override
 	public void bindGroupView(View view, Context context, Cursor cursor, boolean isExpanded) {
 		HeaderViewHolder holder = (HeaderViewHolder) view.getTag();
 
 		String label = cursor.getString(cursor
 				.getColumnIndex(Modules.MODULE_NAME));
-		
-		Drawable endcapDrawable = context.getResources().getDrawable(
-					R.drawable.menu_header_endcap);
+
+        int build = Build.VERSION.SDK_INT;
+        Drawable endcapDrawable;
+        if (build >= Build.VERSION_CODES.LOLLIPOP) {
+            endcapDrawable = context.getResources().getDrawable(R.drawable.menu_header_endcap, null);
+        } else {
+            endcapDrawable = context.getResources().getDrawable(R.drawable.menu_header_endcap);
+        }
 		
 		holder.textView.setText(label);
 		holder.iconView.setImageDrawable(endcapDrawable);
@@ -421,9 +430,17 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 			Drawable indicatorDrawable;
 			
 			if (isExpanded) {
-				indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_up);			
+                if (build >= Build.VERSION_CODES.LOLLIPOP) {
+                    indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_up, null);
+                } else {
+                    indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_up);
+                }
 			} else {
-				indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_down);			
+                if (build >= Build.VERSION_CODES.LOLLIPOP) {
+                    indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_down, null);
+                } else {
+                    indicatorDrawable = context.getResources().getDrawable(R.drawable.menu_arrow_down);
+                }
 			}
 			
 			holder.indicatorView.setVisibility(View.VISIBLE);
@@ -434,7 +451,9 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		
 	}
 
-	@Override
+    @SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+    @Override
 	public void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
 		RowViewHolder holder = (RowViewHolder) view.getTag();
 		
@@ -447,9 +466,15 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 		String lockString = cursor.getString(cursor
 				.getColumnIndex(Modules.MODULE_LOCK));
 
+        int build = Build.VERSION.SDK_INT;
+
 		if ( lockString != null && Boolean.parseBoolean(lockString)) {
 			holder.lockView.setVisibility(View.VISIBLE);
- 			holder.lockView.setImageDrawable( context.getResources().getDrawable(R.drawable.menu_lock_icon) );
+            if (build >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.lockView.setImageDrawable(context.getResources().getDrawable(R.drawable.menu_lock_icon, null));
+            } else {
+                holder.lockView.setImageDrawable(context.getResources().getDrawable(R.drawable.menu_lock_icon));
+            }
 		} else {
 			holder.lockView.setVisibility(View.GONE);
 		}
@@ -483,8 +508,13 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 			int drawableIndex = cursor.getColumnIndex(IMAGE_RESOURCE);
 			if (drawableIndex > -1) {
 				int res = cursor.getInt(drawableIndex);
-				if (res > 0)
-					drawable = context.getResources().getDrawable(res);
+				if (res > 0) {
+                    if (build >= Build.VERSION_CODES.LOLLIPOP) {
+                        drawable = context.getResources().getDrawable(res, null);
+                    } else {
+                        drawable = context.getResources().getDrawable(res);
+                    }
+                }
 			}
 		} else {
 			
@@ -510,8 +540,13 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 				int drawableIndex = cursor.getColumnIndex(IMAGE_RESOURCE);
 				if (drawableIndex > -1) {
 					int res = cursor.getInt(drawableIndex);
-					if (res > 0)
-						drawable = context.getResources().getDrawable(res);
+					if (res > 0) {
+                        if (build >= Build.VERSION_CODES.LOLLIPOP) {
+                            drawable = context.getResources().getDrawable(res, null);
+                        } else {
+                            drawable = context.getResources().getDrawable(res);
+                        }
+                    }
 				}
 
 			}
@@ -837,8 +872,8 @@ public class ModuleMenuAdapter extends CursorTreeAdapter {
 
 	}
 	
-	public static Intent getCustomIntent(Context context, String type, String subType, String moduleName, 
-			String moduleId, HashMap<String, String> moduleProperties ) {
+	private static Intent getCustomIntent(Context context, String type, String subType, String moduleName,
+										  String moduleId, HashMap<String, String> moduleProperties) {
 		
 		if (!TextUtils.isEmpty(subType)) {
 			

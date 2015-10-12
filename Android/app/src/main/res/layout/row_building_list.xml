@@ -14,7 +14,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 	    android:layout_marginStart="@dimen/content_padding"
-	    android:layout_marginTop="8dip"
+		android:layout_marginLeft="@dimen/content_padding"
+		android:layout_marginTop="8dip"
 		android:textAppearance="?android:attr/textAppearanceListItem"
 	/>
 
@@ -23,6 +24,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/rowBuildingBuilding"
     	android:layout_alignStart="@id/rowBuildingBuilding"
+		android:layout_alignLeft="@id/rowBuildingBuilding"
 		android:textAppearance="?android:attr/textAppearanceSmall"
 	/>
 

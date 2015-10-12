@@ -22,9 +22,9 @@ import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationRegisteredListFragment extends EllucianDefaultListFragment {
 	
-	protected RegistrationActivity activity;
-	protected View rootView;
-	protected Button dropButton;
+	private RegistrationActivity activity;
+	private View rootView;
+	private Button dropButton;
 	
 	@Override
 	public void onAttach(Activity activity) {

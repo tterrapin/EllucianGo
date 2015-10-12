@@ -4,6 +4,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="20dp"
@@ -11,7 +12,7 @@
 
     <LinearLayout
         android:id="@+id/balance_container"
-        android:background="@color/default_gray"
+        android:background="@color/sub_header_bg"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
@@ -22,40 +23,53 @@
             android:layout_height="match_parent"
             android:textStyle="bold"
             android:layout_weight="1"
+            android:paddingStart="13dp"
             android:paddingLeft="13dp"
             android:paddingTop="13dp"
             android:paddingBottom="13dp"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@color/list_description_text_color"
             android:drawableLeft="@drawable/ic_balance"
             android:drawableStart="@drawable/ic_balance"
             android:drawablePadding="13dp"
             android:text="@string/finances_balance"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            tools:ignore="NewApi" />
 
         <TextView
             android:id="@+id/balance_text_view"
-            android:textColor="@color/finances_color"
+            android:textColor="@color/list_title_text_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="13dp"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:paddingBottom="13dp"
-            android:gravity="center_vertical|right"
+            android:gravity="center_vertical|end"
             android:textStyle="bold"
-            android:paddingRight="14dp" />
+            android:paddingEnd="14dp"
+            android:paddingRight="14dp"
+            tools:ignore="RtlSymmetry" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/thin_white_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/balance_container" />
 
     <TextView
         android:id="@+id/finances_divider_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/balance_container"
+        android:layout_below="@+id/thin_white_bar"
         android:text="@string/finances_recent_payments"
+        android:background="@color/sub_header_bg"
         android:textStyle="bold"
         android:textSize="@dimen/detail_title_text_size"
         android:padding="@dimen/content_padding"
+        android:paddingStart="13dp"
+        android:paddingLeft="13dp"
         android:gravity="center_vertical|start" />
 
     <ListView
@@ -65,6 +79,7 @@
         android:layout_below="@+id/finances_divider_bar"
         android:layout_above="@+id/finance_url_button"
         android:drawSelectorOnTop="false" />
+
     <TextView
         android:id="@+id/transactions_no_data"
         android:layout_width="match_parent"

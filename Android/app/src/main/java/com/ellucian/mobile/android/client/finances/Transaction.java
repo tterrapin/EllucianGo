@@ -13,7 +13,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable{
     public Double amount; //
     public String description;
     public Date entryDate;
-    public String type;
+    private String type;
 
     public Transaction(Double amount, String description, String entryDate, String type) {
         this.amount = amount;
@@ -29,7 +29,7 @@ public class Transaction implements Comparable<Transaction>, Parcelable{
         this.type = type;
     }
 
-    public Transaction(Parcel in) {
+    private Transaction(Parcel in) {
         readFromParcel(in);
     }
 

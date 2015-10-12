@@ -67,7 +67,11 @@ static ImageCache *sharedImageCache = nil;
 
 - (UIImage *) getImage:(NSString *)filename
 {
-    return [self getImage:filename fromCacheOnly:NO];
+    if([filename length] > 0) {
+        return [self getImage:filename fromCacheOnly:NO];
+    } else {
+        return nil;
+    }
 }
 
 - (UIImage *) getCachedImage:(NSString *)filename

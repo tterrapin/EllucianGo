@@ -15,7 +15,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseAssignments;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 
 public class CourseAssignmentsBuilder extends ContentProviderOperationBuilder<CourseAssignmentsResponse>{
-		String courseId;
+		private final String courseId;
 
 		public CourseAssignmentsBuilder(Context context, String courseId) {
 			super(context);

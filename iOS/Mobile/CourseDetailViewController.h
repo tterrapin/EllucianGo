@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MapPOI.h"
-#import "UIColor+SchoolCustomization.h"
-#import "UIColor+HexString.h"
 #import "Module+Attributes.h"
 
 @interface CourseDetailViewController : UIViewController

@@ -3,17 +3,19 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/listRow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/listRow" >
-
+    android:paddingLeft="13dp"
+    android:paddingRight="13dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/transaction_description"
@@ -24,16 +26,12 @@
             android:ellipsize="end"
             android:textSize="@dimen/list_title_text_size"
             android:textIsSelectable="false"
-            android:paddingLeft="13dp"
-            android:text="Federal Pell Grant"
             style="@style/listTitle" />
 
         <TextView
             android:id="@+id/transaction_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="14dp"
-            android:text="$43,343.00"
             android:textIsSelectable="false" />
 
     </LinearLayout>
@@ -41,9 +39,6 @@
     <TextView
         android:id="@+id/transaction_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="13dp"
-        android:text="6/21/2000"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

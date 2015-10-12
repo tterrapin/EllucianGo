@@ -8,6 +8,12 @@
 
 #import "VersionChecker.h"
 
+
+NSString* const kVersionCheckerCurrentNotification = @"VersionCheckerCurrentNotification";
+NSString* const kVersionCheckerAppNewerNotification = @"VersionCheckerAppNewerNotification";
+NSString* const kVersionCheckerUpdateAvailableNotification = @"VersionCheckerUpdateAvailableNotification";
+NSString* const kVersionCheckerOutdatedNotification = @"VersionCheckerOutdatedNotification";
+
 @implementation VersionChecker
 
 static NSString *latestVersionToCauseAlert;
