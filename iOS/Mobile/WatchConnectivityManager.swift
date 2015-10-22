@@ -444,7 +444,7 @@ class WatchConnectivityManager: NSObject {
             NSLog("WCSession reachability did change: \(session.reachable)")
             if watchConnectivityManager.refreshUserAfterReachable && session.reachable {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                    watchConnectivityManager.refreshUser()
+                    self.watchConnectivityManager.refreshUser()
                 }
             }
             
