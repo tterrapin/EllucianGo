@@ -91,12 +91,6 @@ public class EllucianDefaultDetailFragment extends EllucianFragment {
 		
 		Activity activity = getActivity();
 		
-		headerLayout.setBackgroundColor(Utils.getAccentColor(activity));
-		titleView.setTextColor(Utils.getSubheaderTextColor(activity));
-		dateLabelView.setTextColor(Utils.getSubheaderTextColor(activity));
-		dateView.setTextColor(Utils.getSubheaderTextColor(activity));
-		locationView.setTextColor(Utils.getSubheaderTextColor(activity));
-		
 		String title = null;
 		String dateLabel = null;
 		String date = null;

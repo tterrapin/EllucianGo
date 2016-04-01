@@ -129,7 +129,8 @@ public class EllucianProvider extends ContentProvider {
 	private static final int REGISTRATIONLOCATIONS_ID = 2301;
 	private static final int REGISTRATIONLEVELS = 2302;
 	private static final int REGISTRATIONLEVELS_ID = 2303;
-	
+    private static final int DIRECTORIES = 2400;
+
 	private static UriMatcher buildUriMatcher() {
 		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 		final String authority = EllucianContract.CONTENT_AUTHORITY;
@@ -201,6 +202,7 @@ public class EllucianProvider extends ContentProvider {
 		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LOCATIONS+"/*", REGISTRATIONLOCATIONS_ID);
 		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LEVELS, REGISTRATIONLEVELS);
 		matcher.addURI(authority, EllucianContract.PATH_REGISTRATION_LEVELS+"/*", REGISTRATIONLEVELS_ID);
+        matcher.addURI(authority, EllucianContract.PATH_DIRECTORIES, DIRECTORIES);
 		
 		return matcher;
 	}
@@ -377,6 +379,8 @@ public class EllucianProvider extends ContentProvider {
 				return RegistrationLevels.CONTENT_TYPE;
 			case REGISTRATIONLEVELS_ID:
 				return RegistrationLevels.CONTENT_ITEM_TYPE;
+            case DIRECTORIES:
+                return EllucianContract.Directories.CONTENT_ITEM_TYPE;
 				
 			default:
 				throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -536,6 +540,11 @@ public class EllucianProvider extends ContentProvider {
 				notifyChange(uri);
 				return RegistrationLevels.buildUri(Long.toString(id));
 			}
+            case DIRECTORIES: {
+                long id = db.insertOrThrow(Tables.DIRECTORIES, null, values);
+                notifyChange(uri);
+                return EllucianContract.Directories.buildUri(Long.toString(id));
+            }
 			default:
 				throw new UnsupportedOperationException("Unknown uri: "+ uri);
 		}
@@ -831,7 +840,10 @@ public class EllucianProvider extends ContentProvider {
 					return builder.table(Tables.REGISTRATION_LEVELS)
 							.where(RegistrationLevels._ID + "=?", id);
 			}
-			default:
+            case DIRECTORIES: {
+                return builder.table(Tables.DIRECTORIES);
+            }
+            default:
 				throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}
 	}
@@ -1097,6 +1109,9 @@ public class EllucianProvider extends ContentProvider {
 				return builder.table(Tables.REGISTRATION_LEVELS)
 						.where(RegistrationLevels._ID + "=?", id);
 		}
+        case DIRECTORIES: {
+            return builder.table(Tables.DIRECTORIES);
+        }
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri);
 		}

@@ -2,7 +2,7 @@
 
 package com.ellucian.mobile.android.registration;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.CheckableSectionedListAdapter;
 import com.ellucian.mobile.android.adapter.SectionedListAdapter;
+import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
@@ -34,9 +35,9 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 	}
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (RegistrationActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.activity = (RegistrationActivity) getActivity();
 	}
 	
 	@Override
@@ -159,9 +160,12 @@ public class RegistrationSearchResultsListFragment extends EllucianDefaultListFr
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);
-		bundle.putString(RegistrationDetailFragment.REQUESTING_LIST_FRAGMENT, 
-				this.getClass().getSimpleName());
-		return bundle;
+		bundle.putString(RegistrationDetailFragment.REQUESTING_LIST_FRAGMENT,
+                this.getClass().getSimpleName());
+        bundle.putString(RegistrationDetailFragment.REGISTRATION_MODULE_ID,
+                ((EllucianActivity)getActivity()).moduleId);
+
+        return bundle;
 	}
 	
 	public void setNewSearch(boolean value) {

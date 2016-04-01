@@ -5,7 +5,9 @@
 package com.ellucian.mobile.android.client.courses.daily;
 
 
-public class Day {
+import java.io.Serializable;
+
+public class Day implements Serializable {
 	public String date;
 	public Meeting[] coursesMeetings;
 }

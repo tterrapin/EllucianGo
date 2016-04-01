@@ -35,6 +35,7 @@
     <string name="menu_header_applications">Applications</string>
     <string name="menu_header_actions">Actions</string>
     <string name="menu_header_indicator_description">Header Indicator</string>
+    <string name="menu_information">Information</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     
@@ -165,7 +166,7 @@
 	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
 	</string>
 	<string name="default_course_section_title_format">
-	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
+	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> - <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
 	</string>
 	<string name="default_building_and_room_format">
 	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
@@ -200,6 +201,14 @@
     <string name="about_powered_by">Powered by</string>
     <string name="about_powered_by_ellucian">Powered by Ellucian</string>
     
+    <!-- AppLauncher -->
+
+    <string name="title_activity_app_launcher">App Launcher</string>
+    <string name="app_launcher_unsupported_title">Unavailable Application</string>
+    <string name="app_launcher_unsupported_text">This application is not available on Android.</string>
+    <string name="app_launcher_install_title">Install App</string>
+    <string name="app_launcher_install_text">You do not have the required app. Would you like to install it?</string>
+
     <!-- Courses -->
     
     <string name="title_activity_courses">Courses</string>
@@ -219,8 +228,6 @@
     <string name="courses_section_grades">Grades</string>
     <string name="courses_section_assignments">Assignments</string>
     <string name="courses_section_roster">Roster</string>
-    <string name="full_schedule">Full Schedule</string>
-    <string name="daily_schedule">Daily Schedule</string>
     <string name="courses_no_courses_message">There are no courses</string>
     <string name="title_activity_courses_daily_schedule">Daily Schedule</string>
     <string name="title_activity_courses_full_schedule">Full Schedule</string>
@@ -245,13 +252,12 @@
 
     <!-- Directory -->
     
-    <string name="title_activity_directory">Directory Categories</string>
+    <string name="title_activity_directory">Directory</string>
     <string name="title_activity_directory_detail">Directory Detail</string>
     <string name="title_activity_directory_list_all">Directory</string>
-    <string name="title_activity_directory_list_student">Student Directory</string>
-    <string name="title_activity_directory_list_faculty">Faculty Directory</string>
     <string name="directory">Directory</string>
     <string name="directory_search">To use directory, search above.</string>
+    <string name="directory_sign_in_message">More contact information may be displayed if you sign in.</string>
     <string name="directory_no_results">No results found.</string>
     <string name="directory_no_phone">Cannot add contact with no phone number.</string>
     <string name="searchable_directory_hint">Search Directory</string>
@@ -260,6 +266,11 @@
     <string name="directory_type_all">All</string>
     <string name="directory_type_student">Student</string>
     <string name="directory_type_faculty">Faculty</string>
+    <string name="directory_auth_required_tail">\u0020-\u0020<xliff:g id="signIn" example="Sign In">%1$s</xliff:g></string>
+    <string name="directory_auth_required">
+        <xliff:g id="directoryName" example="Faculty">%1$s</xliff:g><xliff:g id="signIn" example=" - Sign In">%2$s</xliff:g>
+    </string>
+    <string name="directory_groups">Groups</string>
 
     <!-- Events -->
 
@@ -449,6 +460,10 @@
 	<string name="registration_label_credits_min_max_format">
 	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
 	</string>
+    <string name="available_seats">Available Seats:</string>
+    <string name="remaining_capacity">
+	    <xliff:g id="remaining" example="15">%1$s</xliff:g>/<xliff:g id="capacity" example="30">%2$s</xliff:g>
+    </string>
     
         
 	<!-- Versioning -->

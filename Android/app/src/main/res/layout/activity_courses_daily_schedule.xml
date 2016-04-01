@@ -15,22 +15,24 @@
 
         <include layout="@layout/toolbar" />
 
-        <LinearLayout xmlns:app="http://schemas.android.com/apk/res/"
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res/"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!-- Calendar Date Nav bar -->
             <LinearLayout
+                android:id="@+id/calendar_nav_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/calendar_nav_bottom_border_2dp"
+                android:background="@color/sub_header_bg"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/courses_daily_date_back_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/right_border_1dp"
+                    android:background="@color/default_gray"
                     android:contentDescription="@string/label_left_button"
                     android:onClick="dayBefore"
                     android:src="@drawable/ic_calendar_nav_left" />
@@ -46,8 +48,6 @@
                     android:layout_marginStart="30dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:drawableLeft="@drawable/ic_calendar_picker"
-                    android:drawableStart="@drawable/ic_calendar_picker"
                     android:gravity="center"
                     android:onClick="showDatePicker"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -58,7 +58,7 @@
                     android:id="@+id/courses_daily_date_forward_button"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/left_border_1dp"
+                    android:background="@color/default_gray"
                     android:contentDescription="@string/label_right_button"
                     android:onClick="dayAfter"
                     android:src="@drawable/ic_calendar_nav_right" />
@@ -67,8 +67,10 @@
 
             <ScrollView
                 android:id="@+id/courses_daily_root_view"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_below="@id/calendar_nav_bar"
+                android:background="@color/main_content_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <com.ellucian.mobile.android.view.BlocksLayout
                     android:id="@+id/courses_daily_layout"
@@ -86,7 +88,9 @@
                 </com.ellucian.mobile.android.view.BlocksLayout>
             </ScrollView>
 
-        </LinearLayout>
+            <include layout="@layout/progress_indicator" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -82,7 +81,6 @@ public class GradesActivity extends EllucianActivity {
 		viewPager = (ViewPager) findViewById(R.id.pager);
 
         viewPager.setAdapter(termsPageAdapter);
-//		viewPager.setOnPageChangeListener(new OnPageChangeListener(){
 		pageChangeListener = new OnPageChangeListener() {
 
 			@Override
@@ -535,7 +533,8 @@ public class GradesActivity extends EllucianActivity {
             tabLayout.setVisibility(View.VISIBLE);
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+            tabLayout.setSelectedTabIndicatorColor(Utils.getColorHelper(GradesActivity.this, R.color.tab_indicator_color));
+
         }
 
 		/**

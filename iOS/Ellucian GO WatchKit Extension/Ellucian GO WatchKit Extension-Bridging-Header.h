@@ -6,9 +6,7 @@
 //  Copyright (c) 2015 Ellucian Company L.P. and its affiliates. All rights reserved.
 //
 
-#import "RNEncryptor.h"
-#import "RNDecryptor.h"
-#import <CommonCrypto/CommonCrypto.h>
+#import "RNCryptor.h"
 #import "KeychainWrapper.h"
 #import "Module.h"
 #import "ImageCache.h"

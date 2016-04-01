@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Taf-3c-PRF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Taf-3c-PRF">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -63,12 +63,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Assignments Today Warning" translatesAutoresizingMaskIntoConstraints="NO" id="RmG-dr-hmi">
-                            <rect key="frame" x="0.0" y="14" width="16" height="14"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="16" id="SSk-GK-Kbk"/>
-                            </constraints>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not connected. Sign In to refresh data." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhL-h3-ui2">
                             <rect key="frame" x="24" y="0.0" width="268" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -81,6 +75,12 @@
                                 <constraint firstAttribute="height" constant="30" id="eEd-b2-CjJ"/>
                             </constraints>
                         </view>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Assignments Today Warning" translatesAutoresizingMaskIntoConstraints="NO" id="RmG-dr-hmi">
+                            <rect key="frame" x="0.0" y="14" width="16" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="SSk-GK-Kbk"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="u20-Js-u4f" firstAttribute="leading" secondItem="RWu-Yu-rrZ" secondAttribute="leading" id="3kK-5q-11V"/>

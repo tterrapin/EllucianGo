@@ -5,6 +5,7 @@
 package com.ellucian.mobile.android.ilp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -37,16 +38,15 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
     public static final String DETAIL_TYPE_EVENTS = "Events";
 
     private Activity activity;
-    private View rootView;
     private boolean calendarAvailable;
 
     public IlpDetailFragment() {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = getActivity();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
             return null;
         }
 
-        rootView = inflater.inflate(R.layout.fragment_default_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_default_detail, container, false);
 
         View headerLayout = rootView.findViewById(R.id.header_layout);
         TextView titleView = (TextView) rootView.findViewById(R.id.title);
@@ -72,12 +72,6 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
         TextView locationView = (TextView) rootView.findViewById(R.id.location);
 
         Activity activity = getActivity();
-
-        headerLayout.setBackgroundColor(Utils.getAccentColor(activity));
-        titleView.setTextColor(Utils.getSubheaderTextColor(activity));
-        dateLabelView.setTextColor(Utils.getSubheaderTextColor(activity));
-        dateView.setTextColor(Utils.getSubheaderTextColor(activity));
-        locationView.setTextColor(Utils.getSubheaderTextColor(activity));
 
         String title = null;
         String dateLabel = null;
@@ -266,7 +260,7 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
     @Override
     public void onStart() {
         super.onStart();
-        String viewLabel = "";
+        String viewLabel;
         if (getArguments().containsKey(DETAIL_TYPE)) {
             viewLabel = "ILP " + getArguments().getString(DETAIL_TYPE) + " Detail";
         } else {
@@ -278,7 +272,7 @@ public class IlpDetailFragment extends EllucianDefaultDetailFragment{
 
     protected void sendAddToCalendarIntent() {
         Bundle args = getArguments();
-        String type = args.getString(IlpDetailFragment.DETAIL_TYPE);
+//        String type = args.getString(IlpDetailFragment.DETAIL_TYPE);
         long startTime = args.getLong(Extra.START, CalendarUtils.getNextHour());
         // Some 3rd Party calendar apps need end dates, so add 1 hour if there is no end date.
         long endTime = args.getLong(Extra.END, startTime+3600000);

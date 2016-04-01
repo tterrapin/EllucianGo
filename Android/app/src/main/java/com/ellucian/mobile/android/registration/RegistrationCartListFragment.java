@@ -2,11 +2,11 @@
 
 package com.ellucian.mobile.android.registration;
 
-import android.app.Activity;
-import android.support.v4.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.CheckableSectionedListAdapter;
 import com.ellucian.mobile.android.adapter.SectionedListAdapter;
+import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
@@ -39,9 +40,9 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 	}
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (RegistrationActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.activity = (RegistrationActivity) getActivity();
 	}
 	
 	public void setShowEligibilityError(boolean showError, String message) {
@@ -214,8 +215,10 @@ public class RegistrationCartListFragment extends EllucianDefaultListFragment {
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);
-		
-		return bundle;
+        bundle.putString(RegistrationDetailFragment.REGISTRATION_MODULE_ID,
+                ((EllucianActivity)getActivity()).moduleId);
+
+        return bundle;
 	}
 	
 	

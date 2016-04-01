@@ -5,6 +5,7 @@
 package com.ellucian.mobile.android.news;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -41,9 +42,9 @@ public class NewsDetailFragment extends EllucianDefaultDetailFragment {
 	}
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.activity = getActivity();
 	}
 	
 	@Override

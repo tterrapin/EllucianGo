@@ -43,8 +43,8 @@ public class ConfigurationLoadingActivity extends EllucianActivity {
         Utils.showProgressIndicator(activity);
 
         // set the colors directly, not going through preferences
-		int primaryColor = getResources().getColor(R.color.ellucian_primary_color);
-		int headerTextColor = getResources().getColor(R.color.ellucian_header_text_color);
+		int primaryColor = Utils.getColorHelper(this, R.color.ellucian_primary_color);
+		int headerTextColor = Utils.getColorHelper(this, R.color.ellucian_header_text_color);
 		configureActionBarDirect(primaryColor, headerTextColor);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(false);
@@ -54,15 +54,26 @@ public class ConfigurationLoadingActivity extends EllucianActivity {
 				Utils.CONFIGURATION_URL);
 		Uri data = getIntent().getData();
 		if (data != null) {
-			List<String> segments = data.getPathSegments();
-			configurationUrl = TextUtils.join("/",
-					segments.subList(2, segments.size()));
-			configurationUrl = configurationUrl.replaceFirst("/", "://");
-			if(data.getQueryParameter("passcode") != null) {
-				configurationUrl += "?passcode="
-					+ data.getQueryParameter("passcode");
+            // See what intent-filter was used. Either a scheme (ie. ellucianmobile://)
+            // or a host (mobile.elluciancloud.com) was matched.
+            int intStart;
+            if (data.getScheme().equals(getResources().getString(R.string.app_intent_filter_scheme))) {
+                Log.d(TAG, "Launch config from custom scheme");
+                intStart = 0;
+            } else {
+                // the intent-filter was https://
+                Log.d(TAG, "Launch config from matched pathPrefix");
+                intStart = 2;
 			}
-		}
+            List<String> segments = data.getPathSegments();
+            configurationUrl = TextUtils.join("/",
+                    segments.subList(intStart, segments.size()));
+            configurationUrl = configurationUrl.replaceFirst("/", "://");
+            if(data.getQueryParameter("passcode") != null) {
+                configurationUrl += "?passcode="
+                        + data.getQueryParameter("passcode");
+            }
+        }
 
 	}
 	

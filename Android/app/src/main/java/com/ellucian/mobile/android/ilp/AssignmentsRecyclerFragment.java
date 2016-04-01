@@ -4,15 +4,15 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.app.Activity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,9 +49,9 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
     }
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (IlpListActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = (IlpListActivity) getActivity();
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
     }
 	
 	private ArrayList<IlpItemHolder> buildAssignmentsList(Cursor cursor) {
-		ArrayList<IlpItemHolder> assignmentsList = new ArrayList<IlpItemHolder>();
+		ArrayList<IlpItemHolder> assignmentsList = new ArrayList<>();
 		
 		if (cursor.moveToFirst()) {
 			do {				
@@ -214,7 +214,7 @@ public class AssignmentsRecyclerFragment extends EllucianDefaultRecyclerFragment
 				String dateString = cursor.getString(cursor.getColumnIndex(CourseAssignments.ASSIGNMENT_DUE));
 				String url = cursor.getString(cursor.getColumnIndex(CourseAssignments.ASSIGNMENT_URL));
 				
-				String displayDate = "";
+				String displayDate;
 				if (!TextUtils.isEmpty(dateString)) {
 					Date date = CalendarUtils.parseFromUTC(dateString);
 					displayDate = CalendarUtils.getDefaultDateTimeString(getActivity(), date);

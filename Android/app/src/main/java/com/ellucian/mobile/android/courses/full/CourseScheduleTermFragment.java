@@ -86,7 +86,9 @@ public class CourseScheduleTermFragment extends EllucianListFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		return new CursorLoader(getActivity(), CourseCourses.CONTENT_URI, null,
-				CourseTerms.TERM_ID + "= ?", new String[] { termId }, CourseCourses.DEFAULT_SORT);
+				CourseTerms.TERM_ID + "= ?", new String[] { termId },
+                CourseCourses.COURSE_NAME + " ASC, " +
+                CourseCourses.COURSE_SECTION_NUMBER + " ASC");
 	}
 
 	@Override

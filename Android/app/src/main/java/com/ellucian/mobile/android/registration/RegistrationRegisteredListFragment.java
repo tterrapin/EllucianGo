@@ -1,7 +1,7 @@
 // Copyright 2014 Ellucian Company L.P and its affiliates.
 package com.ellucian.mobile.android.registration;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.adapter.CheckableSectionedListAdapter;
 import com.ellucian.mobile.android.adapter.SectionedListAdapter;
+import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultListFragment;
@@ -23,19 +24,18 @@ import com.ellucian.mobile.android.util.Utils;
 public class RegistrationRegisteredListFragment extends EllucianDefaultListFragment {
 	
 	private RegistrationActivity activity;
-	private View rootView;
-	private Button dropButton;
+    private Button dropButton;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (RegistrationActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.activity = (RegistrationActivity) getActivity();
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_registration_registered_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_registration_registered_list, container, false);
 		dropButton = (Button) rootView.findViewById(R.id.drop);
 		
 		dropButton.setBackgroundColor(Utils.getPrimaryColor(activity));
@@ -113,8 +113,10 @@ public class RegistrationRegisteredListFragment extends EllucianDefaultListFragm
 
 		Section section = (Section)objects[0];
 		bundle.putParcelable(RegistrationActivity.SECTION, section);
-		
-		return bundle;
+        bundle.putString(RegistrationDetailFragment.REGISTRATION_MODULE_ID,
+                ((EllucianActivity) getActivity()).moduleId);
+
+        return bundle;
 	}
 
 	@Override

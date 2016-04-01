@@ -7,7 +7,6 @@
 //
 
 #import "LoginExecutor.h"
-#import "AppDelegate.h"
 #import "AuthenticatedRequest.h"
 #import "NotificationManager.h"
 #import "Base64.h"
@@ -22,13 +21,13 @@
     NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     NSString *loginUrl = [defaults objectForKey:@"login-url"];
     
-    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
     if(refreshOnly) {
         loginUrl = [NSString stringWithFormat:@"%@?refresh=true", loginUrl];
     }
-    NSData *data = [authenticatedRequet requestURL:[NSURL URLWithString:loginUrl] fromView:nil];
+    NSData *data = [authenticatedRequest requestURL:[NSURL URLWithString:loginUrl] fromView:nil];
     
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)authenticatedRequet.response;
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)authenticatedRequest.response;
     
     NSInteger responseStatusCode = [httpResponse statusCode];
     if (responseStatusCode == 200 )

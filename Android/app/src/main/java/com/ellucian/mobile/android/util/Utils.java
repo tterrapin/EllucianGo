@@ -7,12 +7,14 @@ package com.ellucian.mobile.android.util;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,11 +26,15 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.ModuleType;
+import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
+import com.ellucian.mobile.android.provider.EllucianContract;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +53,7 @@ public class Utils {
 	public static final String SECURITY = "security";
 	public static final String SECURITY_URL = "securityUrl";
 	public static final String NOTIFICATION = "notification";
+    public static final String NOTIFICATION_MODULE_NAME = "notificationModuleName";
 	public static final String NOTIFICATION_PRESENT = "notificationPresent";
 	public static final String NOTIFICATION_NOTIFICATIONS_URL = "notificationNotificationsUrl";
 	public static final String NOTIFICATION_MOBILE_NOTIFICATIONS_URL = "notificationMobileNotificationsUrl";
@@ -56,8 +63,12 @@ public class Utils {
 	public static final String CONFIGURATION = "configuration";
 	public static final String CONFIGURATION_NAME = "configurationName";
 	public static final String CONFIGURATION_URL = "configurationUrl";
-	public static final String CONFIGURATION_LAST_UPDATE = "configurationLastUpdate";
-	public static final String APPEARANCE = "appearance";
+	public static final String CONFIGURATION_LAST_UPDATED = "configurationLastUpdated";
+    public static final String CONFIGURATION_LAST_CHECKED = "configurationLastChecked";
+    public static final String MOBILESERVER_CONFIG_URL = "mobileServerConfigUrl";
+    public static final String MOBILESERVER_CONFIG_LAST_UPDATE = "mobileServerConfigLastUpdate";
+    public static final String MOBILESERVER_CODEBASE_VERSION = "mobileServerCodebaseVersion";
+    public static final String APPEARANCE = "appearance";
 	public static final String DIALOG = "dialog";
 	private static final String USER = "user";
 	private static final String USER_ID = "userId";
@@ -74,6 +85,7 @@ public class Utils {
 	public static final String DIRECTORY_ALL_SEARCH_URL = "directoryAllSearchUrl";
 	public static final String DIRECTORY_STUDENT_SEARCH_URL = "directoryStudentSearchUrl";
 	public static final String DIRECTORY_FACULTY_SEARCH_URL = "directoryFacultySearchUrl";
+    public static final String DIRECTORY_BASE_SEARCH_URL = "directoryBaseSearchUrl";
 	public static final String GOOGLE_ANALYTICS = "googleAnalytics";
 	public static final String GOOGLE_ANALYTICS_TRACKER1 = "tracker1";
 	public static final String GOOGLE_ANALYTICS_TRACKER2 = "tracker2";
@@ -84,6 +96,9 @@ public class Utils {
 	public static final String MENU = "menu";
 	public static final String MENU_HEADER_STATE = "menuHeaderState";
     public static final String ILP_URL = "ilpUrl";
+    public static final String ILP_NAME = "ilpName";
+    public static final String HOME_SCREEN_ICONS = "homeScreenIcons";
+    public static final String HOME_SCREEN_OVERLAY = "homeScreenOverlay";
 
 
 	public static boolean isIntentAvailable(Context context, Intent intent) {
@@ -105,17 +120,15 @@ public class Utils {
 	public static int getHeaderTextColor(Context context) {
 		return getColor(context, HEADER_TEXT_COLOR);
 	}
+
 	public static int getAccentColor(Context context) {
 		return getColor(context, ACCENT_COLOR);
 	}
+
 	public static int getSubheaderTextColor(Context context) {
 		return getColor(context, SUBHEADER_TEXT_COLOR);
 	}
 	
-	public static boolean hasDefaultMenuIcon(Context context) {
-		SharedPreferences preferences = context.getSharedPreferences(APPEARANCE, Context.MODE_PRIVATE);
-		return preferences.getBoolean(DEFAULT_MENU_ICON, false);
-	}
 	
 	public static Drawable getMenuIcon(Context context) {
 		String menuIconUrl = Utils.getStringFromPreferences(context, Utils.APPEARANCE, Utils.MENU_ICON_URL, null);
@@ -401,6 +414,32 @@ public class Utils {
 				.asList(ModuleType.AUTHENTICATION_NEEDED);
 		return authTypeList.contains(type);
 	}
+
+    public static boolean isAuthenticationNeededForDirectory(ContentResolver resolver, String moduleId) {
+        Cursor directoryCursor = resolver.query(
+                EllucianContract.ModulesProperties.CONTENT_URI,
+                new String[]{EllucianContract.ModulesProperties.MODULE_PROPERTIES_VALUE},
+                EllucianContract.Modules.MODULES_ID + "=? AND " +
+                        EllucianContract.ModulesProperties.MODULE_PROPERTIES_NAME + "=?",
+                new String[]{moduleId, ModuleMenuAdapter.DIRECTORY_MODULE_VERSION},
+                null);
+
+        String directoryModuleVersion="";
+        if (directoryCursor != null) {
+            while (directoryCursor.moveToNext()) {
+                directoryModuleVersion = directoryCursor.getString(
+                        directoryCursor.getColumnIndex(EllucianContract.ModulesProperties.MODULE_PROPERTIES_VALUE));
+            }
+        }
+        directoryCursor.close();
+
+        if (TextUtils.isEmpty(directoryModuleVersion)) {
+            return true; // legacy should be secure
+        } else {
+            return false;
+        }
+
+    }
 	
 	public static boolean isAuthenticationNeededForSubType(Context context, String subType) {
 		EllucianApplication ellucianApp = (EllucianApplication) context.getApplicationContext();
@@ -432,4 +471,69 @@ public class Utils {
         }
     }
 
+    public static void hideProgressIndicator(View view) {
+        View progressSpinner = view.findViewById(R.id.progress_spinner);
+        if (progressSpinner != null) {
+            progressSpinner.setVisibility(View.GONE);
+        }
+    }
+
+    public static void showProgressIndicator(View view) {
+        View progressSpinner = view.findViewById(R.id.progress_spinner);
+        if (progressSpinner != null) {
+            progressSpinner.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static int getColorHelper(Context context, int colorId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return context.getResources().getColor(colorId, null);
+        } else {
+            return context.getResources().getColor(colorId);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Drawable getDrawableHelper(Context context, int drawableId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return context.getResources().getDrawable(drawableId, null);
+        } else {
+            return context.getResources().getDrawable(drawableId);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setDatabasePath(WebSettings webSettings, String databasePath) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            // deprecated, but needed for earlier than API 19
+            webSettings.setDatabasePath(databasePath);
+        }
+    }
+
+    public static void enableMirroredDrawable(Drawable drawable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            drawable.setAutoMirrored(true);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setTextAppearanceHelper(Context context, TextView view, int resId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            view.setTextAppearance(resId);
+        } else {
+            view.setTextAppearance(context, resId);
+        }
+    }
+
+    public static boolean allowMaps(Context context) {
+        // check if google play services is present
+        try {
+            context.getPackageManager().getApplicationInfo(
+                    "com.google.android.gms", 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }

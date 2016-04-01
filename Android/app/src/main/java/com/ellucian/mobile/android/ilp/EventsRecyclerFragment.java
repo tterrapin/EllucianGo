@@ -4,16 +4,15 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.app.Activity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 
 import com.ellucian.elluciango.R;
@@ -22,8 +21,8 @@ import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.EllucianDefaultRecyclerFragment;
 import com.ellucian.mobile.android.client.services.CourseEventsIntentService;
 import com.ellucian.mobile.android.provider.EllucianContract;
-import com.ellucian.mobile.android.provider.EllucianContract.CourseEvents;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
+import com.ellucian.mobile.android.provider.EllucianContract.CourseEvents;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
 
@@ -42,9 +41,9 @@ public class EventsRecyclerFragment extends EllucianDefaultRecyclerFragment impl
     }
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (IlpListActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = (IlpListActivity) getActivity();
 	}
 
     @Override
@@ -175,7 +174,7 @@ public class EventsRecyclerFragment extends EllucianDefaultRecyclerFragment impl
                 boolean allDay = Boolean.parseBoolean(allDayString);
 
                 // Depending on the type of the event and what info is present the display will change
-                String displayDate = "";
+                String displayDate;
                 if (!TextUtils.isEmpty(startDateString)) {
                     Date startDate = CalendarUtils.parseFromUTC(startDateString);
 

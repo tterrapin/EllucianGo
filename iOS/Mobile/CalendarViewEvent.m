@@ -1,3 +1,11 @@
+//
+//  CalendarViewEvent.h
+//  Mobile
+//
+//  Created by Jason Hocker on 10/6/15.
+//  Copyright © 2015 Ellucian Company L.P. and its affiliates. All rights reserved.
+//
+
 #import "CalendarViewEvent.h"
 
 static const NSUInteger MINUTES_IN_HOUR = 60;
@@ -37,6 +45,13 @@ static const NSUInteger DAY_IN_MINUTES = 1440;
 		duration = DAY_IN_MINUTES - [self minutesSinceMidnight];
 	}
 	return duration;
+}
+
+-(BOOL) isAllDayForDisplayDate {
+    NSDateComponents *displayComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_displayDate];
+    NSDateComponents *startComponents = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_start];
+    
+    return DATE_CMP(startComponents, displayComponents) && self.allDay;
 }
 
 - (BOOL)isEqual:(id)other {

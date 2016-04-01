@@ -47,12 +47,14 @@ class WebframeJavascriptInterface {
 	 */
 	@JavascriptInterface
 	public void log(String message) {
+		webActivity.sendEvent("JS Library", "function called", "log", null, webActivity.moduleName);
 		Log.d(TAG, message);
 	}
 
 	@JavascriptInterface
 	public boolean refreshRoles() {
 
+		webActivity.sendEvent("JS Library", "function called", "refreshRoles", null, webActivity.moduleName);
 		int RETRY_LIMIT = 50;
 		int SLEEP_INTERVAL = 200;
 
@@ -118,13 +120,15 @@ class WebframeJavascriptInterface {
 
 	@JavascriptInterface
 	public void openMenu(String name, String type) {
+		webActivity.sendEvent("JS Library", "function called", "openMenu", null, webActivity.moduleName);
+
 		type = type.toLowerCase(Locale.US);
 		EllucianApplication ellucianApplication = (EllucianApplication) webActivity
 				.getApplicationContext();
 		final ContentResolver contentResolver = webActivity
 				.getContentResolver();
 
-		boolean allowMaps = ModuleMenuAdapter.allowMaps(webActivity);
+		boolean allowMaps = Utils.allowMaps(webActivity);
 
 		if (type.equals(ModuleType.MAPS) && !allowMaps) {
 			return;
@@ -172,6 +176,8 @@ class WebframeJavascriptInterface {
 						} else if (type.equals(ModuleType.CUSTOM)) {
 							secure = Utils.isAuthenticationNeededForSubType(webActivity,
 									subType);
+                        } else if (type.equals(ModuleType.DIRECTORY)) {
+                            secure = Utils.isAuthenticationNeededForDirectory(webActivity.getContentResolver(), moduleId);
 						} else {
 							secure = Utils.isAuthenticationNeededForType(type);
 						}
@@ -280,6 +286,8 @@ class WebframeJavascriptInterface {
 
 	@JavascriptInterface
 	public void reloadWebModule() {
+		webActivity.sendEvent("JS Library", "function called", "reloadWebModule", null, webActivity.moduleName);
+
 		final WebView webView = webActivity.getWebView();
 		webView.post(new Runnable() {
 			@Override
@@ -344,5 +352,49 @@ class WebframeJavascriptInterface {
 			this.type = type;
 			this.roles = roles;
 		}
+	}
+
+	@JavascriptInterface
+	public String primaryColor() {
+		webActivity.sendEvent("JS Library", "function called", "primaryColor", null, webActivity.moduleName);
+
+		int color = Utils.getPrimaryColor(getApplication());
+		return hexStringFromColor(color);
+	}
+
+	@JavascriptInterface
+	public String accentColor() {
+		webActivity.sendEvent("JS Library", "function called", "accentColor", null, webActivity.moduleName);
+
+		int color = Utils.getAccentColor(getApplication());
+		return hexStringFromColor(color);
+	}
+
+	@JavascriptInterface
+	public String headerTextColor() {
+		webActivity.sendEvent("JS Library", "function called", "headerTextColor", null, webActivity.moduleName);
+
+		int color = Utils.getHeaderTextColor(getApplication());
+		return hexStringFromColor(color);
+	}
+
+	@JavascriptInterface
+	public String subheaderTextColor() {
+		webActivity.sendEvent("JS Library", "function called", "subheaderTextColor", null, webActivity.moduleName);
+
+		int color = Utils.getSubheaderTextColor(getApplication());
+		return hexStringFromColor(color);
+	}
+
+
+	private EllucianApplication getApplication() {
+		EllucianApplication ellucianApplication = (EllucianApplication) webActivity
+				.getApplicationContext();
+		return ellucianApplication;
+	}
+
+	private String hexStringFromColor(int color) {
+		String hex = "#" + Integer.toHexString(color).toUpperCase().substring(2);
+		return hex;
 	}
 }

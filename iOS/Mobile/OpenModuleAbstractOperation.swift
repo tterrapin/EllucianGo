@@ -9,7 +9,9 @@
 import UIKit
 
 class OpenModuleAbstractOperation: NSOperation {
-
+    
+    var performAnimation = false
+    
     func showViewController(controller: UIViewController) {
         
         let slidingViewController = findSlidingViewController()
@@ -65,7 +67,7 @@ class OpenModuleAbstractOperation: NSOperation {
                 let navDetailController = detailController as! UINavigationController
                 detailController = navDetailController.topViewController!
             }
-
+            
             
             if masterController.conformsToProtocol(UISplitViewControllerDelegate) {
                 let delegate : UISplitViewControllerDelegate = masterController as! UISplitViewControllerDelegate
@@ -77,7 +79,6 @@ class OpenModuleAbstractOperation: NSOperation {
                 splitViewController.delegate = delegate
             }
             
-            //TODO if no references to DetailSelectionDelegate
             if detailController.conformsToProtocol(DetailSelectionDelegate) {
                 if masterController.respondsToSelector(Selector("detailSelectionDelegate")) {
                     masterController.setValue(detailController, forKey: "detailSelectionDelegate")
@@ -93,12 +94,23 @@ class OpenModuleAbstractOperation: NSOperation {
             addMenuButton(controllerToShow)
             controllerToShow = navigationController
         }
-
+        
         if let panGesture = slidingViewController.panGesture {
             controllerToShow.view.addGestureRecognizer(panGesture)
         }
-
+        
         dispatch_async(dispatch_get_main_queue(), {
+            
+            if self.performAnimation {
+                let transition = CATransition()
+                transition.type = kCATransitionPush
+                transition.subtype = kCATransitionFromRight
+                transition.duration = 0.5
+                transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
+                transition.fillMode = kCAFillModeRemoved
+                let slidingViewController = self.findSlidingViewController()
+                slidingViewController.topViewController.view.window?.layer.addAnimation(transition, forKey: "transition")
+            }
             
             let segue = ECSlidingSegue(identifier: "", source: slidingViewController.topViewController, destination: controllerToShow)
             slidingViewController.topViewController.prepareForSegue(segue, sender: nil)
@@ -111,33 +123,22 @@ class OpenModuleAbstractOperation: NSOperation {
     func findSlidingViewController() -> ECSlidingViewController {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        return appDelegate.slidingViewController
+        return appDelegate.slidingViewController!
     }
-
+    
     private func addMenuButton(controller: UIViewController?) {
         if let controller = controller where controller.respondsToSelector(Selector("revealMenu:")) {
-
+            
             var buttonImage = UIImage(named: "icon-menu-iphone")
-            var originalImage = true
-            if let menuImageName = AppGroupUtilities.userDefaults()?.stringForKey("menu-icon") {
-                if let theirImage = ImageCache.sharedCache().getCachedImage(menuImageName) {
-                    buttonImage = UIImage(CGImage: theirImage.CGImage!, scale: 2.0, orientation: UIImageOrientation.Up)
-                    buttonImage = buttonImage!.imageWithRenderingMode(.AlwaysOriginal)
-                } else {
-                    buttonImage = buttonImage!.imageWithRenderingMode(.AlwaysTemplate)
-                    originalImage = false
-                }
-            } else {
-                buttonImage = buttonImage!.imageWithRenderingMode(.AlwaysTemplate)
-                originalImage = false
+            
+            //exception for home screens
+            if controller is HomeViewController {
+                buttonImage = UIImage(named: "home-menu-icon")
             }
+
             buttonImage?.isAccessibilityElement = false
-            
+
             let button = UIBarButtonItem(image: buttonImage, style: UIBarButtonItemStyle.Plain, target: controller, action:"revealMenu:")
-            
-            if !originalImage {
-                button.tintColor = UIColor.headerTextColor()
-            }
             button.accessibilityLabel = NSLocalizedString("Menu", comment: "Accessibility menu label")
             controller.navigationItem.leftBarButtonItem = button
         }
@@ -145,7 +146,7 @@ class OpenModuleAbstractOperation: NSOperation {
     
     //MARK: find modules
     
-    class func findUserModules() -> [Module] {
+    class func findUserModules(limitToHomeScreen: Bool = false) -> [Module] {
         let userRoles : Set<String>?
         if let currentUser = CurrentUser.sharedInstance() where currentUser.isLoggedIn {
             userRoles = currentUser.roles as! Set<String>?
@@ -153,28 +154,38 @@ class OpenModuleAbstractOperation: NSOperation {
             userRoles = nil
         }
         
+        var parr = [NSPredicate]()
+        
         var results : [Module]
         let request = NSFetchRequest(entityName: "Module")
-        request.sortDescriptors = [NSSortDescriptor(key: "index" , ascending: true)]
+        if(limitToHomeScreen) {
+            request.sortDescriptors = [NSSortDescriptor(key: "homeScreenOrder" , ascending: true)]
+        } else {
+            request.sortDescriptors = [NSSortDescriptor(key: "index" , ascending: true)]
+        }
+        
         if let userRoles = userRoles {
-            var parr = [NSPredicate]()
+            
             parr.append(NSPredicate(format: "roles.@count == 0"))
             parr.append(NSPredicate(format: "ANY roles.role like %@", "Everyone"))
             for role in userRoles {
                 parr.append(NSPredicate(format: "ANY roles.role like %@", role))
             }
-            let joinOnRolesPredicate = NSCompoundPredicate(type: .OrPredicateType, subpredicates: parr)
-            let allModules = CoreDataManager.shared.executeFetchRequest(request) as! [Module]
-            
-            
-            results = allModules.filter{ joinOnRolesPredicate.evaluateWithObject($0) }
             
         } else {
-            request.predicate = NSPredicate(format: "(hideBeforeLogin == %@) || (hideBeforeLogin = nil)", NSNumber(bool: false))
-            results = CoreDataManager.shared.executeFetchRequest(request) as! [Module]
+            parr.append(NSPredicate(format: "(hideBeforeLogin == %@) || (hideBeforeLogin = nil)", NSNumber(bool: false)))
+            
         }
         
+        let joinOnRolesPredicate = NSCompoundPredicate(type: .OrPredicateType, subpredicates: parr)
+        let allModules = CoreDataManager.shared.executeFetchRequest(request) as! [Module]
+        results = allModules.filter{ joinOnRolesPredicate.evaluateWithObject($0) }
         results = results.filter( { isSupported($0) } )
+        
+        if limitToHomeScreen {
+            results = results.filter( { $0.homeScreenOrder != nil && $0.homeScreenOrder > 0 && $0.homeScreenOrder <= 5 } )
+        }
+        
         return results
     }
     
@@ -219,7 +230,7 @@ class OpenModuleAbstractOperation: NSOperation {
             return Dictionary<String, AnyObject> ()
         }
     }
-
+    
     
     
     

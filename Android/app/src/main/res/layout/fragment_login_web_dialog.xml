@@ -9,11 +9,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <include layout="@layout/progress_indicator"/>
+
     <com.ellucian.mobile.android.login.LoginWebView
         android:focusable="true"
         android:id="@+id/login_webview"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/horizontalLine"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"

@@ -102,8 +102,29 @@
 				tools:ignore="NewApi,RtlSymmetry" />
 	    
 	    </LinearLayout>
-	
-	    <LinearLayout
+
+        <LinearLayout
+            android:id="@+id/seats_details"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp" >
+
+            <TextView
+                android:text="@string/available_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/seats_meter_item"/>
+
+        </LinearLayout>
+        
+        <LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal"

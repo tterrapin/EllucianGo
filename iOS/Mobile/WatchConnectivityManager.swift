@@ -258,7 +258,7 @@ class WatchConnectivityManager: NSObject {
         if #available(iOS 9.0, *) {
             if !pinging || retryCount > 0 {
                 pinging = true
-                pingid++
+                pingid += 1
                 if let session = wcSession as! WCSession? {
                     let message: [String: AnyObject] = [ "action": "ping"]
                     

@@ -16,6 +16,12 @@
 
 - (IBAction)revealMenu:(id)sender
 {
+    self.slidingViewController.underLeftViewController.isAccessibilityElement = YES;
+    
+    UITableViewController *menu = (UITableViewController *)self.slidingViewController.underLeftViewController;
+    
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, menu.tableView);
+    
     NSUserDefaults *defaults = [AppGroupUtilities userDefaults];
     [defaults setBool:YES forKey:@"menu-discovered"];
     [defaults synchronize];

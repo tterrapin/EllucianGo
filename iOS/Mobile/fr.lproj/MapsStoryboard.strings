@@ -11,7 +11,7 @@
 "6tp-oI-bcB.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "09L-AL-ANu"; */
-"09L-AL-ANu.text" = "Libellé";
+"09L-AL-ANu.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "9ll-RX-0mS"; */
 "9ll-RX-0mS.text" = "Libellé";
@@ -32,5 +32,5 @@
 "pWS-tV-eBK.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "yT9-n2-nVn"; */
-"yT9-n2-nVn.text" = "Libellé";
+"yT9-n2-nVn.text" = "Étiquette";
 

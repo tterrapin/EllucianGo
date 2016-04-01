@@ -7,19 +7,25 @@
 //
 
 #import "NSMutableURLRequest+BasicAuthentication.h"
-#import "AppDelegate.h"
 #import "CurrentUser.h"
 #import "Base64.h"
+#import "Ellucian_GO-Swift.h"
 
 @implementation NSMutableURLRequest (BasicAuthentication)
 
 -(void) addAuthenticationHeader
 {
-    CurrentUser *user = [CurrentUser sharedInstance];
-    NSString *loginString = [NSString stringWithFormat:@"%@:%@", user.userauth, user.getPassword];
-    NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];
-    NSString *authHeader = [@"Basic " stringByAppendingFormat:@"%@", encodedLoginData];
-    [self addValue:authHeader forHTTPHeaderField:@"Authorization"];
+    NSUserDefaults *prefs = [AppGroupUtilities userDefaults];
+    
+    NSString *authenticationMode = [prefs objectForKey:@"login-authenticationType"];
+    if(!authenticationMode || [authenticationMode isEqualToString:@"native"]) {
+        
+        CurrentUser *user = [CurrentUser sharedInstance];
+        NSString *loginString = [NSString stringWithFormat:@"%@:%@", user.userauth, user.getPassword];
+        NSString *encodedLoginData = [Base64 encode:[loginString dataUsingEncoding:NSUTF8StringEncoding]];
+        NSString *authHeader = [@"Basic " stringByAppendingFormat:@"%@", encodedLoginData];
+        [self addValue:authHeader forHTTPHeaderField:@"Authorization"];
+    }
     
 }
 

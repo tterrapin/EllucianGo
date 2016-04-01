@@ -64,9 +64,6 @@
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "Ajouter au panier (%d)";
 
-/* all search scope in directory */
-"All" = "Tous";
-
 /* label for all day event */
 "All Day" = "Toute la journée";
 
@@ -102,6 +99,9 @@
 
 /* Accessibility label for collapse menu section button */
 "Collapse menu section" = "Réduire la section de menu";
+
+/* Watch communication to phone error title */
+"Communication Error" = "Erreur de communication";
 
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "Copier URL";
@@ -179,11 +179,15 @@
 /* ILP View: Events Card Title */
 "Events" = "Événements";
 
+/* Faculty label
+   title for faculty no match */
+"Faculty" = "Enseignants";
+
 /* facilty/staff search scope in directory */
 "Faculty/Staff" = "Enseignants/Personnel";
 
 /* Fetching saved course sections message */
-"Fetching saved course sections" = "Récupération des UP enregistrées";
+"Fetching saved course sections" = "Récupération UP enregistrées";
 
 /* User can get directions for this location */
 "Get Directions" = "Itinéraire";
@@ -197,24 +201,27 @@
 /* Ineligible for Registration */
 "Ineligible for Registration" = "Non admissible";
 
+/* Install App title */
+"Install App" = "Installer l'application";
+
 /* Last Updated date */
 "Last Updated %@" = "Dernière mise à jour: %@";
 
 /* Last Updated date unknown */
 "Last Updated Unknown" = "Dernière mise à jour non connue";
 
-/* label for when data was last updated */
-"Last Updated: %@" = "Dernière mise à jour: %@";
-
 /* loading message while fetching recent transactions
    loading message while waiting for data to load */
 "Loading" = "Chargement en cours";
 
 /* Locations label for registration filter */
-"Locations" = "Lieux";
+"Locations" = "Positions";
 
 /* Accessibility menu label */
 "Menu" = "Menu";
+
+/* Message in directory suggesting to sign in for more information */
+"More contact information may be displayed if you are signed in." = "De plus amples informations de contact peuvent être affichées si vous êtes connecté.";
 
 /* new notification has arrived */
 "New Notification" = "Nouvelle notification";
@@ -230,9 +237,6 @@
 
 /* no events recorded message */
 "No Events Recorded" = "Aucun événement enregistré";
-
-/* no grades recorded message */
-"No Grades Recorded" = "Aucune note enregistrée";
 
 /* no announcements for today message */
 "No announcements for today" = "Aucune annonce pour aujourd'hui";
@@ -253,7 +257,8 @@
 "None announcement date available" = "Aucune date d'annonce disponible";
 
 /* OK
-   OK action */
+   OK action
+   OK button on alert view */
 "OK" = "OK";
 
 /* overdue assignment indicator for ilp module */
@@ -273,6 +278,15 @@
 
 /* Permission not granted title */
 "Permission not granted" = "Autorisation non accordée";
+
+/* Person was not found */
+"Person was not found" = "Personne non trouvée";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Veuillez vous assurer que le téléphone et à proximité et lancez";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Veuillez vous assurer que le téléphone et à proximité et lancez %@ sur le téléphone";
 
 /* Table section header RECENT PAYMENTS */
 "RECENT PAYMENTS" = "PAIEMENTS RÉCENTS";
@@ -313,6 +327,9 @@
 /* label - room number */
 "Room %@" = "Salle %@";
 
+/* title for roster no match */
+"Roster" = "Liste étudiants";
+
 /* empty Search Results message */
 "Search Results Empty" = "Aucun résultat de recherche";
 
@@ -336,10 +353,9 @@
 "Sign In" = "Connexion";
 
 /* title for failed sign in */
-"Sign In Failed" = "Échec de la connexion";
+"Sign In Failed" = "Échec de connexion";
 
-/* label to sign out
-   Sign Out menu item */
+/* Sign Out menu item */
 "Sign Out" = "Déconnexion";
 
 /* student search scope in directory */
@@ -354,6 +370,9 @@
 /* message for failed sign in */
 "The password or user name you entered is incorrect. Please try again." = "Le mot de passe ou le nom d'utilisateur saisi est incorrect. Veuillez recommencer.";
 
+/* Targeted app not installed alert message */
+"There are no installed applications available to respond to this request." = "Il n'existe aucune application installée pour répondre à cette interrogation.";
+
 /* configurations cannot be downloaded */
 "There are no institutions to display at this time." = "Aucun établissement à afficher actuellement.";
 
@@ -362,6 +381,9 @@
 
 /* second message for heading of failed registered classes */
 "These issues may have prevented registration." = "Ces problèmes ont pu empêcher l'inscription.";
+
+/* Unsupported feature alert message */
+"This application is not available on iOS." = "Cette application n'est pas disponible sur iOS.";
 
 /* button label to compose tweet on Twitter */
 "Twitter" = "Twitter";
@@ -378,20 +400,23 @@
 /* unable to download configuration title */
 "Unable to launch configuration" = "Impossible de lancer la configuration";
 
+/* Unavailable Application alert title */
+"Unavailable Application" = "Application non disponible";
+
 /* Accessibility label for uncollapse menu section button */
 "Uncollapse menu section" = "Développer la section de menu";
 
 /* error message when address cannot be used for getting directions */
 "Unknown address" = "Adresse inconnue";
 
+/* Unsupported alert title */
+"Unsupported" = "Non pris en charge";
+
 /* Upgrade software button label */
 "Upgrade" = "Mise à niveau";
 
 /* view label */
 "View" = "Afficher";
-
-/* Label for user to start app from a notification in the notificaiton center */
-"View notifications" = "Afficher les notifications";
 
 /* second message for heading of failed drop classes */
 "We couldn't drop these courses:" = "Retrait de ces enseignements impossible:";
@@ -411,11 +436,14 @@
 /* permission access error message */
 "You do not have permission to use this feature." = "Vous n'êtes pas autorisé à utiliser cette fonctionnalité.";
 
-/* Message in notification center to alert that they have notifications */
-"You have new notifications" = "Vous avez de nouvelles notifications.";
+/* You do not have the required app. Would you like to install it? message */
+"You do not have the required app. Would you like to install it?" = "Vous n'avez pas l'application requise. Souhaitez-vous l'installer?";
 
 /* Permission not granted message */
 "You must give permission in Settings to allow access" = "Vous devez autoriser l'accès depuis le menu Réglages.";
+
+/* available seats/capacity */
+"available seats/capacity" = "%1$@/%2$@";
 
 /* building name/address */
 "building name/address" = "%1$@/%2$@";

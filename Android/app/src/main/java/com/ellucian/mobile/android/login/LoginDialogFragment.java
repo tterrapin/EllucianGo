@@ -70,10 +70,6 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
-	@SuppressWarnings("deprecation") 
-	// WebSettings.setDatabasePath - This method was deprecated in API level 19
-	// Database paths are managed by the implementation and calling this method
-	// will have no effect.
 	private void createWebAuthenticationLoginDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -99,13 +95,15 @@ public class LoginDialogFragment extends EllucianDialogFragment {
             }
         });
 
-		WebView webView = (WebView) dialogView.findViewById(R.id.login_webview);
+		final WebView webView = (WebView) dialogView.findViewById(R.id.login_webview);
 	
 		webView.setWebChromeClient(new WebChromeClient());
 		webView.setWebViewClient(new WebViewClient() {
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
+                Utils.hideProgressIndicator(dialogView);
+                webView.setVisibility(View.VISIBLE);
 				String title = view.getTitle();
 				if ("Authentication Success".equals(title)) {
 					sendEvent(GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION, GoogleAnalyticsConstants.ACTION_LOGIN, "Authentication using web login", null, null);
@@ -124,12 +122,13 @@ public class LoginDialogFragment extends EllucianDialogFragment {
 		String databasePath = webView.getContext().getDir("databases", 
                 Context.MODE_PRIVATE).getPath(); 
 		webSettings.setDatabaseEnabled(true);
-		webSettings.setDatabasePath(databasePath);  //deprecated, but needed for earlier than API 19
+        Utils.setDatabasePath(webSettings, databasePath);
 		webSettings.setDomStorageEnabled(true);
 
 		String loginUrl = Utils.getStringFromPreferences(getActivity(), Utils.SECURITY, Utils.LOGIN_URL, "");		
 		webView.loadUrl(loginUrl);
 		
+        Utils.showProgressIndicator(dialogView);
 	}
 
 	private void createBasicAuthenticationLoginDialog() {

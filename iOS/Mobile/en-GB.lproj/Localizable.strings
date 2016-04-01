@@ -64,9 +64,6 @@
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "Add To Cart (%d)";
 
-/* all search scope in directory */
-"All" = "All";
-
 /* label for all day event */
 "All Day" = "All Day";
 
@@ -102,6 +99,9 @@
 
 /* Accessibility label for collapse menu section button */
 "Collapse menu section" = "Collapse menu section";
+
+/* Watch communication to phone error title */
+"Communication Error" = "Communication Error";
 
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "Copy URL";
@@ -179,6 +179,10 @@
 /* ILP View: Events Card Title */
 "Events" = "Events";
 
+/* Faculty label
+   title for faculty no match */
+"Faculty" = "Faculty";
+
 /* facilty/staff search scope in directory */
 "Faculty/Staff" = "Faculty/Staff";
 
@@ -197,14 +201,14 @@
 /* Ineligible for Registration */
 "Ineligible for Registration" = "Ineligible for Registration";
 
+/* Install App title */
+"Install App" = "Install App";
+
 /* Last Updated date */
 "Last Updated %@" = "Last Updated %@";
 
 /* Last Updated date unknown */
 "Last Updated Unknown" = "Last Updated Unknown";
-
-/* label for when data was last updated */
-"Last Updated: %@" = "Last Updated: %@";
 
 /* loading message while fetching recent transactions
    loading message while waiting for data to load */
@@ -215,6 +219,9 @@
 
 /* Accessibility menu label */
 "Menu" = "Menu";
+
+/* Message in directory suggesting to sign in for more information */
+"More contact information may be displayed if you are signed in." = "More contact information may be displayed if you are signed in.";
 
 /* new notification has arrived */
 "New Notification" = "New Notification";
@@ -230,9 +237,6 @@
 
 /* no events recorded message */
 "No Events Recorded" = "No Events Recorded";
-
-/* no grades recorded message */
-"No Grades Recorded" = "No Grades Recorded";
 
 /* no announcements for today message */
 "No announcements for today" = "No announcements for today";
@@ -253,7 +257,8 @@
 "None announcement date available" = "No announcement date available";
 
 /* OK
-   OK action */
+   OK action
+   OK button on alert view */
 "OK" = "OK";
 
 /* overdue assignment indicator for ilp module */
@@ -273,6 +278,15 @@
 
 /* Permission not granted title */
 "Permission not granted" = "Permission not granted";
+
+/* Person was not found */
+"Person was not found" = "Person was not found";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Please ensure the phone is nearby and launch";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Please ensure the phone is nearby and launch %@ on the phone";
 
 /* Table section header RECENT PAYMENTS */
 "RECENT PAYMENTS" = "RECENT PAYMENTS";
@@ -313,6 +327,9 @@
 /* label - room number */
 "Room %@" = "Room %@";
 
+/* title for roster no match */
+"Roster" = "Roster";
+
 /* empty Search Results message */
 "Search Results Empty" = "Search Results Empty";
 
@@ -338,8 +355,7 @@
 /* title for failed sign in */
 "Sign In Failed" = "Sign In Failed";
 
-/* label to sign out
-   Sign Out menu item */
+/* Sign Out menu item */
 "Sign Out" = "Sign Out";
 
 /* student search scope in directory */
@@ -354,6 +370,9 @@
 /* message for failed sign in */
 "The password or user name you entered is incorrect. Please try again." = "The password or user name you entered is incorrect. Please try again.";
 
+/* Targeted app not installed alert message */
+"There are no installed applications available to respond to this request." = "There are no installed applications available to respond to this request.";
+
 /* configurations cannot be downloaded */
 "There are no institutions to display at this time." = "There are no institutions to display at this time.";
 
@@ -362,6 +381,9 @@
 
 /* second message for heading of failed registered classes */
 "These issues may have prevented registration." = "These issues may have prevented registration.";
+
+/* Unsupported feature alert message */
+"This application is not available on iOS." = "This application is not available on iOS.";
 
 /* button label to compose tweet on Twitter */
 "Twitter" = "Twitter";
@@ -378,20 +400,23 @@
 /* unable to download configuration title */
 "Unable to launch configuration" = "Unable to launch configuration";
 
+/* Unavailable Application alert title */
+"Unavailable Application" = "Unavailable Application";
+
 /* Accessibility label for uncollapse menu section button */
 "Uncollapse menu section" = "Uncollapse menu section";
 
 /* error message when address cannot be used for getting directions */
 "Unknown address" = "Unknown address";
 
+/* Unsupported alert title */
+"Unsupported" = "Unsupported";
+
 /* Upgrade software button label */
 "Upgrade" = "Upgrade";
 
 /* view label */
 "View" = "View";
-
-/* Label for user to start app from a notification in the notificaiton center */
-"View notifications" = "View notifications";
 
 /* second message for heading of failed drop classes */
 "We couldn't drop these courses:" = "We couldn't drop these courses:";
@@ -411,11 +436,14 @@
 /* permission access error message */
 "You do not have permission to use this feature." = "You do not have permission to use this feature.";
 
-/* Message in notification center to alert that they have notifications */
-"You have new notifications" = "You have new notifications";
+/* You do not have the required app. Would you like to install it? message */
+"You do not have the required app. Would you like to install it?" = "You do not have the required app. Would you like to install it?";
 
 /* Permission not granted message */
 "You must give permission in Settings to allow access" = "You must give permission in Settings to allow access";
+
+/* available seats/capacity */
+"available seats/capacity" = "%1$@/%2$@";
 
 /* building name/address */
 "building name/address" = "%1$@/%2$@";

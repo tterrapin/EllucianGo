@@ -7,7 +7,6 @@
 //
 
 #import "NotificationManager.h"
-#import "AppDelegate.h"
 #import "CurrentUser.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
 #import "Ellucian_GO-Swift.h"

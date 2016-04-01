@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:divider="?android:attr/dividerHorizontal"
+    android:showDividers="middle">
+
+    <FrameLayout
+        android:id="@+id/frame_main"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <include layout="@layout/fragment_default_list"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_extra"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"/>
+
+</LinearLayout>

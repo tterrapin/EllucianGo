@@ -13,7 +13,7 @@ import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.Utils;
 
 public class ConfigurationUpdateReceiver extends BroadcastReceiver {
-	
+	private static final String TAG = ConfigurationUpdateReceiver.class.getSimpleName();
 	private final Activity activity;
 
 	public ConfigurationUpdateReceiver(Activity activity) {
@@ -40,7 +40,17 @@ public class ConfigurationUpdateReceiver extends BroadcastReceiver {
 			i.putExtra("negativeButtonAction", false);
 			context.startActivity(i);
 		} else {
-			if (!refresh) {
+			if (refresh) {
+                // A refresh happened. Make sure to redraw the drawer menu to reflect any changes.
+                try {
+                    EllucianActivity ellucianActivity = (EllucianActivity) activity;
+                    ellucianActivity.configureNavigationDrawer();
+                }
+                catch (ClassCastException e) {
+                    // Not an EllucianActivity - don't redraw menus.
+                    Log.d(TAG, e.getMessage());
+                }
+            } else {
 				Log.d(tag, "logoutUser flag is set");
 				
 				EllucianApplication application = (EllucianApplication) activity.getApplicationContext();

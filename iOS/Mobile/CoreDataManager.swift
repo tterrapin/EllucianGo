@@ -36,9 +36,8 @@ class CoreDataManager: NSObject {
     // MARK: Core Data stack
     
     var managedObjectContext: NSManagedObjectContext{
-        
+
         if NSThread.isMainThread() {
-            
             if !(_managedObjectContext != nil) {
                 let coordinator = self.persistentStoreCoordinator
                 
@@ -48,7 +47,6 @@ class CoreDataManager: NSObject {
                 
                 return _managedObjectContext!
             }
-            
         } else {
             
             var threadContext : NSManagedObjectContext? = NSThread.currentThread().threadDictionary["NSManagedObjectContext"] as? NSManagedObjectContext;
@@ -58,6 +56,15 @@ class CoreDataManager: NSObject {
             if threadContext == nil {
                 print("creating new context")
                 threadContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+                
+                if !(_managedObjectContext != nil) {
+                    let coordinator = self.persistentStoreCoordinator
+                    
+                    _managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+                    _managedObjectContext!.persistentStoreCoordinator = coordinator
+
+                }
+
                 threadContext!.parentContext = _managedObjectContext
                 threadContext!.name = NSThread.currentThread().description
                 
@@ -253,6 +260,11 @@ class CoreDataManager: NSObject {
         return options
     }
     
-    
-    
+    func reset() {
+        
+        self.managedObjectContext.reset()
+        _managedObjectContext  = nil
+        _managedObjectModel = nil
+        _persistentStoreCoordinator = nil
+    }
 }

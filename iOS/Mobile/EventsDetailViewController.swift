@@ -86,13 +86,16 @@ class EventsDetailViewController: UIViewController, UIWebViewDelegate, EKEventEd
     
     func loadWebView() {
         var htmlStringWithFont : String
-        let text = event!.description_
         let pointSize = UIFont.preferredFontForTextStyle(UIFontTextStyleBody).pointSize
         
-        if AppearanceChanger.isIOS8AndRTL() {
-            htmlStringWithFont = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><div style=\"font-family: -apple-system; color:black; font-size: \(pointSize); direction:rtl;\">\(text)</div>"
+        if let text = event?.description_ {
+            if AppearanceChanger.isIOS8AndRTL() {
+                htmlStringWithFont = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><div style=\"font-family: -apple-system; color:black; font-size: \(pointSize); direction:rtl;\">\(text)</div>"
+            } else {
+                htmlStringWithFont = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><div style=\"font-family: -apple-system; color:black; font-size: \(pointSize);\">\(text)</div>"
+            }
         } else {
-            htmlStringWithFont = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><div style=\"font-family: -apple-system; color:black; font-size: \(pointSize);\">\(text)</div>"
+            htmlStringWithFont = ""
         }
         // Replace '\n' characters with <br /> for content that isn't html based to begin with...
         // One issue is if html text also has \n characters in it. In that case we'll be changing the spacing of the content.

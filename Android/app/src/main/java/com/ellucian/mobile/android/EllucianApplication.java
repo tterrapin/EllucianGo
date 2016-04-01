@@ -12,14 +12,15 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.ellucian.mobile.android.adapter.ModuleMenuAdapter;
-import com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetProvider;
 import com.ellucian.mobile.android.client.services.NotificationsIntentService;
 import com.ellucian.mobile.android.client.services.UpdateAssignmentIntentService;
+import com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetProvider;
 import com.ellucian.mobile.android.login.IdleTimer;
 import com.ellucian.mobile.android.login.User;
 import com.ellucian.mobile.android.notifications.DeviceNotifications;
@@ -44,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
 
 @SuppressWarnings("JavaDoc")
 public class EllucianApplication extends Application {
@@ -64,13 +64,13 @@ public class EllucianApplication extends Application {
 	private EllucianNotificationManager ellucianNotificationManager;
 	public static final long MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 	private ModuleMenuAdapter moduleMenuAdapter;
-    private Timer timer;
 
 	// Google Analytics trackers
 	private Tracker gaTracker1;
 	private Tracker gaTracker2;
 
 	@Override
+    @SuppressWarnings("deprecation")
 	public void onCreate() {
 		super.onCreate();
 
@@ -84,7 +84,9 @@ public class EllucianApplication extends Application {
 		lastAuthRefresh = 0;
 
 		// Setting up cookie management
-		android.webkit.CookieSyncManager.createInstance(this);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            android.webkit.CookieSyncManager.createInstance(this);
+        }
 		android.webkit.CookieManager.getInstance().setAcceptCookie(true);
 		WebkitCookieManagerProxy coreCookieManager = new WebkitCookieManagerProxy(
 				null, java.net.CookiePolicy.ACCEPT_ALL);
@@ -156,13 +158,22 @@ public class EllucianApplication extends Application {
 				null);
 		Utils.removeSavedUser(this);
 
-		// Removed saved cookies on user logout
-		CookieManager.getInstance().removeAllCookie();
+        removeCookies();
 
 		stopIdleTimer();
         if (widgetInstalled()) {
             Intent assignmentIntent = new Intent(this, UpdateAssignmentIntentService.class);
             startService(assignmentIntent);
+        }
+    }
+
+    // Removed saved cookies on user logout
+    @SuppressWarnings("deprecation")
+    private void removeCookies() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+        } else {
+            CookieManager.getInstance().removeAllCookie();
         }
     }
 
@@ -192,7 +203,7 @@ public class EllucianApplication extends Application {
 			createAppUser(userId, username, password, roleList);
 		} else {
 			Log.d("EllucianApplication.loadSavedUser", "No saved user to load");
-			CookieManager.getInstance().removeAllCookie();
+            removeCookies();
 		}
 	}
 

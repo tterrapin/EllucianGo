@@ -10,7 +10,6 @@
 #import "Notification.h"
 #import "AuthenticatedRequest.h"
 #import "Module+Attributes.h"
-#import "AppDelegate.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
 #import "Ellucian_GO-Swift.h"
 
@@ -33,8 +32,8 @@ static BOOL lock;
         NSError *error;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-        AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:notificationsUrl] fromView:view];
+        AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
+        NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:notificationsUrl] fromView:view];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSMutableSet *newKeys = [[NSMutableSet alloc] init];
@@ -155,18 +154,6 @@ static BOOL lock;
         if([newKeys count] > 0 || unreadNotificationCount > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationsUpdatedNotification object:nil];
-                
-                [[UIApplication sharedApplication] cancelAllLocalNotifications];
-                
-                if(showLocalNotification && unreadNotificationCount > 0) {
-
-                    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-                    localNotification.alertBody = NSLocalizedString(@"You have new notifications", @"Message in notification center to alert that they have notifications");
-                    localNotification.soundName = UILocalNotificationDefaultSoundName;
-                    localNotification.applicationIconBadgeNumber = unreadNotificationCount;
-                    localNotification.alertAction =  NSLocalizedString(@"View notifications", @"Label for user to start app from a notification in the notificaiton center");
-                    [[UIApplication sharedApplication]presentLocalNotificationNow:localNotification];
-                }
             });
         }
         lock = NO;

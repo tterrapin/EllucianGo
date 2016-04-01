@@ -6,8 +6,6 @@ package com.ellucian.mobile.android.app;
 
 import android.support.v4.app.Fragment;
 
-import com.ellucian.mobile.android.util.ConfigurationProperties;
-
 @SuppressWarnings("JavaDoc")
 public class EllucianFragment extends Fragment {
 	
@@ -15,9 +13,6 @@ public class EllucianFragment extends Fragment {
 		return (EllucianActivity)getActivity();
 	}
 	
-	protected ConfigurationProperties getConfigurationProperties() {
-        return getEllucianActivity().getConfigurationProperties();
-    }
 	
     /**
      * Send event to google analytics

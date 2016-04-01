@@ -22,6 +22,11 @@ JSExportAs(openMenu, + (void) openMenuItem:(id)name type:(id)type);
 
 //Causes the web frame to load the original URL defined for this module.
 + (void) reloadWebModule;
+
++ (NSString *) primaryColor;
++ (NSString *) headerTextColor;
++ (NSString *) accentColor;
++ (NSString *) subheaderTextColor;
            
 @end
 

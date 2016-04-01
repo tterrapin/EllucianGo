@@ -12,9 +12,15 @@ class NotificationsTableViewController : UITableViewController, NSFetchedResults
 
     var module : Module?
     var indexPathToReselect : NSIndexPath?
+    var uuid : String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let splitView = self.splitViewController as! NotificationsSplitViewController
+        if let selectedId = splitView.uuid {
+            self.uuid = selectedId
+        }
         
         self.title = self.module?.name
         tableView.estimatedRowHeight = 44
@@ -25,7 +31,7 @@ class NotificationsTableViewController : UITableViewController, NSFetchedResults
         } else {
             self.splitViewController?.preferredDisplayMode = .Automatic;
         }
-        
+
         fetchNotifications()
         reloadData()
     }
@@ -68,12 +74,11 @@ class NotificationsTableViewController : UITableViewController, NSFetchedResults
     }
     
     private func showNotificationSelectedIfSet() {
-        let splitView = self.splitViewController as! NotificationsSplitViewController
-        if let selectedId = splitView.uuid {
+        if let selectedId = self.uuid {
             let notifications = _fetchedResultsController?.fetchedObjects as! [Notification]
             for (index, notification) in notifications.enumerate() {
                 if notification.notificationId == selectedId {
-                    splitView.uuid = nil
+                    self.uuid = nil
                     let indexPath = NSIndexPath(forRow: index, inSection: 0)
                     tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.Bottom)
                     self.performSegueWithIdentifier("Show Detail", sender: nil)

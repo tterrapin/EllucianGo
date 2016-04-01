@@ -144,9 +144,9 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/eligibility", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
 
-    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
+    NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -180,7 +180,7 @@
         return eligible;
         
     } else {
-        [self reportError:authenticatedRequet.error.localizedDescription];
+        [self reportError:authenticatedRequest.error.localizedDescription];
         return NO;
     }
 }
@@ -223,9 +223,9 @@
         urlString = [NSString stringWithFormat:@"%@?planningTool=%@", urlString, planningTool];
     }
 
-    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
+    NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -394,7 +394,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kRegistrationPlanDataReloaded object:nil];
         
     } else {
-        [self reportError:authenticatedRequet.error.localizedDescription];
+        [self reportError:authenticatedRequest.error.localizedDescription];
     }
 }
 
@@ -442,8 +442,8 @@
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"%@/%@/terms", [self.module propertyForKey:@"registration"], [[[CurrentUser sharedInstance] userid]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+    AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
+    NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:urlString] fromView:self];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -465,7 +465,7 @@
         }
         self.terms = [terms copy];
     } else {
-        [self reportError:authenticatedRequet.error.localizedDescription];
+        [self reportError:authenticatedRequest.error.localizedDescription];
     }
 }
 

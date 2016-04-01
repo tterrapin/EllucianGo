@@ -4,8 +4,12 @@
 
 package com.ellucian.mobile.android.numbers;
 
+import android.app.Activity;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnCloseListener;
@@ -36,12 +41,14 @@ import com.ellucian.mobile.android.client.services.NumbersIntentService;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.provider.EllucianContract.Modules;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class NumbersListActivity extends EllucianActivity implements OnQueryTextListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final Activity activity = this;
     private static final String TAG = NumbersListActivity.class.getSimpleName();
     // category loader is positioned at -1 so that loaders for the
     // individual categories can be automatically allocated at 0+
@@ -51,6 +58,8 @@ public class NumbersListActivity extends EllucianActivity implements OnQueryText
     private boolean resetListPosition;
     private boolean clearList;
     private ArrayList<NumbersItemHolder> numbersList;
+    private NumbersIntentServiceReceiver numbersIntentServiceReceiver;
+    private boolean showSpinner = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +71,7 @@ public class NumbersListActivity extends EllucianActivity implements OnQueryText
         FragmentTransaction transaction = manager.beginTransaction();
         mainFragment = (NumbersRecyclerFragment) manager.findFragmentByTag("NumbersRecyclerFragment");
 
+        registerNumbersServiceReceiver();
         if (mainFragment == null) {
             mainFragment = new NumbersRecyclerFragment();
             transaction.add(R.id.frame_main, mainFragment, "NumbersRecyclerFragment");
@@ -114,7 +124,22 @@ public class NumbersListActivity extends EllucianActivity implements OnQueryText
         serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
         serviceIntent.putExtra(Extra.REQUEST_URL, requestUrl);
         startService(serviceIntent);
+        if (showSpinner) {
+            Utils.showProgressIndicator(this);
+        }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterNumbersServiceReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerNumbersServiceReceiver();
     }
 
     @Override
@@ -177,8 +202,12 @@ public class NumbersListActivity extends EllucianActivity implements OnQueryText
                 createNotifyHandler(mainFragment);
 
                 if (data.getCount() == 0) {
+                    showSpinner = true;
                     TextView emptyView = (TextView) mainFragment.getView().findViewById(android.R.id.empty);
                     emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    showSpinner = false;
+                    Utils.hideProgressIndicator(this);
                 }
 
                 if (!TextUtils.isEmpty(query)) {
@@ -337,6 +366,43 @@ public class NumbersListActivity extends EllucianActivity implements OnQueryText
             }
         }
         return filteredList;
+    }
+
+
+    private void registerNumbersServiceReceiver() {
+        if(numbersIntentServiceReceiver == null) {
+            Log.d("NumbersListActivity.RegisterNumbersServiceReceiver", "Registering new service receiver");
+            numbersIntentServiceReceiver = new NumbersIntentServiceReceiver();
+            IntentFilter filter = new IntentFilter(NumbersIntentService.ACTION_FINISHED);
+            LocalBroadcastManager.getInstance(this).registerReceiver(numbersIntentServiceReceiver, filter);
+        }
+    }
+
+    private void unregisterNumbersServiceReceiver() {
+        if(numbersIntentServiceReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(numbersIntentServiceReceiver);
+        }
+    }
+
+    /**
+     * Broadcast receiver which receives notification when the NumbersIntentService
+     * is finished performing an update of the data from the web services to the
+     * local database.  Upon successful completion, this receiver will reload
+     * the numbers data from the local database.
+     *
+     */
+    private class NumbersIntentServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean updated = intent.getBooleanExtra(NumbersIntentService.PARAM_OUT_DATABASE_UPDATED, false);
+            Log.d("NumbersIntentServiceReceiver", "onReceive: database updated = " + updated);
+            if (updated) {
+                Log.d("NumbersIntentServiceReceiver.onReceive", "All numbers retrieved and database updated");
+                Utils.hideProgressIndicator(activity);
+            }
+        }
+
     }
 
 }

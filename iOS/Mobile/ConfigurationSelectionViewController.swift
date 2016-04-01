@@ -14,7 +14,6 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
     let searchController = UISearchController(searchResultsController: nil)
     var allItems = [Configuration]()
     var filteredItems = [Configuration]()
-    var tableData = [AnyObject]()
     
     var fetchInProgress = false
     
@@ -41,7 +40,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("outdated:"), name: kVersionCheckerOutdatedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("updateAvailable:"), name: kVersionCheckerUpdateAvailableNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("fetchConfigurations"), name: kRefreshConfigurationListIfPresent, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("fetchConfigurations"), name: "RefreshConfigurationListIfPresent", object: nil)
         
         self.fetchConfigurations()
     }
@@ -76,7 +75,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
             }
         }
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ConfigurationCell", forIndexPath: indexPath) as UITableViewCell
         
@@ -100,7 +99,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
             let sectionRows = rowsForSection(section)
             if let sectionRows = sectionRows where sectionRows.count > 0 {
                 return self.sectionIndexTitlesForTableView(tableView)![section]
-
+                
             } else {
                 return nil
             }
@@ -145,7 +144,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
         
         let hud = MBProgressHUD.showHUDAddedTo(self.view.window, animated: true)
         hud.labelText = NSLocalizedString("Loading", comment: "loading message while waiting for data to load")
-
+        
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
             Int64(0.01 * Double(NSEC_PER_SEC)))
@@ -163,47 +162,51 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
             ConfigurationManager.instance.loadConfiguration(configurationUrl: configurationUrl) {
                 (result) in
                 
-                dispatch_async(dispatch_get_main_queue()) {
-                    MBProgressHUD.hideHUDForView(self.view.window, animated: true)
-                    if (result is Bool && result as! Bool) {
-                        NSNotificationCenter.defaultCenter().removeObserver(self)
-                        
-                        AppearanceChanger.applyAppearanceChanges(self.view)
-                        
-                        let storyboard = UIStoryboard(name: "HomeStoryboard", bundle: nil)
-                        let slidingVC = storyboard.instantiateViewControllerWithIdentifier("SlidingViewController") as! ECSlidingViewController
-                        slidingVC.anchorRightRevealAmount = 276
-                        slidingVC.anchorLeftRevealAmount = 276
-                        slidingVC.topViewAnchoredGesture = [ECSlidingViewControllerAnchoredGesture.Tapping, ECSlidingViewControllerAnchoredGesture.Panning]
-                        let menu = storyboard.instantiateViewControllerWithIdentifier("Menu")
-                        
-                        if #available(iOS 9, *) {
-                            let direction = UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(slidingVC.view.semanticContentAttribute)
-                            if direction == .RightToLeft {
-                                slidingVC.underRightViewController = menu
+                ConfigurationManager.instance.loadMobileServerConfiguration() {
+                    (result2) in
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        MBProgressHUD.hideHUDForView(self.view.window, animated: true)
+                        if (result is Bool && result as! Bool) {
+                            NSNotificationCenter.defaultCenter().removeObserver(self)
+                            
+                            AppearanceChanger.applyAppearanceChanges(self.view)
+                            
+                            let storyboard = UIStoryboard(name: "HomeStoryboard", bundle: nil)
+                            let slidingVC = storyboard.instantiateViewControllerWithIdentifier("SlidingViewController") as! ECSlidingViewController
+                            slidingVC.anchorRightRevealAmount = 276
+                            slidingVC.anchorLeftRevealAmount = 276
+                            slidingVC.topViewAnchoredGesture = [ECSlidingViewControllerAnchoredGesture.Tapping, ECSlidingViewControllerAnchoredGesture.Panning]
+                            let menu = storyboard.instantiateViewControllerWithIdentifier("Menu")
+                            
+                            if #available(iOS 9, *) {
+                                let direction = UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(slidingVC.view.semanticContentAttribute)
+                                if direction == .RightToLeft {
+                                    slidingVC.underRightViewController = menu
+                                } else {
+                                    slidingVC.underLeftViewController = menu
+                                }
                             } else {
                                 slidingVC.underLeftViewController = menu
                             }
+                            
+                            self.view.window?.rootViewController = slidingVC
+                            delegate.slidingViewController = slidingVC
+                            
+                            NSOperationQueue.mainQueue().addOperation(OpenModuleHomeOperation())
                         } else {
-                            slidingVC.underLeftViewController = menu
-                        }
-                        
-                        self.view.window?.rootViewController = slidingVC
-                        delegate.slidingViewController = slidingVC
-                        
-                        NSOperationQueue.mainQueue().addOperation(OpenModuleHomeOperation())
-                    } else {
-                        self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
-                        self.fetchConfigurations()
-                        dispatch_async(dispatch_get_main_queue()) {
-                            ConfigurationFetcher.showErrorAlertView()
+                            self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
+                            self.fetchConfigurations()
+                            dispatch_async(dispatch_get_main_queue()) {
+                                ConfigurationFetcher.showErrorAlertView()
+                            }
                         }
                     }
                 }
             }
         }
     }
-
+    
     func fetchConfigurations() {
         if fetchInProgress {
             return
@@ -236,24 +239,26 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
                             
                             var configurations = [Configuration]()
                             let jsonInstitutions = json["institutions"].array
-                            for jsonInstitution in jsonInstitutions! {
-                                let jsonConfigurations = jsonInstitution["configurations"].array
-                                for jsonConfiguration in jsonConfigurations! {
-                                    let institutionId = jsonInstitution["id"].int!
-                                    let institutionName = jsonInstitution["name"].string!
-                                    let configurationId = jsonConfiguration["id"].int!
-                                    let configurationName = jsonConfiguration["name"].string!
-                                    let configurationUrl = jsonConfiguration["configurationUrl"].string!
-                                    let keywords =  jsonConfiguration["keywords"].arrayValue.map { $0.string!}
-                                    let configuration = Configuration(configurationId : configurationId,
-                                        configurationUrl : configurationUrl,
-                                        institutionId : institutionId,
-                                        institutionName : institutionName,
-                                        configurationName : configurationName,
-                                        keywords : keywords)
-                                    configurations.append(configuration)
+                            if let jsonInstitutions = jsonInstitutions {
+                                for jsonInstitution in jsonInstitutions {
+                                    let jsonConfigurations = jsonInstitution["configurations"].array
+                                    for jsonConfiguration in jsonConfigurations! {
+                                        let institutionId = jsonInstitution["id"].int!
+                                        let institutionName = jsonInstitution["name"].string!
+                                        let configurationId = jsonConfiguration["id"].int!
+                                        let configurationName = jsonConfiguration["name"].string!
+                                        let configurationUrl = jsonConfiguration["configurationUrl"].string!
+                                        let keywords =  jsonConfiguration["keywords"].arrayValue.map { $0.string!}
+                                        let configuration = Configuration(configurationId : configurationId,
+                                            configurationUrl : configurationUrl,
+                                            institutionId : institutionId,
+                                            institutionName : institutionName,
+                                            configurationName : configurationName,
+                                            keywords : keywords)
+                                        configurations.append(configuration)
+                                    }
+                                    
                                 }
-                                
                             }
                             self.allItems = configurations.sort { $0.configurationName.localizedCaseInsensitiveCompare($1.configurationName) == NSComparisonResult.OrderedAscending }
                         }
@@ -264,7 +269,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
                     })
                     
                 }
-            ).resume()
+                ).resume()
             
         })
     }
@@ -309,7 +314,7 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
                 self.openITunes()
             }
             alertController.addAction(upgradeAction)
-
+            
             self.presentViewController(alertController, animated: true, completion: nil)
         })
     }
@@ -332,13 +337,13 @@ class ConfigurationSelectionViewController : UITableViewController, UISearchResu
     
     func showErrorAlert() {
         if self.allItems.count == 0 {
-        dispatch_async(dispatch_get_main_queue(), {
-            let alertController = UIAlertController(title: nil, message: NSLocalizedString("There are no institutions to display at this time.", comment: "configurations cannot be downloaded"), preferredStyle: .Alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Cancel, handler: nil)
-            alertController.addAction(okAction)
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-        })
+            dispatch_async(dispatch_get_main_queue(), {
+                let alertController = UIAlertController(title: nil, message: NSLocalizedString("There are no institutions to display at this time.", comment: "configurations cannot be downloaded"), preferredStyle: .Alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Cancel, handler: nil)
+                alertController.addAction(okAction)
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            })
         }
     }
     

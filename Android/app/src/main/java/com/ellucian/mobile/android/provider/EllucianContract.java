@@ -29,6 +29,7 @@ public class EllucianContract {
 		String MODULES_ID = "module_id";
 		String MODULES_ICON_URL = "module_icon_url";
 		String MODULE_ORDER = "module_order";
+        String MODULE_HOME_SCREEN_ORDER = "module_home_screen_order";
 		String MODULE_NAME = "module_name";
 		String MODULE_SHOW_FOR_GUEST = "module_guest";
 		String MODULE_TYPE = "module_type";
@@ -256,8 +257,15 @@ public class EllucianContract {
 		String REGISTRATION_LEVELS_NAME = "registrationlevels_name";
 		String REGISTRATION_LEVELS_CODE = "registrationlevels_code";	
 	}
-	
-	public static class Modules implements ModulesColumns, BaseColumns {
+
+    interface DirectoriesColumns {
+        String DIRECTORY_KEY = "directory_key";
+        String DIRECTORY_DISPLAY_NAME = "directory_display_name";
+        String DIRECTORY_INTERNAL_NAME = "directory_internal_name";
+        String DIRECTORY_AUTHENTICATED_ONLY = "directory_authenticated_only";
+    }
+
+    public static class Modules implements ModulesColumns, BaseColumns {
 		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MODULES).build();
 		
 		public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ellucian.module";
@@ -265,6 +273,8 @@ public class EllucianContract {
 		public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.module";
 		
 		public static final String DEFAULT_SORT = ModulesColumns.MODULE_ORDER + " ASC";
+
+        public static final String HOME_SCREEN_SORT = ModulesColumns.MODULE_HOME_SCREEN_ORDER + " ASC";
 
         public static Uri buildModuleUri(String id) {
             return CONTENT_URI.buildUpon().appendPath(id).build();
@@ -848,7 +858,26 @@ public class EllucianContract {
 			return uri.getPathSegments().get(1);
 		}
 	}
-	
+
+    static final String PATH_DIRECTORIES = "directories";
+    public static class Directories implements DirectoriesColumns, BaseColumns {
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_DIRECTORIES).build();
+
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.ellucian.directories";
+
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.ellucian.directories";
+
+        public static final String DEFAULT_SORT = DirectoriesColumns.DIRECTORY_DISPLAY_NAME + " ASC";
+
+        public static Uri buildUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).build();
+        }
+
+        public static String getId(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+    }
+
 	private EllucianContract() {
 		
 	}

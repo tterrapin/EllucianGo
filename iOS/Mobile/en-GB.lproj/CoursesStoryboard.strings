@@ -4,20 +4,44 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "2IA-SC-G6y"; */
 "2IA-SC-G6y.text" = "Label";
 
+/* Class = "UILabel"; text = "No instructors assigned"; ObjectID = "2h1-rG-p0i"; */
+"2h1-rG-p0i.text" = "No instructors assigned";
+
+/* Class = "UILabel"; text = "No meeting patterns defined"; ObjectID = "2ie-Jl-z37"; */
+"2ie-Jl-z37.text" = "No meeting patterns defined";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "3TR-0j-Al6"; */
 "3TR-0j-Al6.text" = "Label";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "4Qc-Uz-gjV"; */
 "4Qc-Uz-gjV.text" = "Label";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "4Rg-SS-t8v"; */
+"4Rg-SS-t8v.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "5Ot-7C-GxV"; */
+"5Ot-7C-GxV.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6jm-ZA-fKr"; */
+"6jm-ZA-fKr.text" = "Label";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "7xc-0K-Gxl"; */
 "7xc-0K-Gxl.text" = "Title";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "09L-bq-veU"; */
+"09L-bq-veU.text" = "Label";
+
+/* Class = "UIBarButtonItem"; title = "Terms"; ObjectID = "09v-1V-5Pn"; */
+"09v-1V-5Pn.title" = "Terms";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "9wf-e8-pcD"; */
 "9wf-e8-pcD.text" = "Label";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "17o-ED-Hrc"; */
 "17o-ED-Hrc.text" = "Label";
+
+/* Class = "UIButton"; accessibilityLabel = "Next Day"; ObjectID = "A75-Ik-JHo"; */
+"A75-Ik-JHo.accessibilityLabel" = "Next Day";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "AiV-U2-biX"; */
 "AiV-U2-biX.text" = "Label";
@@ -31,14 +55,14 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "D5f-ve-ddG"; */
 "D5f-ve-ddG.text" = "Label";
 
-/* Class = "UILabel"; text = "Faculty"; ObjectID = "DQT-RF-YSo"; */
-"DQT-RF-YSo.text" = "Faculty";
+/* Class = "UIButton"; accessibilityHint = "Pick a new day"; ObjectID = "Deo-Id-XBd"; */
+"Deo-Id-XBd.accessibilityHint" = "Pick a new day";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Eeu-5K-wE5"; */
+"Eeu-5K-wE5.text" = "Label";
 
 /* Class = "UILabel"; text = "End Date:"; ObjectID = "FCg-hg-gKr"; */
 "FCg-hg-gKr.text" = "End Date:";
-
-/* Class = "UIBarButtonItem"; title = "Terms"; ObjectID = "H0f-iJ-HXh"; */
-"H0f-iJ-HXh.title" = "Terms";
 
 /* Class = "UITabBarItem"; title = "Assignments"; ObjectID = "HhG-Wa-Dpy"; */
 "HhG-Wa-Dpy.title" = "Assignments";
@@ -48,6 +72,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "KgY-dZ-hQ1"; */
 "KgY-dZ-hQ1.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "KhA-U8-eE0"; */
+"KhA-U8-eE0.text" = "Label";
 
 /* Class = "UITabBarItem"; title = "Announcements"; ObjectID = "Ljt-hl-OqR"; */
 "Ljt-hl-OqR.title" = "Announcements";
@@ -63,6 +90,9 @@
 
 /* Class = "UITabBarItem"; title = "Daily View"; ObjectID = "QEQ-m0-qxt"; */
 "QEQ-m0-qxt.title" = "Daily View";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "REv-4f-mvi"; */
+"REv-4f-mvi.text" = "Label";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "W5l-OC-5RH"; */
 "W5l-OC-5RH.text" = "Label";
@@ -91,26 +121,32 @@
 /* Class = "UITabBarItem"; title = "Roster"; ObjectID = "cyd-zX-EAQ"; */
 "cyd-zX-EAQ.title" = "Roster";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "ev8-Vg-SC5"; */
+"ev8-Vg-SC5.text" = "Label";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "fR2-Qj-Q40"; */
 "fR2-Qj-Q40.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gJc-ch-SH9"; */
+"gJc-ch-SH9.text" = "Label";
 
 /* Class = "UITabBarItem"; title = "Grades"; ObjectID = "gQV-aW-o6b"; */
 "gQV-aW-o6b.title" = "Grades";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "gWA-vc-aMo"; */
-"gWA-vc-aMo.text" = "Label";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "i4a-IQ-rld"; */
 "i4a-IQ-rld.text" = "Label";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "jyB-En-RI3"; */
-"jyB-En-RI3.text" = "Label";
+/* Class = "UILabel"; text = "No Grades Recorded"; ObjectID = "lNR-SH-wLs"; */
+"lNR-SH-wLs.text" = "No Grades Recorded";
 
-/* Class = "UIViewController"; title = "Grades"; ObjectID = "lT8-ez-Xtc"; */
-"lT8-ez-Xtc.title" = "Grades";
+/* Class = "UILabel"; text = "Label"; ObjectID = "lcw-kF-LcC"; */
+"lcw-kF-LcC.text" = "Label";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "lnT-Nh-UCs"; */
 "lnT-Nh-UCs.text" = "Label";
+
+/* Class = "UIButton"; accessibilityLabel = "Previous Day"; ObjectID = "ob1-uk-4cE"; */
+"ob1-uk-4cE.accessibilityLabel" = "Previous Day";
 
 /* Class = "UILabel"; text = "Location:"; ObjectID = "tPe-jc-4j5"; */
 "tPe-jc-4j5.text" = "Location:";

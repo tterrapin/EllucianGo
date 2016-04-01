@@ -19,7 +19,6 @@
 #import "MBProgressHUD.h"
 #import "RegistrationResultsViewController.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
-#import "AppDelegate.h"
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "RegistrationPlannedSectionDetailViewController.h"

@@ -4,7 +4,7 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -34,6 +34,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseCourses;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseEvents;
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,9 +61,9 @@ public class IlpCardFragment extends EllucianFragment implements
 	private Bundle detailBundle;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = (IlpCardActivity) activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = (IlpCardActivity) getActivity();
 	}
 
 	public IlpCardFragment(){
@@ -221,7 +222,7 @@ public class IlpCardFragment extends EllucianFragment implements
         boolean showTodaySubheader = false;
         if (assignmentsOverdue != null && assignmentsOverdue.size() > 0) {
             TextView overdueSubheader = (TextView) inflater.inflate(R.layout.ilp_card_sub_header_row, assignmentsLayout, false);
-            overdueSubheader.setTextColor(getResources().getColor(R.color.warning_text_color));
+            overdueSubheader.setTextColor(Utils.getColorHelper(getContext(), R.color.warning_text_color));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 overdueSubheader.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.icon_warning_red, 0, 0, 0);
             } else {
@@ -252,7 +253,7 @@ public class IlpCardFragment extends EllucianFragment implements
                 });
 
                 TextView titleView = (TextView) cardRow.findViewById(R.id.title);
-                titleView.setTextColor(getResources().getColor(R.color.warning_text_color));
+                titleView.setTextColor(Utils.getColorHelper(getContext(), R.color.warning_text_color));
                 titleView.setText(infoHolder.title);
 
                 TextView sectionView = (TextView) cardRow.findViewById(R.id.section_name);
@@ -280,7 +281,7 @@ public class IlpCardFragment extends EllucianFragment implements
         if (assignmentList != null) {
             if (showTodaySubheader && !assignmentList.isEmpty()) {
                 TextView todaySubheader = (TextView) inflater.inflate(R.layout.ilp_card_sub_header_row, assignmentsLayout, false);
-                todaySubheader.setTextColor(getResources().getColor(R.color.due_today_green));
+                todaySubheader.setTextColor(Utils.getColorHelper(getContext(), R.color.due_today_green));
                 todaySubheader.setText(R.string.ilp_due_today);
                 assignmentsLayout.addView(todaySubheader);
             }
@@ -551,6 +552,13 @@ public class IlpCardFragment extends EllucianFragment implements
                     displaySection = infoHolder.sectionName;
                 }
                 sectionView.setText(displaySection);
+
+                TextView dateView = (TextView) cardRow.findViewById(R.id.date);
+                String displayDate = "";
+                if (!TextUtils.isEmpty(infoHolder.displayDate)) {
+                    displayDate = infoHolder.displayDate;
+                }
+                dateView.setText(displayDate);
 
                 if (i > 0) {
                     View separator = inflater.inflate(R.layout.separator, announcementsLayout, false);

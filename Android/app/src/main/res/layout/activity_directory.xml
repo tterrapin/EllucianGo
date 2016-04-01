@@ -4,34 +4,76 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar"/>
 
-        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        <include layout="@layout/progress_indicator"/>
+
+        <FrameLayout
+            android:id="@+id/frame_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <fragment
-                android:id="@+id/directory_categories"
-                android:name="com.ellucian.mobile.android.directory.DirectoryCategoriesFragment"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"></fragment>
+                android:layout_height="wrap_content">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/directory_search_message"
+                    style="@style/contentMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/directory_search"/>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/directory_search_sign_in"
+                    style="@style/contentMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/directory_search_message"
+                    android:text="@string/directory_sign_in_message" />
 
-    <include layout="@layout/drawer_list" />
+                <TextView
+                    android:id="@+id/directory_search_no_results"
+                    style="@style/contentMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/directory_search_sign_in"
+                    android:visibility="gone"
+                    android:text="@string/directory_no_results" />
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_menu_filter"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/drawer_list"/>
 
 </android.support.v4.widget.DrawerLayout>

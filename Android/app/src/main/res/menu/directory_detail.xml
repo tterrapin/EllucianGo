@@ -6,6 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/directory_detail_add_to_contacts"
+        android:icon="@drawable/ic_person_add_24dp"
         android:title="@string/menu_add_to_contacts"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/directory_detail_info"
+        android:icon="@drawable/ic_info_outline_24dp"
+        android:visible="false"
+        android:title="@string/menu_information"
+        app:showAsAction="always" />
 </menu>

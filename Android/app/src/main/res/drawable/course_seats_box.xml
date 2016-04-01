@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="4dp"/>
+    <padding
+        android:left="2dp"
+        android:right="2dp"/>
+    <stroke
+        android:color="@color/default_gray"
+        android:width="1dp"/>
+</shape>

@@ -48,8 +48,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
 	}
 	
 	public static EllucianDefaultRecyclerFragment newInstance(Context context, String fname, Bundle args) {
-		EllucianDefaultRecyclerFragment fragment = newInstance(context, fname, args, 0);
-		return fragment;
+        return newInstance(context, fname, args, 0);
 	}
 	
 	/** Variable "fname" should be the class name of an RetainStateRecyclerFragment subclass
@@ -76,9 +75,9 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
     }
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = getActivity();
 	}
 
 	@Override
@@ -163,7 +162,7 @@ public class EllucianDefaultRecyclerFragment extends EllucianFragment implements
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.frame_extra, details);
 
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
             
         } else {

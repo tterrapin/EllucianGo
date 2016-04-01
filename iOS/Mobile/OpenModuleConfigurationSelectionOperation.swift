@@ -16,7 +16,5 @@ class OpenModuleConfigurationSelectionOperation: OpenModuleAbstractOperation {
         let controller = storyboard.instantiateViewControllerWithIdentifier("ConfigurationSelector")
         controller.modalPresentationStyle = .FullScreen
         showViewController(controller)
-        
-        //todo is this acceptible that it is "cancelable" to go back to menu?
     }
 }

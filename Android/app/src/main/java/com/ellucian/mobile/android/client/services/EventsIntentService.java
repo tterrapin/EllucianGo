@@ -21,7 +21,7 @@ import com.ellucian.mobile.android.util.Extra;
 import java.util.ArrayList;
 
 public class EventsIntentService extends IntentService {
-	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
 	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.EventsIntentService.action.updated";
 	public EventsIntentService() {
 		super("EventsIntentService");

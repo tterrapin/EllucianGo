@@ -5,19 +5,20 @@
 package com.ellucian.mobile.android.courses.overview;
 
 import android.app.Activity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,12 +48,11 @@ public class CourseDetailsFragment extends EllucianFragment implements
 	private Activity activity;
 	private String courseId;
 	private View rootView;
-	private LinearLayout coloredLayout;
 	private TextView titleTextView;
 	private TextView datesTextView;
 	private TextView descriptionTextView;
-	private int subheaderTextColor;
-	
+    private int primaryColor;
+
 	private final int PATTERNS_LOADER = 1;
 	private final int INSTRUCTORS_LOADER = 2;
 	private final int COURSE_LOADER = 3;
@@ -62,8 +62,8 @@ public class CourseDetailsFragment extends EllucianFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = getActivity();
-	
-		subheaderTextColor = Utils.getSubheaderTextColor(activity);
+
+        primaryColor = Utils.getPrimaryColor(activity);
 
 		courseId = getActivity().getIntent().getStringExtra(Extra.COURSES_COURSE_ID);
 
@@ -79,17 +79,9 @@ public class CourseDetailsFragment extends EllucianFragment implements
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_course_details,
 				container, false);
-		coloredLayout = (LinearLayout) rootView.findViewById(R.id.course_details_colored_layout);
 		titleTextView = (TextView) rootView.findViewById(R.id.course_details_title);
 		datesTextView = (TextView) rootView.findViewById(R.id.course_details_dates);
 		descriptionTextView = (TextView) rootView.findViewById(R.id.course_details_course_description);
-		TextView facultyTitleView = (TextView) rootView.findViewById(R.id.course_details_faculty_title);
-		
-		titleTextView.setTextColor(subheaderTextColor);
-		datesTextView.setTextColor(subheaderTextColor);
-		facultyTitleView.setTextColor(subheaderTextColor);
-		coloredLayout.setBackgroundColor(Utils.getAccentColor(activity));
-		
 		return rootView;
 	}
 
@@ -147,7 +139,9 @@ public class CourseDetailsFragment extends EllucianFragment implements
 		final DateFormat timeFormatter = android.text.format.DateFormat.getTimeFormat(getActivity());
 		
 		if (cursor.moveToFirst()) {
+            int count = 0;
 			do {
+                count++;
 				final String daysOfWeek = cursor.getString(cursor
 						.getColumnIndex(CoursePatterns.PATTERN_DAYS));
 				final String startTime = cursor.getString(cursor
@@ -225,15 +219,17 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				final LinearLayout meetingRow = (LinearLayout)inflater.inflate(
 						R.layout.course_details_meeting_row, meetingLayout,
 						false);
+
+                final ImageView dividerLine = (ImageView) meetingRow.findViewById(R.id.divider_line);
+                if (count > 1) dividerLine.setVisibility(View.VISIBLE);
+
 				final TextView daysView = (TextView) meetingRow
 						.findViewById(R.id.course_details_meeting_row_days);
-				daysView.setTextColor(subheaderTextColor);
 				daysView.setText(displayDaysOfWeek);
 				final TextView timeView = (TextView) meetingRow
 						.findViewById(R.id.course_details_meeting_row_times);
 				if (!TextUtils.isEmpty(displayStartTime)) {
-					timeView.setTextColor(subheaderTextColor);
-					timeView.setText(getString(R.string.time_to_time_format, 
+					timeView.setText(getString(R.string.time_to_time_format,
 										displayStartTime, 
 										displayEndTime));
 				} else {
@@ -245,16 +241,13 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				final TextView typeView = (TextView) meetingRow
 						.findViewById(R.id.course_details_meeting_row_type);
 				if (!TextUtils.isEmpty(instructionalMethod)) {
-					typeView.setTextColor(subheaderTextColor);
 					typeView.setText(instructionalMethod);
-					typeSeparator.setTextColor(subheaderTextColor);
 				} else {
 					typeSeparator.setVisibility(View.GONE);
 					typeView.setVisibility(View.GONE);
 				}
 				final TextView locationView = (TextView) meetingRow
 						.findViewById(R.id.course_details_meeting_row_location);
-				locationView.setTextColor(subheaderTextColor);
 				String locationString = "";
 				if (!TextUtils.isEmpty(location)) {
 									
@@ -272,6 +265,7 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				if (!TextUtils.isEmpty(locationString)) {
 					locationView.setText(locationString);
 					// Show underline of text
+                    locationView.setTextColor(primaryColor);
 					locationView.setPaintFlags(locationView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 				} else {
 					locationView.setVisibility(View.GONE);
@@ -335,7 +329,7 @@ public class CourseDetailsFragment extends EllucianFragment implements
 				final TextView instructorNameView = (TextView) instructorView
 						.findViewById(R.id.course_details_instructor_name);
 				instructorNameView.setText(instructorName);
-				instructorNameView.setTextColor(subheaderTextColor);
+                instructorNameView.setTextColor(primaryColor);
 				// Show underline of text
 				instructorNameView.setPaintFlags(instructorNameView.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 

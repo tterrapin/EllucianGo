@@ -8,7 +8,6 @@
 
 #import "LoginViewController.h"
 #import "Base64.h"
-#import "AppDelegate.h"
 #import "CurrentUser.h"
 #import "ModuleRole.h"
 #import "LoginExecutor.h"

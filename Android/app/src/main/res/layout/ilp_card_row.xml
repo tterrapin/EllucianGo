@@ -19,6 +19,7 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/newsEventsListTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,6 +30,7 @@
 
         <TextView
             android:id="@+id/section_name"
+            style="@style/listDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -49,6 +51,7 @@
 
         <TextView
             android:id="@+id/date"
+            style="@style/listDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

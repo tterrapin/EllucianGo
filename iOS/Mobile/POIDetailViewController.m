@@ -74,7 +74,7 @@
     self.typeLabel.textColor = [UIColor subheaderTextColor];
     self.campusLabel.textColor = [UIColor subheaderTextColor];
     if(self.imageUrl) {
-        [self.imageView loadImageFromURLString:self.imageUrl];
+        [self.imageView loadImagefromURL:self.imageUrl successHandler:nil failureHandler:nil];
     } else {
         self.imageHeightConstraint.constant = 0;
     }

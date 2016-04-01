@@ -64,9 +64,6 @@
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "الإضافة إلى سلة التسجيل (%d)";
 
-/* all search scope in directory */
-"All" = "الكل";
-
 /* label for all day event */
 "All Day" = "طوال اليوم";
 
@@ -102,6 +99,9 @@
 
 /* Accessibility label for collapse menu section button */
 "Collapse menu section" = "قم بِطي القائمة";
+
+/* Watch communication to phone error title */
+"Communication Error" = "خطأ اتصال";
 
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "نسخ الرابط";
@@ -179,6 +179,10 @@
 /* ILP View: Events Card Title */
 "Events" = "الفعاليات";
 
+/* Faculty label
+   title for faculty no match */
+"Faculty" = "أعضاء هيئة التدريس";
+
 /* facilty/staff search scope in directory */
 "Faculty/Staff" = "طاقم الجامعة";
 
@@ -197,14 +201,14 @@
 /* Ineligible for Registration */
 "Ineligible for Registration" = "غير مؤهل للتسجيل";
 
+/* Install App title */
+"Install App" = "تثبيت التطبيق";
+
 /* Last Updated date */
 "Last Updated %@" = "آخر تحديث %@";
 
 /* Last Updated date unknown */
 "Last Updated Unknown" = "آخر تحديث غير معروف";
-
-/* label for when data was last updated */
-"Last Updated: %@" = "آخر تحديث: %@";
 
 /* loading message while fetching recent transactions
    loading message while waiting for data to load */
@@ -215,6 +219,9 @@
 
 /* Accessibility menu label */
 "Menu" = "القائمة";
+
+/* Message in directory suggesting to sign in for more information */
+"More contact information may be displayed if you are signed in." = "قد يتم عرض معلومات تواصل أكثر إذا قمت بتسجيل الدخول.";
 
 /* new notification has arrived */
 "New Notification" = "تنبيه جديد";
@@ -230,9 +237,6 @@
 
 /* no events recorded message */
 "No Events Recorded" = "لا توجد فعاليات مسجلة";
-
-/* no grades recorded message */
-"No Grades Recorded" = "لا توجد درجات مسجلة";
 
 /* no announcements for today message */
 "No announcements for today" = "لا توجد إعلانات اليوم";
@@ -253,7 +257,8 @@
 "None announcement date available" = "تاريخ الإعلان غير متوفر";
 
 /* OK
-   OK action */
+   OK action
+   OK button on alert view */
 "OK" = "موافق";
 
 /* overdue assignment indicator for ilp module */
@@ -273,6 +278,15 @@
 
 /* Permission not granted title */
 "Permission not granted" = "لم يعطى الأذن";
+
+/* Person was not found */
+"Person was not found" = "تعذر العثور على الشخص";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "يرجى التأكد أن الهاتف قريب ثم أطلق";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "يرجى التأكد أن الهاتف قريب ثم أطلق %@ على الهاتف";
 
 /* Table section header RECENT PAYMENTS */
 "RECENT PAYMENTS" = "دفعات حديثة";
@@ -313,6 +327,9 @@
 /* label - room number */
 "Room %@" = "غرفة رقم %@";
 
+/* title for roster no match */
+"Roster" = "القائمة";
+
 /* empty Search Results message */
 "Search Results Empty" = "نتائج البحث فارغة";
 
@@ -338,8 +355,7 @@
 /* title for failed sign in */
 "Sign In Failed" = "تعذر تسجيل الدخول";
 
-/* label to sign out
-   Sign Out menu item */
+/* Sign Out menu item */
 "Sign Out" = "تسجيل الخروج";
 
 /* student search scope in directory */
@@ -354,6 +370,9 @@
 /* message for failed sign in */
 "The password or user name you entered is incorrect. Please try again." = "اسم المستخدم و كلمة المرور غير صحيحين. يرجى المحاولة مرة أخرى.";
 
+/* Targeted app not installed alert message */
+"There are no installed applications available to respond to this request." = "لا توجد تطبيقات مثبتة متاحة للاستجابة لهذا الطلب.";
+
 /* configurations cannot be downloaded */
 "There are no institutions to display at this time." = "لا توجد جامعات للعرض حاليا.";
 
@@ -362,6 +381,9 @@
 
 /* second message for heading of failed registered classes */
 "These issues may have prevented registration." = "هذه المشاكل ربما حالت دون التسجيل.";
+
+/* Unsupported feature alert message */
+"This application is not available on iOS." = "هذا التطبيق غير متوفر في نظام تشغيل iOS.";
 
 /* button label to compose tweet on Twitter */
 "Twitter" = "تويتر";
@@ -378,20 +400,23 @@
 /* unable to download configuration title */
 "Unable to launch configuration" = "تعذر إطلاق التهيئة";
 
+/* Unavailable Application alert title */
+"Unavailable Application" = "التطبيق غير متوفر";
+
 /* Accessibility label for uncollapse menu section button */
 "Uncollapse menu section" = "قم بتوسيع القائمة";
 
 /* error message when address cannot be used for getting directions */
 "Unknown address" = "عنوان غير معروف";
 
+/* Unsupported alert title */
+"Unsupported" = "غير مدعوم";
+
 /* Upgrade software button label */
 "Upgrade" = "تحديث";
 
 /* view label */
 "View" = "عرض";
-
-/* Label for user to start app from a notification in the notificaiton center */
-"View notifications" = "عرض التنبيهات";
 
 /* second message for heading of failed drop classes */
 "We couldn't drop these courses:" = "تعذر حذف هذه المقررات:";
@@ -411,11 +436,14 @@
 /* permission access error message */
 "You do not have permission to use this feature." = "ليس لديك إذن لاستخدام هذه الخاصية.";
 
-/* Message in notification center to alert that they have notifications */
-"You have new notifications" = "لديك تنبيهات جديدة";
+/* You do not have the required app. Would you like to install it? message */
+"You do not have the required app. Would you like to install it?" = "ليس لديك التطبيق المطلوب. هل ترغب في تثبيته؟";
 
 /* Permission not granted message */
 "You must give permission in Settings to allow access" = "يجب إعطاء الصلاحية في الإعدادات للسماح بالوصول";
+
+/* available seats/capacity */
+"available seats/capacity" = "%1$@/%2$@";
 
 /* building name/address */
 "building name/address" = "%1$@/%2$@";

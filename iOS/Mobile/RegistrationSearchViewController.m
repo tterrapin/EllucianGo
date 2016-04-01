@@ -197,9 +197,9 @@
 
     }
 
-    AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
+    AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
     NSDictionary *headers = @{@"Accept": @"application/vnd.hedtech.v1+json"};
-    NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
+    NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:urlString] fromView:self addHTTPHeaderFields:headers];
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -365,9 +365,15 @@
             };
             plannedSection.instructors = [instructors copy];
             [plannedSections addObject:plannedSection];
+            if([plannedSectionJson objectForKey:@"capacity"] != [NSNull null]) {
+                plannedSection.capacity = [plannedSectionJson objectForKey:@"capacity"];
+            }
+            if([plannedSectionJson objectForKey:@"available"] != [NSNull null]) {
+                plannedSection.available = [plannedSectionJson objectForKey:@"available"];
+            }
         }
     } else {
-        [self.registrationTabController reportError:authenticatedRequet.error.localizedDescription];
+        [self.registrationTabController reportError:authenticatedRequest.error.localizedDescription];
     }
     return plannedSections;
 }

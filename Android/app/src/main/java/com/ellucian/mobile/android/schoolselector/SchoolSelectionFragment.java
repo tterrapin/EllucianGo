@@ -4,7 +4,6 @@
 
 package com.ellucian.mobile.android.schoolselector;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +37,7 @@ import java.util.Locale;
 
 public class SchoolSelectionFragment extends EllucianFragment {
 
+    private static final String TAG = SchoolSelectionFragment.class.getSimpleName();
 	private static final String PREFERENCES_CLOUD_URL = "cloudUrl";
 	private static final String PREFERENCES_FILENAME = "SchoolSelection";
 	
@@ -52,12 +52,12 @@ public class SchoolSelectionFragment extends EllucianFragment {
 	private ListView listView;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (!(activity instanceof SchoolSelectionActivity)) {
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if (!(getActivity() instanceof SchoolSelectionActivity)) {
 			throw new IllegalStateException("Activity must implement SchoolSelectionActivity");
 		}
-		this.activity = (SchoolSelectionActivity) activity;
+		this.activity = (SchoolSelectionActivity) getActivity();
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class SchoolSelectionFragment extends EllucianFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 	    super.onActivityCreated(savedInstanceState);
 	    // Setting fields from the configuration file. See res/xml/configuration_properties.xml
-	    configurationListUrl = getConfigurationProperties().configurationListUrl;
+	    configurationListUrl = activity.getConfigurationProperties().configurationListUrl;
 	   
 	    if (savedInstanceState != null) {
 		    // do we have anything to restore?
@@ -81,8 +81,20 @@ public class SchoolSelectionFragment extends EllucianFragment {
         String cloudUrl = null;
         Uri data = this.activity.getIntent().getData();
         if(data != null) {
+            // See what intent-filter was used. Either a scheme (ie. ellucianmobile://)
+            // or a host (mobile.elluciancloud.com) was matched.
+            int intStart;
+            if (data.getScheme().equals(getResources().getString(R.string.app_intent_filter_scheme))) {
+                Log.d(TAG, "Launch School Selection from custom scheme");
+                intStart = 0;
+            } else {
+                // the intent-filter was https://
+                Log.d(TAG, "Launch School Selection from matched pathPrefix");
+                intStart = 2;
+            }
+
         	List<String> segments = data.getPathSegments();
-        	cloudUrl = TextUtils.join("/", segments.subList(2, segments.size()));
+        	cloudUrl = TextUtils.join("/", segments.subList(intStart, segments.size()));
         	cloudUrl = cloudUrl.replaceFirst("/", "://");
         	Utils.addStringToPreferences(this.activity, PREFERENCES_FILENAME, PREFERENCES_CLOUD_URL, cloudUrl);
         } else {
@@ -123,7 +135,7 @@ public class SchoolSelectionFragment extends EllucianFragment {
 			ConfigurationListResponse response = client.getConfigurationList(urls[0]);
 			
 			//Version checking
-			if (getConfigurationProperties().enableVersionChecking) {
+			if (activity.getConfigurationProperties().enableVersionChecking) {
 				if(response != null && response.versions != null) {
 					try {
 	

@@ -1,12 +1,24 @@
 /* About menu item */
 "About" = "Acerca de";
 
+/* Watch communication to phone error title */
+"Communication Error" = "Error de comunicación";
+
 /* assignment due today indicator for ilp module */
 "DUE TODAY" = "Vence hoy";
 
 /* due date label with date */
 "Due: %@" = "Vencimiento: %@";
 
+/* OK button on alert view */
+"OK" = "OK";
+
 /* overdue assignment indicator for ilp module */
 "OVERDUE" = "Vencido";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Coloque el iPhone cerca e inicie";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Coloque el iPhone cerca e inicie %@ en el dispositivo móvil";
 

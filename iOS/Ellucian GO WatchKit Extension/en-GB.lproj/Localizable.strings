@@ -1,12 +1,24 @@
 /* About menu item */
 "About" = "About";
 
+/* Watch communication to phone error title */
+"Communication Error" = "Communication Error";
+
 /* assignment due today indicator for ilp module */
 "DUE TODAY" = "DUE TODAY";
 
 /* due date label with date */
 "Due: %@" = "Due: %@";
 
+/* OK button on alert view */
+"OK" = "OK";
+
 /* overdue assignment indicator for ilp module */
 "OVERDUE" = "OVERDUE";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Please ensure the phone is nearby and launch";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Please ensure the phone is nearby and launch %@ on the phone";
 

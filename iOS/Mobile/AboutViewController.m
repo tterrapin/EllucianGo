@@ -7,7 +7,6 @@
 //
 
 #import "AboutViewController.h"
-#import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
 #import "PseudoButtonView.h"

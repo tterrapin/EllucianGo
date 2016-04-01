@@ -16,6 +16,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "5sy-0m-10j"; */
 "5sy-0m-10j.text" = "المسمى";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "8eb-GG-a6R"; */
+"8eb-GG-a6R.text" = "المسمى";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "8hs-OA-B0n"; */
 "8hs-OA-B0n.text" = "المسمى";
 
@@ -46,6 +49,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "GY7-yb-h4G"; */
 "GY7-yb-h4G.text" = "المسمى";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "H55-Eu-oJ3"; */
+"H55-Eu-oJ3.text" = "المسمى";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "HgA-9g-0ur"; */
 "HgA-9g-0ur.text" = "المسمى";
 
@@ -61,11 +67,17 @@
 /* Class = "UILabel"; text = "Meeting Information"; ObjectID = "J0i-Bi-dhz"; */
 "J0i-Bi-dhz.text" = "معلومات المحاضرة";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "JJq-eE-uW8"; */
+"JJq-eE-uW8.text" = "المسمى";
+
 /* Class = "UILabel"; text = "Section ID:"; ObjectID = "JPr-5w-y0Z"; */
 "JPr-5w-y0Z.text" = "معرف الشعبة:";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "KL6-ve-fXB"; */
 "KL6-ve-fXB.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "MJF-dj-hAX"; */
+"MJF-dj-hAX.text" = "المسمى";
 
 /* Class = "UILabel"; text = "Select a Term and enter Search criteria"; ObjectID = "NFB-Hy-Kdp"; */
 "NFB-Hy-Kdp.text" = "قم باختيار فصل دراسي وأدخل معايير البحث";
@@ -97,6 +109,9 @@
 /* Class = "UILabel"; text = "Meeting Information"; ObjectID = "SxT-BA-iPR"; */
 "SxT-BA-iPR.text" = "معلومات المحاضرة";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "T1m-il-e8c"; */
+"T1m-il-e8c.text" = "المسمى";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "Tts-lb-RIy"; */
 "Tts-lb-RIy.text" = "المسمى";
 
@@ -108,6 +123,9 @@
 
 /* Class = "UILabel"; text = "Credits:"; ObjectID = "Wwh-Wo-QbI"; */
 "Wwh-Wo-QbI.text" = "الساعات المعتمدة:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "X31-mA-aK4"; */
+"X31-mA-aK4.text" = "المسمى";
 
 /* Class = "UILabel"; text = "Grading:"; ObjectID = "aPX-9A-e4m"; */
 "aPX-9A-e4m.text" = "وضع الدرجات:";
@@ -132,6 +150,9 @@
 
 /* Class = "UILabel"; text = "Section ID:"; ObjectID = "dN7-rS-hzX"; */
 "dN7-rS-hzX.text" = "معرف الشعبة:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dwQ-ax-yt2"; */
+"dwQ-ax-yt2.text" = "المسمى";
 
 /* Class = "UILabel"; text = "Description"; ObjectID = "eBD-3Y-aTU"; */
 "eBD-3Y-aTU.text" = "الوصف";
@@ -172,6 +193,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "jkC-EC-FMB"; */
 "jkC-EC-FMB.text" = "المسمى";
 
+/* Class = "UILabel"; text = "Available Seats:"; ObjectID = "k1s-Rm-Le8"; */
+"k1s-Rm-Le8.text" = "المقاعد المتاحة:";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "lmd-gW-10J"; */
 "lmd-gW-10J.text" = "المسمى";
 
@@ -189,6 +213,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "qhL-Yj-2q9"; */
 "qhL-Yj-2q9.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "rDH-x3-Xwx"; */
+"rDH-x3-Xwx.text" = "المسمى";
 
 /* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "s4q-VJ-8eD"; */
 "s4q-VJ-8eD.title" = "التحكم في عرض الأصل";
@@ -231,6 +258,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "xpQ-54-V91"; */
 "xpQ-54-V91.text" = "المسمى";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yDK-LR-dqS"; */
+"yDK-LR-dqS.text" = "المسمى";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "yUc-Ly-Uec"; */
 "yUc-Ly-Uec.text" = "المسمى";

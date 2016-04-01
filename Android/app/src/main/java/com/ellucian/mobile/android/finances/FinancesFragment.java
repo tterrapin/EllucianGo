@@ -4,7 +4,6 @@
 
 package com.ellucian.mobile.android.finances;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +44,6 @@ public class FinancesFragment extends EllucianFragment {
     private View rootView;
     private TextView balanceView;
     private ListView transactionsView;
-    private Button buttonView;
     private String buttonText;
     private String buttonUrl;
     private Boolean useExternalBrowser;
@@ -56,9 +54,9 @@ public class FinancesFragment extends EllucianFragment {
     private static final String TAG = "FinancesFragment";
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        financesActivity = (FinancesActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        financesActivity = (FinancesActivity) getActivity();
     }
 
     @Override
@@ -87,7 +85,7 @@ public class FinancesFragment extends EllucianFragment {
             transactionsView = (ListView) rootView.findViewById(R.id.transactions_list_view);
             transactionsView.setEmptyView(rootView.findViewById(R.id.transactions_no_data));
 
-            buttonView = (Button) rootView.findViewById(R.id.finance_url_button);
+            Button buttonView = (Button) rootView.findViewById(R.id.finance_url_button);
             if (!TextUtils.isEmpty(buttonText) && !TextUtils.isEmpty(buttonUrl)) {
                 buttonView.setVisibility(View.VISIBLE);
                 buttonView.setText(buttonText);
@@ -155,7 +153,7 @@ public class FinancesFragment extends EllucianFragment {
                         // overall balance. In the future, the APIs may provide Term specific balances,
                         // similar to how Student Self-Service presents the data. For now, the overall
                         // balance is in termId PROXY_TERM_ID.
-                        if (balanceTerm.termId.equals(PROXY_TERM_ID)) {
+                        if (balanceTerm.termId.equals(PROXY_TERM_ID) && (balanceTerm.balance != null)) {
                             success = true;
                             Double balance = balanceTerm.balance;
                             Currency currency;

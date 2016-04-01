@@ -41,7 +41,7 @@
 "%@-%@" = "%1$@-%2$@";
 
 /* item already in cart error */
-"%@-%@ failed to add to cart. Section is already registered or exists in the cart." = "%1$@-%2$@ falhou ao adicionar no carrinho. Esta disciplina já está no carrinho ou já matriculou-se.";
+"%@-%@ failed to add to cart. Section is already registered or exists in the cart." = "%1$@-%2$@ falhou ao adicionar no carrinho. Esta disciplina já está no carrinho ou você já se matriculou nela.";
 
 /* Outdated alert message */
 "A new version is available." = "Uma nova versão está disponível.";
@@ -63,9 +63,6 @@
 
 /* label for add to cart button in registration search */
 "Add To Cart (%d)" = "Adicionar ao carrinho (%d)";
-
-/* all search scope in directory */
-"All" = "Todos";
 
 /* label for all day event */
 "All Day" = "Todo o dia";
@@ -95,13 +92,16 @@
 "Cancel" = "Cancelar";
 
 /* checking registration eligibility message */
-"Checking Eligibility" = "Checando a disponibilidade";
+"Checking Eligibility" = "Verificando a elegibilidade";
 
 /* Close */
 "Close" = "Fechar";
 
 /* Accessibility label for collapse menu section button */
 "Collapse menu section" = "Recolher seção do menu";
+
+/* Watch communication to phone error title */
+"Communication Error" = "Erro de comunicação";
 
 /* button label to copy webpage's URL to clipboard */
 "Copy URL" = "Copiar URL";
@@ -174,10 +174,14 @@
 "Error Loading Video" = "Erro ao carregar o vídeo";
 
 /* heading for event detail page */
-"Event Detail" = "Detalhes do Evento";
+"Event Detail" = "Detalhes do evento";
 
 /* ILP View: Events Card Title */
 "Events" = "Eventos";
+
+/* Faculty label
+   title for faculty no match */
+"Faculty" = "Docente";
 
 /* facilty/staff search scope in directory */
 "Faculty/Staff" = "Docentes/Funcionários";
@@ -186,7 +190,7 @@
 "Fetching saved course sections" = "Buscando turmas com disciplinas salvas";
 
 /* User can get directions for this location */
-"Get Directions" = "Obter trajetos";
+"Get Directions" = "Como chegar";
 
 /* Graded label for registration */
 "Graded" = "Com nota";
@@ -197,24 +201,27 @@
 /* Ineligible for Registration */
 "Ineligible for Registration" = "Matrícula não autorizada";
 
+/* Install App title */
+"Install App" = "Instalar app";
+
 /* Last Updated date */
 "Last Updated %@" = "Última atualização %@";
 
 /* Last Updated date unknown */
 "Last Updated Unknown" = "Última atualização desconhecida";
 
-/* label for when data was last updated */
-"Last Updated: %@" = "Última atualização: %@";
-
 /* loading message while fetching recent transactions
    loading message while waiting for data to load */
 "Loading" = "Carregando";
 
 /* Locations label for registration filter */
-"Locations" = "Localizações";
+"Locations" = "Locais";
 
 /* Accessibility menu label */
 "Menu" = "Menu";
+
+/* Message in directory suggesting to sign in for more information */
+"More contact information may be displayed if you are signed in." = "Se você estiver logado, mais contatos serão exibidos.";
 
 /* new notification has arrived */
 "New Notification" = "Nova notificação";
@@ -230,9 +237,6 @@
 
 /* no events recorded message */
 "No Events Recorded" = "Não há eventos registrados";
-
-/* no grades recorded message */
-"No Grades Recorded" = "Não há notas registradas";
 
 /* no announcements for today message */
 "No announcements for today" = "Não há comunicados para hoje";
@@ -253,7 +257,8 @@
 "None announcement date available" = "Não há nenhuma data disponível para comunicados";
 
 /* OK
-   OK action */
+   OK action
+   OK button on alert view */
 "OK" = "OK";
 
 /* overdue assignment indicator for ilp module */
@@ -273,6 +278,15 @@
 
 /* Permission not granted title */
 "Permission not granted" = "Permissão não concedida";
+
+/* Person was not found */
+"Person was not found" = "A pessoa não foi encontrada";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Coloque o iPhone próximo e baixe";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Coloque o iPhone próximo e baixe %@ no Apple Watch";
 
 /* Table section header RECENT PAYMENTS */
 "RECENT PAYMENTS" = "PAGAMENTOS RECENTES";
@@ -313,6 +327,9 @@
 /* label - room number */
 "Room %@" = "Sala %@";
 
+/* title for roster no match */
+"Roster" = "Lista de presença";
+
 /* empty Search Results message */
 "Search Results Empty" = "A busca não encontrou nenhum resultado.";
 
@@ -338,8 +355,7 @@
 /* title for failed sign in */
 "Sign In Failed" = "Falha na autenticação";
 
-/* label to sign out
-   Sign Out menu item */
+/* Sign Out menu item */
 "Sign Out" = "Sair";
 
 /* student search scope in directory */
@@ -354,6 +370,9 @@
 /* message for failed sign in */
 "The password or user name you entered is incorrect. Please try again." = "A senha ou nome de usuário digitados estão incorretos. Tente novamente.";
 
+/* Targeted app not installed alert message */
+"There are no installed applications available to respond to this request." = "Não há aplicativos instalados e disponíveis para responder esta solicitação.";
+
 /* configurations cannot be downloaded */
 "There are no institutions to display at this time." = "Não há instituições para exibição neste momento.";
 
@@ -362,6 +381,9 @@
 
 /* second message for heading of failed registered classes */
 "These issues may have prevented registration." = "Os itens abaixo não permitem a matrícula.";
+
+/* Unsupported feature alert message */
+"This application is not available on iOS." = "Este aplicativo não está disponível no iOS.";
 
 /* button label to compose tweet on Twitter */
 "Twitter" = "Twitter";
@@ -378,20 +400,23 @@
 /* unable to download configuration title */
 "Unable to launch configuration" = "Não é possível iniciar a configuração";
 
+/* Unavailable Application alert title */
+"Unavailable Application" = "Aplicativo não disponível";
+
 /* Accessibility label for uncollapse menu section button */
 "Uncollapse menu section" = "Expandir seção do menu";
 
 /* error message when address cannot be used for getting directions */
 "Unknown address" = "Endereço desconhecido";
 
+/* Unsupported alert title */
+"Unsupported" = "Sem suporte ";
+
 /* Upgrade software button label */
 "Upgrade" = "Atualizar";
 
 /* view label */
 "View" = "Visualizar";
-
-/* Label for user to start app from a notification in the notificaiton center */
-"View notifications" = "Visualizar notificações";
 
 /* second message for heading of failed drop classes */
 "We couldn't drop these courses:" = "Não foi possível trancar estas disciplinas:";
@@ -411,11 +436,14 @@
 /* permission access error message */
 "You do not have permission to use this feature." = "Você não tem permissão para usar este recurso.";
 
-/* Message in notification center to alert that they have notifications */
-"You have new notifications" = "Você tem novas notificações";
+/* You do not have the required app. Would you like to install it? message */
+"You do not have the required app. Would you like to install it?" = "Você não tem o app requerido. Gostaria de instalar?";
 
 /* Permission not granted message */
 "You must give permission in Settings to allow access" = "Para permitir o acesso vá em Ajustes para autorizar";
+
+/* available seats/capacity */
+"available seats/capacity" = "%1$@/%2$@";
 
 /* building name/address */
 "building name/address" = "%1$@/%2$@";

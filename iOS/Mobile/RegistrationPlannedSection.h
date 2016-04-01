@@ -37,6 +37,8 @@
 @property (nonatomic, strong) NSString *variableCreditOperator;
 @property (nonatomic, strong) NSString *location;
 @property (nonatomic, strong) NSArray *academicLevels;
+@property (nonatomic, strong) NSNumber *capacity;
+@property (nonatomic, strong) NSNumber *available;
 
 @property (nonatomic, assign) BOOL selectedInCart;
 @property (nonatomic, assign) BOOL selectedInSearchResults;

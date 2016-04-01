@@ -4,19 +4,14 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ellucian.elluciango"
- >
+          package="com.ellucian.elluciango">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
-    <uses-permission
-        android:name="android.permission.VIBRATE"/>
-    <uses-permission
-        android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
@@ -34,7 +29,7 @@
 
     <application
         android:name="com.ellucian.mobile.android.EllucianApplication"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Ellucian"
         android:allowBackup="false"
@@ -48,11 +43,9 @@
 
         <!-- Main and Configuration -->
         <activity
-            android:name="com.ellucian.mobile.android.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+            android:name="com.ellucian.mobile.android.MainActivity">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -63,10 +56,17 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:noHistory="true" >
             <intent-filter android:label="@string/app_name">
-				<action android:name="android.intent.action.VIEW" />
-          		<category android:name="android.intent.category.DEFAULT" />
-          		<category android:name="android.intent.category.BROWSABLE" />
-          		<data android:scheme="https" android:host="@string/app_intent_filter_host" android:pathPrefix="/mobilecloud/configuration" />
+                <data android:scheme="https" android:host="@string/app_intent_filter_host" android:pathPrefix="/mobilecloud/configuration" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name">
+                <data android:scheme="@string/app_intent_filter_scheme"/>
+                <data android:host="configuration"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
 
@@ -106,6 +106,14 @@
           		<category android:name="android.intent.category.BROWSABLE" />
           		<data android:scheme="https" android:host="@string/app_intent_filter_host" android:pathPrefix="/mobilecloud/cloud" />
             </intent-filter>
+            <intent-filter android:label="@string/app_name">
+                <data android:scheme="@string/app_intent_filter_scheme"/>
+                <data android:host="mobilecloud"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+            </intent-filter>
         </activity>
 
         <!-- Default -->
@@ -137,40 +145,16 @@
         </activity>
 
         <activity
-            android:name="com.ellucian.mobile.android.courses.assignments.CourseAssignmentsActivity"
-            android:label="@string/title_activity_course_assignments" >
-         	<meta-data
-        		android:name="android.support.PARENT_ACTIVITY"
-        		android:value="com.ellucian.mobile.android.MainActivity"/>
-        </activity>
-
-        <activity
             android:name="com.ellucian.mobile.android.courses.assignments.CourseAssignmentsDetailActivity"
             android:label="@string/title_activity_course_assignments_detail" >
-         	<meta-data
-        		android:name="android.support.PARENT_ACTIVITY"
-        		android:value="com.ellucian.mobile.android.MainActivity"/>
-        </activity>
-
-        <activity
-            android:name="com.ellucian.mobile.android.courses.announcements.CourseAnnouncementsActivity"
-            android:label="@string/title_activity_course_announcements" >
-         	<meta-data
-        		android:name="android.support.PARENT_ACTIVITY"
-        		android:value="com.ellucian.mobile.android.MainActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ellucian.mobile.android.MainActivity"/>
         </activity>
 
         <activity
             android:name="com.ellucian.mobile.android.courses.announcements.CourseAnnouncementsDetailActivity"
             android:label="@string/title_activity_course_announcements_detail" >
-         	<meta-data
-        		android:name="android.support.PARENT_ACTIVITY"
-        		android:value="com.ellucian.mobile.android.MainActivity"/>
-        </activity>
-
-        <activity
-            android:name="com.ellucian.mobile.android.courses.events.CourseEventsActivity"
-            android:label="@string/title_activity_course_events" >
          	<meta-data
         		android:name="android.support.PARENT_ACTIVITY"
         		android:value="com.ellucian.mobile.android.MainActivity"/>
@@ -205,24 +189,14 @@
         <activity
             android:name="com.ellucian.mobile.android.directory.DirectoryActivity"
             android:label="@string/title_activity_directory" >
-            <meta-data
+        <meta-data
         		android:name="android.support.PARENT_ACTIVITY"
         		android:value="com.ellucian.mobile.android.MainActivity"/>
         </activity>
 
         <activity
             android:name="com.ellucian.mobile.android.directory.DirectoryListActivity"
-            android:label="@string/title_activity_directory_list_all"
-            android:windowSoftInputMode="adjustPan"
-            android:launchMode="singleTop" android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                   android:resource="@xml/searchable_directory"/>
-            <meta-data
-       	 		android:name="android.support.PARENT_ACTIVITY"
-        		android:value="com.ellucian.mobile.android.MainActivity"/>
+            android:label="@string/title_activity_directory_list_all">
         </activity>
 
         <activity
@@ -509,7 +483,7 @@
     	<!-- App widget -->
     	<receiver
             android:name="com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetProvider"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -525,6 +499,18 @@
         <service
             android:name="com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+         dispatching on non-Google Play devices. -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+                  android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+                 android:enabled="true"
+                 android:exported="false"/>
 
     </application>
 

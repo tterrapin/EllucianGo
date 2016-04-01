@@ -14,47 +14,63 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var managedObjectContext : NSManagedObjectContext?
     @IBOutlet var tableView: UITableView!
     var menuSectionInfo: [MenuSectionInfo]?
+    var loaded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload", name: kSignInNotification, object: nil)
 
         tableView .registerClass(MenuTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
         tableView .registerClass(MenuTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "CollapseableHeader")
         
         readCustomizationsPropertyList()
-        registerObservers()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "registerObservers", name: "Mobile Server Configuration Load Succeeded", object: nil)
+        
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        reload()
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), {() -> Void in
 
-        //Ellucian Mobile 4.0 -> 4.1 upgrade... if configurationUrl was known but doesn't have it cached in new structure, go refresh
-        let configurationManager = ConfigurationManager.instance
-        let defaults = AppGroupUtilities.userDefaults()
-        let configurationUrl = defaults?.stringForKey("configurationUrl")
-
-        if configurationManager.isConfigurationLoaded() || configurationUrl != nil {
-            // trigger refresh if needed
-            configurationManager.refreshConfigurationIfNeeded() {
-                (result) -> Void in
-                
-                if configurationManager.isConfigurationLoaded() {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        AppearanceChanger.applyAppearanceChanges(self.view)
-                        self.reload()
+            //Ellucian Mobile 4.0 -> 4.1 upgrade... if configurationUrl was known but doesn't have it cached in new structure, go refresh
+            let configurationManager = ConfigurationManager.instance
+            let defaults = AppGroupUtilities.userDefaults()
+            let configurationUrl = defaults?.stringForKey("configurationUrl")
+            
+            if configurationManager.isConfigurationLoaded() || configurationUrl != nil {
+                // trigger refresh if needed
+                configurationManager.refreshConfigurationIfNeeded() {
+                    (result) -> Void in
+                    
+                    if configurationManager.isConfigurationLoaded() {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            AppearanceChanger.applyAppearanceChanges(self.view)
+                            self.reload()
+                        }
+                    } else {
+                        if self.loaded {
+                            NSNotificationCenter.defaultCenter().postNotificationName(kConfigurationFetcherError, object: nil)
+                        }
                     }
-                } else {
-                    NSNotificationCenter.defaultCenter().postNotificationName(kConfigurationFetcherError, object: nil)
                 }
+            } else {
+                NSOperationQueue.mainQueue().addOperation(OpenModuleConfigurationSelectionOperation())
             }
-        } else {
-            NSOperationQueue.mainQueue().addOperation(OpenModuleConfigurationSelectionOperation())
-        }
+        })
     }
     
     // MARK: - Observers
     
     func registerObservers() {
+        self.loaded = true
+        NSNotificationCenter.defaultCenter().removeObserver(self)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "outdated:", name: "VersionCheckerOutdatedNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateAvailable:", name: "VersionCheckerUpdateAvailableNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -204,7 +220,15 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 reload()
             } else {
                 sendEventWithCategory(kAnalyticsCategoryUI_Action, withAction: kAnalyticsActionMenu_selection, withLabel: "Menu-Click Sign In", withValue: nil, forModuleNamed: nil)
-                NSOperationQueue.mainQueue().addOperation(LoginSignInOperation(controller: self))
+                let operation = LoginSignInOperation(controller: self)
+                if let slidingViewController = self.view.window?.rootViewController as? ECSlidingViewController {
+                    if slidingViewController.topViewController is UINavigationController && slidingViewController.topViewController.childViewControllers[0] is HomeViewController {
+                        operation.successCompletionHandler = {
+                            NSOperationQueue.mainQueue().addOperation(OpenModuleHomeOperation())
+                        }
+                    }
+                }
+                NSOperationQueue.mainQueue().addOperation(operation)
             }
         case (_, _, _, _) :
             //anything else
@@ -232,7 +256,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell = tableView.dequeueReusableCellWithIdentifier("Menu Cell", forIndexPath: indexPath) as UITableViewCell
         }
         
-        if let nameLabel = cell.viewWithTag(101) as? UILabel, imageView = cell.viewWithTag(102) as? AsynchronousImageView {
+        if let nameLabel = cell.viewWithTag(101) as? UILabel, imageView = cell.viewWithTag(102) as? UIImageView {
             switch (indexPath.row, self.useSwitchSchool) {
             case (0, _):
                 nameLabel.text = NSLocalizedString("Home", comment: "Home menu item")
@@ -283,7 +307,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let nameLabel = cell.viewWithTag(101) as? UILabel {
             nameLabel.text = module.name
         }
-        if let imageView = cell.viewWithTag(102) as? AsynchronousImageView {
+        if let imageView = cell.viewWithTag(102) as? UIImageView {
             if let iconUrl = module.iconUrl {
                 imageView.image = ImageCache.sharedCache().getCachedImage(iconUrl)
             } else {
@@ -354,7 +378,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             indexPathsToInsert.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
-        sectionHeaderView.collapsibleButton?.accessibilityLabel = NSLocalizedString("Uncollapse menu section", comment:"Accessibility label for uncollapse menu section button")
+        sectionHeaderView.collapsibleButton?.accessibilityLabel = NSLocalizedString("Toggle menu section", comment:"Accessibility label for toggle menu section button")
         
         tableView.beginUpdates()
         tableView.insertRowsAtIndexPaths(indexPathsToInsert, withRowAnimation: .None)
@@ -383,7 +407,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
             indexPathsToInsert.append( NSIndexPath(forRow: index, inSection: section) )
         }
         
-        sectionHeaderView.collapsibleButton?.accessibilityLabel = NSLocalizedString("Uncollapse menu section", comment:"Accessibility label for uncollapse menu section button")
+        sectionHeaderView.collapsibleButton?.accessibilityLabel = NSLocalizedString("Toggle menu section", comment:"Accessibility label for toggle menu section button")
         
         tableView.beginUpdates()
         tableView.deleteRowsAtIndexPaths(indexPathsToInsert, withRowAnimation: .None)
@@ -424,6 +448,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         tempInfo.collapseable = true
                         tempInfo.modules = [Module]()
                         infoArray.append(tempInfo)
+                        tempInfo.modules.append(module)
                     } else {
                         tempInfo.modules.append(module)
                     }

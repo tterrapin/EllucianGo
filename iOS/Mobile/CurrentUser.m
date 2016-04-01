@@ -8,9 +8,6 @@
 
 #import "CurrentUser.h"
 #import "KeychainWrapper.h"
-#import "AppDelegate.h"
-#import "RNEncryptor.h"
-#import "RNDecryptor.h"
 #import "NotificationsFetcher.h"
 #import "Ellucian_GO-Swift.h"
 
@@ -37,10 +34,10 @@ NSString* const kLoginExecutorSuccess = @"Login Executor Success";
     NSUserDefaults* defaults = [AppGroupUtilities userDefaults];
 
     NSError *decryptionError = nil;
-    NSData *decryptedUserAuthData = [RNDecryptor decryptData:[defaults objectForKey:kLoginUserauth] withPassword:kAES256Key error:&decryptionError];
+    NSData *decryptedUserAuthData = [RNCryptor decryptData:[defaults objectForKey:kLoginUserauth] password:kAES256Key error:&decryptionError];
     _userauth = [[NSString alloc] initWithData:decryptedUserAuthData encoding:NSUTF8StringEncoding];
 
-    NSData *decryptedUserIdData = [RNDecryptor decryptData:[defaults objectForKey:kLoginUserid] withPassword:kAES256Key error:&decryptionError];
+    NSData *decryptedUserIdData = [RNCryptor decryptData:[defaults objectForKey:kLoginUserid] password:kAES256Key error:&decryptionError];
     _userid = [[NSString alloc] initWithData:decryptedUserIdData encoding:NSUTF8StringEncoding];
 
     _roles = [defaults objectForKey:kLoginRoles];
@@ -135,17 +132,13 @@ NSString* const kLoginExecutorSuccess = @"Login Executor Success";
     [defaults setObject:[roleSet allObjects] forKey:kLoginRoles];
     [defaults setBool:self.remember forKey:kLoginRemember];
     NSData* encryptedUserAuthData = [self.userauth dataUsingEncoding:NSUTF8StringEncoding];
-    encryptedUserAuthData = [RNEncryptor encryptData:encryptedUserAuthData
-                                      withSettings:kRNCryptorAES256Settings
-                                          password:kAES256Key
-                                             error:&error];
+    encryptedUserAuthData = [RNCryptor encryptData:encryptedUserAuthData
+                                          password:kAES256Key ];
 
     [defaults setObject:encryptedUserAuthData forKey:kLoginUserauth];
     NSData* encryptedUserIdData = [self.userid dataUsingEncoding:NSUTF8StringEncoding];
-    encryptedUserIdData = [RNEncryptor encryptData:encryptedUserIdData
-                                        withSettings:kRNCryptorAES256Settings
-                                            password:kAES256Key
-                                               error:&error];
+    encryptedUserIdData = [RNCryptor encryptData:encryptedUserIdData
+                                            password:kAES256Key ];
 
     [defaults setObject:encryptedUserIdData forKey:kLoginUserid];
 
@@ -157,9 +150,7 @@ NSString* const kLoginExecutorSuccess = @"Login Executor Success";
 }
 
 - (void) login: (NSString *) auth andUserid: (NSString *) uID andRoles: (NSSet *) roleSet
-{
-    NSError *error = nil;
-    
+{    
     self.userauth = auth;
     self.userid = uID;
     self.roles = roleSet;
@@ -169,17 +160,12 @@ NSString* const kLoginExecutorSuccess = @"Login Executor Success";
     //set the new config for about
     [defaults setObject:[roleSet allObjects] forKey:kLoginRoles];
     NSData* encryptedUserAuthData = [self.userauth dataUsingEncoding:NSUTF8StringEncoding];
-    encryptedUserAuthData = [RNEncryptor encryptData:encryptedUserAuthData
-                                        withSettings:kRNCryptorAES256Settings
-                                            password:kAES256Key
-                                               error:&error];
+    encryptedUserAuthData = [RNCryptor encryptData:encryptedUserAuthData
+                                            password:kAES256Key];
     
     [defaults setObject:encryptedUserAuthData forKey:kLoginUserauth];
     NSData* encryptedUserIdData = [self.userid dataUsingEncoding:NSUTF8StringEncoding];
-    encryptedUserIdData = [RNEncryptor encryptData:encryptedUserIdData
-                                      withSettings:kRNCryptorAES256Settings
-                                          password:kAES256Key
-                                             error:&error];
+    encryptedUserIdData = [RNCryptor encryptData:encryptedUserIdData password:kAES256Key];
     
     [defaults setObject:encryptedUserIdData forKey:kLoginUserid];
 

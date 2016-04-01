@@ -4,14 +4,17 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.support.v4.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
@@ -29,35 +32,30 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
     public static final int TAB_ASSIGNMENTS = 0;
     public static final int TAB_EVENTS = 1;
     public static final int TAB_ANNOUNCEMENTS = 2;
+    private AssignmentsRecyclerFragment assignmentsRecyclerFragment;
+    private EventsRecyclerFragment eventsRecyclerFragment;
+    private AnnouncementsRecyclerFragment announcementsRecyclerFragment;
 
-    private FragmentTabHost tabHost;
-    private TabInfo[] tabs;
+    private int currentTab;
 
-    private class TabInfo {
-        public final int index;
-        public final Class clazz;
-        public final String name;
-
-        public TabInfo(int index, Class clazz, String name) {
-            this.index = index;
-            this.clazz = clazz;
-            this.name = name;
-        }
-    }
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tabbed_dual_pane_layout);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_default_dual_pane);
 
-        setTitle(moduleName);
+        if (TextUtils.isEmpty(moduleName)) {
+            // When coming from Widget, moduleName is not known.
+            String title = Utils.getStringFromPreferences(getApplicationContext(), Utils.CONFIGURATION, Utils.ILP_NAME, null);
+            setTitle(title);
+        } else {
+            setTitle(moduleName);
+        }
 
         View detailsFrame = findViewById(R.id.frame_extra);
         boolean dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
         EllucianApplication app = getEllucianApp();
-        if(!app.isUserAuthenticated()) {
+        if (!app.isUserAuthenticated()) {
             Log.e(TAG, "User not authenticated, sending to home.");
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -78,54 +76,83 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
                 startActivity(intent);
                 finish();
             }
-		}
-
-        tabs = new TabInfo[] {
-                new TabInfo(TAB_ASSIGNMENTS, AssignmentsRecyclerFragment.class, getString(R.string.ilp_assignments)),
-                new TabInfo(TAB_EVENTS, EventsRecyclerFragment.class, getString(R.string.ilp_events)),
-                new TabInfo(TAB_ANNOUNCEMENTS, AnnouncementsRecyclerFragment.class, getString(R.string.ilp_announcements))};
-
-
-        tabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-
-        tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-
-        View tabsLayout = findViewById(R.id.tabs_layout);
-        tabsLayout.setBackgroundColor(Utils.getPrimaryColor(this));
+        }
 
         Bundle args = getIntent().getExtras();
-
-        for (int i = 0; i < tabs.length; i++) {
-            Bundle bundle = new Bundle(args);
-
-            // Only want to send this info to the requested tab/fragment
-            if (args.containsKey(IlpListActivity.SHOW_DETAIL) && args.getInt(TAB_INDEX) != i) {
-                bundle.remove(IlpListActivity.SHOW_DETAIL);
-                bundle.remove(IlpListActivity.SELECTED_INDEX);
-            }
-
-            View tabLayout = getLayoutInflater().inflate(R.layout.ilp_tab_layout, null, false);
-            TextView textView = (TextView)tabLayout.findViewById(R.id.title);
-            textView.setText(tabs[i].name);
-
-
-            tabHost.addTab(tabHost.newTabSpec("tab" + tabs[i].index).setIndicator(tabLayout),
-                    tabs[i].clazz, bundle);
+        FragmentManager manager = getSupportFragmentManager();
+        assignmentsRecyclerFragment = (AssignmentsRecyclerFragment) manager.findFragmentByTag("AssignmentsRecyclerFragment");
+        if (assignmentsRecyclerFragment == null) {
+            assignmentsRecyclerFragment = new AssignmentsRecyclerFragment();
+            Bundle bundle = cleanBundle(args, TAB_ASSIGNMENTS);
+            assignmentsRecyclerFragment.setArguments(bundle);
         }
+
+        eventsRecyclerFragment = (EventsRecyclerFragment) manager.findFragmentByTag("EventsRecyclerFragment");
+        if (eventsRecyclerFragment == null) {
+            eventsRecyclerFragment = new EventsRecyclerFragment();
+            Bundle bundle = cleanBundle(args, TAB_EVENTS);
+            eventsRecyclerFragment.setArguments(bundle);
+        }
+
+        announcementsRecyclerFragment = (AnnouncementsRecyclerFragment) manager.findFragmentByTag("AnnouncementsRecyclerFragment");
+        if (announcementsRecyclerFragment == null) {
+            announcementsRecyclerFragment = new AnnouncementsRecyclerFragment();
+            Bundle bundle = cleanBundle(args, TAB_ANNOUNCEMENTS);
+            announcementsRecyclerFragment.setArguments(bundle);
+        }
+
+        // Setup the 3 tabs in TabLayout
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setSelectedTabIndicatorColor(Utils.getColorHelper(this, R.color.tab_indicator_color));
+
+        TabLayout.Tab assignmentsTab = tabLayout.newTab().setText(R.string.ilp_assignments);
+        TabLayout.Tab eventsTab = tabLayout.newTab().setText(R.string.ilp_events);
+        TabLayout.Tab announcementsTab = tabLayout.newTab().setText(R.string.ilp_announcements);
+        tabLayout.addTab(assignmentsTab, TAB_ASSIGNMENTS);
+        tabLayout.addTab(eventsTab, TAB_EVENTS);
+        tabLayout.addTab(announcementsTab, TAB_ANNOUNCEMENTS);
+        tabLayout.setOnTabSelectedListener(new MyTabListener(this, R.id.frame_main));
 
         // clear requested indexes after use
         args.remove(IlpListActivity.SHOW_DETAIL);
         args.remove(IlpListActivity.SELECTED_INDEX);
 
-        tabHost.setOnTabChangedListener(this);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("previousSelected")) {
+                currentTab = savedInstanceState.getInt("previousSelected");
+            }
+        }
 
         if (args.containsKey(TAB_INDEX)) {
-            tabHost.setCurrentTab(args.getInt(TAB_INDEX));
+            currentTab = args.getInt(TAB_INDEX);
             getIntent().removeExtra(TAB_INDEX);
         }
 
+        tabLayout.getTabAt(currentTab).select();
 
-	}
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        int mCurrentTab = currentTab;
+        outState.putInt("previousSelected", mCurrentTab);
+
+    }
+
+    private Bundle cleanBundle(Bundle args, int tabIndex) {
+        Bundle bundle = new Bundle(args);
+
+        // Only want to send this info to the requested tab/fragment
+        if (args.containsKey(IlpListActivity.SHOW_DETAIL) && args.getInt(TAB_INDEX) != tabIndex) {
+            bundle.remove(IlpListActivity.SHOW_DETAIL);
+            bundle.remove(IlpListActivity.SELECTED_INDEX);
+        }
+        return bundle;
+    }
 
     private void clearCurrentDetailFragment() {
         EllucianDefaultDetailFragment details = (EllucianDefaultDetailFragment)
@@ -140,6 +167,107 @@ public class IlpListActivity extends EllucianActivity implements TabHost.OnTabCh
     @Override
     public void onTabChanged(String tabId) {
         clearCurrentDetailFragment();
+    }
+
+    private void clearMainFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        Fragment mainFrame = manager.findFragmentById(R.id.frame_main);
+
+        if (mainFrame != null) {
+            ft.detach(mainFrame);
+        }
+        ft.commitAllowingStateLoss();
+    }
+
+    private void clearDetailFragment() {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        Fragment extraFrame = manager.findFragmentById(R.id.frame_extra);
+
+        if (extraFrame != null) {
+            ft.detach(extraFrame);
+        }
+
+        ft.commitAllowingStateLoss();
+    }
+
+    private class MyTabListener implements TabLayout.OnTabSelectedListener {
+        private final FragmentManager fragmentManager;
+        private int fragmentContainerResId;
+        private final Context mContext;
+        private String mTag;
+        private Class<? extends Fragment> mClass;
+        private Fragment mFragment;
+
+        public MyTabListener(Context context, int fragmentContainerResId) {
+            fragmentManager = getSupportFragmentManager();
+            mContext = context;
+            this.fragmentContainerResId = fragmentContainerResId;
+        }
+
+        /* The following are each of the TabLayout.OnTabSelectedListener callbacks */
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            if (tab.getTag() != null) {
+                if (!((Boolean) tab.getTag())) {
+                    return;
+                }
+            }
+
+            determineTab(tab.getPosition());
+            clearMainFragment();
+            clearDetailFragment();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+
+            // Check if the fragment is in the Fragment Manager
+            if (fragmentManager.findFragmentByTag(mTag) == null) {
+                if (mFragment == null) {
+                    mFragment = Fragment.instantiate(mContext, mClass.getName());
+                }
+
+                if (fragmentContainerResId == 0) {
+                    fragmentContainerResId = android.R.id.content;
+                }
+
+                ft.add(fragmentContainerResId, mFragment, mTag);
+
+            } else {
+                // If it exists, simply attach it in order to show it
+                ft.attach(mFragment);
+            }
+            currentTab = tab.getPosition();
+            ft.commit();
+        }
+
+        private void determineTab(int tabPosition) {
+            switch (tabPosition) {
+                case TAB_ANNOUNCEMENTS: // Announcements
+                    mClass = AnnouncementsRecyclerFragment.class;
+                    mTag = "AnnouncementsRecyclerFragment";
+                    mFragment = announcementsRecyclerFragment;
+                    break;
+                case TAB_EVENTS: // Events
+                    mClass = EventsRecyclerFragment.class;
+                    mTag = "EventsRecyclerFragment";
+                    mFragment = eventsRecyclerFragment;
+                    break;
+                case TAB_ASSIGNMENTS:
+                    mClass = AssignmentsRecyclerFragment.class;
+                    mTag = "AssignmentsRecyclerFragment";
+                    mFragment = assignmentsRecyclerFragment;
+                    break;
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+            onTabSelected(tab);
+        }
     }
 	
 }

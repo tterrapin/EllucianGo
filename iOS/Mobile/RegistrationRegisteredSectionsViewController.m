@@ -18,7 +18,6 @@
 #import "MBProgressHUD.h"
 #import "RegistrationResultsViewController.h"
 #import "NSMutableURLRequest+BasicAuthentication.h"
-#import "AppDelegate.h"
 #import "RegistrationTabBarController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "RegistrationPlannedSectionDetailViewController.h"
@@ -383,12 +382,6 @@
                     NSMutableDictionary *sectionToRegister = [[NSMutableDictionary alloc] init];
                     
                     NSString * action = @"Drop";
-                    
-                    if (course.isAudit) {
-                        action = @"Audit";
-                    } else if (course.isPassFail) {
-                        action = @"PassFail";
-                    }
                     
                     if(course.isVariableCredit) {
                         [sectionToRegister setObject:course.credits forKey:@"credits"];

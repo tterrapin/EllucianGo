@@ -117,12 +117,12 @@
 {
     _gradingType = gradingType;
     
-    if ([_gradingType caseInsensitiveCompare:kGraded] == NSOrderedSame){
-        _isGraded = YES;
-    } else if ([_gradingType caseInsensitiveCompare:kAudit] == NSOrderedSame){
+    if ([_gradingType caseInsensitiveCompare:kAudit] == NSOrderedSame){
         _isAudit = YES;
     } else if ([_gradingType caseInsensitiveCompare:kPassNoPass] == NSOrderedSame){
         _isPassFail = YES;
+    } else {
+        _isGraded = YES;
     }
 }
 

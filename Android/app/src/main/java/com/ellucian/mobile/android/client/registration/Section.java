@@ -44,7 +44,9 @@ public class Section implements Parcelable {
 	public float selectedCredits = -1;
 	public String location;
 	public String[] academicLevels;
-	
+    public Integer capacity;
+    public Integer available;
+
 	
 	public Section() {
 	}
@@ -80,6 +82,8 @@ public class Section implements Parcelable {
 		selectedCredits = in.readFloat();
 		location = in.readString();
 		academicLevels = in.createStringArray();
+        capacity = (Integer) in.readSerializable();
+        available = (Integer) in.readSerializable();
 	}
 
 	@Override
@@ -115,6 +119,8 @@ public class Section implements Parcelable {
 		dest.writeFloat(selectedCredits);
 		dest.writeString(location);
 		dest.writeStringArray(academicLevels);
+        dest.writeSerializable(capacity);
+        dest.writeSerializable(available);
 		
 	}
 	

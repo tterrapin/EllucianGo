@@ -15,7 +15,7 @@ public struct UserInfo {
         if let defaults = defaults, stored = defaults.objectForKey("login-userauth") as! NSData? {
             let decryptedData: NSData!
             do {
-                decryptedData = try RNDecryptor.decryptData(stored, withPassword: "key")
+                decryptedData = try RNCryptor.decryptData(stored, password: "key")
             } catch _ {
                 decryptedData = nil
             }
@@ -32,7 +32,7 @@ public struct UserInfo {
         if let defaults = defaults, stored = defaults.objectForKey("login-userid") as! NSData? {
             let decryptedData: NSData!
             do {
-                decryptedData = try RNDecryptor.decryptData(stored, withPassword: "key")
+                decryptedData = try RNCryptor.decryptData(stored, password: "key")
             } catch _ {
                 decryptedData = nil
             }

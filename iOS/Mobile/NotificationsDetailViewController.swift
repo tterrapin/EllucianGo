@@ -75,7 +75,9 @@ class NotificationsDetailViewController : UIViewController, WKNavigationDelegate
         dateLabel.text = dateFormatter.stringFromDate(notification!.noticeDate)
 
         loadWebView()
-        markNotificationRead()
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), {
+            self.markNotificationRead()
+        })
     }
     
     override func viewWillAppear(animated: Bool) {

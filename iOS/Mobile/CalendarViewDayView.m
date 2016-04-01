@@ -1,92 +1,34 @@
 #import "CalendarViewDayView.h"
 #import "CalendarViewEvent.h"
+#import "CalendarViewAllDayGridView.h"
+#import "CalendarViewDayGridView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppearanceChanger.h"
+#import "CalendarViewDayGridView.h"
 
 static const unsigned int HOURS_IN_DAY                   = 25; // Beginning and end of day is include twice
 static const unsigned int SPACE_BETWEEN_HOUR_LABELS      = 5;
-static const unsigned int DEFAULT_LABEL_FONT_SIZE        = 12;
 static const unsigned int ALL_DAY_VIEW_EMPTY_SPACE       = 3;
-static const unsigned int MINIMUM_ALL_DAY_HEIGHT         = 60;
-
-static const unsigned int ARROW_LEFT                     = 0;
-static const unsigned int ARROW_RIGHT                    = 1;
-
-@interface CalendarView_AllDayGridView : UIView {
-	CalendarViewDayView *_dayView;
-	unsigned int _eventCount;
-	NSDate *_day;
-	CGFloat _eventHeight;
-	UIFont *_textFont;
-}
-
-@property (nonatomic, assign) CGFloat eventHeight;
-@property (nonatomic, strong) CalendarViewDayView *dayView;
-@property (nonatomic, strong) UIFont *textFont;
-@property (nonatomic,copy) NSDate *day;
-@property (readonly) BOOL hasAllDayEvents;
-
-- (void)addEvent:(CalendarViewEvent *)event;
-- (void)resetCachedData;
-
-@end
-
-@interface CalendarViewDayGridView : UIView {
-	UIColor *_textColor;
-	UIFont *_textFont;
-	CalendarViewDayView *_dayView;
-	CGFloat _lineX;
-	CGFloat _lineY[25], _dashedLineY[25];
-	CGRect _textRect[25];
-}
-
-- (void)addEvent:(CalendarViewEvent *)event;
-
-@property (nonatomic, strong) CalendarViewDayView *dayView;
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, strong) UIFont *textFont;
-@property (readonly) CGFloat lineX;
-
-@end
-
-@interface CalendarViewDayView (PrivateMethods)
-- (void)setupCustomInitialisation;
-- (void)changeDay:(UIButton *)sender;
-- (NSDate *)nextDayFromDate:(NSDate *)date;
-- (NSDate *)previousDayFromDate:(NSDate *)date;
-
-@property (readonly) CalendarView_AllDayGridView *allDayGridView;
-@property (readonly) CalendarViewDayGridView *gridView;
-@property (readonly) UIFont *regularFont;
-@property (readonly) UIFont *boldFont;
-@property (readonly) NSString *titleText;
-@end
 
 @implementation CalendarViewDayView
-@synthesize leftArrow;
-@synthesize rightArrow;
-@synthesize dateLabel;
-@synthesize scrollView;
+
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-		[self setupCustomInitialisation];
+        [self setupCustomInitialisation];
     }
     return self;
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super initWithCoder:decoder]) {
-		[self setupCustomInitialisation];
-	}
-	return self;
+    if (self = [super initWithCoder:decoder]) {
+        [self setupCustomInitialisation];
+    }
+    return self;
 }
 
 - (void)setupCustomInitialisation {
-	self.labelFontSize = DEFAULT_LABEL_FONT_SIZE;
-    self.leftArrow.layer.borderColor = [UIColor blackColor].CGColor;
-    self.leftArrow.layer.borderWidth = 2.0;
-	self.day = [NSDate date];
+    self.day = [NSDate date];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -102,92 +44,83 @@ static const unsigned int ARROW_RIGHT                    = 1;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-	self.backgroundView.backgroundColor = self.dateLabelBackgroundColor;
+    self.backgroundView.backgroundColor = self.dateLabelBackgroundColor;
     self.dateLabel.textColor = self.dateLabelTextColor;
     
-	[self.scrollView addSubview:self.allDayGridView];
-	[self.scrollView addSubview:self.gridView];
-	
-	self.allDayGridView.frame = CGRectMake(0, 0,
-										   CGRectGetWidth(self.bounds),
-										   ALL_DAY_VIEW_EMPTY_SPACE);
+    [self.scrollView addSubview:self.allDayGridView];
+    [self.scrollView addSubview:self.gridView];
+    
+    self.allDayGridView.frame = CGRectMake(0, 0,
+                                           CGRectGetWidth(self.bounds),
+                                           ALL_DAY_VIEW_EMPTY_SPACE);
     CGFloat fontHeight = [@"A" sizeWithAttributes: @{NSFontAttributeName: self.boldFont}].height;
-	self.gridView.frame = CGRectMake(CGRectGetMinX(self.allDayGridView.bounds),
-									 CGRectGetMaxY(self.allDayGridView.bounds),
-									 CGRectGetWidth(self.bounds),
-									 fontHeight * SPACE_BETWEEN_HOUR_LABELS * HOURS_IN_DAY);
-	self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds),
-											 CGRectGetHeight(self.allDayGridView.bounds) + CGRectGetHeight(self.gridView.bounds));
+    self.gridView.frame = CGRectMake(CGRectGetMinX(self.allDayGridView.bounds),
+                                     CGRectGetMaxY(self.allDayGridView.bounds),
+                                     CGRectGetWidth(self.bounds),
+                                     fontHeight * SPACE_BETWEEN_HOUR_LABELS * HOURS_IN_DAY);
+    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.bounds),
+                                             CGRectGetHeight(self.allDayGridView.bounds) + CGRectGetHeight(self.gridView.bounds));
     
     if([AppearanceChanger isIOS8AndRTL]) {
         [self.leftArrow setImage:[UIImage imageNamed:@"calendarview_rightArrow"] forState:UIControlStateNormal];
         [self.rightArrow setImage:[UIImage imageNamed:@"calendarview_leftArrow"] forState:UIControlStateNormal];
     }
-    self.leftArrow.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.leftArrow.layer.borderWidth = 1.0;
-    self.rightArrow.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.rightArrow.layer.borderWidth = 1.0;
-    self.backgroundView.layer.borderColor = [UIColor darkGrayColor].CGColor;
-    self.backgroundView.layer.borderWidth = 1.0;
+    
     self.dateLabel.text = [self titleText];
-	[self.gridView setNeedsDisplay];
+    [self.gridView setNeedsDisplay];
     
 }
 
-- (CalendarView_AllDayGridView *)allDayGridView {
-	if (!allDayGridView) {
-		allDayGridView = [[CalendarView_AllDayGridView alloc] init];
-		allDayGridView.backgroundColor = [UIColor whiteColor]; //change for UX?
- 		allDayGridView.dayView = self;
-		allDayGridView.textFont = self.boldFont;
-        CGFloat fontHeight = [@"A" sizeWithAttributes: @{NSFontAttributeName: self.regularFont}].height;
-		allDayGridView.eventHeight = MAX(fontHeight * 2.f, MINIMUM_ALL_DAY_HEIGHT);
-	}
-	return allDayGridView;
+- (CalendarViewAllDayGridView *)allDayGridView {
+    if (!_allDayGridView) {
+        _allDayGridView = [[CalendarViewAllDayGridView alloc] init];
+        _allDayGridView.backgroundColor = [UIColor whiteColor];
+        _allDayGridView.dayView = self;
+    }
+    return _allDayGridView;
 }
 
 - (CalendarViewDayGridView *)gridView {
-	if (!gridView){
-		gridView = [[CalendarViewDayGridView alloc] init];
-		gridView.backgroundColor = [UIColor whiteColor];		gridView.textFont = self.boldFont;
-		gridView.textColor = [UIColor blackColor];
-		gridView.dayView = self;
-	}
-	return gridView;
+    if (!_gridView){
+        _gridView = [[CalendarViewDayGridView alloc] init];
+        _gridView.backgroundColor = [UIColor whiteColor];
+        _gridView.dayView = self;
+    }
+    return _gridView;
 }
 
 - (UIFont *)regularFont {
-	if (!regularFont) {
-		regularFont = [UIFont systemFontOfSize:self.labelFontSize];
-	}
-	return regularFont;
+    if (!_regularFont) {
+        _regularFont = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    }
+    return _regularFont;
 }
 
 - (UIFont *)boldFont {
-	if (!boldFont) {
-		boldFont = [UIFont boldSystemFontOfSize:self.labelFontSize];
-	}
-	return boldFont;
+    if (!_boldFont) {
+        UIFontDescriptor *caption1FontDesciptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1];
+        UIFontDescriptor *boldCaption1FontDescriptor = [caption1FontDesciptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+        _boldFont = [UIFont fontWithDescriptor:boldCaption1FontDescriptor size:0.0];
+    }
+    return _boldFont;
 }
 
 - (void)setDataSource:(id <CalendarViewDayViewDataSource>)newDataSource {
-	dataSource = newDataSource;
+    dataSource = newDataSource;
 }
 
 - (id <CalendarViewDayViewDataSource>)dataSource {
-	return dataSource;
+    return dataSource;
 }
 
 - (void)setDay:(NSDate *)date {
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
-	[components setHour:0];
-	[components setMinute:0];
-	[components setSecond:0];
-	_day = [[NSCalendar currentCalendar] dateFromComponents:components];
-	
-	self.allDayGridView.day = self.day;
-	self.dateLabel.text = [self titleText];
-	[self reloadData];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    _day = [[NSCalendar currentCalendar] dateFromComponents:components];
+    self.dateLabel.text = [self titleText];
+    [self reloadData];
 }
 
 - (void)reloadData {
@@ -204,86 +137,85 @@ static const unsigned int ARROW_RIGHT                    = 1;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-        NSDate *chosenDate = [self.day copy];
         NSArray *events = [self.dataSource dayView:self eventsForDate:self.day];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if([self.day isEqualToDate:chosenDate]) {
-                for (id view in self.allDayGridView.subviews) {
-                    if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
-                        [view removeFromSuperview];
-                    }
+            
+            for (id view in self.allDayGridView.subviews) {
+                if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
+                    [view removeFromSuperview];
                 }
-                
-                for (id view in self.gridView.subviews) {
-                    if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
-                        [view removeFromSuperview];
-                    }
+            }
+            
+            for (id view in self.gridView.subviews) {
+                if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
+                    [view removeFromSuperview];
                 }
+            }
+            
+            [self.allDayGridView resetCachedData];
+            
+            for (id e in events) {
+                CalendarViewEvent *event = e;
+                event.displayDate = self.day;
+            }
+            
+            NSArray *sortedEvents = [events sortedArrayUsingComparator:^(id ev1, id ev2) {
+                CalendarViewEvent *event1 = (CalendarViewEvent *)ev1;
+                CalendarViewEvent *event2 = (CalendarViewEvent *)ev2;
                 
-                [self.allDayGridView resetCachedData];
+                NSUInteger v1 = [event1 minutesSinceMidnight];
+                NSUInteger v2 = [event2 minutesSinceMidnight];
                 
-                for (id e in events) {
-                    CalendarViewEvent *event = e;
-                    event.displayDate = self.day;
-                }
-                
-                NSArray *sortedEvents = [events sortedArrayUsingComparator:^(id ev1, id ev2) {
-                    CalendarViewEvent *event1 = (CalendarViewEvent *)ev1;
-                    CalendarViewEvent *event2 = (CalendarViewEvent *)ev2;
+                if (v1 < v2) {
+                    return NSOrderedAscending;
+                } else if (v1 > v2) {
+                    return NSOrderedDescending;
+                } else {
+                    /* Event start time is the same, compare by duration.
+                     */
+                    NSUInteger d1 = [event1 durationInMinutes];
+                    NSUInteger d2 = [event2 durationInMinutes];
                     
-                    NSUInteger v1 = [event1 minutesSinceMidnight];
-                    NSUInteger v2 = [event2 minutesSinceMidnight];
-                    
-                    if (v1 < v2) {
-                        return NSOrderedAscending;
-                    } else if (v1 > v2) {
-                        return NSOrderedDescending;
-                    } else {
-                        /* Event start time is the same, compare by duration.
+                    if (d1 < d2) {
+                        /*
+                         * Event with a shorter duration is after an event
+                         * with a longer duration. Looks nicer when drawing the events.
                          */
-                        NSUInteger d1 = [event1 durationInMinutes];
-                        NSUInteger d2 = [event2 durationInMinutes];
-                        
-                        if (d1 < d2) {
-                            /*
-                             * Event with a shorter duration is after an event
-                             * with a longer duration. Looks nicer when drawing the events.
-                             */
-                            return NSOrderedDescending;
-                        } else if (d1 > d2) {
-                            return NSOrderedAscending;
-                        } else {
-                            /*
-                             * The last resort: compare by title.
-                             */
-                            return (NSInteger)[event1.line1 compare:event2.line1];
-                        }
+                        return NSOrderedDescending;
+                    } else if (d1 > d2) {
+                        return NSOrderedAscending;
+                    } else {
+                        /*
+                         * The last resort: compare by title.
+                         */
+                        return (NSInteger)[event1.line1 compare:event2.line1];
                     }
-                    
-                }];
-                for (id e in sortedEvents) {
-                    CalendarViewEvent *event = e;
-                    event.displayDate = self.day;
-                    
-                    if (event.allDay) {
-                        [self.allDayGridView addEvent:event];
-                    } else if([event minutesSinceMidnight] > 0) {
-                        [self.gridView addEvent:event];
-                    }
+                }
+                
+            }];
+            for (id e in sortedEvents) {
+                CalendarViewEvent *event = e;
+                event.displayDate = self.day;
+                
+                if ([event isAllDayForDisplayDate]) {
+                    [self.allDayGridView addEvent:event];
+                } else if([event minutesSinceMidnight] > 0) {
+                    [self.gridView addEvent:event];
                 }
             }
         });
     });
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 }
 
-- (IBAction)changeDay:(UIButton *)sender {
-	if (ARROW_LEFT == sender.tag) {
-		self.day = [self previousDayFromDate:_day];
-	} else if (ARROW_RIGHT == sender.tag) {
-		self.day = [self nextDayFromDate:_day];
-	}
+
+- (IBAction)changeToPreviousDay:(id)sender {
+    self.day = [self previousDayFromDate:_day];
+}
+- (IBAction)changeToNextDay:(id)sender {
+    self.day = [self nextDayFromDate:_day];
     
 }
 
@@ -291,42 +223,38 @@ static const unsigned int ARROW_RIGHT                    = 1;
     self.day = selectedDate;
 }
 
-- (IBAction)showDatePickerForiPad:(id)sender {
-    [self showDatePicker:sender];
-}
-
 - (IBAction)showDatePicker:(id)sender {
-
+    
     self.datePicker = [[CalendarActionSheetDatePicker alloc] initWithDate:self.day target:self action:@selector(dateWasSelected:element:) origin:sender];
     [self.datePicker showActionSheetPicker];
 }
 
 - (NSDate *)nextDayFromDate:(NSDate *)date {
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
-	[components setDay:[components day] + 1];
-	[components setHour:0];
-	[components setMinute:0];
-	[components setSecond:0];
-	return [[NSCalendar currentCalendar] dateFromComponents:components];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
+    [components setDay:[components day] + 1];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    return [[NSCalendar currentCalendar] dateFromComponents:components];
 }
 
 - (NSDate *)previousDayFromDate:(NSDate *)date {
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
-	[components setDay:[components day] - 1];
-	[components setHour:0];
-	[components setMinute:0];
-	[components setSecond:0];
-	return [[NSCalendar currentCalendar] dateFromComponents:components];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:date];
+    [components setDay:[components day] - 1];
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    return [[NSCalendar currentCalendar] dateFromComponents:components];
 }
 
 - (NSString *)titleText {
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateStyle:NSDateFormatterMediumStyle];
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_day];
-	
-	NSArray *weekdaySymbols = [formatter shortWeekdaySymbols];
-	
-	return [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"day of week date", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"day of week date"), [weekdaySymbols objectAtIndex:[components weekday] - 1], [formatter stringFromDate:_day]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal) fromDate:_day];
+    
+    NSArray *weekdaySymbols = [formatter shortWeekdaySymbols];
+    
+    return [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"day of week date", @"Localizable", [NSBundle mainBundle], @"%@ %@", @"day of week date"), [weekdaySymbols objectAtIndex:[components weekday] - 1], [formatter stringFromDate:_day]];
 }
 
 + (NSArray *) hourLabels
@@ -353,267 +281,60 @@ static const unsigned int ARROW_RIGHT                    = 1;
     return hours;
 }
 
-@end
-
-@implementation CalendarView_AllDayGridView
-
-@synthesize dayView=_dayView;
-@synthesize eventHeight=_eventHeight;
-@synthesize textFont=_textFont;
-
-- (BOOL)hasAllDayEvents {
-	for (id view in self.subviews) {
-		if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
-			return YES;
-		}
-	}
-	return NO;
+-(NSArray *) accessibilityElements {
+    NSArray *elements = @[self.leftArrow, self.rightArrow, self.datePickerButton, self.dateLabel];
+    elements = [elements arrayByAddingObjectsFromArray:self.allDayGridView.subviews];
+    elements = [elements arrayByAddingObjectsFromArray:self.gridView.subviews];
+    return elements;
 }
 
-- (void)resetCachedData {
-	_eventCount = 0;
-}
-
-- (void)setDay:(NSDate *)day {
-	[self resetCachedData];
-	
-	_day = [day copy];
-	
-	[self setNeedsLayout];
-	[self.dayView.gridView setNeedsLayout];
-}
-
-- (NSDate *)day {
-	return _day;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-	self.frame = CGRectMake(self.frame.origin.x,
-							self.frame.origin.y,
-							self.frame.size.width,
-							ALL_DAY_VIEW_EMPTY_SPACE + (ALL_DAY_VIEW_EMPTY_SPACE + self.eventHeight) * _eventCount);
-	
-	self.dayView.gridView.frame =  CGRectMake(self.dayView.gridView.frame.origin.x, self.frame.size.height,
-											  self.dayView.gridView.frame.size.width, self.dayView.gridView.frame.size.height);
-	
-	self.dayView.scrollView.contentSize = CGSizeMake(self.dayView.scrollView.contentSize.width,
-													 CGRectGetHeight(self.bounds) + CGRectGetHeight(self.dayView.gridView.bounds));
-	
-	for (id view in self.subviews) {
-		if ([NSStringFromClass([view class])isEqualToString:@"CalendarViewDayEventView"]) {
-			CalendarViewDayEventView *ev = view;
-			
-			CGFloat x = (int)self.dayView.gridView.lineX,
-            y = (int)ev.frame.origin.y,
-            w = (int)((self.frame.size.width - self.dayView.gridView.lineX) * 0.99),
-            h = (int)ev.frame.size.height;
-			
-			ev.frame = CGRectMake(x, y, w, h);
-			[ev setNeedsDisplay];
-		}
-	}
-}
-
-- (void)addEvent:(CalendarViewEvent *)event {
-	CalendarViewDayEventView *eventView = [[CalendarViewDayEventView alloc] initWithFrame: CGRectMake(0, ALL_DAY_VIEW_EMPTY_SPACE + (ALL_DAY_VIEW_EMPTY_SPACE + self.eventHeight) * _eventCount,
-                                                                                                      self.bounds.size.width, self.eventHeight)];
-	eventView.dayView = self.dayView;
-	eventView.event = event;
-	eventView.label1.text = event.line1;
-    eventView.label2.text = event.line2;
-    eventView.label3.text = event.line3;
-    
-	
-	[self addSubview:eventView];
-	
-	_eventCount++;
-	
-	[self setNeedsLayout];
-	[self.dayView.gridView setNeedsLayout];
-}
-
-@end
-
-@implementation CalendarViewDayGridView
-
-@synthesize dayView=_dayView;
-@synthesize textColor=_textColor;
-@synthesize textFont=_textFont;
-
-- (CGFloat)lineX
+- (BOOL)accessibilityScroll:(UIAccessibilityScrollDirection)direction
 {
-	return _lineX;
-}
 
-- (void)addEvent:(CalendarViewEvent *)event {
-	CalendarViewDayEventView *eventView = [[CalendarViewDayEventView alloc] initWithFrame:CGRectZero];
-	eventView.dayView = self.dayView;
-	eventView.event = event;
-	eventView.label1.text = event.line1;
-    eventView.label2.text = event.line2;
-    eventView.label3.text = event.line3;
-	
-	[self addSubview:eventView];
-	
-	[self setNeedsLayout];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-	CGFloat maxTextWidth = 0, totalTextHeight = 0;
-	CGSize hourSize[25];
-
-	register unsigned int i;
-	
-	for (i=0; i < HOURS_IN_DAY; i++) {
-        NSString *hourLabelText = [[CalendarViewDayView hourLabels] objectAtIndex:i ] ;
-		//hourSize[i] = [hourLabelText sizeWithFont:self.textFont];
-        
-        hourSize[i] = [hourLabelText sizeWithAttributes:@{NSFontAttributeName: self.textFont}];
-        
-		totalTextHeight += hourSize[i].height;
-		
-		if (hourSize[i].width > maxTextWidth) {
-			maxTextWidth = hourSize[i].width;
-		}
-	}
-	
-	CGFloat y;
-	const CGFloat spaceBetweenHours = (self.bounds.size.height - totalTextHeight) / (HOURS_IN_DAY - 1);
-	CGFloat rowY = 0;
-	
-	for (i=0; i < HOURS_IN_DAY; i++) {
-		_textRect[i] = CGRectMake(CGRectGetMinX(self.bounds),
-								  rowY,
-								  maxTextWidth,
-								  hourSize[i].height);
-		
-		y = rowY + ((CGRectGetMaxY(_textRect[i]) - CGRectGetMinY(_textRect[i])) / 2.f);
-		_lineY[i] = y;
-		_dashedLineY[i] = CGRectGetMaxY(_textRect[i]) + (spaceBetweenHours / 2.f);
-		
-		rowY += hourSize[i].height + spaceBetweenHours;
-	}
-	
-	_lineX = maxTextWidth + (maxTextWidth * 0.3);
-	
-	NSArray *subviews = self.subviews;
-	NSUInteger max = [subviews count];
-	CalendarViewDayEventView *curEv = nil, *prevEv = nil, *firstEvent = nil;
-	const CGFloat spacePerMinute = (_lineY[1] - _lineY[0]) / 60.f;
-	
-	for (i=0; i < max; i++) {
-		if (![NSStringFromClass([[subviews objectAtIndex:i] class])isEqualToString:@"CalendarViewDayEventView"]) {
-			continue;
-		}
-		
-		prevEv = curEv;
-		curEv = [subviews objectAtIndex:i];
-        
-		curEv.frame = CGRectMake((int) _lineX,
-								 (int) (spacePerMinute * [curEv.event minutesSinceMidnight] + _lineY[0] + 1), //for 1px padding
-								 (int) (self.bounds.size.width - _lineX),
-								 (int) ((spacePerMinute * [curEv.event durationInMinutes])-1));
-		
-		/*
-		 * Layout intersecting events to two columns.
-		 */
-		if (CGRectIntersectsRect(curEv.frame, prevEv.frame))
-		{
-			prevEv.frame = CGRectMake((int) (prevEv.frame.origin.x),
-									  (int) (prevEv.frame.origin.y),
-									  (int) (prevEv.frame.size.width / 2.f),
-									  (int) (prevEv.frame.size.height));
-            
-			curEv.frame = CGRectMake((int) (curEv.frame.origin.x + (curEv.frame.size.width / 2.f)),
-									 (int) (curEv.frame.origin.y),
-									 (int) (curEv.frame.size.width / 2.f),
-									 (int) (curEv.frame.size.height));
-		}
-        
-        if(curEv.frame.size.height < 52) {
-            curEv.label3.text = @"";
-            if(curEv.frame.size.height < 37) {
-                curEv.label2.text = @"";
-                if(curEv.frame.size.height < 22) {
-                    curEv.label1.text = @"";
+    switch (direction) {
+        case UIAccessibilityScrollDirectionDown: {
+            NSUInteger count = [self.gridView.subviews count];
+            for (NSUInteger i = 0; i < count - 1; i++) {
+                UIView *view = self.gridView.subviews[i];
+                if ([view accessibilityElementIsFocused]) {
+                    view = self.gridView.subviews[i + 1];
+                    if ([view isKindOfClass:[CalendarViewDayEventView class]]) {
+                        [self.gridView scrollToEvent:(CalendarViewDayEventView *)view];
+                        break;
+                    }
                 }
+               
             }
-        }
-		
-		[curEv setNeedsDisplay];
-		
-		if (!firstEvent || curEv.frame.origin.y < firstEvent.frame.origin.y) {
-			firstEvent = curEv;
-		}
-	}
-	
-	if (self.dayView.autoScrollToFirstEvent) {
-        CGPoint autoScrollPoint;
-		if (!firstEvent || self.dayView.allDayGridView.hasAllDayEvents) {
-			autoScrollPoint = CGPointMake(0, 0);
-		} else {
-			int minutesSinceLastHour = ([firstEvent.event minutesSinceMidnight] % 60);
-			CGFloat padding = minutesSinceLastHour * spacePerMinute + 7.5;
-			
-			autoScrollPoint = CGPointMake(0, firstEvent.frame.origin.y - padding);
-			CGFloat maxY = self.dayView.scrollView.contentSize.height - CGRectGetHeight(self.dayView.scrollView.bounds);
-			
-			if (autoScrollPoint.y > maxY) {
-				autoScrollPoint.y = maxY;
-			}
-		}
-		
-		[self.dayView.scrollView setContentOffset:autoScrollPoint animated:YES];
-	}
+        } break;
+            
+        case UIAccessibilityScrollDirectionUp: {
+            NSUInteger count = [self.gridView.subviews count];
+            for (NSUInteger i = 1; i < count; i++) {
+                UIView *view = self.gridView.subviews[i];
+                if ([view accessibilityElementIsFocused]) {
+                    view = self.gridView.subviews[i - 1];
+                    if ([view isKindOfClass:[CalendarViewDayEventView class]]) {
+                        [self.gridView scrollToEvent:(CalendarViewDayEventView *)view];
+                        break;
+                    }
+                }
+                
+            }
+
+
+        } break;
+            
+        default:
+            // These cases are not handled
+            return NO;
+    }
+    
+    return YES; // We handled the scroll
 }
 
-- (void)drawRect:(CGRect)rect {
-	register unsigned int i;
-	
-	const CGContextRef c = UIGraphicsGetCurrentContext();
-    
-	CGContextSetStrokeColorWithColor(c, [[UIColor lightGrayColor] CGColor]);
-	CGContextSetLineWidth(c, 0.5);
-	CGContextBeginPath(c);
-	
-	for (i=0; i < HOURS_IN_DAY; i++) {
-        NSString *hourLabelText = [[CalendarViewDayView hourLabels] objectAtIndex:i ] ;
-//		[hourLabelText drawInRect: _textRect[i]
-//					withFont:self.textFont
-//			   lineBreakMode:NSLineBreakByTruncatingTail
-//				   alignment:NSTextAlignmentRight];
-        NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
-        textStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-        textStyle.alignment = NSTextAlignmentRight;
-        [hourLabelText drawInRect:_textRect[i] withAttributes:@{NSFontAttributeName:self.textFont, NSParagraphStyleAttributeName:textStyle}];
-		
-		CGContextMoveToPoint(c, _lineX, _lineY[i]);
-		CGContextAddLineToPoint(c, self.bounds.size.width, _lineY[i]);
-	}
-	
-	CGContextClosePath(c);
-	CGContextSaveGState(c);
-	CGContextDrawPath(c, kCGPathFillStroke);
-	CGContextRestoreGState(c);
-	
-	CGContextSetLineWidth(c, 0.5);
-	CGFloat dash1[] = {2.0, 1.0};
-	CGContextSetLineDash(c, 0.0, dash1, 2);
-	
-	CGContextBeginPath(c);
-    
-	for (i=0; i < (HOURS_IN_DAY - 1); i++) {
-		CGContextMoveToPoint(c, _lineX, _dashedLineY[i]);
-		CGContextAddLineToPoint(c, self.bounds.size.width, _dashedLineY[i]);
-	}
-	
-	CGContextClosePath(c);
-	CGContextSaveGState(c);
-	CGContextDrawPath(c, kCGPathFillStroke);
-	CGContextRestoreGState(c);
-}
+
 
 
 @end
+
+

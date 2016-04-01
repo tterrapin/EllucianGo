@@ -1,12 +1,24 @@
 /* About menu item */
 "About" = "À propos";
 
+/* Watch communication to phone error title */
+"Communication Error" = "Erreur de communication";
+
 /* assignment due today indicator for ilp module */
 "DUE TODAY" = "POUR AUJOURD'HUI";
 
 /* due date label with date */
-"Due: %@" = "Date limite: %@";
+"Due: %@" = "Échéance: %@";
+
+/* OK button on alert view */
+"OK" = "OK";
 
 /* overdue assignment indicator for ilp module */
 "OVERDUE" = "EN RETARD";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch" = "Veuillez vous assurer que le téléphone et à proximité et lancez";
+
+/* Watch communication to phone error message */
+"Please ensure the phone is nearby and launch %@ on the phone" = "Veuillez vous assurer que le téléphone et à proximité et lancez %@ sur le téléphone";
 

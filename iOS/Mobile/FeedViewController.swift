@@ -21,14 +21,14 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
         
-        }()
+    }()
     let dateFormatterSectionHeader : NSDateFormatter = {
         var formatter = NSDateFormatter()
         formatter.dateStyle = .ShortStyle
         formatter.timeStyle = .NoStyle
         formatter.doesRelativeDateFormatting = true
         return formatter
-        }()
+    }()
     var feedModule : FeedModule?
     var hiddenCategories = NSMutableSet()
     var searchString : String?
@@ -36,7 +36,7 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.title = self.module?.name
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -167,17 +167,25 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
                         let postDate = entry["postDate"].string!
                         feed.postDateTime = dateFormatter.dateFromString(postDate)
                         feed.dateLabel = self.datetimeOutputFormatter.stringFromDate(feed.postDateTime)
-                        if let links = entry["link"].array where links.count > 0 {
-                            feed.link = links[0].string
+                        if entry["link"] != nil {
+                            if let links = entry["link"].array where links.count > 0 {
+                                feed.link = links[0].string
+                            }
                         }
-                        if let title = entry["title"].string where title != "" {
-                            feed.title = title.stringByConvertingHTMLToPlainText()
+                        if entry["title"] != nil {
+                            if let title = entry["title"].string where title != "" {
+                                feed.title = title.stringByConvertingHTMLToPlainText()
+                            }
                         }
-                        if let content = entry["content"].string where content != "" {
-                            feed.content = content
+                        if entry["content"] != nil {
+                            if let content = entry["content"].string where content != "" {
+                                feed.content = content
+                            }
                         }
-                        if let logo = entry["logo"].string where logo != "" {
-                            feed.logo = logo
+                        if entry["logo"] != nil {
+                            if let logo = entry["logo"].string where logo != "" {
+                                feed.logo = logo
+                            }
                         }
                         
                         let categoryLabel = entry["feedName"].string
@@ -326,7 +334,7 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
+        
         let view = UIView(frame: CGRectMake(0, 0, CGRectGetWidth(tableView.frame), 30))
         let label = UILabel(frame: CGRectMake(8,0,CGRectGetWidth(tableView.frame), 30))
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -391,7 +399,7 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
                 imageView.image = nil
                 let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
                 dispatch_async(dispatch_get_global_queue(priority, 0)) {
-                   
+                    
                     let imageData = NSData(contentsOfURL: NSURL(string: logo)!)
                     
                     if let imageData = imageData {
@@ -406,8 +414,8 @@ class FeedViewController : UITableViewController, UISearchResultsUpdating , NSFe
                     }
                 }
             }
-
-
+            
+            
         } else {
             cell  = tableView.dequeueReusableCellWithIdentifier("Feed Cell", forIndexPath: indexPath) as UITableViewCell
             

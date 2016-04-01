@@ -44,7 +44,9 @@
                         android:textColor="@android:color/background_light"
                         android:drawableLeft="@drawable/icon_assignments"
                         android:drawableStart="@drawable/icon_assignments"
-                        android:drawablePadding="12dp" />
+                        android:drawablePadding="12dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
 
                 </android.support.v7.widget.Toolbar>
 	        	
@@ -81,7 +83,6 @@
 		        android:orientation="vertical" >
 
                 <android.support.v7.widget.Toolbar
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/events_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +98,9 @@
                         android:textColor="@android:color/background_light"
                         android:drawableLeft="@drawable/icon_events"
                         android:drawableStart="@drawable/icon_events"
-                        android:drawablePadding="12dp"/>
+                        android:drawablePadding="12dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
 
                 </android.support.v7.widget.Toolbar>
 	        	
@@ -134,7 +137,6 @@
 		        android:orientation="vertical" >
 
                 <android.support.v7.widget.Toolbar
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/announcements_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -150,7 +152,9 @@
                         android:textColor="@android:color/background_light"
                         android:drawableLeft="@drawable/icon_announcements"
                         android:drawableStart="@drawable/icon_announcements"
-                        android:drawablePadding="12dp"/>
+                        android:drawablePadding="12dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
 
                 </android.support.v7.widget.Toolbar>
 	        	

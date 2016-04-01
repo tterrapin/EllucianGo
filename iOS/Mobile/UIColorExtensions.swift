@@ -14,13 +14,13 @@ let kSchoolCustomizationAccentColor = "#D9C696"
 let kSchoolCustomizationSubheaderColor = "#736357"
 
 extension UIColor {
-
+    
     class func hasCustomizationColors() -> Bool {
         let defaults = AppGroupUtilities.userDefaults()
         let color = defaults?.objectForKey("primaryColor") as? String
         return color != nil
     }
-        
+    
     class func primaryColor() -> UIColor {
         let defaults = AppGroupUtilities.userDefaults()
         let color = defaults?.objectForKey("primaryColor") as? String
@@ -116,5 +116,17 @@ extension UIColor {
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
     
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return String(format:"#%06x", rgb)
+    }
     
 }

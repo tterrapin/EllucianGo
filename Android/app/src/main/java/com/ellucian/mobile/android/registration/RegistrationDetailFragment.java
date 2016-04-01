@@ -2,15 +2,10 @@
 
 package com.ellucian.mobile.android.registration;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,11 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
-import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.EllucianDefaultDetailFragment;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.courses.Instructor;
@@ -35,21 +30,29 @@ import com.ellucian.mobile.android.provider.EllucianContract.RegistrationLocatio
 import com.ellucian.mobile.android.util.CalendarUtils;
 import com.ellucian.mobile.android.util.Utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	private static final String TAG = RegistrationDetailFragment.class.getSimpleName();
 	public static final String REQUESTING_LIST_FRAGMENT = "requestingListFragment";
-	
-	private View rootView;
-	private Activity activity;
+    public static final String REGISTRATION_MODULE_ID = "registrationModuleId";
+
+    private Activity activity;
 	
 	private SimpleDateFormat defaultTimeParserFormat;
 	private SimpleDateFormat altTimeParserFormat;
 	private DateFormat timeFormatter;
+    private String moduleId;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.activity = getActivity();
 	}
 	
 	@Override
@@ -66,18 +69,22 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_registration_detail, container, false);	
+        View rootView = inflater.inflate(R.layout.fragment_registration_detail, container, false);
 		
 		Bundle args = getArguments();
 		
 		Section section = args.getParcelable(RegistrationActivity.SECTION);
+
+        if (args.containsKey(REGISTRATION_MODULE_ID)) {
+            moduleId = args.getString(REGISTRATION_MODULE_ID);
+        }
 		
 		LinearLayout headerLayout = (LinearLayout) rootView.findViewById(R.id.header_layout);
 		headerLayout.setBackgroundColor(Utils.getAccentColor(activity));
 		
 		int subheaderTextColor = Utils.getSubheaderTextColor(getActivity());
 		
-		TextView courseTitleView = (TextView)rootView.findViewById(R.id.course_title);
+		TextView courseTitleView = (TextView) rootView.findViewById(R.id.course_title);
 		if (section != null) {
 			
 			if (!TextUtils.isEmpty(section.courseName)) {
@@ -91,13 +98,13 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				courseTitleView.setText(title);				
 			}
 			
-			TextView sectionTitleView = (TextView)rootView.findViewById(R.id.section_title);
+			TextView sectionTitleView = (TextView) rootView.findViewById(R.id.section_title);
 			if (!TextUtils.isEmpty(section.sectionTitle)) {
 				sectionTitleView.setTextColor(subheaderTextColor);
 				sectionTitleView.setText(section.sectionTitle);
 			}
 			
-			TextView datesView = (TextView)rootView.findViewById(R.id.dates);
+			TextView datesView = (TextView) rootView.findViewById(R.id.dates);
 			if (!TextUtils.isEmpty(section.firstMeetingDate) && !TextUtils.isEmpty(section.lastMeetingDate)) {
 				String startDate = "";
 				String endDate = "";
@@ -122,15 +129,15 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 				datesView.setVisibility(View.GONE);
 			}
 			
-			TextView sectionIdView = (TextView)rootView.findViewById(R.id.section_id);
+			TextView sectionIdView = (TextView) rootView.findViewById(R.id.section_id);
 			if (!TextUtils.isEmpty(section.sectionId)) {		
 				sectionIdView.setText(getString(R.string.label_string_content_format,
 										getString(R.string.registration_section_id),
 										section.sectionId));
 			}
 			
-			TextView creditsView = (TextView)rootView.findViewById(R.id.credits);
-			String creditsText = "";
+			TextView creditsView = (TextView) rootView.findViewById(R.id.credits);
+			String creditsText;
 			if (section.selectedCredits != -1) {
 				creditsText = getString(R.string.label_float_content_format, 
 									getString(R.string.label_credits),
@@ -184,7 +191,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			}
 			
 			// Only show academic levels info on the details selected from the search results list
-			TextView academicLevelsView = (TextView)rootView.findViewById(R.id.academic_levels);
+			TextView academicLevelsView = (TextView) rootView.findViewById(R.id.academic_levels);
 			if (args.containsKey(REQUESTING_LIST_FRAGMENT) && args.getString(REQUESTING_LIST_FRAGMENT)
 					.equals(RegistrationSearchResultsListFragment.class.getSimpleName())) {
 				
@@ -201,6 +208,28 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 			} else {
 				academicLevelsView.setVisibility(View.GONE);
 			}
+
+            // Available/Capacity images & text - only shows on Search Results Tab
+            if (args.containsKey(REQUESTING_LIST_FRAGMENT) && args.getString(REQUESTING_LIST_FRAGMENT)
+                    .equals(RegistrationSearchResultsListFragment.class.getSimpleName())) {
+                LinearLayout seatsDetailsView = (LinearLayout) rootView.findViewById(R.id.seats_details);
+                if (section.available != null && section.capacity != null) {
+                    String capacityText = getString(R.string.remaining_capacity,
+                            section.available,
+                            section.capacity);
+                    Drawable meterImage = null;
+                    meterImage = getMeterImage(section, getContext());
+
+                    seatsDetailsView.setVisibility(View.VISIBLE);
+                    View seatsAvailView = rootView.findViewById(R.id.seats_available_box);
+                    seatsAvailView.setVisibility(View.VISIBLE);
+                    if (meterImage != null) {
+                        Utils.enableMirroredDrawable(meterImage);
+                        ((ImageView) seatsAvailView.findViewById(R.id.seats_available_image)).setImageDrawable(meterImage);
+                    }
+                    ((TextView) seatsAvailView.findViewById(R.id.seats_available_text)).setText(capacityText);
+                }
+            }
 			
 			LinearLayout meetingLayout = (LinearLayout) rootView.findViewById(R.id.meeting_layout);
 			if (section.meetingPatterns != null && section.meetingPatterns.length > 0) {
@@ -306,33 +335,26 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
 						} else {
 							buildingRoomView.setVisibility(View.GONE);
 						}
-						
-						// Only show campus info on the details selected from the search results list
-						TextView campusLocationView = (TextView) rowLayout.findViewById(R.id.campus_location);
-						if (args.containsKey(REQUESTING_LIST_FRAGMENT) && args.getString(REQUESTING_LIST_FRAGMENT)
-								.equals(RegistrationSearchResultsListFragment.class.getSimpleName())) {
-							
-							if (!TextUtils.isEmpty(section.location)) {
+
+                        TextView campusLocationView = (TextView) rowLayout.findViewById(R.id.campus_location);
+							if (!TextUtils.isEmpty(pattern.campusId)) {
 								String selection = Modules.MODULES_ID + " = ? AND " + RegistrationLocations.REGISTRATION_LOCATIONS_CODE + " = ?";
 								Cursor cursor = activity.getContentResolver().query(
 										RegistrationLocations.CONTENT_URI, 
 										new String[] { RegistrationLocations.REGISTRATION_LOCATIONS_NAME }, 
 										selection, 
-										new String[] { ((EllucianActivity)activity).moduleId, section.location }, 
+										new String[] { moduleId, pattern.campusId },
 										null);
 								
 								if (cursor.moveToFirst() && 
 										!TextUtils.isEmpty(cursor.getString(cursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_NAME)))) {
 									campusLocationView.setText(cursor.getString(cursor.getColumnIndex(RegistrationLocations.REGISTRATION_LOCATIONS_NAME)));
 								} else {
-									campusLocationView.setVisibility(View.GONE);
+                                    campusLocationView.setText(pattern.campusId);
 								}
 							} else {
 								campusLocationView.setVisibility(View.GONE);
 							}
-						} else {
-							campusLocationView.setVisibility(View.GONE);
-						}
 						
 						if (meetingCount > 0) {
 							View separator = activity.getLayoutInflater().inflate(R.layout.separator, meetingLayout, false);
@@ -399,7 +421,7 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		Bundle args = getArguments();
 		if (args.containsKey(REQUESTING_LIST_FRAGMENT) && 
-				args.getString(REQUESTING_LIST_FRAGMENT).equals("RegistrationCartListFragment")) {
+				args.getString(REQUESTING_LIST_FRAGMENT).equals(RegistrationCartListFragment.class.getSimpleName())) {
 			inflater.inflate(R.menu.registration_detail, menu);
 		}        
     }
@@ -429,7 +451,31 @@ public class RegistrationDetailFragment extends EllucianDefaultDetailFragment {
     	}
 
     }
-	
+
+    public static Drawable getMeterImage(Section section, Context context) {
+        Drawable meterImage = null;
+        if (section.capacity >= 0) {
+            float available = (float) section.available / (float) section.capacity;
+            float delta = 1.0f / 6.0f;
+            if (section.available <= 0) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_6);
+            } else if (available <= delta) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_5);
+            } else if (available <= delta * 2) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_4);
+            } else if (available <= delta * 3) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_3);
+            } else if (available <= delta * 4) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_2);
+            } else if (available <= delta * 5) {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_1);
+            } else {
+                meterImage = Utils.getDrawableHelper(context, R.drawable.seats_full_0);
+            }
+        }
+        return meterImage;
+    }
+
 }
 
 

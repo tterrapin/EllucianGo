@@ -67,8 +67,8 @@ NSString* const kAnalyticsActionReceivedMessage = @"Received_Message";
 - (void)sendViewToGoogleAnalytics:(NSString *)screen forModuleNamed:(NSString *)moduleName usingTracker1Id:(NSString *)trackingId1 usingTracker2Id:(NSString *) trackingId2 forConfigurationNamed:(NSString *)configurationName
 {
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createScreenView];
-    [builder set:configurationName forKey:[GAIFields customMetricForIndex:1]];
-    if(moduleName) [builder set:moduleName forKey:[GAIFields customMetricForIndex:2]];
+    [builder set:configurationName forKey:[GAIFields customDimensionForIndex:1]];
+    if(moduleName) [builder set:moduleName forKey:[GAIFields customDimensionForIndex:2]];
     [builder set:screen forKey:kGAIScreenName];
     NSMutableDictionary *buildDictionary = [builder build];
     
@@ -129,8 +129,8 @@ NSString* const kAnalyticsActionReceivedMessage = @"Received_Message";
 
 {
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
-    [builder set:configurationName forKey:[GAIFields customMetricForIndex:1]];
-    [builder set:moduleName forKey:[GAIFields customMetricForIndex:2]];
+    [builder set:configurationName forKey:[GAIFields customDimensionForIndex:1]];
+    [builder set:moduleName forKey:[GAIFields customDimensionForIndex:2]];
     NSMutableDictionary *buildDictionary = [builder build];
     
     if(trackingId1) {
@@ -201,8 +201,8 @@ NSString* const kAnalyticsActionReceivedMessage = @"Received_Message";
 {
     NSNumber *interval = [NSNumber numberWithInt:((int)(time*1000))];
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createTimingWithCategory:category interval:interval name:name label:label];
-    [builder set:configurationName forKey:[GAIFields customMetricForIndex:1]];
-    [builder set:moduleName forKey:[GAIFields customMetricForIndex:2]];
+    [builder set:configurationName forKey:[GAIFields customDimensionForIndex:1]];
+    [builder set:moduleName forKey:[GAIFields customDimensionForIndex:2]];
     NSMutableDictionary *buildDictionary = [builder build];
     
     if(trackingId1) {

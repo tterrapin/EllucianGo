@@ -20,13 +20,13 @@
 "XCw-7z-JKj.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Client Version"; ObjectID = "evF-VH-GMi"; */
-"evF-VH-GMi.text" = "Version du client";
+"evF-VH-GMi.text" = "Version client";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "mmj-A3-pzw"; */
 "mmj-A3-pzw.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "uNn-lo-hcn"; */
-"uNn-lo-hcn.text" = "Libellé";
+"uNn-lo-hcn.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "xLQ-Zx-ewm"; */
 "xLQ-Zx-ewm.text" = "Libellé";

@@ -2,40 +2,43 @@
 "0RZ-Ry-Ol7.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "00w-2F-9FB"; */
-"00w-2F-9FB.text" = "Libellé";
+"00w-2F-9FB.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "2PQ-p2-ZAZ"; */
-"2PQ-p2-ZAZ.text" = "Libellé";
+"2PQ-p2-ZAZ.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "3AP-sG-9de"; */
-"3AP-sG-9de.text" = "Libellé";
+"3AP-sG-9de.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "3OU-oH-b9O"; */
-"3OU-oH-b9O.text" = "Libellé";
+"3OU-oH-b9O.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "5sy-0m-10j"; */
-"5sy-0m-10j.text" = "Libellé";
+"5sy-0m-10j.text" = "Étiquette";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "8eb-GG-a6R"; */
+"8eb-GG-a6R.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "8hs-OA-B0n"; */
-"8hs-OA-B0n.text" = "Libellé";
+"8hs-OA-B0n.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "53q-9M-oiC"; */
-"53q-9M-oiC.text" = "Libellé";
+"53q-9M-oiC.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "BJP-te-kzB"; */
-"BJP-te-kzB.text" = "Libellé";
+"BJP-te-kzB.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Bf0-2U-KKq"; */
-"Bf0-2U-KKq.text" = "Libellé";
+"Bf0-2U-KKq.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Bl8-Ze-CvO"; */
-"Bl8-Ze-CvO.text" = "Libellé";
+"Bl8-Ze-CvO.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Ddd-eD-yqc"; */
-"Ddd-eD-yqc.text" = "Libellé";
+"Ddd-eD-yqc.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "E89-Jn-LQQ"; */
-"E89-Jn-LQQ.text" = "Libellé";
+"E89-Jn-LQQ.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "FSz-tO-4sk"; */
 "FSz-tO-4sk.text" = "Libellé";
@@ -46,8 +49,11 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "GY7-yb-h4G"; */
 "GY7-yb-h4G.text" = "Libellé";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "H55-Eu-oJ3"; */
+"H55-Eu-oJ3.text" = "Étiquette";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "HgA-9g-0ur"; */
-"HgA-9g-0ur.text" = "Libellé";
+"HgA-9g-0ur.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "IJN-QE-67F"; */
 "IJN-QE-67F.text" = "Libellé";
@@ -61,14 +67,20 @@
 /* Class = "UILabel"; text = "Meeting Information"; ObjectID = "J0i-Bi-dhz"; */
 "J0i-Bi-dhz.text" = "Informations de réunion";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "JJq-eE-uW8"; */
+"JJq-eE-uW8.text" = "Libellé";
+
 /* Class = "UILabel"; text = "Section ID:"; ObjectID = "JPr-5w-y0Z"; */
 "JPr-5w-y0Z.text" = "ID d'UP:";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "KL6-ve-fXB"; */
 "KL6-ve-fXB.text" = "Libellé";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "MJF-dj-hAX"; */
+"MJF-dj-hAX.text" = "Libellé";
+
 /* Class = "UILabel"; text = "Select a Term and enter Search criteria"; ObjectID = "NFB-Hy-Kdp"; */
-"NFB-Hy-Kdp.text" = "Sélectionner un semestre et saisir des critères de recherche.";
+"NFB-Hy-Kdp.text" = "Sélectionner semestre et saisir critères de recherche.";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Nqd-6E-u9g"; */
 "Nqd-6E-u9g.text" = "Libellé";
@@ -89,7 +101,7 @@
 "RpM-dJ-8XT.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "S3i-Ij-l8N"; */
-"S3i-Ij-l8N.text" = "Libellé";
+"S3i-Ij-l8N.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "SMv-TX-jVY"; */
 "SMv-TX-jVY.text" = "Libellé";
@@ -97,8 +109,11 @@
 /* Class = "UILabel"; text = "Meeting Information"; ObjectID = "SxT-BA-iPR"; */
 "SxT-BA-iPR.text" = "Informations de réunion";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "T1m-il-e8c"; */
+"T1m-il-e8c.text" = "Libellé";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "Tts-lb-RIy"; */
-"Tts-lb-RIy.text" = "Libellé";
+"Tts-lb-RIy.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "Ups-K2-cx9"; */
 "Ups-K2-cx9.text" = "Libellé";
@@ -108,6 +123,9 @@
 
 /* Class = "UILabel"; text = "Credits:"; ObjectID = "Wwh-Wo-QbI"; */
 "Wwh-Wo-QbI.text" = "Crédits:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "X31-mA-aK4"; */
+"X31-mA-aK4.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Grading:"; ObjectID = "aPX-9A-e4m"; */
 "aPX-9A-e4m.text" = "Notation:";
@@ -133,6 +151,9 @@
 /* Class = "UILabel"; text = "Section ID:"; ObjectID = "dN7-rS-hzX"; */
 "dN7-rS-hzX.text" = "ID d'UP:";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "dwQ-ax-yt2"; */
+"dwQ-ax-yt2.text" = "Libellé";
+
 /* Class = "UILabel"; text = "Description"; ObjectID = "eBD-3Y-aTU"; */
 "eBD-3Y-aTU.text" = "Description";
 
@@ -149,13 +170,13 @@
 "euH-tm-iyk.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "fub-ew-Svv"; */
-"fub-ew-Svv.text" = "Libellé";
+"fub-ew-Svv.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Terms"; ObjectID = "gFa-Iz-O3N"; */
 "gFa-Iz-O3N.text" = "Semestres";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "gQu-30-kVn"; */
-"gQu-30-kVn.text" = "Libellé";
+"gQu-30-kVn.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "hEE-FL-990"; */
 "hEE-FL-990.text" = "Libellé";
@@ -171,6 +192,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "jkC-EC-FMB"; */
 "jkC-EC-FMB.text" = "Libellé";
+
+/* Class = "UILabel"; text = "Available Seats:"; ObjectID = "k1s-Rm-Le8"; */
+"k1s-Rm-Le8.text" = "Places disponibles:";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "lmd-gW-10J"; */
 "lmd-gW-10J.text" = "Libellé";
@@ -189,6 +213,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "qhL-Yj-2q9"; */
 "qhL-Yj-2q9.text" = "Libellé";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "rDH-x3-Xwx"; */
+"rDH-x3-Xwx.text" = "Libellé";
 
 /* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "s4q-VJ-8eD"; */
 "s4q-VJ-8eD.title" = "Contrôleur de vue racine";
@@ -224,13 +251,16 @@
 "wWg-fV-6cq.text" = "Libellé";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "whO-1B-Hei"; */
-"whO-1B-Hei.text" = "Libellé";
+"whO-1B-Hei.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "x9v-Xj-xMB"; */
-"x9v-Xj-xMB.text" = "Libellé";
+"x9v-Xj-xMB.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "xpQ-54-V91"; */
-"xpQ-54-V91.text" = "Libellé";
+"xpQ-54-V91.text" = "Étiquette";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yDK-LR-dqS"; */
+"yDK-LR-dqS.text" = "Étiquette";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "yUc-Ly-Uec"; */
 "yUc-Ly-Uec.text" = "Libellé";

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Dining Options</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script>
+		// note if this conditional block is set to true a desktop browser can be used
+		// to simulate the web app being embedded the device
+		if (false) {
+			window.EllucianMobile = {
+				isEmbeddedInEllucianGO: true,
+			}
+			window.EllucianMobileDevice = {
+				primaryColor: function() {
+					return "#331640"
+				},
+				accentColor: function() {
+					return "#e8d6a2"
+				},
+				headerTextColor: function() {
+					return "#ffffff"
+				},
+				subheaderTextColor: function() {
+					return "#000000"
+				}
+			}
+		}
+	</script>
+
+	<!-- add ellucian-mobile-4.5.js early to ensure EllucianMobile JS Object is available as soon as needed -->
+	<script src="https://mobile.elluciancloud.com/sharedlibraries/js/ellucian-mobile-4.5.js"></script>
+	<script src="js/style.js"></script>
+</head>
+
+<body>
+	<!-- left nav -->
+	<nav id="left-nav">
+		<ul>
+			<li><a href="hours.html" class="ln-hours">Hours</a></li>
+			<li><a href="meal-plans.html" class="ln-plans">Meal Plans</a></li>
+			<li><a href="index.html" class="ln-options">Dining Options</a></li>
+			<li><a href="about.html" class="ln-about">About</a></li>
+		</ul>
+	</nav>
+
+	<div id="home-content-container">
+	<header id="page-header">
+		<div class="menu"><span></span></div>
+		<div class="school-name">ellucian University</div>
+		<div class="config"></div>
+	</header>
+	<!--university image-->
+	<div id="univ-image">
+		<div class="menu-bar-home">
+			<a href="#" id="home-menu-bar-link" class="embedded-menu-arrow"></a>
+		</div>
+		<div class="gradientLeft"></div>
+		<div class="gradientRight"></div>
+	</div>
+	<h1 id="home">Dining Options</h1>
+	<main id="home-rows">
+		<!-- content row : deli -->
+		<a href="menu.html?pagenum=1">
+		<div class="home-icon deli"></div>
+			<h2>Deli</h2>
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin non nisl. Sed tempus laoreet orci. Donec accumsan, lacus et</p>
+		</a>
+		<!--content row : cafe -->
+		<a href="menu.html?pagenum=2">
+		<div class="home-icon cafe"></div>
+		<h2>Cafe </h2>
+		<p>Donec bibendum metus at metus. Vivamus ultrices nulla eget augue. Nulla facilisi.</p>
+		</a>
+		<!--content row : diner-->
+		<a href="menu.html?pagenum=3">
+			<div class="home-icon diner"></div>
+			<h2>Diner</h2>
+			<p>Nulla facilisi. Aliquam erat volutpat. Vivamus sodales. Suspendisse sed urna in urna accumsan rutrum.</p>
+		</a>
+	</main>
+
+	<footer>&copy; 2016 Ellucian Company L.P. and its affiliates.</footer>
+
+	</div>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

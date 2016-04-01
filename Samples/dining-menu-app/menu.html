@@ -1,0 +1,436 @@
+<!doctype html>
+<html>
+<head>
+    <title>Sample Dining App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <script>
+		// note if this conditional block is set to true a desktop browser can be used
+		// to simulate the web app being embedded the device
+		if (false) {
+			window.EllucianMobile = {
+				isEmbeddedInEllucianGO: true,
+			}
+			window.EllucianMobileDevice = {
+				primaryColor: function() {
+					return "#331640"
+				},
+				accentColor: function() {
+					return "#e8d6a2"
+				},
+				headerTextColor: function() {
+					return "#ffffff"
+				},
+				subheaderTextColor: function() {
+					return "#000000"
+				}
+			}
+		}
+	</script>
+    <!-- add ellucian-mobile-4.5.js early to ensure EllucianMobile JS Object is available as soon as needed -->
+	<script src="https://mobile.elluciancloud.com/sharedlibraries/js/ellucian-mobile-4.5.js"></script>
+	<script src="js/style.js"></script>
+</head>
+<body>
+    <!-- left nav -->
+    <nav id="left-nav">
+		<ul>
+			<li><a href="hours.html" class="ln-hours">Hours</a></li>
+			<li><a href="meal-plans.html" class="ln-plans">Meal Plans</a></li>
+			<li><a href="index.html" class="ln-options">Dining Options</a></li>
+			<li><a href="about.html" class="ln-about">About</a></li>
+		</ul>
+	</nav>
+<div id="menu-content-container">
+    <header id="page-header">
+        <div class="menu"><span></span></div>
+        <div class="school-name">ellucian University</div>
+        <div class="config"></div>
+    </header>
+
+
+  <div id="container">
+    <ul>
+      <li class="first dragend-page">
+        <!-- Page 1 -->
+        <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+                <div class="restaurant">
+					<div class="menu-bar">
+						<a href="javascript:openCloseMenu();" class="embedded-menu-arrow"></a>
+						<div class="dates-label">February 22 - 26</div>
+					</div>
+					<div class="name-and-image">
+						<div class="deli-pic"></div>
+						<div class="name">Deli</div>
+					</div>
+				</div>
+                <!-- TABLE DATA -->
+
+                <table>
+                    <colgroup>
+                        <col>
+                        <col style="width:80%">
+                    </colgroup>
+                    <tr class="day">
+                        <th rowspan="4" class="mon"><div>Monday</div></th>
+                        <td class="mon-data">Omelet Bar <span>(GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Marinated Steak Salad</td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Barbeque beef brisket</td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Steamed Broccoli Florets <span>(V, VEGAN GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="tue"><div>Tuesday</div></th>
+                        <td class="tue-data">Omelet Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Hot Roast Beef Sandwich<br></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Steak, chicken, Tofu Burrito <span>(V)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Stuffing with Gouda and Bacon</td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="wed"><div>Wednesday</div></th>
+                        <td class="wed-data">Omelet Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Broccoli Alfredo <span>(V,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Hot Dog Bar</td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Jasmine Rice <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="thu"><div>Thursday</div></th>
+                        <td class="thu-data">Omelet Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Chicken or Tofu Taco Salad</td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Cobb Salad <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Steamed Spinach <span>(V,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="fri"><div>Friday</div></th>
+                        <td class="fri-data">Omelet Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Shrimp, Chicken or Tofu Stir Fry</td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Gyro Bar</td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Sweet Potatoes <span>(V,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sat"><div>Saturday</div></th>
+                        <td class="sat-data">---</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Pancake Bar</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Baked Potato Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Risotto <span>(V)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sun"><div>Sunday</div></th>
+                        <td class="sun-data">---</td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Omelet Bar <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Pierogi Bar <span>(V)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Roasted New Potatoes <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                </table>
+      </li>
+      <li class="middle dragend-page">
+
+            <!-- page 2 - soups -->
+            <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+                <div class="restaurant">
+					<div class="menu-bar">
+						<a href="javascript:openCloseMenu();" class="embedded-menu-arrow"></a>
+						<div class="dates-label">February 22 - 26</div>
+					</div>
+					<div class="name-and-image">
+						<div class="cafe-pic"></div>
+						<div class="name">Cafe</div>
+					</div>
+				</div>
+                <!-- TABLE DATA -->
+
+                <table>
+                    <colgroup>
+                        <col>
+                        <col style="width:80%">
+                    </colgroup>
+                    <tr class="day">
+                        <th rowspan="4" class="mon"><div>Monday</div></th>
+                        <td class="mon-data">Bangkok Chicken</td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Lentil Stuffed Peppers <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Asian BBQ Glazed Flounder</td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Spinach Orzo <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="tue"><div>Tuesday</div></th>
+                        <td class="tue-data">Beef Stroganoff</td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Quinoa Kale Patties <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Pork Chops</td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Egg Noodles <span>(V)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="wed"><div>Wednesday</div></th>
+                        <td class="wed-data">Chicken and Dumplings</td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Penne with Wild Mushrooms <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Lemon Pepper Cod</td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Mashed Potatoes <span>(V,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="thu"><div>Thursday</div></th>
+                        <td class="thu-data">Pork Loin with Sauerkraut</td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Brown Sugar-Orange Tofu <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Cajun Chicken</td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Gnocchi with Lemon <span>(V)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="fri"><div>Friday</div></th>
+                        <td class="fri-data">Meatloaf</td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Florentine Baked Ziti <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Lemon Garlic Salmon</td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Green Bean Casserole <span>(V,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sat"><div>Saturday</div></th>
+                        <td class="sat-data">Crusted Turkey Cutlets</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Chef's Choice</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Flounder Almondine</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Peas and Carrots <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sun"><div>Sunday</div></th>
+                        <td class="sun-data">Pot Roast with Gravy</td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Garbanzo Bean Couscous <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Chef's Choice</td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Chef's Choice</td>
+                    </tr>
+                </table>
+              </li>
+              <li class="last dragend-page">
+
+                    <div class="restaurant">
+					<div class="menu-bar">
+						<a href="javascript:openCloseMenu();" class="embedded-menu-arrow"></a>
+						<div class="dates-label">February 22 - 26</div>
+					</div>
+					<div class="name-and-image">
+						<div class="diner-pic"></div>
+						<div class="name">Diner</div>
+					</div>
+				</div>
+                <!-- TABLE DATA -->
+                <table>
+                    <colgroup>
+                        <col>
+                        <col style="width:80%">
+                    </colgroup>
+                    <tr class="day">
+                        <th rowspan="4" class="mon"><div>Monday</div></th>
+                        <td class="mon-data">Baked Chicken Parmesan</td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Grilled Vegetable Terrine <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Bowtie Pasta w/ Tomato &amp; Feta <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="mon-data">Roasted Vegetables <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="tue"><div>Tuesday</div></th>
+                        <td class="tue-data">Cod Scampi</td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Chickpea Fritters <span>(V,VEGAN GF)</span><br></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Angel Hair Pasta <span>(V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tue-data">Rice and Spinach <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="wed"><div>Wednesday</div></th>
+                        <td class="wed-data">Southern Fried Chicken</td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Portabella &amp; Quinoa Stack <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Mashed Potatoes <span>(V,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="wed-data">Yellow Squash and Zucchini <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="thu"><div>Thursday</div></th>
+                        <td class="thu-data">Brown Sugar Ham</td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Savory Squash &amp; Apple Cakes <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Mashed Sweet Potatoes <span>(V,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="thu-data">Honey Glazed Carrots <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="fri"><div>Friday</div></th>
+                        <td class="fri-data">Flounder with Lemon Butter</td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Ratatouille <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Rice Pilaf <span>(GF,V,VEGAN)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fri-data">Steamed Broccoli <span>(V,VEGAN,GF)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sat"><div>Saturday</div></th>
+                        <td class="sat-data">Cheesy Scrambled Eggs <span>(V,GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Breakfast Potatoes <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">Bacon and Sausage</td>
+                    </tr>
+                    <tr>
+                        <td class="sat-data">French Toast <span>(V)</span></td>
+                    </tr>
+                    <tr class="day">
+                        <th rowspan="4" class="sun"><div>Sunday</div></th>
+                        <td class="sun-data">Ham and Cheese Frittata</td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Breakfast Potatoes <span>(V,VEGAN GF)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Bacon and Sausage</td>
+                    </tr>
+                    <tr>
+                        <td class="sun-data">Pancakes</td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+  </div>
+    <!--DOT NAV INDICATORS-->
+    <div id="dot-nav">
+        <nav>
+            <a href="#" class="normal-dot">Page 1</a>
+            <a href="#" class="normal-dot">Page 2</a>
+            <a href="#" class="normal-dot">Page 3</a>
+        </nav>
+    </div>
+    <footer>&copy; 2016 Ellucian Company L.P. and its affiliates.</footer>
+</div>
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="js/dragend.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+//xxxxxxxxxxxxxxxx [  Toggle Left Nav  ] xxxxxxxxxxxxxxxx
+function openCloseMenu() {
+	var ln = $("#left-nav");
+	if(!ln.attr("class")) {
+		ln.addClass("showLeftNav");									// show nav
+		$("#container").css("margin-left", "80px");					// adjust content to fit nav
+		$("#menu-content-container").css("margin-left", "80px");		// menu screen
+		$("#home-content-container").css("margin-left", "80px");		// home screen
+		$("#about-content-container").css("margin-left", "80px");	// about screen
+		$('.embedded-menu-arrow').addClass('open')					// swap arrow image
+
+
+	}
+	else {
+		$("#left-nav").removeClass("showLeftNav");
+		$("#container").css("margin-left", "0");
+		$("#home-content-container").css("margin-left", "0");
+		$("#menu-content-container").css("margin-left", "0");
+		$("#about-content-container").css("margin-left", "0");
+		$('.embedded-menu-arrow').removeClass('open')
+	}
+}
+</script>
+
+
+</body>
+</html>

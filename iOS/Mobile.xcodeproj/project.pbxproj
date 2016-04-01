@@ -7,28 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D37D1851BAA0ABD00A00F65 /* GOWatchExtensionDelgate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D37D1841BAA0ABD00A00F65 /* GOWatchExtensionDelgate.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C881BA31C41007A6A7E /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA45F9D1B90B04C00F27892 /* ConfigurationManager.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C891BA31C42007A6A7E /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA45F9D1B90B04C00F27892 /* ConfigurationManager.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C8A1BA31C46007A6A7E /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8097191B98402B0087698B /* WatchConnectivityManager.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C8B1BA31C47007A6A7E /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8097191B98402B0087698B /* WatchConnectivityManager.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C8C1BA31D12007A6A7E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5456075A1B389181008B3EEC /* CoreDataManager.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C8D1BA31D1A007A6A7E /* Mobile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 844D902E15D42C9B009B3F2D /* Mobile.xcdatamodeld */; settings = {ASSET_TAGS = (); }; };
-		0D443C8E1BA31D36007A6A7E /* Module+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 84279DCC15C81B2D00DCBC7E /* Module+Create.m */; settings = {ASSET_TAGS = (); }; };
-		0D443C8F1BA31D3D007A6A7E /* ModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430A7651B4C79FA006D88F0 /* ModuleExtensions.swift */; settings = {ASSET_TAGS = (); }; };
-		0D443C901BA31D4F007A6A7E /* RegistrationAcademicLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94B19E6DC1B00E7D9CD /* RegistrationAcademicLevel.m */; settings = {ASSET_TAGS = (); }; };
-		0D443C911BA31D7F007A6A7E /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 547B0DD816F95E5E0039669E /* VersionChecker.m */; settings = {ASSET_TAGS = (); }; };
-		0D443C921BA31FAD007A6A7E /* RegistrationLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94719E6DC1A00E7D9CD /* RegistrationLocation.m */; settings = {ASSET_TAGS = (); }; };
-		0D6E44BC1BA3B40F0027CBFD /* ILPAssignmentsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6E44BB1BA3B40F0027CBFD /* ILPAssignmentsFetchOperation.swift */; settings = {ASSET_TAGS = (); }; };
-		0DACC47F1BA34B1E00824239 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC47E1BA34B1E00824239 /* DictionaryExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		0DACC4801BA34DE800824239 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC47E1BA34B1E00824239 /* DictionaryExtension.swift */; settings = {ASSET_TAGS = (); }; };
-		0DACC4821BA35EAD00824239 /* MapsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC4811BA35EAD00824239 /* MapsFetchOperation.swift */; settings = {ASSET_TAGS = (); }; };
-		0DB5EF301BA89738002345A2 /* ILPAssignmentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54780EC81AF0803000CD9D62 /* ILPAssignmentsController.swift */; settings = {ASSET_TAGS = (); }; };
-		0DB898F71BB05475001EF44E /* DefaultsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB898F61BB05475001EF44E /* DefaultsCache.swift */; settings = {ASSET_TAGS = (); }; };
-		5406AC3019F9A43F00775FBA /* WebViewJavascriptInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5406AC2E19F9A43F00775FBA /* WebViewJavascriptInterface.m */; };
+		0D37D1851BAA0ABD00A00F65 /* GOWatchExtensionDelgate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D37D1841BAA0ABD00A00F65 /* GOWatchExtensionDelgate.swift */; };
+		0D443C881BA31C41007A6A7E /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA45F9D1B90B04C00F27892 /* ConfigurationManager.swift */; };
+		0D443C891BA31C42007A6A7E /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA45F9D1B90B04C00F27892 /* ConfigurationManager.swift */; };
+		0D443C8A1BA31C46007A6A7E /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8097191B98402B0087698B /* WatchConnectivityManager.swift */; };
+		0D443C8B1BA31C47007A6A7E /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8097191B98402B0087698B /* WatchConnectivityManager.swift */; };
+		0D443C8C1BA31D12007A6A7E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5456075A1B389181008B3EEC /* CoreDataManager.swift */; };
+		0D443C8D1BA31D1A007A6A7E /* Mobile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 844D902E15D42C9B009B3F2D /* Mobile.xcdatamodeld */; };
+		0D443C8E1BA31D36007A6A7E /* Module+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 84279DCC15C81B2D00DCBC7E /* Module+Create.m */; };
+		0D443C8F1BA31D3D007A6A7E /* ModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5430A7651B4C79FA006D88F0 /* ModuleExtensions.swift */; };
+		0D443C901BA31D4F007A6A7E /* RegistrationAcademicLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94B19E6DC1B00E7D9CD /* RegistrationAcademicLevel.m */; };
+		0D443C911BA31D7F007A6A7E /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 547B0DD816F95E5E0039669E /* VersionChecker.m */; };
+		0D443C921BA31FAD007A6A7E /* RegistrationLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94719E6DC1A00E7D9CD /* RegistrationLocation.m */; };
+		0D6E44BC1BA3B40F0027CBFD /* ILPAssignmentsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D6E44BB1BA3B40F0027CBFD /* ILPAssignmentsFetchOperation.swift */; };
+		0DACC47F1BA34B1E00824239 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC47E1BA34B1E00824239 /* DictionaryExtension.swift */; };
+		0DACC4801BA34DE800824239 /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC47E1BA34B1E00824239 /* DictionaryExtension.swift */; };
+		0DACC4821BA35EAD00824239 /* MapsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DACC4811BA35EAD00824239 /* MapsFetchOperation.swift */; };
+		0DB5EF301BA89738002345A2 /* ILPAssignmentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54780EC81AF0803000CD9D62 /* ILPAssignmentsController.swift */; };
+		0DB898F71BB05475001EF44E /* DefaultsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB898F61BB05475001EF44E /* DefaultsCache.swift */; };
 		540BD30B1B33702000626BA8 /* Ellucian GO WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5494D80C1AEAD8E20030EE4A /* Ellucian GO WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		540BD30E1B33702000626BA8 /* Ellucian GO WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 5494D81B1AEAD8E20030EE4A /* Ellucian GO WatchKit App.app */; };
 		540BD3141B34A6C600626BA8 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540BD3131B34A6C600626BA8 /* MenuViewController.swift */; };
+		540C46811BDA7B7800A4BD42 /* CourseDetailTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540C46801BDA7B7800A4BD42 /* CourseDetailTabBarController.swift */; };
+		540C46831BDE73F600A4BD42 /* CourseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540C46821BDE73F600A4BD42 /* CourseDetailViewController.swift */; };
 		540F21671B9F546C008CC3EC /* AboutStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 540F21691B9F546C008CC3EC /* AboutStoryboard.storyboard */; };
 		5411368D1AEDDFCC0066E5D5 /* MapsBuildingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5411368C1AEDDFCC0066E5D5 /* MapsBuildingsController.swift */; };
 		5411368F1AEDE1AE0066E5D5 /* BuildingTableRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5411368E1AEDE1AE0066E5D5 /* BuildingTableRowController.swift */; };
@@ -39,6 +40,10 @@
 		5419C6341B7940BE00827DF2 /* EventsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5419C6331B7940BE00827DF2 /* EventsDetailViewController.swift */; };
 		5419C6361B7940CE00827DF2 /* EventsFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5419C6351B7940CE00827DF2 /* EventsFilterViewController.swift */; };
 		5419C6381B797DF600827DF2 /* EventsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5419C6371B797DF600827DF2 /* EventsSplitViewController.swift */; };
+		541AF11D1C6D5ABE009D1EED /* MobileUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AF11C1C6D5ABE009D1EED /* MobileUIApplication.swift */; };
+		541AF11F1C6D5D14009D1EED /* RNCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AF11E1C6D5D14009D1EED /* RNCryptor.swift */; };
+		541AF1221C6D5F38009D1EED /* RNCryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AF11E1C6D5D14009D1EED /* RNCryptor.swift */; };
+		541AF1241C6E56B6009D1EED /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AF1231C6E56B6009D1EED /* main.swift */; };
 		541CDBB21AED88AF006A9957 /* POIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CDBB11AED88AF006A9957 /* POIController.swift */; };
 		541CDC0F1AEDBF67006A9957 /* AboutPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CDC0E1AEDBF67006A9957 /* AboutPageController.swift */; };
 		541CDC111AEDBFA2006A9957 /* AboutContactPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CDC101AEDBFA2006A9957 /* AboutContactPageController.swift */; };
@@ -55,7 +60,6 @@
 		542D5BD31B7C303300EE9AA9 /* GradesTermTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542D5BD21B7C303300EE9AA9 /* GradesTermTableViewController.swift */; };
 		542D5BD51B7C59D000EE9AA9 /* GradesSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542D5BD41B7C59D000EE9AA9 /* GradesSplitViewController.swift */; };
 		542D5BD71B7C608500EE9AA9 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542D5BD61B7C608500EE9AA9 /* StringExtensions.swift */; };
-		542D5BDB1B7CE42800EE9AA9 /* GradesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 542D5BDA1B7CE42800EE9AA9 /* GradesCell.m */; };
 		542D5BDE1B7CEAC200EE9AA9 /* NotificationsStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 542D5BE01B7CEAC200EE9AA9 /* NotificationsStoryboard.storyboard */; };
 		542D5BEC1B7D190000EE9AA9 /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542D5BEB1B7D190000EE9AA9 /* NotificationsTableViewController.swift */; };
 		542FDE031B71664100E81490 /* UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 542FDE021B71664100E81490 /* UIImageViewExtensions.swift */; };
@@ -75,17 +79,15 @@
 		5440BF681B545D9D0004E39A /* SectionHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5440BF671B545D9D0004E39A /* SectionHeaderViewDelegate.swift */; };
 		54412FA31A7BD9E20085AD82 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54412FA51A7BD9E20085AD82 /* MainInterface.storyboard */; };
 		54412FBB1A7C26D70085AD82 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 54412FBD1A7C26D70085AD82 /* InfoPlist.strings */; };
-		54413A6F1BB077FD00F036D3 /* GradesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54413A6E1BB077FD00F036D3 /* GradesTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		5443181317F63B5400E9304E /* CourseAssignment.m in Sources */ = {isa = PBXBuildFile; fileRef = 54945079175D302A008F488C /* CourseAssignment.m */; };
 		5443181417F63B5400E9304E /* CourseEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5494507C175D302A008F488C /* CourseEvent.m */; };
-		5447CC8017D669580077FA3F /* DirectoryNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5447CC7E17D669580077FA3F /* DirectoryNavigationController.m */; };
 		544977941B69650A00579ADE /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544977931B69650A00579ADE /* FeedViewController.swift */; };
-		544BE93E1B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9341B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m */; settings = {ASSET_TAGS = (); }; };
-		544BE93F1B9738BD008FD51D /* ECSlidingAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9361B9738BD008FD51D /* ECSlidingAnimationController.m */; settings = {ASSET_TAGS = (); }; };
-		544BE9401B9738BD008FD51D /* ECSlidingInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9391B9738BD008FD51D /* ECSlidingInteractiveTransition.m */; settings = {ASSET_TAGS = (); }; };
-		544BE9411B9738BD008FD51D /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE93B1B9738BD008FD51D /* ECSlidingSegue.m */; settings = {ASSET_TAGS = (); }; };
-		544BE9421B9738BD008FD51D /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE93D1B9738BD008FD51D /* ECSlidingViewController.m */; settings = {ASSET_TAGS = (); }; };
-		544BE9451B9738CC008FD51D /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9441B9738CC008FD51D /* UIViewController+ECSlidingViewController.m */; settings = {ASSET_TAGS = (); }; };
+		544BE93E1B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9341B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m */; };
+		544BE93F1B9738BD008FD51D /* ECSlidingAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9361B9738BD008FD51D /* ECSlidingAnimationController.m */; };
+		544BE9401B9738BD008FD51D /* ECSlidingInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9391B9738BD008FD51D /* ECSlidingInteractiveTransition.m */; };
+		544BE9411B9738BD008FD51D /* ECSlidingSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE93B1B9738BD008FD51D /* ECSlidingSegue.m */; };
+		544BE9421B9738BD008FD51D /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE93D1B9738BD008FD51D /* ECSlidingViewController.m */; };
+		544BE9451B9738CC008FD51D /* UIViewController+ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 544BE9441B9738CC008FD51D /* UIViewController+ECSlidingViewController.m */; };
 		544E64991A715CBD00220746 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544E64981A715CBD00220746 /* NotificationCenter.framework */; };
 		544E649E1A715CBD00220746 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544E649D1A715CBD00220746 /* TodayViewController.swift */; };
 		544E64A31A715CBD00220746 /* Assignments Today.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 544E64971A715CBD00220746 /* Assignments Today.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -93,18 +95,20 @@
 		5453A81918B2607700C1196E /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5453A81718B2607700C1196E /* Notification.m */; };
 		5456075B1B389181008B3EEC /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5456075A1B389181008B3EEC /* CoreDataManager.swift */; };
 		54577AD119BA430F00DE0C33 /* SWActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 54577ACF19BA430F00DE0C33 /* SWActionSheet.m */; };
+		545AB7351BCEA05100F4EBDC /* CoursesCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AB7341BCEA05100F4EBDC /* CoursesCalendarViewController.swift */; };
+		545AB7381BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 545AB7371BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.m */; };
+		545AB73A1BCEF41300F4EBDC /* CoursesTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AB7391BCEF41300F4EBDC /* CoursesTabBarViewController.swift */; };
+		545AB73C1BCEF84800F4EBDC /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AB73B1BCEF84800F4EBDC /* ScheduleViewController.swift */; };
+		545AB73E1BD0542200F4EBDC /* CoursesPageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AB73D1BD0542200F4EBDC /* CoursesPageSelectionViewController.swift */; };
 		546398E41B05C57200972C00 /* MapsFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 546398E31B05C57200972C00 /* MapsFetcher.m */; };
 		54647D4519E465B500E90E4F /* RegistrationDropResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54647D4319E465B500E90E4F /* RegistrationDropResultsViewController.m */; };
 		54647D5119E465E100E90E4F /* RegistrationRefineSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54647D4F19E465E100E90E4F /* RegistrationRefineSearchViewController.m */; };
 		546A055C1A76D33A00C42002 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546A055B1A76D33A00C42002 /* UserInfo.swift */; };
 		546A05601A76DA9D00C42002 /* AppGroupUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546A055E1A76DA9D00C42002 /* AppGroupUtilities.swift */; };
 		546A05611A76DA9D00C42002 /* AppGroupUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546A055E1A76DA9D00C42002 /* AppGroupUtilities.swift */; };
-		546A05631A76F4F500C42002 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBED16CD62C300E20871 /* RNEncryptor.m */; };
-		546A05641A76F53700C42002 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE716CD620100E20871 /* RNDecryptor.m */; };
-		546A05651A76F54000C42002 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBEA16CD625800E20871 /* RNCryptorEngine.m */; };
-		546A05661A76F54600C42002 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE316CD618900E20871 /* RNCryptor.m */; };
 		546B3A6D18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */; };
 		546BE47E1BA362B30094A86B /* ILPStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 546BE4801BA362B30094A86B /* ILPStoryboard_iPad.storyboard */; };
+		546E31C11C567C0900A19DB9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E31C01C567C0900A19DB9 /* HomeViewController.swift */; };
 		546FBC4E1AEEB71E0085AAEE /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546FBC4A1AEEB71E0085AAEE /* UIColorExtensions.swift */; };
 		54711CB0187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CAE187CAA5B000DC9DC /* RegistrationSearchViewController.m */; };
 		54711CB8187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54711CB6187DD5DC000DC9DC /* RegistrationTabBarController.m */; };
@@ -117,9 +121,12 @@
 		5479B94919E6DC1A00E7D9CD /* RegistrationLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94719E6DC1A00E7D9CD /* RegistrationLocation.m */; };
 		5479B94D19E6DC1B00E7D9CD /* RegistrationAcademicLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5479B94B19E6DC1B00E7D9CD /* RegistrationAcademicLevel.m */; };
 		547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */; };
+		548155E81C7B58AD00927A3B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548155E71C7B58AD00927A3B /* AppDelegate.swift */; };
 		548683131AD3139100597D5A /* EditReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548683111AD3139100597D5A /* EditReminderViewController.swift */; };
-		548C13E61BA2001E0028B42B /* GradesFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548C13E51BA2001E0028B42B /* GradesFetchOperation.swift */; settings = {ASSET_TAGS = (); }; };
-		548C13E81BA24D820028B42B /* GradesTermFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548C13E71BA24D820028B42B /* GradesTermFilterViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		548715041CA38F8A005A4723 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 548715011CA38F8A005A4723 /* WebViewController.m */; };
+		548715051CA38F8A005A4723 /* WebViewJavascriptInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 548715031CA38F8A005A4723 /* WebViewJavascriptInterface.m */; };
+		548C13E61BA2001E0028B42B /* GradesFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548C13E51BA2001E0028B42B /* GradesFetchOperation.swift */; };
+		548C13E81BA24D820028B42B /* GradesTermFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548C13E71BA24D820028B42B /* GradesTermFilterViewController.swift */; };
 		548DC1851B6BB03C009E9617 /* FeedSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548DC1841B6BB03C009E9617 /* FeedSplitViewController.swift */; };
 		548DC1871B6BC6C7009E9617 /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548DC1861B6BC6C7009E9617 /* FeedDetailViewController.swift */; };
 		548F8AF71B9F8AF400D13E4E /* DirectoryStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 548F8AF91B9F8AF400D13E4E /* DirectoryStoryboard.storyboard */; };
@@ -148,24 +155,27 @@
 		54946DBE1AEC7BD200D23287 /* MenuTableRowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54946DBD1AEC7BD200D23287 /* MenuTableRowController.swift */; };
 		54946DBF1AECB3FF00D23287 /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CC7F281941673F0044C31E /* Module.m */; };
 		54946DC01AECB43800D23287 /* ModuleRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ABAA3C16C1896E00141DD5 /* ModuleRole.m */; };
-		54946DC31AECB6E600D23287 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE716CD620100E20871 /* RNDecryptor.m */; };
 		54946DC41AECB70200D23287 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F0327716D59FC000318C7A /* KeychainWrapper.m */; };
-		54946DC51AECB76800D23287 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBED16CD62C300E20871 /* RNEncryptor.m */; };
-		54946DC61AECB7AC00D23287 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBEA16CD625800E20871 /* RNCryptorEngine.m */; };
-		54946DC71AECB7B300D23287 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE316CD618900E20871 /* RNCryptor.m */; };
 		54946DCA1AECC29E00D23287 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A956DA30165C288100E20972 /* ImageCache.m */; };
 		54946DCB1AECC2D700D23287 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = A960E47E1664148E00BA5B0B /* NSString+Hash.m */; };
 		5494D8121AEAD8E20030EE4A /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494D8111AEAD8E20030EE4A /* MenuController.swift */; };
 		5494D8141AEAD8E20030EE4A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494D8131AEAD8E20030EE4A /* NotificationController.swift */; };
 		5494D8241AEAD8E20030EE4A /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5494D8221AEAD8E20030EE4A /* Interface.storyboard */; };
 		5494D8261AEAD8E20030EE4A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5494D8251AEAD8E20030EE4A /* Images.xcassets */; };
-		549902A419BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5499029419BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.m */; };
+		5494DFB51BC5C7F800FDFC84 /* CalendarViewProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494DFB41BC5C7F800FDFC84 /* CalendarViewProtocols.swift */; };
 		549EF3091B505FDC0014851C /* HomeStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 549EF30B1B505FDC0014851C /* HomeStoryboard.storyboard */; };
+		54A2041B1C0F76A700057479 /* DirectorySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A2041A1C0F76A700057479 /* DirectorySplitViewController.swift */; };
+		54A2041D1C0F828C00057479 /* DirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A2041C1C0F828C00057479 /* DirectoryViewController.swift */; };
+		54A2041F1C108E8200057479 /* DirectoryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A2041E1C108E8200057479 /* DirectoryFilterViewController.swift */; };
+		54A204211C10FA4D00057479 /* DirectoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A204201C10FA4D00057479 /* DirectoryEntry.swift */; };
+		54A204281C15DD1C00057479 /* DirectoryEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A204271C15DD1C00057479 /* DirectoryEntryViewController.swift */; };
 		54A313471805A7CF00D3D481 /* UIScrollView+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A313451805A7CF00D3D481 /* UIScrollView+Size.m */; };
 		54A4C87217DA4B6600658EA7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8454D3EE15C6E4DA00418BA2 /* Localizable.strings */; };
 		54A4C87E17DA6A1C00658EA7 /* PseudoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A4C87C17DA6A1C00658EA7 /* PseudoButtonView.m */; };
 		54AD31971A82BA700049147C /* Customizations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54AD31961A82BA700049147C /* Customizations.plist */; };
 		54AE922A1AC1A1A7006210C0 /* StudentFinancialsTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AE92281AC1A1A7006210C0 /* StudentFinancialsTransaction.swift */; };
+		54AED7EE1BC46E620071E2C3 /* CalendarViewAllDayGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AED7ED1BC46E620071E2C3 /* CalendarViewAllDayGridView.m */; };
+		54AED7F11BC46EFE0071E2C3 /* CalendarViewDayGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AED7F01BC46EFE0071E2C3 /* CalendarViewDayGridView.m */; };
 		54B2329E1A78587F00720CB0 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F0327716D59FC000318C7A /* KeychainWrapper.m */; };
 		54B2AC481B6BF22600FCDC67 /* NSDate-TimeAgo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54B2AC471B6BF22600FCDC67 /* NSDate-TimeAgo.swift */; };
 		54B2AC4B1B6BF30B00FCDC67 /* NSDateTimeAgo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 54B2AC491B6BF30B00FCDC67 /* NSDateTimeAgo.strings */; };
@@ -184,47 +194,36 @@
 		54CC7F2A1941673F0044C31E /* Module.m in Sources */ = {isa = PBXBuildFile; fileRef = 54CC7F281941673F0044C31E /* Module.m */; };
 		54CCFD751B0B86DD000CECAF /* AssignmentsFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CCFD741B0B86DD000CECAF /* AssignmentsFetcher.swift */; };
 		54CE14E91AC0B090004E5B4D /* StudentFinancialsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54CE14E71AC0B090004E5B4D /* StudentFinancialsViewController.swift */; };
+		54D4B05E1BE2B66400CE16AB /* CourseGradesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D4B05D1BE2B66400CE16AB /* CourseGradesViewController.swift */; };
+		54D4B0601BE4219600CE16AB /* RosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D4B05F1BE4219600CE16AB /* RosterViewController.swift */; };
 		54D578D81B7D38580071F04A /* NotificationsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D578D71B7D38580071F04A /* NotificationsDetailViewController.swift */; };
 		54D578DA1B7D38970071F04A /* NotificationsSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D578D91B7D38970071F04A /* NotificationsSplitViewController.swift */; };
+		54D6CEE51C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D6CEE31C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift */; };
+		54D6CEE61C6551080053DC4B /* DirectoryDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D6CEE41C6551080053DC4B /* DirectoryDefinition.swift */; };
+		54D6CEE71C6551FA0053DC4B /* DirectoryDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D6CEE41C6551080053DC4B /* DirectoryDefinition.swift */; };
+		54D6CEE81C655DAC0053DC4B /* DirectoryDefinition+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D6CEE31C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift */; };
 		54E40B3C1728552E00F661A5 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F0327516D59FA700318C7A /* Base64.m */; };
-		54E40B3D1728552E00F661A5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 842602BB15AF12D900FE7360 /* main.m */; };
-		54E40B3E1728552E00F661A5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 842602BF15AF12D900FE7360 /* AppDelegate.m */; };
 		54E40B3F1728552E00F661A5 /* Module+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 84279DCC15C81B2D00DCBC7E /* Module+Create.m */; };
 		54E40B411728552E00F661A5 /* Module+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A11F2015C88DB8002FC14A /* Module+Attributes.m */; };
-		54E40B451728552E00F661A5 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8448F7F915CB7096001D6347 /* WebViewController.m */; };
 		54E40B481728552E00F661A5 /* Mobile.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 844D902E15D42C9B009B3F2D /* Mobile.xcdatamodeld */; };
 		54E40B4C1728552E00F661A5 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A997082515DEC08600B9D25F /* AboutViewController.m */; };
 		54E40B4D1728552E00F661A5 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EAC1E715DE285C00B6307A /* NSString+HTML.m */; };
-		54E40B4E1728552E00F661A5 /* AsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 841AB02815E014A1003FAFAF /* AsynchronousImageView.m */; };
 		54E40B521728552E00F661A5 /* UIViewController+SlidingViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D151A415EFEB9D00FE1A0B /* UIViewController+SlidingViewExtension.m */; };
 		54E40B531728552E00F661A5 /* MapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843ED5ED15F9284500033085 /* MapsViewController.m */; };
 		54E40B541728552E00F661A5 /* MapPinAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CA040D15F9BB040086EEA1 /* MapPinAnnotation.m */; };
 		54E40B551728552E00F661A5 /* POIListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CA041C15FA668E0086EEA1 /* POIListViewController.m */; };
 		54E40B561728552E00F661A5 /* POIDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EB200A15FBD1E400539341 /* POIDetailViewController.m */; };
 		54E40B571728552E00F661A5 /* CurrentUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A4B8CB160262CF009E8B46 /* CurrentUser.m */; };
-		54E40B581728552E00F661A5 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A95DFD4F1603C4E100564EE1 /* HomeViewController.m */; };
 		54E40B5A1728552E00F661A5 /* ConfigurationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 84843BF81606A58E002E277E /* ConfigurationFetcher.m */; };
 		54E40B5B1728552E00F661A5 /* AppearanceChanger.m in Sources */ = {isa = PBXBuildFile; fileRef = 84843BFB1606B008002E277E /* AppearanceChanger.m */; };
-		54E40B5C1728552E00F661A5 /* CoursesCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844112CF1608B72D00F10579 /* CoursesCalendarViewController.m */; };
 		54E40B5D1728552E00F661A5 /* CalendarViewEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8400A7481608F6D700EFD0BE /* CalendarViewEvent.m */; };
 		54E40B5E1728552E00F661A5 /* CalendarViewDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8400A74A1608F6D700EFD0BE /* CalendarViewDayView.m */; };
 		54E40B5F1728552E00F661A5 /* CalendarViewDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8400A74E16090CDE00EFD0BE /* CalendarViewDayEventView.m */; };
 		54E40B601728552E00F661A5 /* GradeTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 844040BE1610F26B00E938FF /* GradeTerm.m */; };
 		54E40B611728552E00F661A5 /* Grade.m in Sources */ = {isa = PBXBuildFile; fileRef = 844040C41610FDB300E938FF /* Grade.m */; };
-		54E40B621728552E00F661A5 /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844040CA1611F63300E938FF /* ScheduleViewController.m */; };
-		54E40B631728552E00F661A5 /* ScheduleCourseNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 844040D31611FFD600E938FF /* ScheduleCourseNameCell.m */; };
-		54E40B641728552E00F661A5 /* ScheduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 844040E016123F7E00E938FF /* ScheduleCell.m */; };
-		54E40B651728552E00F661A5 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841F3EBC161370E30044D277 /* CourseDetailViewController.m */; };
 		54E40B691728552E00F661A5 /* ImportantNumbersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8439064E161559AF00FF331E /* ImportantNumbersViewController.m */; };
-		54E40B6B1728552E00F661A5 /* CoursesPageSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8476BFF4161630B200FDF9E6 /* CoursesPageSelectionViewController.m */; };
-		54E40B6C1728552E00F661A5 /* RosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 844D5652161B5CED0088C436 /* RosterViewController.m */; };
-		54E40B6D1728552E00F661A5 /* CoursesTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8453DF1C161CBC6F0022A36B /* CoursesTabBarViewController.m */; };
-		54E40B6E1728552E00F661A5 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B574C0161D474400B66AA2 /* DirectoryViewController.m */; };
-		54E40B6F1728552E00F661A5 /* DirectoryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B574CA161D54B900B66AA2 /* DirectoryEntry.m */; };
-		54E40B711728552E00F661A5 /* CourseGradesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C37375162F2EFD0017AAB5 /* CourseGradesViewController.m */; };
 		54E40B721728552E00F661A5 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A956DA30165C288100E20972 /* ImageCache.m */; };
 		54E40B731728552E00F661A5 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = A960E47E1664148E00BA5B0B /* NSString+Hash.m */; };
-		54E40B741728552E00F661A5 /* MobileUIApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D1192B165AB1FD009B85B8 /* MobileUIApplication.m */; };
 		54E40B781728552E00F661A5 /* EventModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E805761669529500EFC2C2 /* EventModule.m */; };
 		54E40B791728552E00F661A5 /* EventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 84662B2D1676A2E1004E5065 /* EventCategory.m */; };
 		54E40B7A1728552E00F661A5 /* EllucianUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84649D5016792347006EB5B7 /* EllucianUITableViewController.m */; };
@@ -235,14 +234,9 @@
 		54E40B831728552E00F661A5 /* CourseTerm.m in Sources */ = {isa = PBXBuildFile; fileRef = 54AC962E16C074FA009C1B25 /* CourseTerm.m */; };
 		54E40B841728552E00F661A5 /* ModuleRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ABAA3C16C1896E00141DD5 /* ModuleRole.m */; };
 		54E40B851728552E00F661A5 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ABAA4516C18B9900141DD5 /* Map.m */; };
-		54E40B861728552E00F661A5 /* CourseDetailTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8611716C97CA300F56B52 /* CourseDetailTabBarController.m */; };
 		54E40B871728552E00F661A5 /* EmptyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8611D16CAC93100F56B52 /* EmptyTableViewCell.m */; };
 		54E40B881728552E00F661A5 /* EllucianSectionedUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B8612016CAFBC100F56B52 /* EllucianSectionedUITableViewController.m */; };
 		54E40B891728552E00F661A5 /* CourseSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ACCAAE16CC17CB00E06947 /* CourseSection.m */; };
-		54E40B8A1728552E00F661A5 /* RNCryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE316CD618900E20871 /* RNCryptor.m */; };
-		54E40B8B1728552E00F661A5 /* RNDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBE716CD620100E20871 /* RNDecryptor.m */; };
-		54E40B8C1728552E00F661A5 /* RNCryptorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBEA16CD625800E20871 /* RNCryptorEngine.m */; };
-		54E40B8D1728552E00F661A5 /* RNEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A8DBED16CD62C300E20871 /* RNEncryptor.m */; };
 		54E40B8E1728552E00F661A5 /* CourseRoster.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EE6E8F16CEF69C0060613C /* CourseRoster.m */; };
 		54E40B8F1728552E00F661A5 /* CourseDetailInstructor.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B96B6616D2CCB30055EDCE /* CourseDetailInstructor.m */; };
 		54E40B901728552E00F661A5 /* CourseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D1BCF516D41F21005E0DEC /* CourseDetail.m */; };
@@ -256,7 +250,6 @@
 		54E40B991728552E00F661A5 /* MapPOIType.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B723B616F1C1F8004738C1 /* MapPOIType.m */; };
 		54E40B9A1728552E00F661A5 /* MapCampus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E077A016F2E9520092C9C9 /* MapCampus.m */; };
 		54E40B9C1728552E00F661A5 /* ModuleProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0816F65300004891BF /* ModuleProperty.m */; };
-		54E40B9E1728552E00F661A5 /* DirectoryEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0E16F789BA004891BF /* DirectoryEntryViewController.m */; };
 		54E40B9F1728552E00F661A5 /* VersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 547B0DD816F95E5E0039669E /* VersionChecker.m */; };
 		54E40BA01728552E00F661A5 /* FeedCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC216FC006B00698FE4 /* FeedCategory.m */; };
 		54E40BA11728552E00F661A5 /* FeedModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC0FC516FC006B00698FE4 /* FeedModule.m */; };
@@ -279,12 +272,10 @@
 		54E40BB31728552E00F661A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842602B115AF12D900FE7360 /* CoreGraphics.framework */; };
 		54E40BB51728552E00F661A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 842602B815AF12D900FE7360 /* InfoPlist.strings */; };
 		54E40BCC1728552E00F661A5 /* CalendarViewDayEventView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 841CEE3F160BA79D00D978EC /* CalendarViewDayEventView.xib */; };
-		54E40BCE1728552E00F661A5 /* ScheduleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 844040D7161229E900E938FF /* ScheduleTableViewCell.xib */; };
 		54E40C081728552E00F661A5 /* EmptyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54C5F91C16AD950D00BE8500 /* EmptyTableViewCell.xib */; };
 		54E6D41D1B3D9FA20025C651 /* Customizations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 549336541810413A00B6FDEF /* Customizations.plist */; };
 		54E6D41E1B3D9FA20025C651 /* Customizations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 549336541810413A00B6FDEF /* Customizations.plist */; };
 		54E6D4221B3DC7D50025C651 /* OpenModuleAboutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E6D4211B3DC7D50025C651 /* OpenModuleAboutOperation.swift */; };
-		54E6D4251B3DC7E80025C651 /* MenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E6D4241B3DC7E80025C651 /* MenuManager.m */; };
 		54E6D4271B3DD4CB0025C651 /* OpenModuleConfigurationSelectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E6D4261B3DD4CB0025C651 /* OpenModuleConfigurationSelectionOperation.swift */; };
 		54E6D42D1B4185690025C651 /* LoginSignOutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E6D42C1B4185680025C651 /* LoginSignOutOperation.swift */; };
 		54E6D42F1B418AA70025C651 /* LoginSignInOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54E6D42E1B418AA70025C651 /* LoginSignInOperation.swift */; };
@@ -297,10 +288,12 @@
 		54EB393F1811A5C5002008C8 /* EllucianModules.plist in Resources */ = {isa = PBXBuildFile; fileRef = 54EB393D1811A5C5002008C8 /* EllucianModules.plist */; };
 		54ED3B2B1A71BD2500A43677 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5491340B17B16A7A0001CE29 /* Images.xcassets */; };
 		54EE16091A81531F00BA2292 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 54EE160B1A81531F00BA2292 /* Localizable.strings */; };
-		54EE41431B98E4D400DC73BE /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EE41421B98E4D400DC73BE /* libGoogleAnalyticsServices.a */; settings = {ASSET_TAGS = (); }; };
+		54EE41431B98E4D400DC73BE /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EE41421B98E4D400DC73BE /* libGoogleAnalyticsServices.a */; };
 		54F3DD4C176112D000CEDE57 /* CourseEventsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3DD4A176112D000CEDE57 /* CourseEventsDetailViewController.m */; };
 		54F3DD501761746900CEDE57 /* CourseAnnouncementDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3DD4E1761746900CEDE57 /* CourseAnnouncementDetailViewController.m */; };
 		54F3DD5617618BE600CEDE57 /* CourseAssignmentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F3DD5417618BE600CEDE57 /* CourseAssignmentDetailViewController.m */; };
+		54F504F81C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F504F71C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift */; };
+		54F504F91C6A356A00BBD23E /* DirectoryUnmanagedDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54F504F71C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift */; };
 		54FC554C1AED7019009D52A5 /* Module+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A11F2015C88DB8002FC14A /* Module+Attributes.m */; };
 		54FC554D1AED701E009D52A5 /* ModuleProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 54BC2C0816F65300004891BF /* ModuleProperty.m */; };
 		54FC554F1AED70F9009D52A5 /* MapsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FC554E1AED70F9009D52A5 /* MapsController.swift */; };
@@ -308,7 +301,8 @@
 		54FC55541AED7627009D52A5 /* MapCampus.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E077A016F2E9520092C9C9 /* MapCampus.m */; };
 		54FC55551AED770B009D52A5 /* Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 54ABAA4516C18B9900141DD5 /* Map.m */; };
 		54FC55561AED7EF0009D52A5 /* MapPOI.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B723B316F1C187004738C1 /* MapPOI.m */; };
-		54FD398B18ADBA7F00F0BC1D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 54FD398A18ADBA7F00F0BC1D /* libz.dylib */; };
+		54FC75871C3F1E6B00CB05B0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54FC75861C3F1E6B00CB05B0 /* libsqlite3.tbd */; };
+		54FC75891C3F1E7500CB05B0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 54FC75881C3F1E7500CB05B0 /* libz.tbd */; };
 		A9AC1F791A602D3E004D007C /* ILPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AC1F771A602D3E004D007C /* ILPViewController.swift */; };
 		A9ADAEB71A811D10008869C9 /* AllAssignmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9ADAEB51A811D10008869C9 /* AllAssignmentsViewController.swift */; };
 		A9ADAEBA1A811D26008869C9 /* AllEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9ADAEB81A811D26008869C9 /* AllEventsViewController.swift */; };
@@ -406,9 +400,9 @@
 		0DB898F61BB05475001EF44E /* DefaultsCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultsCache.swift; sourceTree = "<group>"; };
 		0DDD89E11886545900D1EE3A /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		0DDD89E21886545900D1EE3A /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
-		5406AC2D19F9A43F00775FBA /* WebViewJavascriptInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptInterface.h; sourceTree = "<group>"; };
-		5406AC2E19F9A43F00775FBA /* WebViewJavascriptInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptInterface.m; sourceTree = "<group>"; };
 		540BD3131B34A6C600626BA8 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuViewController.swift; path = Mobile/MenuViewController.swift; sourceTree = "<group>"; };
+		540C46801BDA7B7800A4BD42 /* CourseDetailTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailTabBarController.swift; sourceTree = "<group>"; };
+		540C46821BDE73F600A4BD42 /* CourseDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDetailViewController.swift; sourceTree = "<group>"; };
 		540F21681B9F546C008CC3EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AboutStoryboard.storyboard; sourceTree = "<group>"; };
 		540F216B1B9F5AA6008CC3EC /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/AboutStoryboard.strings; sourceTree = "<group>"; };
 		540F216D1B9F5AAC008CC3EC /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/AboutStoryboard.strings"; sourceTree = "<group>"; };
@@ -433,6 +427,10 @@
 		5419C6331B7940BE00827DF2 /* EventsDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsDetailViewController.swift; sourceTree = "<group>"; };
 		5419C6351B7940CE00827DF2 /* EventsFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsFilterViewController.swift; sourceTree = "<group>"; };
 		5419C6371B797DF600827DF2 /* EventsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsSplitViewController.swift; sourceTree = "<group>"; };
+		541AF11C1C6D5ABE009D1EED /* MobileUIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobileUIApplication.swift; sourceTree = "<group>"; };
+		541AF11E1C6D5D14009D1EED /* RNCryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RNCryptor.swift; sourceTree = "<group>"; };
+		541AF1201C6D5D93009D1EED /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
+		541AF1231C6E56B6009D1EED /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		541CDBB11AED88AF006A9957 /* POIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POIController.swift; sourceTree = "<group>"; };
 		541CDC0E1AEDBF67006A9957 /* AboutPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutPageController.swift; sourceTree = "<group>"; };
 		541CDC101AEDBFA2006A9957 /* AboutContactPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutContactPageController.swift; sourceTree = "<group>"; };
@@ -443,6 +441,7 @@
 		541CFFA11BA36978007B5F15 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ILPStoryboard_iPad.strings; sourceTree = "<group>"; };
 		541CFFA31BA3697A007B5F15 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/ILPStoryboard_iPad.strings; sourceTree = "<group>"; };
 		541CFFA51BA3697B007B5F15 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/ILPStoryboard_iPad.strings; sourceTree = "<group>"; };
+		5423513E1C6536E90001B4A7 /* Mobile 4.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mobile 4.5.xcdatamodel"; sourceTree = "<group>"; };
 		5428386F188443A800768CFC /* RegistrationSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationSearchResultsViewController.h; sourceTree = "<group>"; };
 		54283870188443A800768CFC /* RegistrationSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationSearchResultsViewController.m; sourceTree = "<group>"; };
 		5428553216B1EB3B001320A7 /* NotificationsFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsFetcher.h; sourceTree = "<group>"; };
@@ -470,8 +469,6 @@
 		542D5BD21B7C303300EE9AA9 /* GradesTermTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradesTermTableViewController.swift; sourceTree = "<group>"; };
 		542D5BD41B7C59D000EE9AA9 /* GradesSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradesSplitViewController.swift; sourceTree = "<group>"; };
 		542D5BD61B7C608500EE9AA9 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
-		542D5BD91B7CE42800EE9AA9 /* GradesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradesCell.h; sourceTree = "<group>"; };
-		542D5BDA1B7CE42800EE9AA9 /* GradesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradesCell.m; sourceTree = "<group>"; };
 		542D5BDF1B7CEAC200EE9AA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/NotificationsStoryboard.storyboard; sourceTree = "<group>"; };
 		542D5BEB1B7D190000EE9AA9 /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
 		542FDE021B71664100E81490 /* UIImageViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageViewExtensions.swift; sourceTree = "<group>"; };
@@ -505,13 +502,10 @@
 		54412FC01A7C27820085AD82 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		54412FC11A7C27820085AD82 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		54412FC21A7C27830085AD82 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		54413A6E1BB077FD00F036D3 /* GradesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GradesTableViewCell.xib; sourceTree = "<group>"; };
 		5443F3E816F1184400CBE733 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5443F3EA16F1205B00CBE733 /* ScopedUISearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScopedUISearchBar.h; sourceTree = "<group>"; };
 		5443F3EB16F1205B00CBE733 /* ScopedUISearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScopedUISearchBar.m; sourceTree = "<group>"; };
 		544596A116F2588D00B2E93F /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
-		5447CC7D17D669580077FA3F /* DirectoryNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryNavigationController.h; sourceTree = "<group>"; };
-		5447CC7E17D669580077FA3F /* DirectoryNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryNavigationController.m; sourceTree = "<group>"; };
 		544977931B69650A00579ADE /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		544BE9331B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ECPercentDrivenInteractiveTransition.h; path = Mobile/ECPercentDrivenInteractiveTransition.h; sourceTree = "<group>"; };
 		544BE9341B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ECPercentDrivenInteractiveTransition.m; path = Mobile/ECPercentDrivenInteractiveTransition.m; sourceTree = "<group>"; };
@@ -541,6 +535,12 @@
 		54577ACF19BA430F00DE0C33 /* SWActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWActionSheet.m; sourceTree = "<group>"; };
 		545AA9DE169C9B3B0013FBEE /* URLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLParser.h; sourceTree = "<group>"; };
 		545AA9DF169C9B3B0013FBEE /* URLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLParser.m; sourceTree = "<group>"; };
+		545AB7341BCEA05100F4EBDC /* CoursesCalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesCalendarViewController.swift; sourceTree = "<group>"; };
+		545AB7361BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarActionSheetDatePicker.h; sourceTree = "<group>"; };
+		545AB7371BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarActionSheetDatePicker.m; sourceTree = "<group>"; };
+		545AB7391BCEF41300F4EBDC /* CoursesTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesTabBarViewController.swift; sourceTree = "<group>"; };
+		545AB73B1BCEF84800F4EBDC /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		545AB73D1BD0542200F4EBDC /* CoursesPageSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoursesPageSelectionViewController.swift; sourceTree = "<group>"; };
 		546398E21B05C57200972C00 /* MapsFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapsFetcher.h; sourceTree = "<group>"; };
 		546398E31B05C57200972C00 /* MapsFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapsFetcher.m; sourceTree = "<group>"; };
 		54647D4219E465B500E90E4F /* RegistrationDropResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationDropResultsViewController.h; sourceTree = "<group>"; };
@@ -554,6 +554,7 @@
 		546B3A6A18C10B4C00E2BA86 /* WebLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebLoginViewController.h; path = Mobile/WebLoginViewController.h; sourceTree = "<group>"; };
 		546B3A6B18C10B4C00E2BA86 /* WebLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebLoginViewController.m; path = Mobile/WebLoginViewController.m; sourceTree = "<group>"; };
 		546BE47F1BA362B30094A86B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ILPStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		546E31C01C567C0900A19DB9 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		546FBC4A1AEEB71E0085AAEE /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		546FE10D19745E0A000F2A79 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		546FE10E19745E0A000F2A79 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
@@ -591,7 +592,12 @@
 		547B75A21B4EF2A8005E7C3B /* LoginProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LoginProtocol.h; path = Mobile/LoginProtocol.h; sourceTree = "<group>"; };
 		547CED51187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistrationPlannedSectionDetailViewController.h; sourceTree = "<group>"; };
 		547CED52187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistrationPlannedSectionDetailViewController.m; sourceTree = "<group>"; };
+		548155E71C7B58AD00927A3B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		548683111AD3139100597D5A /* EditReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditReminderViewController.swift; sourceTree = "<group>"; };
+		548715001CA38F8A005A4723 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		548715011CA38F8A005A4723 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		548715021CA38F8A005A4723 /* WebViewJavascriptInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptInterface.h; sourceTree = "<group>"; };
+		548715031CA38F8A005A4723 /* WebViewJavascriptInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptInterface.m; sourceTree = "<group>"; };
 		548C13E51BA2001E0028B42B /* GradesFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradesFetchOperation.swift; sourceTree = "<group>"; };
 		548C13E71BA24D820028B42B /* GradesTermFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradesTermFilterViewController.swift; sourceTree = "<group>"; };
 		548DC1841B6BB03C009E9617 /* FeedSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedSplitViewController.swift; sourceTree = "<group>"; };
@@ -679,28 +685,23 @@
 		5494D8211AEAD8E20030EE4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5494D8231AEAD8E20030EE4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		5494D8251AEAD8E20030EE4A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		5499029319BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarActionSheetDatePicker.h; sourceTree = "<group>"; };
-		5499029419BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarActionSheetDatePicker.m; sourceTree = "<group>"; };
+		5494DFB41BC5C7F800FDFC84 /* CalendarViewProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewProtocols.swift; sourceTree = "<group>"; };
 		549EF30A1B505FDC0014851C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/HomeStoryboard.storyboard; sourceTree = "<group>"; };
 		549EF30D1B505FE20014851C /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/HomeStoryboard.strings; sourceTree = "<group>"; };
 		549EF30F1B505FE30014851C /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/HomeStoryboard.strings"; sourceTree = "<group>"; };
 		549EF3111B505FE50014851C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HomeStoryboard.strings; sourceTree = "<group>"; };
 		549EF3131B505FE60014851C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HomeStoryboard.strings; sourceTree = "<group>"; };
 		549EF3151B505FE70014851C /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/HomeStoryboard.strings; sourceTree = "<group>"; };
+		54A2041A1C0F76A700057479 /* DirectorySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectorySplitViewController.swift; sourceTree = "<group>"; };
+		54A2041C1C0F828C00057479 /* DirectoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryViewController.swift; sourceTree = "<group>"; };
+		54A2041E1C108E8200057479 /* DirectoryFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryFilterViewController.swift; sourceTree = "<group>"; };
+		54A204201C10FA4D00057479 /* DirectoryEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryEntry.swift; sourceTree = "<group>"; };
+		54A204271C15DD1C00057479 /* DirectoryEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryEntryViewController.swift; sourceTree = "<group>"; };
 		54A313441805A7CF00D3D481 /* UIScrollView+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Size.h"; sourceTree = "<group>"; };
 		54A313451805A7CF00D3D481 /* UIScrollView+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Size.m"; sourceTree = "<group>"; };
 		54A4C87B17DA6A1C00658EA7 /* PseudoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoButtonView.h; sourceTree = "<group>"; };
 		54A4C87C17DA6A1C00658EA7 /* PseudoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PseudoButtonView.m; sourceTree = "<group>"; };
 		54A6E13B178EFDF3003B8FBB /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
-		54A8DBE216CD618900E20871 /* RNCryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptor.h; sourceTree = "<group>"; };
-		54A8DBE316CD618900E20871 /* RNCryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptor.m; sourceTree = "<group>"; };
-		54A8DBE516CD61D300E20871 /* RNCryptor+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNCryptor+Private.h"; sourceTree = "<group>"; };
-		54A8DBE616CD620100E20871 /* RNDecryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNDecryptor.h; sourceTree = "<group>"; };
-		54A8DBE716CD620100E20871 /* RNDecryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNDecryptor.m; sourceTree = "<group>"; };
-		54A8DBE916CD625700E20871 /* RNCryptorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNCryptorEngine.h; sourceTree = "<group>"; };
-		54A8DBEA16CD625800E20871 /* RNCryptorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCryptorEngine.m; sourceTree = "<group>"; };
-		54A8DBEC16CD62C300E20871 /* RNEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEncryptor.h; sourceTree = "<group>"; };
-		54A8DBED16CD62C300E20871 /* RNEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEncryptor.m; sourceTree = "<group>"; };
 		54ABAA3B16C1896E00141DD5 /* ModuleRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleRole.h; sourceTree = "<group>"; };
 		54ABAA3C16C1896E00141DD5 /* ModuleRole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleRole.m; sourceTree = "<group>"; };
 		54ABAA4416C18B9900141DD5 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
@@ -713,6 +714,12 @@
 		54ACCAAE16CC17CB00E06947 /* CourseSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseSection.m; sourceTree = "<group>"; };
 		54AD31961A82BA700049147C /* Customizations.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Customizations.plist; sourceTree = "<group>"; };
 		54AE92281AC1A1A7006210C0 /* StudentFinancialsTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentFinancialsTransaction.swift; sourceTree = "<group>"; };
+		54AED7EA1BC46CBC0071E2C3 /* CalendarViewDayViewDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarViewDayViewDataSource.h; sourceTree = "<group>"; };
+		54AED7EB1BC46DB30071E2C3 /* CalendarViewDayViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarViewDayViewDelegate.h; sourceTree = "<group>"; };
+		54AED7EC1BC46E620071E2C3 /* CalendarViewAllDayGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewAllDayGridView.h; sourceTree = "<group>"; };
+		54AED7ED1BC46E620071E2C3 /* CalendarViewAllDayGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewAllDayGridView.m; sourceTree = "<group>"; };
+		54AED7EF1BC46EFE0071E2C3 /* CalendarViewDayGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewDayGridView.h; sourceTree = "<group>"; };
+		54AED7F01BC46EFE0071E2C3 /* CalendarViewDayGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewDayGridView.m; sourceTree = "<group>"; };
 		54B2AC471B6BF22600FCDC67 /* NSDate-TimeAgo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate-TimeAgo.swift"; sourceTree = "<group>"; };
 		54B2AC4A1B6BF30B00FCDC67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
 		54B2AC4C1B6BF31100FCDC67 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/NSDateTimeAgo.strings; sourceTree = "<group>"; };
@@ -728,8 +735,6 @@
 		54B723B616F1C1F8004738C1 /* MapPOIType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPOIType.m; sourceTree = "<group>"; };
 		54B7AEAE1B3CB89F0075473A /* OpenModuleAbstractOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenModuleAbstractOperation.swift; path = Mobile/OpenModuleAbstractOperation.swift; sourceTree = "<group>"; };
 		54B7AEB01B3CBA730075473A /* OpenModuleHomeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenModuleHomeOperation.swift; path = Mobile/OpenModuleHomeOperation.swift; sourceTree = "<group>"; };
-		54B8611616C97CA300F56B52 /* CourseDetailTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailTabBarController.h; sourceTree = "<group>"; };
-		54B8611716C97CA300F56B52 /* CourseDetailTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailTabBarController.m; sourceTree = "<group>"; };
 		54B8611C16CAC93100F56B52 /* EmptyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyTableViewCell.h; sourceTree = "<group>"; };
 		54B8611D16CAC93100F56B52 /* EmptyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyTableViewCell.m; sourceTree = "<group>"; };
 		54B8611F16CAFBC100F56B52 /* EllucianSectionedUITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllucianSectionedUITableViewController.h; sourceTree = "<group>"; };
@@ -746,8 +751,6 @@
 		54BC0FC816FC015500698FE4 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
 		54BC2C0716F65300004891BF /* ModuleProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModuleProperty.h; sourceTree = "<group>"; };
 		54BC2C0816F65300004891BF /* ModuleProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModuleProperty.m; sourceTree = "<group>"; };
-		54BC2C0D16F789BA004891BF /* DirectoryEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEntryViewController.h; sourceTree = "<group>"; };
-		54BC2C0E16F789BA004891BF /* DirectoryEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryEntryViewController.m; sourceTree = "<group>"; };
 		54BE303716E0152C0015B0A9 /* en-GB */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		54BE93FE19B675A60075969E /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		54BE93FF19B675A70075969E /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -798,15 +801,17 @@
 		54D1BCF716D433EF005E0DEC /* CourseMeetingPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseMeetingPattern.h; sourceTree = "<group>"; };
 		54D1BCF816D433EF005E0DEC /* CourseMeetingPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseMeetingPattern.m; sourceTree = "<group>"; };
 		54D303CD1758F28900234758 /* Mobile 2.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Mobile 2.5.xcdatamodel"; sourceTree = "<group>"; };
+		54D4B05D1BE2B66400CE16AB /* CourseGradesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseGradesViewController.swift; sourceTree = "<group>"; };
+		54D4B05F1BE4219600CE16AB /* RosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RosterViewController.swift; sourceTree = "<group>"; };
 		54D578D71B7D38580071F04A /* NotificationsDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsDetailViewController.swift; sourceTree = "<group>"; };
 		54D578D91B7D38970071F04A /* NotificationsSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsSplitViewController.swift; sourceTree = "<group>"; };
+		54D6CEE31C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DirectoryDefinition+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		54D6CEE41C6551080053DC4B /* DirectoryDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryDefinition.swift; sourceTree = "<group>"; };
 		54E0779F16F2E9520092C9C9 /* MapCampus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCampus.h; sourceTree = "<group>"; };
 		54E077A016F2E9520092C9C9 /* MapCampus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCampus.m; sourceTree = "<group>"; };
 		54E40C111728552E00F661A5 /* Ellucian GO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ellucian GO.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54E40C121728552F00F661A5 /* Ellucian GO-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Ellucian GO-Info.plist"; sourceTree = "<group>"; };
 		54E6D4211B3DC7D50025C651 /* OpenModuleAboutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenModuleAboutOperation.swift; path = Mobile/OpenModuleAboutOperation.swift; sourceTree = "<group>"; };
-		54E6D4231B3DC7E80025C651 /* MenuManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuManager.h; path = Mobile/MenuManager.h; sourceTree = "<group>"; };
-		54E6D4241B3DC7E80025C651 /* MenuManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuManager.m; path = Mobile/MenuManager.m; sourceTree = "<group>"; };
 		54E6D4261B3DD4CB0025C651 /* OpenModuleConfigurationSelectionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenModuleConfigurationSelectionOperation.swift; path = Mobile/OpenModuleConfigurationSelectionOperation.swift; sourceTree = "<group>"; };
 		54E6D42C1B4185680025C651 /* LoginSignOutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginSignOutOperation.swift; path = Mobile/LoginSignOutOperation.swift; sourceTree = "<group>"; };
 		54E6D42E1B418AA70025C651 /* LoginSignInOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginSignInOperation.swift; path = Mobile/LoginSignInOperation.swift; sourceTree = "<group>"; };
@@ -843,8 +848,11 @@
 		54F3DD4E1761746900CEDE57 /* CourseAnnouncementDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseAnnouncementDetailViewController.m; sourceTree = "<group>"; };
 		54F3DD5117618B9700CEDE57 /* CourseAssignmentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseAssignmentDetailViewController.h; sourceTree = "<group>"; };
 		54F3DD5417618BE600CEDE57 /* CourseAssignmentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseAssignmentDetailViewController.m; sourceTree = "<group>"; };
+		54F504F71C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryUnmanagedDefinition.swift; sourceTree = "<group>"; };
 		54FC554E1AED70F9009D52A5 /* MapsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsController.swift; sourceTree = "<group>"; };
 		54FC55521AED719D009D52A5 /* CampusTableRowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampusTableRowController.swift; sourceTree = "<group>"; };
+		54FC75861C3F1E6B00CB05B0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		54FC75881C3F1E7500CB05B0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		54FD398A18ADBA7F00F0BC1D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		8400A7471608F6D700EFD0BE /* CalendarViewEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewEvent.h; sourceTree = "<group>"; };
 		8400A7481608F6D700EFD0BE /* CalendarViewEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewEvent.m; sourceTree = "<group>"; };
@@ -852,19 +860,12 @@
 		8400A74A1608F6D700EFD0BE /* CalendarViewDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewDayView.m; sourceTree = "<group>"; };
 		8400A74D16090CDE00EFD0BE /* CalendarViewDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewDayEventView.h; sourceTree = "<group>"; };
 		8400A74E16090CDE00EFD0BE /* CalendarViewDayEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewDayEventView.m; sourceTree = "<group>"; };
-		841AB02715E014A1003FAFAF /* AsynchronousImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsynchronousImageView.h; sourceTree = "<group>"; };
-		841AB02815E014A1003FAFAF /* AsynchronousImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsynchronousImageView.m; sourceTree = "<group>"; };
 		841CEE3F160BA79D00D978EC /* CalendarViewDayEventView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewDayEventView.xib; sourceTree = "<group>"; };
-		841F3EBB161370E30044D277 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailViewController.h; sourceTree = "<group>"; };
-		841F3EBC161370E30044D277 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
 		842602AD15AF12D900FE7360 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		842602AF15AF12D900FE7360 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		842602B115AF12D900FE7360 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		842602B315AF12D900FE7360 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		842602BB15AF12D900FE7360 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		842602BD15AF12D900FE7360 /* Mobile-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mobile-Prefix.pch"; sourceTree = "<group>"; };
-		842602BE15AF12D900FE7360 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		842602BF15AF12D900FE7360 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		842602D615AF12DA00FE7360 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		84279DCB15C81B2D00DCBC7E /* Module+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Module+Create.h"; sourceTree = "<group>"; };
 		84279DCC15C81B2D00DCBC7E /* Module+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Module+Create.m"; sourceTree = "<group>"; };
@@ -878,49 +879,24 @@
 		844040BE1610F26B00E938FF /* GradeTerm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeTerm.m; sourceTree = "<group>"; };
 		844040C31610FDB300E938FF /* Grade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grade.h; sourceTree = "<group>"; };
 		844040C41610FDB300E938FF /* Grade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grade.m; sourceTree = "<group>"; };
-		844040C91611F63300E938FF /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
-		844040CA1611F63300E938FF /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
-		844040D21611FFD600E938FF /* ScheduleCourseNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleCourseNameCell.h; sourceTree = "<group>"; };
-		844040D31611FFD600E938FF /* ScheduleCourseNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleCourseNameCell.m; sourceTree = "<group>"; };
-		844040D7161229E900E938FF /* ScheduleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduleTableViewCell.xib; sourceTree = "<group>"; };
-		844040DF16123F5600E938FF /* ScheduleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleCell.h; sourceTree = "<group>"; };
-		844040E016123F7E00E938FF /* ScheduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleCell.m; sourceTree = "<group>"; };
-		844112CE1608B72D00F10579 /* CoursesCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesCalendarViewController.h; sourceTree = "<group>"; };
-		844112CF1608B72D00F10579 /* CoursesCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesCalendarViewController.m; sourceTree = "<group>"; };
 		84437EFC15FC26360083EB36 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		8448F7F815CB7096001D6347 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		8448F7F915CB7096001D6347 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		844D5651161B5CED0088C436 /* RosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RosterViewController.h; sourceTree = "<group>"; };
-		844D5652161B5CED0088C436 /* RosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RosterViewController.m; sourceTree = "<group>"; };
 		844D902F15D42C9B009B3F2D /* Mobile.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mobile.xcdatamodel; sourceTree = "<group>"; };
-		8453DF1B161CBC6F0022A36B /* CoursesTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesTabBarViewController.h; sourceTree = "<group>"; };
-		8453DF1C161CBC6F0022A36B /* CoursesTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesTabBarViewController.m; sourceTree = "<group>"; };
 		84649D4F16792347006EB5B7 /* EllucianUITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EllucianUITableViewController.h; sourceTree = "<group>"; };
 		84649D5016792347006EB5B7 /* EllucianUITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EllucianUITableViewController.m; sourceTree = "<group>"; };
 		84662B2C1676A2E1004E5065 /* EventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCategory.h; sourceTree = "<group>"; };
 		84662B2D1676A2E1004E5065 /* EventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCategory.m; sourceTree = "<group>"; };
 		8471682A15DB5FCE00A7A8F6 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		8471682C15DB5FD300A7A8F6 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
-		8476BFF3161630B100FDF9E6 /* CoursesPageSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoursesPageSelectionViewController.h; sourceTree = "<group>"; };
-		8476BFF4161630B200FDF9E6 /* CoursesPageSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesPageSelectionViewController.m; sourceTree = "<group>"; };
 		84843BF71606A58E002E277E /* ConfigurationFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationFetcher.h; sourceTree = "<group>"; };
 		84843BF81606A58E002E277E /* ConfigurationFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationFetcher.m; sourceTree = "<group>"; };
 		84843BFA1606B008002E277E /* AppearanceChanger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceChanger.h; sourceTree = "<group>"; };
 		84843BFB1606B008002E277E /* AppearanceChanger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceChanger.m; sourceTree = "<group>"; };
 		84A11F1F15C88DB8002FC14A /* Module+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Module+Attributes.h"; sourceTree = "<group>"; };
 		84A11F2015C88DB8002FC14A /* Module+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Module+Attributes.m"; sourceTree = "<group>"; };
-		84B574BF161D474400B66AA2 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
-		84B574C0161D474400B66AA2 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
-		84B574C9161D54B900B66AA2 /* DirectoryEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryEntry.h; sourceTree = "<group>"; };
-		84B574CA161D54B900B66AA2 /* DirectoryEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryEntry.m; sourceTree = "<group>"; };
-		84C37373162F2EE40017AAB5 /* CourseGradesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseGradesViewController.h; sourceTree = "<group>"; };
-		84C37375162F2EFD0017AAB5 /* CourseGradesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseGradesViewController.m; sourceTree = "<group>"; };
 		84CA040C15F9BB040086EEA1 /* MapPinAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapPinAnnotation.h; sourceTree = "<group>"; };
 		84CA040D15F9BB040086EEA1 /* MapPinAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPinAnnotation.m; sourceTree = "<group>"; };
 		84CA041B15FA668E0086EEA1 /* POIListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POIListViewController.h; sourceTree = "<group>"; };
 		84CA041C15FA668E0086EEA1 /* POIListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POIListViewController.m; sourceTree = "<group>"; };
-		84D1192A165AB1FD009B85B8 /* MobileUIApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileUIApplication.h; sourceTree = "<group>"; };
-		84D1192B165AB1FD009B85B8 /* MobileUIApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileUIApplication.m; sourceTree = "<group>"; };
 		84D151A315EFEB9D00FE1A0B /* UIViewController+SlidingViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SlidingViewExtension.h"; sourceTree = "<group>"; };
 		84D151A415EFEB9D00FE1A0B /* UIViewController+SlidingViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SlidingViewExtension.m"; sourceTree = "<group>"; };
 		84D7BB41167A17C000B3D584 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -941,8 +917,6 @@
 		A9568DE41A6EE358002BB592 /* EventTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewDelegate.swift; sourceTree = "<group>"; };
 		A956DA2F165C288100E20972 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		A956DA30165C288100E20972 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
-		A95DFD4E1603C4E100564EE1 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		A95DFD4F1603C4E100564EE1 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HomeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A960E47D1664148E00BA5B0B /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
 		A960E47E1664148E00BA5B0B /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
 		A97BA06818AAA4ED00AC79F4 /* DetailSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailSelectionDelegate.h; sourceTree = "<group>"; };
@@ -979,7 +953,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54FD398B18ADBA7F00F0BC1D /* libz.dylib in Frameworks */,
+				54FC75891C3F1E7500CB05B0 /* libz.tbd in Frameworks */,
+				54FC75871C3F1E6B00CB05B0 /* libsqlite3.tbd in Frameworks */,
 				543052031783922E0008FA6E /* CoreMedia.framework in Frameworks */,
 				543051FD178386A30008FA6E /* AVFoundation.framework in Frameworks */,
 				54C14732177DDEDB00C6CCBD /* MediaPlayer.framework in Frameworks */,
@@ -1198,15 +1173,8 @@
 		54A8DBE116CD617500E20871 /* RNCryptor */ = {
 			isa = PBXGroup;
 			children = (
-				54A8DBE216CD618900E20871 /* RNCryptor.h */,
-				54A8DBE316CD618900E20871 /* RNCryptor.m */,
-				54A8DBE516CD61D300E20871 /* RNCryptor+Private.h */,
-				54A8DBE616CD620100E20871 /* RNDecryptor.h */,
-				54A8DBE716CD620100E20871 /* RNDecryptor.m */,
-				54A8DBE916CD625700E20871 /* RNCryptorEngine.h */,
-				54A8DBEA16CD625800E20871 /* RNCryptorEngine.m */,
-				54A8DBEC16CD62C300E20871 /* RNEncryptor.h */,
-				54A8DBED16CD62C300E20871 /* RNEncryptor.m */,
+				541AF11E1C6D5D14009D1EED /* RNCryptor.swift */,
+				541AF1201C6D5D93009D1EED /* RNCryptor.h */,
 			);
 			name = RNCryptor;
 			sourceTree = "<group>";
@@ -1235,8 +1203,7 @@
 			isa = PBXGroup;
 			children = (
 				844112CD1608B1B300F10579 /* CalendarDailyView */,
-				844112CE1608B72D00F10579 /* CoursesCalendarViewController.h */,
-				844112CF1608B72D00F10579 /* CoursesCalendarViewController.m */,
+				545AB7341BCEA05100F4EBDC /* CoursesCalendarViewController.swift */,
 			);
 			name = "Daily Schedule";
 			sourceTree = "<group>";
@@ -1246,13 +1213,10 @@
 			children = (
 				54ACCAAD16CC17CB00E06947 /* CourseSection.h */,
 				54ACCAAE16CC17CB00E06947 /* CourseSection.m */,
-				8476BFF3161630B100FDF9E6 /* CoursesPageSelectionViewController.h */,
-				8476BFF4161630B200FDF9E6 /* CoursesPageSelectionViewController.m */,
 				54AC962D16C074FA009C1B25 /* CourseTerm.h */,
 				54AC962E16C074FA009C1B25 /* CourseTerm.m */,
-				844040C91611F63300E938FF /* ScheduleViewController.h */,
-				844040CA1611F63300E938FF /* ScheduleViewController.m */,
-				84418E05162DF5EA0008A115 /* View */,
+				545AB73B1BCEF84800F4EBDC /* ScheduleViewController.swift */,
+				545AB73D1BD0542200F4EBDC /* CoursesPageSelectionViewController.swift */,
 			);
 			name = "Full Schedule";
 			sourceTree = "<group>";
@@ -1288,8 +1252,7 @@
 		54C2B1B417E7F537007D1C6C /* Level1 */ = {
 			isa = PBXGroup;
 			children = (
-				8453DF1B161CBC6F0022A36B /* CoursesTabBarViewController.h */,
-				8453DF1C161CBC6F0022A36B /* CoursesTabBarViewController.m */,
+				545AB7391BCEF41300F4EBDC /* CoursesTabBarViewController.swift */,
 				54B96B4816D2C2730055EDCE /* Daily Schedule */,
 				54B96B4916D2C2790055EDCE /* Full Schedule */,
 			);
@@ -1299,10 +1262,7 @@
 		54C2B1B517E7F53F007D1C6C /* Level2 */ = {
 			isa = PBXGroup;
 			children = (
-				54B8611616C97CA300F56B52 /* CourseDetailTabBarController.h */,
-				54B8611716C97CA300F56B52 /* CourseDetailTabBarController.m */,
-				542D5BD91B7CE42800EE9AA9 /* GradesCell.h */,
-				542D5BDA1B7CE42800EE9AA9 /* GradesCell.m */,
+				540C46801BDA7B7800A4BD42 /* CourseDetailTabBarController.swift */,
 				84418E16162EEED10008A115 /* Roster */,
 				84C37372162F2ECC0017AAB5 /* Grades */,
 				84664B7C162F617C0042234B /* Detail */,
@@ -1350,8 +1310,6 @@
 			isa = PBXGroup;
 			children = (
 				54AB47C81B8E42CB00320AB0 /* ECSlidingViewController */,
-				54E6D4231B3DC7E80025C651 /* MenuManager.h */,
-				54E6D4241B3DC7E80025C651 /* MenuManager.m */,
 				5440BF651B5459D00004E39A /* MenuTableViewHeaderFooterView.swift */,
 				540BD3131B34A6C600626BA8 /* MenuViewController.swift */,
 				54E6D4211B3DC7D50025C651 /* OpenModuleAboutOperation.swift */,
@@ -1461,6 +1419,8 @@
 		842602AC15AF12D900FE7360 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54FC75881C3F1E7500CB05B0 /* libz.tbd */,
+				54FC75861C3F1E6B00CB05B0 /* libsqlite3.tbd */,
 				54FD398A18ADBA7F00F0BC1D /* libz.dylib */,
 				8471682A15DB5FCE00A7A8F6 /* Accounts.framework */,
 				5443F3E816F1184400CBE733 /* AddressBook.framework */,
@@ -1491,9 +1451,9 @@
 		842602B515AF12D900FE7360 /* Ellucian GO */ = {
 			isa = PBXGroup;
 			children = (
+				548155E71C7B58AD00927A3B /* AppDelegate.swift */,
+				541AF11C1C6D5ABE009D1EED /* MobileUIApplication.swift */,
 				A997082215DEC06500B9D25F /* About */,
-				842602BE15AF12D900FE7360 /* AppDelegate.h */,
-				842602BF15AF12D900FE7360 /* AppDelegate.m */,
 				8448901E15EC1B19008B2D40 /* Configuration */,
 				84C1D9BC1663FD37002C57DC /* Configuration Selection */,
 				844112B91607BC8E00F10579 /* Courses */,
@@ -1515,8 +1475,6 @@
 				843ED5EB15F9282F00033085 /* Maps */,
 				54F0B9251824274600829E73 /* Menu */,
 				844D902E15D42C9B009B3F2D /* Mobile.xcdatamodeld */,
-				84D1192A165AB1FD009B85B8 /* MobileUIApplication.h */,
-				84D1192B165AB1FD009B85B8 /* MobileUIApplication.m */,
 				54C1472B177DDC3600C6CCBD /* Multimedia */,
 				0DDD89E01886531D00D1EE3A /* Notification Center */,
 				84F391F61614D2CC003B3EE4 /* Notifications */,
@@ -1528,6 +1486,7 @@
 				841AB02A15E01EF0003FAFAF /* Views and Support */,
 				0DACC47D1BA3491D00824239 /* Watch */,
 				8448F7F615CB707A001D6347 /* Web */,
+				541AF1231C6E56B6009D1EED /* main.swift */,
 			);
 			name = "Ellucian GO";
 			path = Mobile;
@@ -1539,7 +1498,6 @@
 				544E64AB1A717A5600220746 /* Ellucian GO.entitlements */,
 				54E40C121728552F00F661A5 /* Ellucian GO-Info.plist */,
 				842602B815AF12D900FE7360 /* InfoPlist.strings */,
-				842602BB15AF12D900FE7360 /* main.m */,
 				842602BD15AF12D900FE7360 /* Mobile-Prefix.pch */,
 				8454D3EE15C6E4DA00418BA2 /* Localizable.strings */,
 			);
@@ -1549,9 +1507,8 @@
 		84279DA515C8136800DCBC7E /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A95DFD4E1603C4E100564EE1 /* HomeViewController.h */,
-				A95DFD4F1603C4E100564EE1 /* HomeViewController.m */,
 				549EF30B1B505FDC0014851C /* HomeStoryboard.storyboard */,
+				546E31C01C567C0900A19DB9 /* HomeViewController.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -1596,29 +1553,24 @@
 		844112CD1608B1B300F10579 /* CalendarDailyView */ = {
 			isa = PBXGroup;
 			children = (
+				545AB7361BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.h */,
+				545AB7371BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.m */,
+				54AED7EC1BC46E620071E2C3 /* CalendarViewAllDayGridView.h */,
+				54AED7ED1BC46E620071E2C3 /* CalendarViewAllDayGridView.m */,
 				8400A74D16090CDE00EFD0BE /* CalendarViewDayEventView.h */,
 				8400A74E16090CDE00EFD0BE /* CalendarViewDayEventView.m */,
 				841CEE3F160BA79D00D978EC /* CalendarViewDayEventView.xib */,
+				54AED7EF1BC46EFE0071E2C3 /* CalendarViewDayGridView.h */,
+				54AED7F01BC46EFE0071E2C3 /* CalendarViewDayGridView.m */,
 				8400A7491608F6D700EFD0BE /* CalendarViewDayView.h */,
 				8400A74A1608F6D700EFD0BE /* CalendarViewDayView.m */,
+				54AED7EA1BC46CBC0071E2C3 /* CalendarViewDayViewDataSource.h */,
+				54AED7EB1BC46DB30071E2C3 /* CalendarViewDayViewDelegate.h */,
 				8400A7471608F6D700EFD0BE /* CalendarViewEvent.h */,
 				8400A7481608F6D700EFD0BE /* CalendarViewEvent.m */,
-				5499029319BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.h */,
-				5499029419BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.m */,
+				5494DFB41BC5C7F800FDFC84 /* CalendarViewProtocols.swift */,
 			);
 			name = CalendarDailyView;
-			sourceTree = "<group>";
-		};
-		84418E05162DF5EA0008A115 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				844040DF16123F5600E938FF /* ScheduleCell.h */,
-				844040E016123F7E00E938FF /* ScheduleCell.m */,
-				844040D21611FFD600E938FF /* ScheduleCourseNameCell.h */,
-				844040D31611FFD600E938FF /* ScheduleCourseNameCell.m */,
-				844040D7161229E900E938FF /* ScheduleTableViewCell.xib */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		84418E16162EEED10008A115 /* Roster */ = {
@@ -1626,8 +1578,7 @@
 			children = (
 				54EE6E8E16CEF69C0060613C /* CourseRoster.h */,
 				54EE6E8F16CEF69C0060613C /* CourseRoster.m */,
-				844D5651161B5CED0088C436 /* RosterViewController.h */,
-				844D5652161B5CED0088C436 /* RosterViewController.m */,
+				54D4B05F1BE4219600CE16AB /* RosterViewController.swift */,
 			);
 			name = Roster;
 			sourceTree = "<group>";
@@ -1650,12 +1601,12 @@
 		8448F7F615CB707A001D6347 /* Web */ = {
 			isa = PBXGroup;
 			children = (
-				542C81951B7BD10C000D6B56 /* WebStoryboard.storyboard */,
-				8448F7F815CB7096001D6347 /* WebViewController.h */,
-				8448F7F915CB7096001D6347 /* WebViewController.m */,
-				5406AC2D19F9A43F00775FBA /* WebViewJavascriptInterface.h */,
-				5406AC2E19F9A43F00775FBA /* WebViewJavascriptInterface.m */,
 				54403B521B71DAA700BB7E68 /* SafariActivity.swift */,
+				542C81951B7BD10C000D6B56 /* WebStoryboard.storyboard */,
+				548715001CA38F8A005A4723 /* WebViewController.h */,
+				548715011CA38F8A005A4723 /* WebViewController.m */,
+				548715021CA38F8A005A4723 /* WebViewJavascriptInterface.h */,
+				548715031CA38F8A005A4723 /* WebViewJavascriptInterface.m */,
 			);
 			name = Web;
 			sourceTree = "<group>";
@@ -1669,8 +1620,7 @@
 				54D1BCF516D41F21005E0DEC /* CourseDetail.m */,
 				54B96B6516D2CCB30055EDCE /* CourseDetailInstructor.h */,
 				54B96B6616D2CCB30055EDCE /* CourseDetailInstructor.m */,
-				841F3EBB161370E30044D277 /* CourseDetailViewController.h */,
-				841F3EBC161370E30044D277 /* CourseDetailViewController.m */,
+				540C46821BDE73F600A4BD42 /* CourseDetailViewController.swift */,
 			);
 			name = Detail;
 			sourceTree = "<group>";
@@ -1696,15 +1646,15 @@
 		84B574BE161D472E00B66AA2 /* Directory */ = {
 			isa = PBXGroup;
 			children = (
+				54D6CEE31C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift */,
+				54D6CEE41C6551080053DC4B /* DirectoryDefinition.swift */,
+				54A204201C10FA4D00057479 /* DirectoryEntry.swift */,
+				54A204271C15DD1C00057479 /* DirectoryEntryViewController.swift */,
+				54A2041E1C108E8200057479 /* DirectoryFilterViewController.swift */,
+				54A2041A1C0F76A700057479 /* DirectorySplitViewController.swift */,
 				548F8AF91B9F8AF400D13E4E /* DirectoryStoryboard.storyboard */,
-				84B574BF161D474400B66AA2 /* DirectoryViewController.h */,
-				84B574C0161D474400B66AA2 /* DirectoryViewController.m */,
-				84B574C9161D54B900B66AA2 /* DirectoryEntry.h */,
-				84B574CA161D54B900B66AA2 /* DirectoryEntry.m */,
-				54BC2C0D16F789BA004891BF /* DirectoryEntryViewController.h */,
-				54BC2C0E16F789BA004891BF /* DirectoryEntryViewController.m */,
-				5447CC7D17D669580077FA3F /* DirectoryNavigationController.h */,
-				5447CC7E17D669580077FA3F /* DirectoryNavigationController.m */,
+				54A2041C1C0F828C00057479 /* DirectoryViewController.swift */,
+				54F504F71C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift */,
 			);
 			name = Directory;
 			sourceTree = "<group>";
@@ -1723,9 +1673,7 @@
 		84C37372162F2ECC0017AAB5 /* Grades */ = {
 			isa = PBXGroup;
 			children = (
-				84C37373162F2EE40017AAB5 /* CourseGradesViewController.h */,
-				84C37375162F2EFD0017AAB5 /* CourseGradesViewController.m */,
-				54413A6E1BB077FD00F036D3 /* GradesTableViewCell.xib */,
+				54D4B05D1BE2B66400CE16AB /* CourseGradesViewController.swift */,
 			);
 			name = Grades;
 			sourceTree = "<group>";
@@ -1820,8 +1768,6 @@
 		A97BA06918AACBF800AC79F4 /* Ellucian UI Objects */ = {
 			isa = PBXGroup;
 			children = (
-				841AB02715E014A1003FAFAF /* AsynchronousImageView.h */,
-				841AB02815E014A1003FAFAF /* AsynchronousImageView.m */,
 				A97BA06818AAA4ED00AC79F4 /* DetailSelectionDelegate.h */,
 				54B8611F16CAFBC100F56B52 /* EllucianSectionedUITableViewController.h */,
 				54B8612016CAFBC100F56B52 /* EllucianSectionedUITableViewController.m */,
@@ -2075,7 +2021,6 @@
 			files = (
 				549336561810413A00B6FDEF /* Customizations.plist in Resources */,
 				54A4C87217DA4B6600658EA7 /* Localizable.strings in Resources */,
-				54413A6F1BB077FD00F036D3 /* GradesTableViewCell.xib in Resources */,
 				548F8B351B9F8B7100D13E4E /* ILPStoryboard_iPhone.storyboard in Resources */,
 				548F8B1B1B9F8B4500D13E4E /* GradesStoryboard.storyboard in Resources */,
 				548F8B421B9F8BA700D13E4E /* ImportantNumbersStoryboard.storyboard in Resources */,
@@ -2092,7 +2037,6 @@
 				54CC54DD1B9FC3E20052467E /* RegistrationStoryboard_iPhone.storyboard in Resources */,
 				542C81A81B7BD163000D6B56 /* ConfigurationSelectionStoryboard.storyboard in Resources */,
 				54E40BCC1728552E00F661A5 /* CalendarViewDayEventView.xib in Resources */,
-				54E40BCE1728552E00F661A5 /* ScheduleTableViewCell.xib in Resources */,
 				542C81B61B7BDBB2000D6B56 /* Launch Screen.storyboard in Resources */,
 				54E40C081728552E00F661A5 /* EmptyTableViewCell.xib in Resources */,
 				54CC54D01B9FC3C90052467E /* RegistrationStoryboard_iPad.storyboard in Resources */,
@@ -2115,12 +2059,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				54B2329E1A78587F00720CB0 /* KeychainWrapper.m in Sources */,
-				546A05651A76F54000C42002 /* RNCryptorEngine.m in Sources */,
-				546A05661A76F54600C42002 /* RNCryptor.m in Sources */,
-				546A05631A76F4F500C42002 /* RNEncryptor.m in Sources */,
-				546A05641A76F53700C42002 /* RNDecryptor.m in Sources */,
 				546A055C1A76D33A00C42002 /* UserInfo.swift in Sources */,
 				541CDC171AEDDBF8006A9957 /* SwiftyJSON.swift in Sources */,
+				541AF1221C6D5F38009D1EED /* RNCryptor.swift in Sources */,
 				5430A7681B4C7D4E006D88F0 /* UIColorExtensions.swift in Sources */,
 				544E649E1A715CBD00220746 /* TodayViewController.swift in Sources */,
 				546A05611A76DA9D00C42002 /* AppGroupUtilities.swift in Sources */,
@@ -2140,24 +2081,24 @@
 				0DB5EF301BA89738002345A2 /* ILPAssignmentsController.swift in Sources */,
 				0D443C911BA31D7F007A6A7E /* VersionChecker.m in Sources */,
 				54780ECC1AF08CD100CD9D62 /* ILPAssignmentsDetailController.swift in Sources */,
-				54946DC61AECB7AC00D23287 /* RNCryptorEngine.m in Sources */,
 				54FC554C1AED7019009D52A5 /* Module+Attributes.m in Sources */,
 				0D443C8B1BA31C47007A6A7E /* WatchConnectivityManager.swift in Sources */,
 				5411368F1AEDE1AE0066E5D5 /* BuildingTableRowController.swift in Sources */,
 				5411368D1AEDDFCC0066E5D5 /* MapsBuildingsController.swift in Sources */,
 				54780EC71AF07FDE00CD9D62 /* ILPAssignmentsTableRowController.swift in Sources */,
-				54946DC31AECB6E600D23287 /* RNDecryptor.m in Sources */,
 				0DB898F71BB05475001EF44E /* DefaultsCache.swift in Sources */,
 				54946DBC1AEC5E0900D23287 /* FeedCategory.m in Sources */,
+				54D6CEE71C6551FA0053DC4B /* DirectoryDefinition.swift in Sources */,
 				541CDC0F1AEDBF67006A9957 /* AboutPageController.swift in Sources */,
 				541CDC181AEDDBF9006A9957 /* SwiftyJSON.swift in Sources */,
 				541CDBB21AED88AF006A9957 /* POIController.swift in Sources */,
 				0D443C901BA31D4F007A6A7E /* RegistrationAcademicLevel.m in Sources */,
 				54FC55551AED770B009D52A5 /* Map.m in Sources */,
 				5494D8121AEAD8E20030EE4A /* MenuController.swift in Sources */,
+				54F504F91C6A356A00BBD23E /* DirectoryUnmanagedDefinition.swift in Sources */,
 				541CDC151AEDC013006A9957 /* AboutVersionPageController.swift in Sources */,
 				54FC554D1AED701E009D52A5 /* ModuleProperty.m in Sources */,
-				54946DC71AECB7B300D23287 /* RNCryptor.m in Sources */,
+				54D6CEE81C655DAC0053DC4B /* DirectoryDefinition+CoreDataProperties.swift in Sources */,
 				54946DB81AEB5C6C00D23287 /* AppGroupUtilities.swift in Sources */,
 				54FC554F1AED70F9009D52A5 /* MapsController.swift in Sources */,
 				546FBC4E1AEEB71E0085AAEE /* UIColorExtensions.swift in Sources */,
@@ -2167,7 +2108,6 @@
 				54FC55561AED7EF0009D52A5 /* MapPOI.m in Sources */,
 				54946DBF1AECB3FF00D23287 /* Module.m in Sources */,
 				54946DC41AECB70200D23287 /* KeychainWrapper.m in Sources */,
-				54946DC51AECB76800D23287 /* RNEncryptor.m in Sources */,
 				54946DBE1AEC7BD200D23287 /* MenuTableRowController.swift in Sources */,
 				0D443C8C1BA31D12007A6A7E /* CoreDataManager.swift in Sources */,
 				0D37D1851BAA0ABD00A00F65 /* GOWatchExtensionDelgate.swift in Sources */,
@@ -2185,6 +2125,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				545AB73A1BCEF41300F4EBDC /* CoursesTabBarViewController.swift in Sources */,
+				54AED7EE1BC46E620071E2C3 /* CalendarViewAllDayGridView.m in Sources */,
+				541AF1241C6E56B6009D1EED /* main.swift in Sources */,
 				A9E9F7BD1A852477000639D0 /* AssignmentTableViewDelegate.swift in Sources */,
 				A9E9F7BE1A852477000639D0 /* AnnouncementTableViewDelegate.swift in Sources */,
 				A9E9F7BF1A852477000639D0 /* EventTableViewDelegate.swift in Sources */,
@@ -2192,35 +2135,38 @@
 				54403B661B73062500BB7E68 /* ConfigurationSelectionViewController.swift in Sources */,
 				5443181317F63B5400E9304E /* CourseAssignment.m in Sources */,
 				54931394185BBD270068084F /* RegistrationPlannedSectionMeetingPattern.m in Sources */,
+				540C46811BDA7B7800A4BD42 /* CourseDetailTabBarController.swift in Sources */,
 				5443181417F63B5400E9304E /* CourseEvent.m in Sources */,
-				549902A419BA3A2B00A5DAF8 /* CalendarActionSheetDatePicker.m in Sources */,
+				548155E81C7B58AD00927A3B /* AppDelegate.swift in Sources */,
 				54E40B3C1728552E00F661A5 /* Base64.m in Sources */,
+				54D6CEE61C6551080053DC4B /* DirectoryDefinition.swift in Sources */,
 				544BE9401B9738BD008FD51D /* ECSlidingInteractiveTransition.m in Sources */,
+				545AB73C1BCEF84800F4EBDC /* ScheduleViewController.swift in Sources */,
 				A9ADAEBD1A811D3C008869C9 /* AllAnnouncementsViewController.swift in Sources */,
 				54AE922A1AC1A1A7006210C0 /* StudentFinancialsTransaction.swift in Sources */,
-				54E40B3D1728552E00F661A5 /* main.m in Sources */,
-				54E40B3E1728552E00F661A5 /* AppDelegate.m in Sources */,
+				541AF11D1C6D5ABE009D1EED /* MobileUIApplication.swift in Sources */,
 				54E40B3F1728552E00F661A5 /* Module+Create.m in Sources */,
 				542D5BD11B7C1BA500EE9AA9 /* GradesTableViewController.swift in Sources */,
 				544BE9421B9738BD008FD51D /* ECSlidingViewController.m in Sources */,
 				54E40B411728552E00F661A5 /* Module+Attributes.m in Sources */,
 				54CC7F2A1941673F0044C31E /* Module.m in Sources */,
-				5447CC8017D669580077FA3F /* DirectoryNavigationController.m in Sources */,
 				5430A7671B4C7D4D006D88F0 /* UIColorExtensions.swift in Sources */,
+				541AF11F1C6D5D14009D1EED /* RNCryptor.swift in Sources */,
 				5440BF681B545D9D0004E39A /* SectionHeaderViewDelegate.swift in Sources */,
 				547CED54187B2D7D006C2100 /* RegistrationPlannedSectionDetailViewController.m in Sources */,
 				544BE9451B9738CC008FD51D /* UIViewController+ECSlidingViewController.m in Sources */,
-				54E40B451728552E00F661A5 /* WebViewController.m in Sources */,
 				54B7AEB11B3CBA730075473A /* OpenModuleHomeOperation.swift in Sources */,
 				0DACC4801BA34DE800824239 /* DictionaryExtension.swift in Sources */,
 				54B7AEAF1B3CB89F0075473A /* OpenModuleAbstractOperation.swift in Sources */,
 				54E40B481728552E00F661A5 /* Mobile.xcdatamodeld in Sources */,
 				54A4C87E17DA6A1C00658EA7 /* PseudoButtonView.m in Sources */,
 				54E40B4C1728552E00F661A5 /* AboutViewController.m in Sources */,
+				54F504F81C6A346800BBD23E /* DirectoryUnmanagedDefinition.swift in Sources */,
 				54E40B4D1728552E00F661A5 /* NSString+HTML.m in Sources */,
-				54E40B4E1728552E00F661A5 /* AsynchronousImageView.m in Sources */,
-				5406AC3019F9A43F00775FBA /* WebViewJavascriptInterface.m in Sources */,
 				540BD3141B34A6C600626BA8 /* MenuViewController.swift in Sources */,
+				545AB7381BCEA16F00F4EBDC /* CalendarActionSheetDatePicker.m in Sources */,
+				540C46831BDE73F600A4BD42 /* CourseDetailViewController.swift in Sources */,
+				546E31C11C567C0900A19DB9 /* HomeViewController.swift in Sources */,
 				54931396185BBD270068084F /* RegistrationResultsViewController.m in Sources */,
 				54E40B521728552E00F661A5 /* UIViewController+SlidingViewExtension.m in Sources */,
 				54577AD119BA430F00DE0C33 /* SWActionSheet.m in Sources */,
@@ -2238,12 +2184,10 @@
 				A9ADAEB71A811D10008869C9 /* AllAssignmentsViewController.swift in Sources */,
 				54E40B571728552E00F661A5 /* CurrentUser.m in Sources */,
 				54283872188443A800768CFC /* RegistrationSearchResultsViewController.m in Sources */,
-				54E40B581728552E00F661A5 /* HomeViewController.m in Sources */,
 				5419C6341B7940BE00827DF2 /* EventsDetailViewController.swift in Sources */,
 				54E40B5A1728552E00F661A5 /* ConfigurationFetcher.m in Sources */,
 				54E40B5B1728552E00F661A5 /* AppearanceChanger.m in Sources */,
 				5456075B1B389181008B3EEC /* CoreDataManager.swift in Sources */,
-				54E40B5C1728552E00F661A5 /* CoursesCalendarViewController.m in Sources */,
 				54E40B5D1728552E00F661A5 /* CalendarViewEvent.m in Sources */,
 				54E40B5E1728552E00F661A5 /* CalendarViewDayView.m in Sources */,
 				546398E41B05C57200972C00 /* MapsFetcher.m in Sources */,
@@ -2253,42 +2197,37 @@
 				54CCFD751B0B86DD000CECAF /* AssignmentsFetcher.swift in Sources */,
 				5419C6381B797DF600827DF2 /* EventsSplitViewController.swift in Sources */,
 				54E40B611728552E00F661A5 /* Grade.m in Sources */,
-				54E40B621728552E00F661A5 /* ScheduleViewController.m in Sources */,
+				545AB7351BCEA05100F4EBDC /* CoursesCalendarViewController.swift in Sources */,
 				54711CB8187DD5DC000DC9DC /* RegistrationTabBarController.m in Sources */,
 				54711CB0187CAA5B000DC9DC /* RegistrationSearchViewController.m in Sources */,
-				54E40B631728552E00F661A5 /* ScheduleCourseNameCell.m in Sources */,
 				54B34DCC1B8520310011E2B1 /* NotificationUIActivityItemProvider.swift in Sources */,
-				54E40B641728552E00F661A5 /* ScheduleCell.m in Sources */,
 				54403B681B730C0800BB7E68 /* ConfigurationSelectionNavigationController.swift in Sources */,
-				54E40B651728552E00F661A5 /* CourseDetailViewController.m in Sources */,
 				5453A81918B2607700C1196E /* Notification.m in Sources */,
 				54E40B691728552E00F661A5 /* ImportantNumbersViewController.m in Sources */,
 				0D443C8A1BA31C46007A6A7E /* WatchConnectivityManager.swift in Sources */,
 				548683131AD3139100597D5A /* EditReminderViewController.swift in Sources */,
-				54E40B6B1728552E00F661A5 /* CoursesPageSelectionViewController.m in Sources */,
 				54D578D81B7D38580071F04A /* NotificationsDetailViewController.swift in Sources */,
 				5479B94D19E6DC1B00E7D9CD /* RegistrationAcademicLevel.m in Sources */,
-				54E40B6C1728552E00F661A5 /* RosterViewController.m in Sources */,
 				54931390185BBD270068084F /* RegistrationPlannedSection.m in Sources */,
 				0D6E44BC1BA3B40F0027CBFD /* ILPAssignmentsFetchOperation.swift in Sources */,
-				54E40B6D1728552E00F661A5 /* CoursesTabBarViewController.m in Sources */,
-				54E40B6E1728552E00F661A5 /* DirectoryViewController.m in Sources */,
 				54EA25411B87A43600F14325 /* AudioViewController.swift in Sources */,
+				5494DFB51BC5C7F800FDFC84 /* CalendarViewProtocols.swift in Sources */,
 				548DC1871B6BC6C7009E9617 /* FeedDetailViewController.swift in Sources */,
-				54E40B6F1728552E00F661A5 /* DirectoryEntry.m in Sources */,
-				54E40B711728552E00F661A5 /* CourseGradesViewController.m in Sources */,
 				542FDE031B71664100E81490 /* UIImageViewExtensions.swift in Sources */,
+				54A204211C10FA4D00057479 /* DirectoryEntry.swift in Sources */,
 				544977941B69650A00579ADE /* FeedViewController.swift in Sources */,
 				54E40B721728552E00F661A5 /* ImageCache.m in Sources */,
 				54E40B731728552E00F661A5 /* NSString+Hash.m in Sources */,
-				54E40B741728552E00F661A5 /* MobileUIApplication.m in Sources */,
 				A9F498041A93923600E71CC1 /* SwiftyJSON.swift in Sources */,
 				A9ADAEBA1A811D26008869C9 /* AllEventsViewController.swift in Sources */,
+				54A2041B1C0F76A700057479 /* DirectorySplitViewController.swift in Sources */,
+				54A2041D1C0F828C00057479 /* DirectoryViewController.swift in Sources */,
 				54E40B781728552E00F661A5 /* EventModule.m in Sources */,
 				54E40B791728552E00F661A5 /* EventCategory.m in Sources */,
 				54E40B7A1728552E00F661A5 /* EllucianUITableViewController.m in Sources */,
 				54A313471805A7CF00D3D481 /* UIScrollView+Size.m in Sources */,
 				54E6D42D1B4185690025C651 /* LoginSignOutOperation.swift in Sources */,
+				548715041CA38F8A005A4723 /* WebViewController.m in Sources */,
 				542D5BEC1B7D190000EE9AA9 /* NotificationsTableViewController.swift in Sources */,
 				54E40B7B1728552E00F661A5 /* Event.m in Sources */,
 				54E40B7D1728552E00F661A5 /* URLParser.m in Sources */,
@@ -2302,20 +2241,16 @@
 				54E40B841728552E00F661A5 /* ModuleRole.m in Sources */,
 				5419C6321B79401F00827DF2 /* EventsViewController.swift in Sources */,
 				54E40B851728552E00F661A5 /* Map.m in Sources */,
-				54E40B861728552E00F661A5 /* CourseDetailTabBarController.m in Sources */,
 				54E40B871728552E00F661A5 /* EmptyTableViewCell.m in Sources */,
 				54E40B881728552E00F661A5 /* EllucianSectionedUITableViewController.m in Sources */,
 				54E40B891728552E00F661A5 /* CourseSection.m in Sources */,
-				54E40B8A1728552E00F661A5 /* RNCryptor.m in Sources */,
 				54B34DD01B852C4B0011E2B1 /* NotificationsEmptyViewController.swift in Sources */,
-				54E40B8B1728552E00F661A5 /* RNDecryptor.m in Sources */,
 				542D5BD71B7C608500EE9AA9 /* StringExtensions.swift in Sources */,
 				546B3A6D18C10B4C00E2BA86 /* WebLoginViewController.m in Sources */,
 				5493138E185BBD270068084F /* RegistrationCartViewController.m in Sources */,
-				542D5BDB1B7CE42800EE9AA9 /* GradesCell.m in Sources */,
+				54D4B05E1BE2B66400CE16AB /* CourseGradesViewController.swift in Sources */,
 				54E6D42F1B418AA70025C651 /* LoginSignInOperation.swift in Sources */,
-				54E40B8C1728552E00F661A5 /* RNCryptorEngine.m in Sources */,
-				54E40B8D1728552E00F661A5 /* RNEncryptor.m in Sources */,
+				548715051CA38F8A005A4723 /* WebViewJavascriptInterface.m in Sources */,
 				54403B641B72838900BB7E68 /* UIButtonExtensions.swift in Sources */,
 				54E40B8E1728552E00F661A5 /* CourseRoster.m in Sources */,
 				54E40B8F1728552E00F661A5 /* CourseDetailInstructor.m in Sources */,
@@ -2326,6 +2261,7 @@
 				54E6D4271B3DD4CB0025C651 /* OpenModuleConfigurationSelectionOperation.swift in Sources */,
 				54E40B911728552E00F661A5 /* CourseMeetingPattern.m in Sources */,
 				54D578DA1B7D38970071F04A /* NotificationsSplitViewController.swift in Sources */,
+				54D6CEE51C6551080053DC4B /* DirectoryDefinition+CoreDataProperties.swift in Sources */,
 				54E40B921728552E00F661A5 /* MBProgressHUD.m in Sources */,
 				54E40B931728552E00F661A5 /* KeychainWrapper.m in Sources */,
 				54EA253F1B875C9D00F14325 /* VideoViewController.swift in Sources */,
@@ -2336,13 +2272,14 @@
 				54E40B981728552E00F661A5 /* MapPOI.m in Sources */,
 				54E40B991728552E00F661A5 /* MapPOIType.m in Sources */,
 				54403B531B71DAA700BB7E68 /* SafariActivity.swift in Sources */,
+				545AB73E1BD0542200F4EBDC /* CoursesPageSelectionViewController.swift in Sources */,
 				5430A7661B4C79FA006D88F0 /* ModuleExtensions.swift in Sources */,
 				54E40B9A1728552E00F661A5 /* MapCampus.m in Sources */,
 				5453A48317F3299E007F90B6 /* CopyLabel.m in Sources */,
 				54E40B9C1728552E00F661A5 /* ModuleProperty.m in Sources */,
-				54E6D4251B3DC7E80025C651 /* MenuManager.m in Sources */,
+				54A204281C15DD1C00057479 /* DirectoryEntryViewController.swift in Sources */,
 				544BE9411B9738BD008FD51D /* ECSlidingSegue.m in Sources */,
-				54E40B9E1728552E00F661A5 /* DirectoryEntryViewController.m in Sources */,
+				54D4B0601BE4219600CE16AB /* RosterViewController.swift in Sources */,
 				0DACC4821BA35EAD00824239 /* MapsFetchOperation.swift in Sources */,
 				546A05601A76DA9D00C42002 /* AppGroupUtilities.swift in Sources */,
 				548FE4561B6C21970080A86D /* FeedFilterViewController.swift in Sources */,
@@ -2350,6 +2287,7 @@
 				544BE93E1B9738BD008FD51D /* ECPercentDrivenInteractiveTransition.m in Sources */,
 				54E40B9F1728552E00F661A5 /* VersionChecker.m in Sources */,
 				54E40BA01728552E00F661A5 /* FeedCategory.m in Sources */,
+				54AED7F11BC46EFE0071E2C3 /* CalendarViewDayGridView.m in Sources */,
 				544BE93F1B9738BD008FD51D /* ECSlidingAnimationController.m in Sources */,
 				5419C6361B7940CE00827DF2 /* EventsFilterViewController.swift in Sources */,
 				548C13E61BA2001E0028B42B /* GradesFetchOperation.swift in Sources */,
@@ -2364,6 +2302,7 @@
 				54F3DD4C176112D000CEDE57 /* CourseEventsDetailViewController.m in Sources */,
 				54E6D4331B41DFE50025C651 /* OpenModuleFindModulesOperation.swift in Sources */,
 				54F3DD501761746900CEDE57 /* CourseAnnouncementDetailViewController.m in Sources */,
+				54A2041F1C108E8200057479 /* DirectoryFilterViewController.swift in Sources */,
 				54F3DD5617618BE600CEDE57 /* CourseAssignmentDetailViewController.m in Sources */,
 				0D443C881BA31C41007A6A7E /* ConfigurationManager.swift in Sources */,
 				54779E6617737B3F00ABD9F5 /* LoginExecutor.m in Sources */,
@@ -3177,6 +3116,7 @@
 		844D902E15D42C9B009B3F2D /* Mobile.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5423513E1C6536E90001B4A7 /* Mobile 4.5.xcdatamodel */,
 				A95452FF1A7C18AD0082D4DB /* Mobile 4.0.xcdatamodel */,
 				5479B93D19E6D96300E7D9CD /* Mobile 3.8.xcdatamodel */,
 				5453A81118B25DB100C1196E /* Mobile 3.xcdatamodel */,
@@ -3185,7 +3125,7 @@
 				54350DA116E593780051B98C /* Mobile 2.xcdatamodel */,
 				844D902F15D42C9B009B3F2D /* Mobile.xcdatamodel */,
 			);
-			currentVersion = A95452FF1A7C18AD0082D4DB /* Mobile 4.0.xcdatamodel */;
+			currentVersion = 5423513E1C6536E90001B4A7 /* Mobile 4.5.xcdatamodel */;
 			path = Mobile.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

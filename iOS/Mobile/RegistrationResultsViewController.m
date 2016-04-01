@@ -80,7 +80,7 @@
             for(NSDictionary *dict in messages) {
                 [messagesArray addObject:[dict objectForKey:@"message"]];
             }
-            NSString *message =  [messagesArray componentsJoinedByString:@"\n"];
+            NSString *message =  [messagesArray componentsJoinedByString:@"\n\n"];
             if([message length] > 0) message = [NSString stringWithFormat:@"! %@", message];
             label.text = message;
             UILabel *courseNameLabel = (UILabel *)[cell viewWithTag:1];
@@ -109,7 +109,7 @@
             for(NSDictionary *dict in messages) {
                 [messagesArray addObject:[dict objectForKey:@"message"]];
             }
-            NSString *message =  [messagesArray componentsJoinedByString:@"\n"];
+            NSString *message =  [messagesArray componentsJoinedByString:@"\n\n"];
             if([message length] > 0) message = [NSString stringWithFormat:@"! %@", message];
             label.text = message;
             UILabel *courseNameLabel = (UILabel *)[cell viewWithTag:1];

@@ -5,9 +5,9 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <permission android:name="<applicationName>.permission.C2D_MESSAGE"
+    <permission android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="<applicationName>.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE"/>
 
     <application
         android:name="com.ellucian.mobile.android.EllucianApplication">
@@ -15,7 +15,7 @@
         <!-- Content Provider -->
         <provider
             android:name="com.ellucian.mobile.android.provider.EllucianProvider"
-            android:authorities="<applicationName>.contentprovider"
+            android:authorities="${applicationId}.contentprovider"
             android:exported="false" />
 
         <!-- GCM receiver -->
@@ -24,7 +24,7 @@
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="<applicationName>"/>
+                <category android:name="${applicationId}"/>
             </intent-filter>
         </receiver>
     </application>

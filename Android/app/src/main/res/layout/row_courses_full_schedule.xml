@@ -6,6 +6,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LinearLayout1"
+    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -17,6 +18,7 @@
 
         <TextView
             android:id="@+id/row_courses_full_schedule_name"
+            style="@style/newsEventsListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="6sp"
@@ -27,12 +29,14 @@
 
         <TextView
             android:layout_width="wrap_content"
+            style="@style/newsEventsListTitle"
             android:layout_height="wrap_content"
             android:text="@string/dash_separator"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/row_courses_full_schedule_section_number"
+            style="@style/newsEventsListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textIsSelectable="false"
@@ -42,12 +46,14 @@
 
     <TextView
         android:id="@+id/row_courses_full_schedule_title"
+        style="@style/listDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="6sp"
         android:paddingStart="6sp"
         android:textIsSelectable="false"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/list_title_text_color"
         tools:ignore="NewApi,RtlSymmetry" />
 
 </LinearLayout>

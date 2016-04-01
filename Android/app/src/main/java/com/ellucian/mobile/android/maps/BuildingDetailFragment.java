@@ -6,6 +6,7 @@ package com.ellucian.mobile.android.maps;
 
 import android.app.Activity;
 import android.content.ContentProviderOperation;
+import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -84,10 +85,10 @@ public class BuildingDetailFragment extends EllucianDefaultDetailFragment {
 
 
 	@Override 
-	public void onAttach(Activity activity) {
+	public void onAttach(Context context) {
 		Log.d(TAG, "onAttach");
-		super.onAttach(activity);
-		this.activity = activity;
+		super.onAttach(context);
+		activity = getActivity();
 	}
 
 

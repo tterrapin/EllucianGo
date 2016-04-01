@@ -4,9 +4,12 @@
 
 package com.ellucian.mobile.android.news;
 
+import android.app.Activity;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -48,16 +52,19 @@ import java.util.Date;
 
 public class NewsActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor>,
 	CategoryDialogFragment.CategoryDialogListener {
-	
-	private SimpleCursorAdapter adapter;
+
+    private final Activity activity = this;
+    private SimpleCursorAdapter adapter;
 	private EllucianDefaultListFragment mainFragment;
 	private DialogFragment dialogFragment;
 	private String[] allCategories;
 	private String[] filteredCategories;
 	private String query;
 	private boolean resetListPosition;
-	
-	@Override
+    private NewsIntentServiceReceiver newsIntentServiceReceiver;
+    private boolean showSpinner = true;
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -76,9 +83,10 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
     	FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag("NewsListFragment");
-		
+
+        registerNewsServiceReceiver();
 		if (mainFragment == null) {
-			mainFragment = EllucianDefaultListFragment.newInstance(this, NewsListFragment.class.getName(), null);
+            mainFragment = EllucianDefaultListFragment.newInstance(this, NewsListFragment.class.getName(), null);
 			
 			mainFragment.setListAdapter(adapter);
 			transaction.add(R.id.frame_main, mainFragment, "NewsListFragment");
@@ -146,12 +154,16 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
         Intent serviceIntent = new Intent(this, NewsIntentService.class);
         serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
         serviceIntent.putExtra(Extra.REQUEST_URL, requestUrl);
-        startService(serviceIntent); 
+        startService(serviceIntent);
+        if (showSpinner) {
+            Utils.showProgressIndicator(this);
+        }
     }
     
     @Override
     protected void onPause() {
     	super.onPause();
+        unregisterNewsServiceReceiver();
     	if (filteredCategories != null) {
 	    	StringBuilder categoriesString = new StringBuilder();
 	        for (int i = 0; i < filteredCategories.length; i++) {
@@ -170,7 +182,13 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
     		dialogFragment = null;
     	}
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerNewsServiceReceiver();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
@@ -203,11 +221,11 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
         });
         searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				NewsActivity.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null, moduleName);
-			}
-        	
+            @Override
+            public void onClick(View v) {
+                NewsActivity.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_SEARCH, "Search", null, moduleName);
+            }
+
         });
         if (!TextUtils.isEmpty(query)) {
         	searchView.setQuery(query, false);
@@ -277,6 +295,12 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 			Log.d("NewsActivity.onLoadFinished", "Finished loading cursor.  Swapping cursor in adapter containing " + data.getCount());
 			adapter.swapCursor(data);
 			createNotifyHandler(mainFragment);
+            if (data.getCount() == 0) {
+                showSpinner = true;
+            } else {
+                showSpinner = false;
+                Utils.hideProgressIndicator(this);
+            }
 			break;
 		case 1:
 			Log.d("NewsActivity.onLoadFinished", "Finished loading cursor.  Updating categories");
@@ -375,6 +399,42 @@ public class NewsActivity extends EllucianActivity implements LoaderManager.Load
 			}
 		}
 	}
+
+    private void registerNewsServiceReceiver() {
+        if(newsIntentServiceReceiver == null) {
+            Log.d("NewsActivity.RegisterNewsServiceReceiver", "Registering new service receiver");
+            newsIntentServiceReceiver = new NewsIntentServiceReceiver();
+            IntentFilter filter = new IntentFilter(NewsIntentService.ACTION_FINISHED);
+            LocalBroadcastManager.getInstance(this).registerReceiver(newsIntentServiceReceiver, filter);
+        }
+    }
+
+    private void unregisterNewsServiceReceiver() {
+        if(newsIntentServiceReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(newsIntentServiceReceiver);
+        }
+    }
+
+    /**
+     * Broadcast receiver which receives notification when the NewsIntentService
+     * is finished performing an update of the data from the web services to the
+     * local database.  Upon successful completion, this receiver will reload
+     * the news data from the local database.
+     *
+     */
+    private class NewsIntentServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean updated = intent.getBooleanExtra(NewsIntentService.PARAM_OUT_DATABASE_UPDATED, false);
+            Log.d("NewsIntentServiceReceiver", "onReceive: database updated = " + updated);
+            if (updated) {
+                Log.d("NewsIntentServiceReceiver.onReceive", "All news retrieved and database updated");
+                Utils.hideProgressIndicator(activity);
+            }
+        }
+
+    }
 
 	
 }

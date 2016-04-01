@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -177,7 +179,8 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setVisibility(View.VISIBLE);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(Utils.getColorHelper(this, R.color.tab_indicator_color));
+
 
         Tab cartTab = tabLayout.newTab().setText(getCurrentCartText());
         Tab searchTab = tabLayout.newTab().setText(R.string.registration_tab_search);
@@ -1587,10 +1590,18 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 			requestUrl += "/search-courses?pattern=" + encodedPattern + "&term=" + encodedTermId;
 			
 			if (!TextUtils.isEmpty(locations)) {
-				requestUrl += "&locations=" + locations;
+                try {
+                    requestUrl += "&locations=" + URLEncoder.encode(locations, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "UnsupportedEncodingException:", e);
+                }
 			}
 			if (!TextUtils.isEmpty(levels)) {
-				requestUrl += "&academicLevels=" + levels;
+                try {
+                    requestUrl += "&academicLevels=" + URLEncoder.encode(levels, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "UnsupportedEncodingException:", e);
+                }
 			}
 			
 			SearchResponse jsonResponse = client.findSections(requestUrl);
@@ -1623,7 +1634,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 					searchResultsFragment.setListAdapter(resultsAdapter);
 					ft.attach(searchResultsFragment);
 				}
-				ft.commit();
+				ft.commitAllowingStateLoss();
 				
 				if (currentResults != null) {
 	
@@ -1688,7 +1699,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
                 ft.attach(mFragment);
             }
             currentTab = tab.getPosition();
-            ft.commit();
+            ft.commitAllowingStateLoss();
         }
 
         private void determineTab(int tabPosition) {
@@ -1726,7 +1737,7 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
             if (fragment != null) {
 	    		ft.detach(cartFragment);
 	    	}
-            ft.commit();
+            ft.commitAllowingStateLoss();
 	    }
 
 		@Override
@@ -1784,26 +1795,43 @@ public class RegistrationActivity extends EllucianActivity implements OnDoneFilt
 		}
 		
 		if (searchResultsFragment != null && searchResultsFragment.isAdded()) {
-			String academicLevels = "";
-			if (section.academicLevels != null && section.academicLevels.length > 0) {
-				academicLevels = TextUtils.join(",", section.academicLevels);
-			}
-			
-			String levelAndLocationText = "";
-			TextView levelAndLocationView = (TextView) view.findViewById(R.id.academic_level_and_location);
-			if (!TextUtils.isEmpty(academicLevels) && !TextUtils.isEmpty(section.location)) {
-				levelAndLocationText = getString(R.string.default_two_string_separator_format,
-						academicLevels,
-						section.location);
-							
-			} else if (!TextUtils.isEmpty(academicLevels)){
-				levelAndLocationText = academicLevels;
-			} else if (!TextUtils.isEmpty(section.location)){
-				levelAndLocationText = section.location;
-			}
+            String academicLevels = "";
+            if (section.academicLevels != null && section.academicLevels.length > 0) {
+                academicLevels = TextUtils.join(",", section.academicLevels);
+            }
 
-			levelAndLocationView.setText(levelAndLocationText);
-		}
+            String levelAndLocationText = "";
+            TextView levelAndLocationView = (TextView) view.findViewById(R.id.academic_level_and_location);
+            if (!TextUtils.isEmpty(academicLevels) && !TextUtils.isEmpty(section.location)) {
+                levelAndLocationText = getString(R.string.default_two_string_separator_format,
+                        academicLevels,
+                        section.location);
+
+            } else if (!TextUtils.isEmpty(academicLevels)) {
+                levelAndLocationText = academicLevels;
+            } else if (!TextUtils.isEmpty(section.location)) {
+                levelAndLocationText = section.location;
+            }
+
+            levelAndLocationView.setText(levelAndLocationText);
+
+            // Available/Capacity images & text
+            if (section.available != null && section.capacity != null) {
+                String capacityText = getString(R.string.remaining_capacity,
+                                        section.available,
+                                        section.capacity);
+                Drawable meterImage = null;
+                meterImage = RegistrationDetailFragment.getMeterImage(section, this);
+
+                RelativeLayout seatsAvailView = (RelativeLayout) view.findViewById(R.id.seats_available_box);
+                seatsAvailView.setVisibility(View.VISIBLE);
+                if (meterImage != null) {
+                    Utils.enableMirroredDrawable(meterImage);
+                    ((ImageView) seatsAvailView.findViewById(R.id.seats_available_image)).setImageDrawable(meterImage);
+                }
+                ((TextView) seatsAvailView.findViewById(R.id.seats_available_text)).setText(capacityText);
+            }
+        }
 
 		if (!TextUtils.isEmpty(section.sectionTitle)) {
 			TextView sectionTitleView = (TextView) view.findViewById(R.id.section_title);

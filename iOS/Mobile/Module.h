@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *properties;
 @property (nonatomic, retain) NSSet *roles;
+@property (nonatomic, retain) NSNumber * homeScreenOrder;
 @end
 
 @interface Module (CoreDataGeneratedAccessors)

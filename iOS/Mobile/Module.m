@@ -21,5 +21,6 @@
 @dynamic type;
 @dynamic properties;
 @dynamic roles;
+@dynamic homeScreenOrder;
 
 @end

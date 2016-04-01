@@ -18,13 +18,12 @@
 {
     UIColor *uiColorPrimary = [UIColor primaryColor];
     UIColor *uiColorHeaderTextColor = [UIColor headerTextColor];
-    UIColor *uiColorAccentColor = [UIColor accentColor];
-    UIColor *uiColorSubheaderTextColor = [UIColor subheaderTextColor];
+
 
     [[UINavigationBar appearance] setBarTintColor:uiColorPrimary];
     [[UINavigationBar appearance] setTintColor:uiColorHeaderTextColor];
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil]
-     setTintColor:uiColorHeaderTextColor];
+     setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:
      @{NSForegroundColorAttributeName : uiColorHeaderTextColor }];
     [UINavigationBar appearance].translucent = NO;
@@ -38,12 +37,13 @@
     [[UIToolbar appearance] setTintColor:uiColorPrimary];
     [UIToolbar appearance].translucent = NO;
     
+    
+    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1.0]];
+    [[UITabBar appearance] setTintColor:uiColorPrimary];
+    [UITabBar appearance].translucent = NO;
+    
     [[UIPageControl appearance] setBackgroundColor:uiColorPrimary];
-    
-    [[UITabBar appearance] setBarTintColor:uiColorPrimary];
-    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    
-    
+
     id configurationSelectionNavigationBarAppearance = [UINavigationBar appearanceWhenContainedIn:[ConfigurationSelectionNavigationController class], nil];
     [configurationSelectionNavigationBarAppearance setBarTintColor:
      [UIColor defaultPrimaryColor]];
@@ -54,8 +54,11 @@
     id configurationSelectionSearchBarAppearance = [UISearchBar appearanceWhenContainedIn:[ConfigurationSelectionViewController class], nil];
     [configurationSelectionSearchBarAppearance setBarTintColor: [UIColor defaultPrimaryColor]];
 
-    [[CalendarViewDayEventView appearance] setBackgroundColor:uiColorAccentColor];
-    [[CalendarViewDayEventView appearance] setFontColor:uiColorSubheaderTextColor];
+//    [[CalendarViewDayEventView appearance] setBackgroundColor:uiColorAccentColor];
+//    [[CalendarViewDayEventView appearance] setFontColor:uiColorSubheaderTextColor];
+    [[CalendarViewDayEventView appearance] setBackgroundColor:[UIColor colorWithRed:0.30 green:0.30 blue:0.30 alpha:.85]];
+    [[CalendarViewDayEventView appearance] setFontColor:[UIColor whiteColor]];
+
     
 }
 

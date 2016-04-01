@@ -89,6 +89,9 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
                 [module addRolesObject:managedRole];
             }
         }
+        if([dictionary objectForKey:@"homeScreenOrder"] != [NSNull null]) {
+            module.homeScreenOrder = [NSNumber numberWithInt:[[dictionary objectForKey:@"homeScreenOrder"] intValue]];
+        }
         
         
         for (id key in [dictionary allKeys]) {
@@ -102,14 +105,46 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
             } else if([key isEqualToString:@"access"]) {
             } else {
                 if([value isKindOfClass:[NSString class]]) {
-                    [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
+                    [self storeString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
                 } else if([value isKindOfClass:[NSDictionary class]]) {
-                    [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext];
+                    [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext key:key];
                 } else if([value isKindOfClass:[NSArray class]]) {
                     [self parseArray:value forModule:module inManagedObjectContext:managedObjectContext key:key];
                 }
             }
         }
+    }
+}
+
++(void) parseDictionary:(NSDictionary *)dictionary forModule:(Module *)module inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext key:(NSString *) key
+
+{
+    if([module.type isEqualToString:@"directory"]) {
+        if ([key isEqualToString:@"directories45"]) {
+            NSMutableArray *directoriesToUse = [NSMutableArray new];
+            for(NSString *key in [dictionary allKeys]) {
+                id value = [dictionary objectForKey:key];
+                if( [value isEqualToString:@"true"]) {
+                    [directoriesToUse addObject:key];
+                }
+            }
+            [self storeString:[directoriesToUse componentsJoinedByString:@","] withKey:@"directories" forModule:module inManagedObjectContext:managedObjectContext];
+        } else {
+            [self parseDictionary:dictionary forModule:module inManagedObjectContext:managedObjectContext];
+        }
+    } else if([module.type isEqualToString:@"appLauncher"]) {
+        if([key isEqualToString:@"ios"]) {
+            if(dictionary[@"app"][@"url"] != [NSNull null]) {
+                NSString *app = dictionary[@"app"][@"url"];
+                [self storeString:app withKey:@"appUrl" forModule:module inManagedObjectContext:managedObjectContext];
+            }
+            if(dictionary[@"store"][@"url"] != [NSNull null]) {
+                NSString *store = dictionary[@"store"][@"url"];
+                [self storeString:store withKey:@"storeUrl" forModule:module inManagedObjectContext:managedObjectContext];
+            }
+        }
+    } else {
+        [self parseDictionary:dictionary forModule:module inManagedObjectContext:managedObjectContext];
     }
 }
 
@@ -119,16 +154,16 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
     for(NSString *key in [dictionary allKeys]) {
         id value = [dictionary objectForKey:key];
         if([value isKindOfClass:[NSString class]]) {
-            [self parseString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
+            [self storeString:value withKey:key forModule:module inManagedObjectContext:managedObjectContext];
         } else if([value isKindOfClass:[NSDictionary class]]) {
-            [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext];
+            [self parseDictionary:value forModule:module inManagedObjectContext:managedObjectContext key:key];
         } else if([value isKindOfClass:[NSArray class]]) {
             [self parseArray:value forModule:module inManagedObjectContext:managedObjectContext key:key];
         }
     }
 }
 
-+(void) parseString:(NSString *)value withKey:(NSString *)key forModule:(Module *)module inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
++(void) storeString:(NSString *)value withKey:(NSString *)key forModule:(Module *)module inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     ModuleProperty *managedProperty = [NSEntityDescription insertNewObjectForEntityForName:@"ModuleProperty" inManagedObjectContext:managedObjectContext];
     managedProperty.name = key;
@@ -181,6 +216,5 @@ inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext withKey:(N
         }
     }
 }
-
 
 @end

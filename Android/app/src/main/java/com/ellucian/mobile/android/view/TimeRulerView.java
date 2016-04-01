@@ -5,20 +5,21 @@
 package com.ellucian.mobile.android.view;
 
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
-import android.graphics.Paint.Style;
 import android.graphics.Typeface;
-import android.text.format.Time;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.util.Utils;
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Custom view that draws a vertical time "ruler" representing the chronological
@@ -27,14 +28,15 @@ import android.view.View;
  */
 public class TimeRulerView extends View {
 
-    public final int mHeaderWidth = 120;
-    private final int mHourHeight = 180;
-    private final int mLabelTextSize = 24;
-    private final int mLabelPaddingLeft = 0;
-    private final int mLabelColor = Color.BLACK;
-    private final int mDividerColor = Color.LTGRAY;
+    public final int mHeaderWidth = 200;
+    private static final int mHourHeight = 180;
+    private final int mLabelTextSize = 35;
+    private final int mLabelPaddingLeft = 20;
+    private final int mHourTextColor = Utils.getColorHelper(getContext(), R.color.list_title_text_color);
+    private final int mDividerLineColor = Utils.getColorHelper(getContext(), R.color.list_title_text_color);
     private final int mStartHour = 0;
     private final int mEndHour = 24;
+    public static final int mHourPadding = 30;
     
     private static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
 
@@ -56,11 +58,21 @@ public class TimeRulerView extends View {
      * milliseconds since epoch).
      */
     public int getTimeVerticalOffset(long timeMillis) {
-        Time time = new Time(CONFERENCE_TIME_ZONE.getID());
-        time.set(timeMillis);
+        Calendar calendar = GregorianCalendar.getInstance(CONFERENCE_TIME_ZONE);
+        calendar.setTimeInMillis(timeMillis);
 
-        final int minutes = ((time.hour - mStartHour) * 60) + time.minute;
+        final int minutes = ((calendar.get(Calendar.HOUR_OF_DAY) - mStartHour) * 60) + calendar.get(Calendar.MINUTE);
         return (minutes * mHourHeight) / 60;
+    }
+
+    /**
+     *
+     * Round down to the previous hour, given a y-axis position.
+     * The logic is reverse of getTimeVerticalOffset.
+     */
+    public static int getPreviousHourOffset(int yPosition) {
+        int previousHour = (int) Math.floor((yPosition-mHourPadding)/mHourHeight);
+        return previousHour * mHourHeight;
     }
 
     @Override
@@ -68,13 +80,14 @@ public class TimeRulerView extends View {
         final int hours = mEndHour - mStartHour;
 
         int width = mHeaderWidth;
-        int height = mHourHeight * hours;
+        int height = (mHourHeight * hours) + (mHourPadding * 2);
 
         setMeasuredDimension(resolveSize(width, widthMeasureSpec),
                 resolveSize(height, heightMeasureSpec));
     }
 
-    private final Paint mDividerPaint = new Paint();
+    private final Paint mHourDivider = new Paint();
+    private final Paint mHalfHourDivider = new Paint();
     private final Paint mLabelPaint = new Paint();
 
     @Override
@@ -83,19 +96,23 @@ public class TimeRulerView extends View {
 
         final int hourHeight = mHourHeight;
 
-        final Paint dividerPaint = mDividerPaint;
-        dividerPaint.setColor(mDividerColor);
-        dividerPaint.setStyle(Style.FILL);
+        final Paint hourDivider = mHourDivider;
+        hourDivider.setColor(mDividerLineColor);
+        hourDivider.setStrokeWidth(2);
+        hourDivider.setStyle(Paint.Style.FILL);
+
+        final Paint halfHourDivider = mHalfHourDivider;
+        halfHourDivider.setColor(mDividerLineColor);
 
         final Paint labelPaint = mLabelPaint;
-        labelPaint.setColor(mLabelColor);
+        labelPaint.setColor(mHourTextColor);
         labelPaint.setTextSize(mLabelTextSize);
         labelPaint.setTypeface(Typeface.DEFAULT_BOLD);
         labelPaint.setAntiAlias(true);
 
         final FontMetricsInt metrics = labelPaint.getFontMetricsInt();
         final int labelHeight = Math.abs(metrics.ascent);
-        final int labelOffset = labelHeight + mLabelPaddingLeft;
+        final int labelOffset = labelHeight - mLabelPaddingLeft;
 
         final int right = getRight();
 
@@ -107,13 +124,10 @@ public class TimeRulerView extends View {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         for (int i = 0; i < hours; i++) {
-            final int dividerY = hourHeight * i;
-            final int nextDividerY = hourHeight * (i + 1);
-            canvas.drawLine(0, dividerY, right, dividerY, dividerPaint);
-
-            // draw text title for timestamp
-            canvas.drawRect(0, dividerY, mHeaderWidth, nextDividerY, dividerPaint);
-
+            final int dividerY = (hourHeight * i) + mHourPadding;
+            canvas.drawLine(mHeaderWidth, dividerY, right, dividerY, hourDivider);
+            canvas.drawLine(mHeaderWidth, dividerY+(hourHeight/2), right, dividerY+(hourHeight/2), halfHourDivider);
+            
             final int hour = mStartHour + i;
             calendar.set(Calendar.HOUR_OF_DAY, hour);
             String label;

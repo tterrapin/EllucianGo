@@ -4,59 +4,46 @@
 
 package com.ellucian.mobile.android.view;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 import android.content.Context;
-import android.text.format.DateUtils;
-import android.widget.Button;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.ellucian.mobile.android.util.Utils;
+import com.ellucian.elluciango.R;
 
 /**
- * Custom view that represents a {@link Blocks#BLOCK_ID} instance, including its
+ * Custom view that represents a course section instance, including its
  * title and time span that it occupies. Usually organized automatically by
  * {@link BlocksLayout} to match up against a {@link TimeRulerView} instance.
  */
-public class BlockView extends Button {
-    private static final int TIME_STRING_FLAGS = DateUtils.FORMAT_SHOW_DATE
-            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY |
-            DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_ABBREV_TIME;
-
-    private String mBlockId;
-    private String mTitle;
+public class BlockView extends LinearLayout {
     private long mStartTime;
     private long mEndTime;
     private int mColumn;
-
-    private static final TimeZone CONFERENCE_TIME_ZONE = Calendar.getInstance().getTimeZone();
 
     public BlockView(Context context) {
     	super(context);
     }
 
-    public BlockView(Context context, String blockId, String title, long startTime,
-            long endTime, int column) {
+    public BlockView(Context context, String courseLabel, String title, String location,
+                     String time, long startTime, long endTime, int column) {
         super(context);
 
-        mBlockId = blockId;
-        mTitle = title;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.course_block_layout, this, true);
+
+        ((TextView) findViewById(R.id.course_label)).setText(courseLabel);
+        ((TextView) findViewById(R.id.course_title)).setText(title);
+        ((TextView) findViewById(R.id.course_location)).setText(location);
+        ((TextView) findViewById(R.id.course_time)).setText(time);
+
         mStartTime = startTime;
         mEndTime = endTime;
         mColumn = column;
-        
-        setText(mTitle);
-        setTextAppearance(context, android.R.style.TextAppearance_Small);
-        setTextColor(Utils.getSubheaderTextColor(context));
-    }
+        Log.d("BlockView", "Column #:" + mColumn);
 
-    public String getBlockId() {
-        return mBlockId;
-    }
-
-    public String getBlockTimeString() {
-        TimeZone.setDefault(CONFERENCE_TIME_ZONE);
-        return DateUtils.formatDateTime(getContext(), mStartTime, TIME_STRING_FLAGS);
+        setBackgroundResource(R.drawable.courses_block);
     }
 
     public long getStartTime() {
@@ -65,6 +52,10 @@ public class BlockView extends Button {
 
     public long getEndTime() {
         return mEndTime;
+    }
+
+    public void setColumn(int column) {
+        this.mColumn = column;
     }
 
     public int getColumn() {

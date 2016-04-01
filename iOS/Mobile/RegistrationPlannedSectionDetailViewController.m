@@ -125,6 +125,53 @@
         }
         
         
+        if (self.availableSeatsView && self.registrationPlannedSection.available && self.registrationPlannedSection.capacity && self.registrationPlannedSection.capacity > 0) {
+            self.availableSeatsView.layer.cornerRadius = 3.0f;
+            self.availableSeatsView.layer.borderColor = [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:1.0].CGColor;
+            self.availableSeatsView.layer.borderWidth = 1.0f;
+            
+            NSNumber *available = self.registrationPlannedSection.available;
+            NSNumber *capacity = self.registrationPlannedSection.capacity;
+            
+            
+            float z = [available floatValue] / [capacity floatValue];
+            float delta = 1.0f / 6.0f;
+            if ([available intValue] <= 0) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-full"];
+            } else if(z <= delta) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-5-full"];
+            } else if(z <= delta*2) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-4-full"];
+            } else if(z <= delta*3) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-3-full"];
+            } else if(z <= delta*4) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-2-full"];
+            } else if(z <= delta*5) {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-1-full"];
+            } else {
+                self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-default"];
+            }
+            
+            if ([self.availableSeatsMeterImage.image respondsToSelector:@selector(imageFlippedForRightToLeftLayoutDirection)]) {
+                if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.availableSeatsMeterImage.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+                    self.availableSeatsMeterImage.image = self.availableSeatsMeterImage.image.imageFlippedForRightToLeftLayoutDirection;
+                }
+            }
+            
+            self.availableSeatsLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"available seats/capacity", @"Localizable", [NSBundle mainBundle], @"%@/%@", @"available seats/capacity"), available, capacity];
+            self.availableSeatsSpacingConstraint.constant = 10;
+            self.availableSeatsViewHeightConstraint.constant = 16;
+            self.availableSeatsLabelLabel.hidden = NO;
+            self.availableSeatsView.hidden = NO;
+        } else {
+            self.availableSeatsSpacingConstraint.constant = 0;
+            self.availableSeatsViewHeightConstraint.constant = 0;
+            self.availableSeatsLabelLabel.hidden = YES;
+            self.availableSeatsView.hidden = YES;
+        }
+
+        
+        
         //self.meetingLabel.text = @"Meets";
         [self extractMeetingContent];
 
@@ -434,15 +481,17 @@
             meetingContent = [meetingContent stringByAppendingString:@"\r"];
             meetingContent = [meetingContent stringByAppendingString:location];
         }
-        if(self.registrationPlannedSection.location) {
+        if(mp.campusId) {
             NSError *error;
             NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"RegistrationLocation"];
-            request.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@ AND code == %@", self.module.internalKey, self.registrationPlannedSection.location];
+            request.predicate = [NSPredicate predicateWithFormat:@"moduleId == %@ AND code == %@", self.module.internalKey, mp.campusId];
             RegistrationLocation *coreDataLocation = [[self.module.managedObjectContext executeFetchRequest:request error:&error] lastObject];
+            meetingContent = [meetingContent stringByAppendingString:@"\r"];
 
             if(coreDataLocation) {
-                meetingContent = [meetingContent stringByAppendingString:@"\r"];
                 meetingContent = [meetingContent stringByAppendingString:coreDataLocation.name];
+            } else {
+                meetingContent = [meetingContent stringByAppendingString:mp.campusId];
             }
         }
     
@@ -724,6 +773,45 @@
             self.creditsContent.text = [ceusText stringByAppendingString:NSLocalizedString(@"CEU", @"CEU (singular) label for registration")];
         }
         
+    }
+    
+    if (self.availableSeatsView && self.registrationPlannedSection.available && self.registrationPlannedSection.capacity && self.registrationPlannedSection.capacity > 0) {
+        self.availableSeatsView.layer.cornerRadius = 3.0f;
+        self.availableSeatsView.layer.borderColor = [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:1.0].CGColor;
+        self.availableSeatsView.layer.borderWidth = 1.0f;
+        
+        NSNumber *available = self.registrationPlannedSection.available;
+        NSNumber *capacity = self.registrationPlannedSection.capacity;
+        
+        
+        float z = [available floatValue] / [capacity floatValue];
+        float delta = 1.0f / 6.0f;
+        if ([available intValue] <= 0) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-full"];
+        } else if(z <= delta) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-5-full"];
+        } else if(z <= delta*2) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-4-full"];
+        } else if(z <= delta*3) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-3-full"];
+        } else if(z <= delta*4) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-2-full"];
+        } else if(z <= delta*5) {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-1-full"];
+        } else {
+            self.availableSeatsMeterImage.image = [UIImage imageNamed:@"seats-available-default"];
+        }
+
+        self.availableSeatsLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"available seats/capacity", @"Localizable", [NSBundle mainBundle], @"%@/%@", @"available seats/capacity"), available, capacity];
+        self.availableSeatsSpacingConstraint.constant = 10;
+        self.availableSeatsViewHeightConstraint.constant = 16;
+        self.availableSeatsLabelLabel.hidden = NO;
+        self.availableSeatsView.hidden = NO;
+    } else {
+        self.availableSeatsSpacingConstraint.constant = 0;
+        self.availableSeatsViewHeightConstraint.constant = 0;
+        self.availableSeatsLabelLabel.hidden = YES;
+        self.availableSeatsView.hidden = YES;
     }
     
     //self.meetingLabel.text = @"Meets";

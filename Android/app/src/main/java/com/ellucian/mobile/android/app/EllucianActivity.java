@@ -4,6 +4,7 @@
 
 package com.ellucian.mobile.android.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -39,17 +39,24 @@ import android.widget.ListView;
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.client.MobileClient;
+import com.ellucian.mobile.android.client.configuration.LastUpdatedResponse;
 import com.ellucian.mobile.android.client.services.AuthenticateUserIntentService;
 import com.ellucian.mobile.android.client.services.ConfigurationUpdateService;
 import com.ellucian.mobile.android.util.ConfigurationProperties;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 @SuppressWarnings("JavaDoc")
 public abstract class EllucianActivity extends AppCompatActivity implements DrawerLayoutActivity {
 	private static final String TAG = EllucianActivity.class.getSimpleName();
 
-	private static final long MILLISECONDS_PER_DAY = 24*60*60*1000;
+    private static final long REFRESH_INTERVAL = 20*60*1000;  // 20 minutes
 	public String moduleId;
 	public String moduleName;
 	public String requestUrl;
@@ -107,6 +114,12 @@ public abstract class EllucianActivity extends AppCompatActivity implements Draw
     	configureNavigationDrawer();
     }
 
+    public void setContentViewHomeScreen(int layoutResId) {
+        super.setContentView(layoutResId);
+        configureTransparentToolbar(Utils.getPrimaryColor(this));
+        configureNavigationDrawer();
+    }
+
 	public void configureNavigationDrawer() {
 		DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     	ListView drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -145,7 +158,9 @@ public abstract class EllucianActivity extends AppCompatActivity implements Draw
 			bar.setSplitBackgroundDrawable(new ColorDrawable(primaryColor));
 			bar.setStackedBackgroundDrawable(new ColorDrawable(primaryColor));
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-            tabLayout.setBackgroundColor(primaryColor);
+            if (tabLayout != null) {
+                tabLayout.setBackgroundColor(primaryColor);
+            }
 		}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -162,13 +177,35 @@ public abstract class EllucianActivity extends AppCompatActivity implements Draw
 
         setTitle(bar.getTitle());
 
-    	if(!Utils.hasDefaultMenuIcon(this)) {
-    		Drawable menuIcon = Utils.getMenuIcon(this);
-    		if (menuIcon != null) {
-    			bar.setIcon(menuIcon);
-    		}
-    	}
     	invalidateOptionsMenu();
+    }
+
+    private void configureTransparentToolbar(int primaryColor) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            bar.setSplitBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            bar.setStackedBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            bar.setDisplayShowTitleEnabled(false);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float[] hsv = new float[3];
+            int darkerColor = primaryColor;
+            Color.colorToHSV(darkerColor, hsv);
+            hsv[2] *= 0.8f; // value component
+            darkerColor = Color.HSVToColor(hsv);
+
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(darkerColor);
+        }
+
+        invalidateOptionsMenu();
     }
 
     public EllucianApplication getEllucianApp() {
@@ -354,23 +391,29 @@ public abstract class EllucianActivity extends AppCompatActivity implements Draw
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		String tag = getClass().getName();
-		
+
 		SharedPreferences preferences = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE);
-		String configUrl = preferences.getString(Utils.CONFIGURATION_URL, null);
-		
-		long lastUpdate = preferences.getLong(Utils.CONFIGURATION_LAST_UPDATE, 0);
-		Log.d(tag, "last update time: " + lastUpdate);
-		
-		if(lastUpdate != 0 && (lastUpdate + MILLISECONDS_PER_DAY) < System.currentTimeMillis()) {
-			Log.d(tag, "24 hours past since last update, updating configuration");
-			Intent intent = new Intent(this, ConfigurationUpdateService.class);
-			intent.putExtra(Extra.CONFIG_URL, configUrl);			
-			intent.putExtra(ConfigurationUpdateService.REFRESH, true);	
-			startService(intent);
-		}
-		
+		String cloudConfigUrl = preferences.getString(Utils.CONFIGURATION_URL, null);
+        String mobileServerConfigUrl = preferences.getString(Utils.MOBILESERVER_CONFIG_URL, null);
+
+        // Check for updated configs every [CONFIG_REFRESH_CHECK] millis
+        long configLastChecked = preferences.getLong(Utils.CONFIGURATION_LAST_CHECKED, 0);
+        Log.d(TAG, "config last checked: " + configLastChecked);
+
+        if (configLastChecked != 0 && (configLastChecked + REFRESH_INTERVAL) < System.currentTimeMillis()) {
+            Log.d(TAG, "Go see if config has been updated.");
+            updateCloudConfigIfNecessary(cloudConfigUrl, this);
+            if (!TextUtils.isEmpty(mobileServerConfigUrl)) {
+                updateMobileServerConfigIfNecessary(mobileServerConfigUrl, this);
+            }
+
+            // update config last checked time to current time.
+            long updateCheckedTime = System.currentTimeMillis();
+            Utils.addLongToPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_LAST_CHECKED,
+                    updateCheckedTime);
+            Log.d(TAG, "Configuration last checked: " + updateCheckedTime);
+        }
+
 		//notifications
 		if (getEllucianApp().isUserAuthenticated()) {
 			if (System.currentTimeMillis() > getEllucianApp().getLastNotificationsCheck() + EllucianApplication.DEFAULT_NOTIFICATIONS_REFRESH) {
@@ -439,6 +482,88 @@ public abstract class EllucianActivity extends AppCompatActivity implements Draw
 		}
 		return ret;
 	}
+
+    private void updateCloudConfigIfNecessary(final String cloudConfigUrl, final Activity activity) {
+        Observable<String> fetchLastUpdated = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                MobileClient client = new MobileClient(activity);
+                try {
+                    LastUpdatedResponse response = client.getLastUpdated(cloudConfigUrl + "?onlyLastUpdated=true");
+                    if (response != null) {
+                        if (response.lastUpdated != null) {
+                            subscriber.onNext(response.lastUpdated); // Emit the contents of the URL
+                        }
+                    }
+                    subscriber.onCompleted(); // Nothing more to emit
+                } catch (Exception e) {
+                    subscriber.onError(e); // In case there are network errors
+                }
+            }
+        });
+
+        fetchLastUpdated.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String currentLastUpdated) {
+                        Log.d(TAG, "Live Cloud Config lastUpdated:  " + currentLastUpdated);
+                        String savedLastUpdated = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE)
+                                .getString(Utils.CONFIGURATION_LAST_UPDATED, null);
+
+                        Log.d(TAG, "Cached Cloud Config lastUpdated: " + savedLastUpdated);
+                        if (!TextUtils.equals(currentLastUpdated,savedLastUpdated)) {
+                            Log.d(TAG, "Cloud Config out of date. Begin update.");
+                            Intent intent = new Intent(activity, ConfigurationUpdateService.class);
+                            intent.putExtra(Extra.CONFIG_URL, cloudConfigUrl);
+                            intent.putExtra(ConfigurationUpdateService.REFRESH, true);
+                            startService(intent);
+                        }
+                    }
+                });
+
+    }
+
+    private void updateMobileServerConfigIfNecessary(final String mobileServerConfigUrl, final Activity activity) {
+        Observable<String> fetchLastUpdated = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                MobileClient client = new MobileClient(activity);
+                try {
+                    LastUpdatedResponse response = client.getLastUpdated(mobileServerConfigUrl + "?onlyLastUpdated=true");
+                    if (response != null) {
+                        if (response.lastUpdated != null) {
+                            subscriber.onNext(response.lastUpdated); // Emit the contents of the URL
+                        }
+                    }
+                    subscriber.onCompleted(); // Nothing more to emit
+                }catch(Exception e){
+                    subscriber.onError(e); // In case there are network errors
+                }
+            }
+        });
+
+        fetchLastUpdated.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String currentLastUpdated) {
+                        Log.d(TAG, "Live MobileServer Config lastUpdated:  " + currentLastUpdated);
+                        String savedLastUpdated = getSharedPreferences(Utils.CONFIGURATION, MODE_PRIVATE)
+                                .getString(Utils.MOBILESERVER_CONFIG_LAST_UPDATE, null);
+
+                        Log.d(TAG, "Cached MobileServer Config lastUpdated: " + savedLastUpdated);
+                        if (!TextUtils.equals(currentLastUpdated,savedLastUpdated)) {
+                            Log.d(TAG, "MobileServer Config out of date. Begin update.");
+                            Intent intent = new Intent(activity, ConfigurationUpdateService.class);
+                            intent.putExtra(ConfigurationUpdateService.REFRESH_MOBILESERVER_ONLY, true);
+                            startService(intent);
+                        }
+                    }
+                });
+
+    }
+
 }
 
 

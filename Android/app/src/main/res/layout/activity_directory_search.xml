@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright 2016 Ellucian Company L.P. and its affiliates.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout android:id="@+id/frame_main"
+                 xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent">
+
+    </FrameLayout>
+
+</LinearLayout>

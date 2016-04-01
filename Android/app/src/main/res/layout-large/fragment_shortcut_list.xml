@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2016 Ellucian Company L.P. and its affiliates.
+  -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/shortcut_parent_layout"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="154dp"
+        android:background="@drawable/shortcut_list_top_line">
+
+        <LinearLayout
+            android:id="@+id/shortcut_ll"
+            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

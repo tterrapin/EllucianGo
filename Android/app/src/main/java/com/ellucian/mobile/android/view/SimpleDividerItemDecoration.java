@@ -11,12 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ellucian.elluciango.R;
+import com.ellucian.mobile.android.util.Utils;
 
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private final Drawable mDivider;
 
     public SimpleDividerItemDecoration(Context context) {
-        mDivider = context.getResources().getDrawable(R.drawable.line_divider);
+        mDivider = Utils.getDrawableHelper(context, R.drawable.line_divider);
     }
 
     @Override

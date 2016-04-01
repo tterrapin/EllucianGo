@@ -58,22 +58,17 @@ public class Extra {
 	
 	/** Directory Extras */
 	
-	public static final String DIRECTORY_STUDENT_URL = "directoryStudentUrl";
-	public static final String DIRECTORY_FACULTY_URL = "directoryFacultyUrl";
-	public static final String DIRECTORY_TYPE = "directoryType";
-	public static final String DIRECTORY_QUERY = "directoryQuery";
 	public static final String DIRECTORY_DISPLAY_NAME = "directoryDisplayName";
 	public static final String DIRECTORY_TITLE = "directoryTitle";
+    public static final String DIRECTORY_IMAGE_URL = "directoryImage";
 	public static final String DIRECTORY_ADDRESS = "directoryAddress";
-	public static final String DIRECTORY_CITY = "directoryCity";
-	public static final String DIRECTORY_STATE = "directoryState";
-	public static final String DIRECTORY_ZIP = "directoryZip";
 	public static final String DIRECTORY_PHONE = "directoryPhone";
 	public static final String DIRECTORY_MOBILE = "directoryMobile";
 	public static final String DIRECTORY_EMAIL = "directoryEmail";
 	public static final String DIRECTORY_DEPARTMENT = "directoryDepartment";
 	public static final String DIRECTORY_OFFICE = "directoryOffice";
 	public static final String DIRECTORY_ROOM = "directoryRoom";
+    public static final String DIRECTORY_MODULE_VERSION = "directoryModuleVersion";
 		
 	/** Maps Extras */
 	
@@ -88,5 +83,7 @@ public class Extra {
 	public static final String NOTIFICATIONS_MODIFICATION_TYPE = "notificationsModificationType";
 	public static final String NOTIFICATIONS_NOTIFICATION_ID = "notificationsNotificationId";
 
+    /** 3rd party App Launcher Extras */
+    public static final String APP_LAUNCHER_STORE_URL = "appLauncherStoreUrl";
 
 }

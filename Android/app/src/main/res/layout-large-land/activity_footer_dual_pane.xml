@@ -21,22 +21,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:divider="?android:attr/dividerHorizontal"
+            android:showDividers="middle">
 
-            <FrameLayout
+        <FrameLayout
                 android:id="@+id/frame_main"
-                style="@style/listFrame"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/dual_pane_separator" />
+                android:layout_weight="4"/>
 
             <FrameLayout
                 android:id="@+id/frame_extra"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                tools:ignore="InconsistentLayout" />
+                android:layout_weight="5" />
 
         </LinearLayout>
 

@@ -26,6 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:paddingTop="20dp"
                 android:orientation="vertical">
 
                 <!--<ImageView-->
@@ -39,11 +40,16 @@
                 <!-- NAME -->
                 <TextView
                     android:id="@+id/name"
-                    style="@style/numberTitle"
+                    style="@style/cardDetailTitle"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true"
+                    android:gravity="center_horizontal"/>
 
                 <!-- TYPE -->
                 <TextView
@@ -69,12 +75,13 @@
                         android:visibility="gone">
 
                         <ImageView
+                            android:id="@+id/numbers_phone_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:layout_weight="1"
                             android:contentDescription="@string/directory_icon_description"
-                            android:src="@drawable/ic_phone_black_24dp"/>
+                            android:src="@drawable/ic_phone_24dp"/>
 
                         <LinearLayout
                             style="@style/cardTableLayout"
@@ -115,12 +122,13 @@
                         android:visibility="gone">
 
                         <ImageView
+                            android:id="@+id/numbers_email_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:layout_weight="1"
                             android:contentDescription="@string/directory_icon_description"
-                            android:src="@drawable/ic_email_black_24dp"/>
+                            android:src="@drawable/ic_email_24dp"/>
 
                         <LinearLayout
                             style="@style/cardTableLayout"
@@ -161,13 +169,13 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:id="@+id/showMap"
+                            android:id="@+id/numbers_location_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:layout_weight="1"
                             android:contentDescription="@string/directory_icon_description"
-                            android:src="@drawable/ic_location_on_black_24dp"/>
+                            android:src="@drawable/ic_place_24dp"/>
 
                         <LinearLayout
                             style="@style/cardTableLayout"
@@ -208,12 +216,13 @@
                         android:visibility="gone">
 
                         <ImageView
+                            android:id="@+id/numbers_directions_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:layout_weight="1"
                             android:contentDescription="@string/directory_icon_description"
-                            android:src="@drawable/ic_directions_black_24dp"/>
+                            android:src="@drawable/ic_directions_24dp"/>
 
                         <LinearLayout
                             style="@style/cardTableLayout"

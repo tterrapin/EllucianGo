@@ -5,6 +5,7 @@
 package com.ellucian.mobile.android.multimedia;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -45,9 +46,9 @@ public class AudioFragment extends EllucianFragment implements MediaController.M
 	private boolean activityPaused;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = getActivity();
 		((AudioActivity)activity).setFragment(this);
 	}
 	

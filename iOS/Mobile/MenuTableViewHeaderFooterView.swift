@@ -40,7 +40,7 @@ class MenuTableViewHeaderFooterView : UITableViewHeaderFooterView {
                 collapsibleButton!.addTarget(self, action: Selector("toggleHeader"), forControlEvents: .TouchUpInside)
                 self.contentView.addSubview(collapsibleButton!)
                 collapsibleButton!.translatesAutoresizingMaskIntoConstraints = false
-                collapsibleButton!.accessibilityLabel = NSLocalizedString("Collapse menu section", comment:"Accessibility label for collapse menu section button")
+                collapsibleButton!.accessibilityLabel = NSLocalizedString("Toggle menu section", comment:"Accessibility label for toggle menu section button")
             }
 
             if AppearanceChanger.isIOS8AndRTL() {

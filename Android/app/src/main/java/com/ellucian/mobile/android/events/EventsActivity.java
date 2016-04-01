@@ -4,9 +4,12 @@
 
 package com.ellucian.mobile.android.events;
 
+import android.app.Activity;
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +21,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -52,13 +57,16 @@ import java.util.Locale;
 public class EventsActivity extends EllucianActivity implements LoaderManager.LoaderCallbacks<Cursor>,
 	CategoryDialogFragment.CategoryDialogListener {
 	
-	private SimpleCursorAdapter adapter;
+	private final Activity activity = this;
+    private SimpleCursorAdapter adapter;
 	private EllucianDefaultListFragment mainFragment;
 	private DialogFragment dialogFragment;
 	private String[] allCategories;
 	private String[] filteredCategories;
 	private String query;
 	private boolean resetListPosition;
+    private EventsIntentServiceReceiver eventsIntentServiceReceiver;
+    private boolean showSpinner = true;
     private static final String[] eventsColumns = new String[] {
 		Events._ID,
 		Events.EVENTS_TITLE, 
@@ -97,7 +105,8 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 		FragmentTransaction transaction = manager.beginTransaction();
 		mainFragment =  (EllucianDefaultListFragment) manager.findFragmentByTag("EventsListFragment");
 		
-		if (mainFragment == null) {
+        registerEventsServiceReceiver();
+        if (mainFragment == null) {
 			mainFragment = EllucianDefaultListFragment.newInstance(this, EventsListFragment.class.getName(), null);
 			
 			mainFragment.setListAdapter(adapter);
@@ -166,12 +175,16 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
         Intent serviceIntent = new Intent(this, EventsIntentService.class);
         serviceIntent.putExtra(Extra.MODULE_ID, moduleId);
         serviceIntent.putExtra(Extra.REQUEST_URL, requestUrl);
-        startService(serviceIntent); 
+        startService(serviceIntent);
+        if (showSpinner) {
+            Utils.showProgressIndicator(this);
+        }
     }
     
     @Override
     protected void onPause() {
     	super.onPause();
+        unregisterEventsServiceReceiver();
     	if (filteredCategories != null) {
 	    	StringBuilder categoriesString = new StringBuilder();
 	        for (int i = 0; i < filteredCategories.length; i++) {
@@ -191,7 +204,13 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
     	}
 
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerEventsServiceReceiver();
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
@@ -302,6 +321,12 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 			Log.d("EventsActivity.onLoadFinished", "Finished loading cursor.  Swapping cursor in adapter containing " + data.getCount());
 			adapter.swapCursor(data);
 			createNotifyHandler(mainFragment);
+            if (data.getCount() == 0) {
+                showSpinner = true;
+            } else {
+                showSpinner = false;
+                Utils.hideProgressIndicator(this);
+            }
 			break;
 		case 1:
 			Log.d("EventsActivity.onLoadFinished", "Finished loading cursor.  Updating categories");
@@ -435,6 +460,21 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 				category += " ";
 				((TextView) view).setText(category);
 				return true;
+            } else if (index == cursor.getColumnIndex(Events.EVENTS_DESCRIPTION)) {
+                // Convert String to HTML
+                String description = cursor.getString(index);
+                if (!TextUtils.isEmpty(description )) {
+                    // Strip out breaks so we show more content in the list
+                    description =  description.replaceAll("<br />", "")
+                            .replaceAll("<br>", "")
+                            .replaceAll("<br/>", "")
+                            .replaceAll("</br>", "");
+                    String asHtml = Html.fromHtml((String) description).toString();
+                    ((TextView) view).setText(asHtml);
+                } else {
+                    ((TextView) view).setText(null);
+                }
+                return true;
 			} else {
 				return false;
 			}
@@ -458,5 +498,41 @@ public class EventsActivity extends EllucianActivity implements LoaderManager.Lo
 		resetListPosition = true;
 		getSupportLoaderManager().restartLoader(0, null, this);
 	}
+
+    private void registerEventsServiceReceiver() {
+        if(eventsIntentServiceReceiver == null) {
+            Log.d("EventsActivity.RegisterEventsServiceReceiver", "Registering new service receiver");
+            eventsIntentServiceReceiver = new EventsIntentServiceReceiver();
+            IntentFilter filter = new IntentFilter(EventsIntentService.ACTION_FINISHED);
+            LocalBroadcastManager.getInstance(this).registerReceiver(eventsIntentServiceReceiver, filter);
+        }
+    }
+
+    private void unregisterEventsServiceReceiver() {
+        if(eventsIntentServiceReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(eventsIntentServiceReceiver);
+        }
+    }
+
+    /**
+     * Broadcast receiver which receives notification when the EventsIntentService
+     * is finished performing an update of the data from the web services to the
+     * local database.  Upon successful completion, this receiver will reload
+     * the events data from the local database.
+     *
+     */
+    private class EventsIntentServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean updated = intent.getBooleanExtra(EventsIntentService.PARAM_OUT_DATABASE_UPDATED, false);
+            Log.d("EventsIntentServiceReceiver", "onReceive: database updated = " + updated);
+            if (updated) {
+                Log.d("EventsIntentServiceReceiver.onReceive", "All events retrieved and database updated");
+                Utils.hideProgressIndicator(activity);
+            }
+        }
+
+    }
 
 }

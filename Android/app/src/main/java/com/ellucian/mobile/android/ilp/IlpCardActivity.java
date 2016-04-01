@@ -4,11 +4,11 @@
 
 package com.ellucian.mobile.android.ilp;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,10 +18,11 @@ import com.ellucian.mobile.android.MainActivity;
 import com.ellucian.mobile.android.ModuleType;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
-import com.ellucian.mobile.android.login.QueuedIntentHolder;
 import com.ellucian.mobile.android.ilp.widget.AssignmentsWidgetService;
+import com.ellucian.mobile.android.login.QueuedIntentHolder;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
+import com.ellucian.mobile.android.util.Utils;
 
 public class IlpCardActivity extends EllucianActivity {
     private static final String TAG = IlpCardActivity.class.getSimpleName();
@@ -32,8 +33,11 @@ public class IlpCardActivity extends EllucianActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_default_frame);
 
-        if (!TextUtils.isEmpty(moduleName)) {
+        if (TextUtils.isEmpty(moduleName)) {
             // When coming from Widget, moduleName is not known.
+            String title = Utils.getStringFromPreferences(getApplicationContext(), Utils.CONFIGURATION, Utils.ILP_NAME, null);
+            setTitle(title);
+        } else {
             setTitle(moduleName);
         }
 

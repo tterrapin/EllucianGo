@@ -72,5 +72,11 @@
 - (IBAction)deleteFromCart:(id)sender;
 
 -(void) clearView;
+@property (strong, nonatomic) IBOutlet UIView *availableSeatsView;
+@property (strong, nonatomic) IBOutlet UIImageView *availableSeatsMeterImage;
+@property (strong, nonatomic) IBOutlet UILabel *availableSeatsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *availableSeatsLabelLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *availableSeatsSpacingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *availableSeatsViewHeightConstraint;
 
 @end

@@ -4,8 +4,8 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
+    android:background="@color/main_content_bg"
     android:layout_height="match_parent" >
 	
     <!-- Full page layout - ScrollView only can have one child -->
@@ -13,72 +13,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-    
+
         <!-- Top Layout minus the course description view at bottom -->
 	    <LinearLayout
-	        android:id="@+id/course_details_colored_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:orientation="vertical"
-	        android:padding="8dp" >
+            android:background="@color/sub_header_bg"
+            android:orientation="vertical"
+	        android:padding="@dimen/content_padding" >
 	        
 	        <!-- TITLE -->
 	        <TextView 
-	            android:id="@+id/course_details_title" 
-	            android:layout_width="match_parent"
+	            android:id="@+id/course_details_title"
+                android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	        	style="@style/detailTitle"
-	        	android:paddingLeft="4dp"
-	        	android:paddingStart="4dp"
-				tools:ignore="NewApi,RtlSymmetry" />
+	        	style="@style/detailTitle"/>
 	        
 	        <!-- FROM AND TO DATES -->
 	        <TextView 
-	            android:id="@+id/course_details_dates" 
+	            android:id="@+id/course_details_dates"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:paddingLeft="4dp"
-	            android:paddingStart="4dp"
-				tools:ignore="NewApi,RtlSymmetry" />
+	            android:layout_height="wrap_content" />
+
+        </LinearLayout>
 	        
-	        <!-- MEETING TIMES & LOCATIONS -->
-	        <LinearLayout
-	            android:id="@+id/course_details_meetings_layout"
-	            android:layout_width="match_parent"
-	        	android:layout_height="wrap_content"
-	        	android:orientation="vertical" >
-	        </LinearLayout>
-	        
-	        <!-- FACULTY HEADER LABEL -->
-	        <TextView 
-	            android:id="@+id/course_details_faculty_title"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            style="@style/detailTitle"
-	        	android:text="@string/course_details_faculty"
-	        	android:paddingLeft="4dp"
-	        	android:paddingStart="4dp"
-				tools:ignore="NewApi,RtlSymmetry" />
-	        
-	        <!-- FACULTY LIST -->
-	        <LinearLayout
-	            android:id="@+id/course_details_faculty_layout"
-	            android:layout_width="match_parent"
-	        	android:layout_height="wrap_content"
-	        	android:orientation="vertical"
-	        	android:paddingLeft="4dp"
-	        	android:paddingStart="4dp"
-				tools:ignore="RtlSymmetry">
-	        </LinearLayout>
-	        
-	    </LinearLayout>
-	    
+        <!-- MEETING TIMES & LOCATIONS -->
+        <LinearLayout
+            android:id="@+id/course_details_meetings_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="4dp"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <!-- FACULTY HEADER LABEL -->
+        <TextView
+            android:id="@+id/course_details_faculty_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/sub_header_bg"
+            style="@style/detailTitle"
+            android:text="@string/course_details_faculty"
+            android:padding="@dimen/content_padding" />
+
+        <!-- FACULTY LIST -->
+        <LinearLayout
+            android:id="@+id/course_details_faculty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
 	    <!-- DETAIL TEXT -->
 	    <TextView 
 	        android:id="@+id/course_details_course_description"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:padding="8dp"
+	        android:padding="@dimen/content_padding"
 	        style="@style/detailContent" />
     
     </LinearLayout>

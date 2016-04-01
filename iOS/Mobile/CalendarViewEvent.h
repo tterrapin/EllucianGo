@@ -1,8 +1,16 @@
+//
+//  CalendarViewEvent.h
+//  Mobile
+//
+//  Created by Jason Hocker on 10/6/15.
+//  Copyright © 2015 Ellucian Company L.P. and its affiliates. All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 
-@interface CalendarViewEvent : NSObject {
-    
-}
+
+@interface CalendarViewEvent : NSObject
+
 
 @property (nonatomic,strong) NSString *line1;
 @property (nonatomic,strong) NSString *line2;
@@ -15,5 +23,5 @@
 
 - (NSUInteger)durationInMinutes;
 - (NSUInteger)minutesSinceMidnight;
-
+-(BOOL) isAllDayForDisplayDate;
 @end

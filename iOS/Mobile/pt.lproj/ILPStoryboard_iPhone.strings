@@ -1,8 +1,11 @@
+/* Class = "UILabel"; text = "Label"; ObjectID = "0BY-xi-7fz"; */
+"0BY-xi-7fz.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "2Kk-0E-zy9"; */
+"2Kk-0E-zy9.text" = "Rótulo";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "3TR-0j-Al6"; */
 "3TR-0j-Al6.text" = "Rótulo";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "4Qc-Uz-gjV"; */
-"4Qc-Uz-gjV.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Events"; ObjectID = "6ic-ww-9Ya"; */
 "6ic-ww-9Ya.text" = "Eventos";
@@ -15,9 +18,6 @@
 
 /* Class = "UILabel"; text = "Announcements"; ObjectID = "559-jd-z3t"; */
 "559-jd-z3t.text" = "Comunicados";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "D5f-ve-ddG"; */
-"D5f-ve-ddG.text" = "Rótulo";
 
 /* Class = "UISegmentedControl"; EPr-qe-WsF.segmentTitles[0] = "By Due Date"; ObjectID = "EPr-qe-WsF"; */
 "EPr-qe-WsF.segmentTitles[0]" = "Com data de vencimento";
@@ -52,8 +52,8 @@
 /* Class = "UITabBarItem"; title = "Announcements"; ObjectID = "USn-XQ-OH4"; */
 "USn-XQ-OH4.title" = "Comunicados";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "aUk-f5-GXf"; */
-"aUk-f5-GXf.text" = "Rótulo";
+/* Class = "UILabel"; text = "Label"; ObjectID = "UiY-57-F3b"; */
+"UiY-57-F3b.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "ajb-bR-4fE"; */
 "ajb-bR-4fE.text" = "Rótulo";
@@ -72,6 +72,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "da9-av-Qdh"; */
 "da9-av-Qdh.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "etM-FA-clV"; */
+"etM-FA-clV.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "f7x-y7-vlv"; */
 "f7x-y7-vlv.text" = "Rótulo";
@@ -97,23 +100,20 @@
 /* Class = "UITabBarItem"; title = "Events"; ObjectID = "qwp-A4-5qb"; */
 "qwp-A4-5qb.title" = "Eventos";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "sfW-6i-68b"; */
+"sfW-6i-68b.text" = "Rótulo";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "tHj-Dn-FzH"; */
 "tHj-Dn-FzH.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Location:"; ObjectID = "tPe-jc-4j5"; */
-"tPe-jc-4j5.text" = "Localização:";
+"tPe-jc-4j5.text" = "Local:";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "u3r-Qg-Pnb"; */
 "u3r-Qg-Pnb.text" = "Rótulo";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "uM8-ed-sYi"; */
-"uM8-ed-sYi.text" = "Rótulo";
-
 /* Class = "UILabel"; text = "Label"; ObjectID = "v5i-GP-bia"; */
 "v5i-GP-bia.text" = "Rótulo";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "wju-Gz-sdw"; */
-"wju-Gz-sdw.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "zU2-7F-VwW"; */
 "zU2-7F-VwW.text" = "Rótulo";

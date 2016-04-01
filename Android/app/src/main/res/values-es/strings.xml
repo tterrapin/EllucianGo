@@ -35,6 +35,7 @@
     <string name="menu_header_applications">Aplicaciones</string>
     <string name="menu_header_actions">Acciones</string>
     <string name="menu_header_indicator_description">Indicador de encabezado</string>
+    <string name="menu_information">Información</string>
     <string name="drawer_open">Abrir el panel de navegación</string>
     <string name="drawer_close">Cerrar el panel de navegación</string>
 
@@ -74,22 +75,22 @@
     <string name="label_date">Fecha</string>
     <string name="label_location">Ubicación</string>
     <string name="label_done">Hecho</string>
-       
+
     <string name="label_format">
-	    <xliff:g id="label" example="Name">%1$s</xliff:g>:
-	</string>	
-	<string name="label_string_content_format">
-	    <xliff:g id="label" example="Name">%1$s</xliff:g>: <xliff:g id="content" example="John Smith">%2$s</xliff:g>
-	</string>	
-	<string name="label_integer_content_format">
-	    <xliff:g id="label" example="Room">%1$s</xliff:g>: <xliff:g id="content" example="201">%2$d</xliff:g>
-	</string>	
-	<string name="label_float_content_format">
-	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="content" example="3.00">%2$.2f</xliff:g>
-	</string>
-	<string name="label_with_count_format">
-	    <xliff:g id="label" example="Cart">%1$s</xliff:g> (<xliff:g id="count" example="5">%2$d</xliff:g>)
-	</string>
+        <xliff:g id="label" example="Name">%1$s</xliff:g>:
+    </string>
+    <string name="label_string_content_format">
+        <xliff:g id="label" example="Name">%1$s</xliff:g>: <xliff:g id="content" example="John Smith">%2$s</xliff:g>
+    </string>
+    <string name="label_integer_content_format">
+        <xliff:g id="label" example="Room">%1$s</xliff:g>: <xliff:g id="content" example="201">%2$d</xliff:g>
+    </string>
+    <string name="label_float_content_format">
+        <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="content" example="3.00">%2$.2f</xliff:g>
+    </string>
+    <string name="label_with_count_format">
+        <xliff:g id="label" example="Cart">%1$s</xliff:g> (<xliff:g id="count" example="5">%2$d</xliff:g>)
+    </string>
 
     <string name="dialog_sign_in">Acceder</string>
     <string name="dialog_sign_in_title">Acceder</string>
@@ -137,49 +138,49 @@
     <string name="loading_message">Cargando&#8230;</string>
 
     <string name="date_to_date_format">
-	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> - <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g>
-	</string>
-	<string name="date_all_day_event_format">
-	    <xliff:g id="startDate" example="10-8-14">%s</xliff:g> Evento de todo el día
-	</string>
-	<string name="date_time_format">
-	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="time" example="11:00 AM">%2$s</xliff:g>
-	</string>
-	<string name="date_time_to_time_format">
-	    <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
-	</string>
-	<string name="date_time_to_date_time_format">
-	    <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
-	</string>
-	<string name="time_to_time_format">
-	    <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
-	</string>
-	
-	<string name="default_first_last_name_format">
-	    <xliff:g id="firstName" example="John">%1$s</xliff:g> <xliff:g id="lastName" example="Smith">%2$s</xliff:g>
-	</string>
-	<string name="default_last_name_first_initial_format">
-	    <xliff:g id="lastName" example="Smith">%1$s</xliff:g>, <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
-	</string>
-	<string name="default_course_section_format">
-	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
-	</string>
-	<string name="default_course_section_title_format">
-	    <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
-	</string>
-	<string name="default_building_and_room_format">
-	    <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
-	</string>
-	<string name="default_meeting_days_and_times_format">
-	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
-	</string>
-	<string name="default_meeting_days_times_and_type_format">
-	    <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
-	</string>
-	<string name="default_two_string_separator_format">
-	    <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
-	</string>
-	<string name="default_phone_with_extension_format">
+        <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> - <xliff:g id="endDate" example="10-12-14">%2$s</xliff:g>
+    </string>
+    <string name="date_all_day_event_format">
+        <xliff:g id="startDate" example="10-8-14">%s</xliff:g> Evento de todo el día
+    </string>
+    <string name="date_time_format">
+        <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="time" example="11:00 AM">%2$s</xliff:g>
+    </string>
+    <string name="date_time_to_time_format">
+        <xliff:g id="date" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+    </string>
+    <string name="date_time_to_date_time_format">
+        <xliff:g id="startDate" example="10-8-14">%1$s</xliff:g> <xliff:g id="startTime" example="12:00 PM">%2$s</xliff:g> - <xliff:g id="endDate" example="10-8-15">%3$s</xliff:g> <xliff:g id="endTime" example="12:00 PM">%4$s</xliff:g>
+    </string>
+    <string name="time_to_time_format">
+        <xliff:g id="startTime" example="11:00 AM">%1$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%2$s</xliff:g>
+    </string>
+
+    <string name="default_first_last_name_format">
+        <xliff:g id="firstName" example="John">%1$s</xliff:g> <xliff:g id="lastName" example="Smith">%2$s</xliff:g>
+    </string>
+    <string name="default_last_name_first_initial_format">
+        <xliff:g id="lastName" example="Smith">%1$s</xliff:g>, <xliff:g id="firstInitial" example="J">%2$s</xliff:g>
+    </string>
+    <string name="default_course_section_format">
+        <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g>
+    </string>
+    <string name="default_course_section_title_format">
+        <xliff:g id="courseName" example="HIST-103">%1$s</xliff:g>-<xliff:g id="sectionNumber" example="01">%2$s</xliff:g> - <xliff:g id="sectionTitle" example="American History">%3$s</xliff:g>
+    </string>
+    <string name="default_building_and_room_format">
+        <xliff:g id="buildingName" example="Main Hall">%1$s</xliff:g>, <xliff:g id="roomNumber" example="122">%2$s</xliff:g>
+    </string>
+    <string name="default_meeting_days_and_times_format">
+        <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g>
+    </string>
+    <string name="default_meeting_days_times_and_type_format">
+        <xliff:g id="daysOfWeeks" example="Mon, Wed, Fri">%1$s</xliff:g>: <xliff:g id="startTime" example="11:00 AM">%2$s</xliff:g> - <xliff:g id="endTime" example="2:00 PM">%3$s</xliff:g> | <xliff:g id="meetingType" example="Lab">%4$s</xliff:g>
+    </string>
+    <string name="default_two_string_separator_format">
+        <xliff:g id="string" example="stringOne">%1$s</xliff:g> | <xliff:g id="string" example="stringTwo">%2$s</xliff:g>
+    </string>
+    <string name="default_phone_with_extension_format">
         <xliff:g id="phoneNumber" example="123-123-1234">%1$s</xliff:g> ext. <xliff:g id="phoneExtension" example="7890">%2$s</xliff:g>
     </string>
 
@@ -200,6 +201,14 @@
     <string name="about_powered_by">Desarrollado por</string>
     <string name="about_powered_by_ellucian">Desarrollado por Ellucian</string>
 
+    <!-- AppLauncher -->
+
+    <string name="title_activity_app_launcher">Inicializador de la aplicación</string>
+    <string name="app_launcher_unsupported_title">Aplicación no disponible</string>
+    <string name="app_launcher_unsupported_text">Esta aplicación no está disponible en Android.</string>
+    <string name="app_launcher_install_title">Instalar aplicación</string>
+    <string name="app_launcher_install_text">No tiene la aplicación requerida. ¿Desea instalarla?</string>
+
     <!-- Courses -->
 
     <string name="title_activity_courses">Cursos</string>
@@ -219,8 +228,6 @@
     <string name="courses_section_grades">Calificaciones</string>
     <string name="courses_section_assignments">Asignaciones</string>
     <string name="courses_section_roster">Lista de clases</string>
-    <string name="full_schedule">Horario completo</string>
-    <string name="daily_schedule">Horario diario</string>
     <string name="courses_no_courses_message">No hay cursos</string>
     <string name="title_activity_courses_daily_schedule">Horario diario</string>
     <string name="title_activity_courses_full_schedule">Horario completo</string>
@@ -245,13 +252,12 @@
 
     <!-- Directory -->
 
-    <string name="title_activity_directory">Categorías de directorio</string>
+    <string name="title_activity_directory">Directorio</string>
     <string name="title_activity_directory_detail">Detalle de directorio</string>
     <string name="title_activity_directory_list_all">Directorio</string>
-    <string name="title_activity_directory_list_student">Directorio de alumnos</string>
-    <string name="title_activity_directory_list_faculty">Directorio de docentes</string>
     <string name="directory">Directorio</string>
     <string name="directory_search">Para usar el directorio, buscar arriba.</string>
+    <string name="directory_sign_in_message">Si inicia sesión verá más información del contacto.</string>
     <string name="directory_no_results">No encontró resultados.</string>
     <string name="directory_no_phone">No puede agregar el contacto sin número de teléfono.</string>
     <string name="searchable_directory_hint">Buscar en directorio</string>
@@ -260,6 +266,11 @@
     <string name="directory_type_all">Todos</string>
     <string name="directory_type_student">Alumno</string>
     <string name="directory_type_faculty">Docente</string>
+    <string name="directory_auth_required_tail">\u0020-\u0020<xliff:g id="signIn" example="Sign In">%1$s</xliff:g></string>
+    <string name="directory_auth_required">
+        <xliff:g id="directoryName" example="Faculty">%1$s</xliff:g><xliff:g id="signIn" example=" - Sign In">%2$s</xliff:g>
+    </string>
+    <string name="directory_groups">Grupos</string>
 
     <!-- Events -->
 
@@ -427,28 +438,32 @@
     <string name="registration_ineligible_to_register">Inelegible para inscripción</string>
     <string name="registration_remove">Eliminar</string>
     <string name="registration_drop">Eliminar</string>
-    
+
     <string name="registration_added_to_cart_success_format">
-	    <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> agregado al carrito.
-	</string>
+        <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> agregado al carrito.
+    </string>
     <string name="registration_added_to_cart_failed_format">
         <xliff:g id="courseName" example="HIST-205">%1$s</xliff:g>-<xliff:g id="courseSectionNumber" example="01">%2$s</xliff:g> falló al agregar al carrito. Faltan datos o la sección ya existe en el carrito.
     </string>
     <string name="registration_row_credits_format">
-	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
-	</string>
-	<string name="registration_row_credits_with_type_format">
-	    <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> | <xliff:g id="creditType" example="Audit">%3$s</xliff:g>
-	</string>
+        <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g>
+    </string>
+    <string name="registration_row_credits_with_type_format">
+        <xliff:g id="credits" example="3.0">%1$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%2$s</xliff:g> | <xliff:g id="creditType" example="Audit">%3$s</xliff:g>
+    </string>
     <string name="registration_row_credits_min_max_format">
-	    <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g>
-	</string>
-	<string name="registration_label_credits_with_ceus_format">
-	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g>
-	</string>
-	<string name="registration_label_credits_min_max_format">
-	    <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
-	</string>
+        <xliff:g id="minimumCredits" example="1.0">%1$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="Credits">%3$s</xliff:g>
+    </string>
+    <string name="registration_label_credits_with_ceus_format">
+        <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="credits" example="3.0">%2$.2f</xliff:g> <xliff:g id="creditsOrCEUS" example="CEUs">%3$s</xliff:g>
+    </string>
+    <string name="registration_label_credits_min_max_format">
+        <xliff:g id="label" example="Credits">%1$s</xliff:g>: <xliff:g id="minimumCredits" example="1.0">%2$.2f</xliff:g>-<xliff:g id="maximumCredits" example="4.0">%3$.2f</xliff:g>
+    </string>
+    <string name="available_seats">Lugares disponibles:</string>
+    <string name="remaining_capacity">
+        <xliff:g id="remaining" example="15">%1$s</xliff:g>/<xliff:g id="capacity" example="30">%2$s</xliff:g>
+    </string>
 
 
     <!-- Versioning -->

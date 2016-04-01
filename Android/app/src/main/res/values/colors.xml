@@ -25,11 +25,20 @@
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#00838F</color>
 
-    <!-- 4.1 UXD refresh -->
     <color name="sub_header_bg">#E6E6E6</color>
     <color name="sub_header_text_color">#333333</color>
     <color name="list_title_text_color">#4d4d4d</color>
     <color name="list_summary_text_color">#666666</color>
     <color name="card_data_color">#1a1a1a</color>
+    <color name="tab_indicator_color">#FFFFFF</color>
+    <color name="menu_icon_color">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="courses_block_bg_color">#cc4d4d4d</color>
+    <color name="main_content_bg">#FFFFFF</color>
+    <color name="list_selection_color">#E6E6E6</color>
+    <color name="shortcut_icon_color">#4c000000</color>
+
+    <color name="home_light_overlay_color">#4dffffff</color>
+    <color name="home_dark_overlay_color">#4d000000</color>
 
 </resources>

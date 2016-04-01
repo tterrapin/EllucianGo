@@ -53,9 +53,9 @@ class FeedDetailViewController: UIViewController, UIWebViewDelegate {
     func loadWebView() {
         var htmlStringWithFont : String
         let text : String
-        let link = feed!.link.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        if link.characters.count > 0 {
-            text = "\(feed!.content)<br><br>\(link)"
+        let link = feed?.link?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        if link != nil && link?.characters.count > 0 {
+            text = "\(feed!.content)<br><br>\(link!)"
         } else {
             text = feed!.content
         }

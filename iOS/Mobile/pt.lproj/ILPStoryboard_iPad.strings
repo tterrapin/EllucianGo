@@ -2,7 +2,7 @@
 "1AR-c7-6vB.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Detail"; ObjectID = "1vS-Rb-mEe"; */
-"1vS-Rb-mEe.text" = "Detalhe";
+"1vS-Rb-mEe.text" = "Detalhes";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "2o7-vV-Jg4"; */
 "2o7-vV-Jg4.text" = "Rótulo";
@@ -122,7 +122,7 @@
 "scQ-3n-K5V.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Location:"; ObjectID = "tPe-jc-4j5"; */
-"tPe-jc-4j5.text" = "Localização:";
+"tPe-jc-4j5.text" = "Local:";
 
 /* Class = "UILabel"; text = "Reminder List"; ObjectID = "tv4-i6-3Wg"; */
 "tv4-i6-3Wg.text" = "Lista de lembretes";

@@ -15,6 +15,7 @@ import com.ellucian.mobile.android.app.EllucianFragment;
 import com.ellucian.mobile.android.client.registration.Message;
 import com.ellucian.mobile.android.client.registration.RegisterSection;
 import com.ellucian.mobile.android.client.registration.RegistrationResponse;
+import com.ellucian.mobile.android.util.Utils;
 
 public class RegistrationResultsFragment extends EllucianFragment {
 	
@@ -44,7 +45,7 @@ public class RegistrationResultsFragment extends EllucianFragment {
 						R.layout.registration_message_row, generalLayout, false);
 				messageView.setText(message.message);
 				// text color
-				int statusColor = getResources().getColor(R.color.status_important_text_color);
+				int statusColor = Utils.getColorHelper(getContext(), R.color.status_important_text_color);
 				messageView.setTextColor(statusColor);
 				generalLayout.addView(messageView);
 			}
@@ -84,7 +85,7 @@ public class RegistrationResultsFragment extends EllucianFragment {
 								R.layout.registration_message_row, sectionRow, false);
 						messageView.setText(message.message);
 						// text color
-						int statusColor = getResources().getColor(R.color.status_success_text_color);
+						int statusColor = Utils.getColorHelper(getContext(), R.color.status_success_text_color);
 						messageView.setTextColor(statusColor);
 						
 						sectionRow.addView(messageView);
@@ -125,7 +126,7 @@ public class RegistrationResultsFragment extends EllucianFragment {
 								R.layout.registration_message_row, sectionRow, false);
 						messageView.setText(message.message);
 						// text color
-						int statusColor = getResources().getColor(R.color.status_error_text_color);
+						int statusColor = Utils.getColorHelper(getContext(), R.color.status_error_text_color);
 						messageView.setTextColor(statusColor);
 						sectionRow.addView(messageView);
 					}

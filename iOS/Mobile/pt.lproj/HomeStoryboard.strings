@@ -10,21 +10,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "PEq-Hn-ysU"; */
 "PEq-Hn-ysU.text" = "Rótulo";
 
-/* Class = "UINavigationItem"; title = "Home"; ObjectID = "Rbq-pC-Wou"; */
-"Rbq-pC-Wou.title" = "Home";
-
-/* Class = "UILabel"; text = "Look around without signing in.  Tap or swipe right for the menu."; ObjectID = "X9s-ml-hy6"; */
-"X9s-ml-hy6.text" = "Entrar sem autenticação. Para acessar o menu, toque ou deslize para a direita.";
-
 /* Class = "UIImageView"; accessibilityLabel = "Lock"; ObjectID = "cvt-hr-CY1"; */
 "cvt-hr-CY1.accessibilityLabel" = "Bloquear";
 
-/* Class = "UILabel"; text = "Sign In"; ObjectID = "ml5-vN-rwe"; */
-"ml5-vN-rwe.text" = "Entrar";
-
 /* Class = "UILabel"; text = "Loading configuration.  Please wait..."; ObjectID = "nbl-jr-rw5"; */
 "nbl-jr-rw5.text" = "Carregando a configuração. Aguarde...";
-
-/* Class = "UIButton"; accessibilityLabel = "Sign In"; ObjectID = "vub-eC-2Uv"; */
-"vub-eC-2Uv.accessibilityLabel" = "Entrar";
 

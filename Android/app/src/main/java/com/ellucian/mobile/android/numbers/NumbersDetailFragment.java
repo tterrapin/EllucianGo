@@ -165,6 +165,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 	}
 
 	private void setViews() {
+        final int primaryColor = Utils.getPrimaryColor(getContext());
 		Log.d(TAG, "setViews");
 		
 		if (!TextUtils.isEmpty(name)) {
@@ -178,6 +179,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 
 		if (phone != null) {
 			rootView.findViewById(R.id.phoneLayout).setVisibility(View.VISIBLE);
+            ((ImageView)rootView.findViewById(R.id.numbers_phone_image)).setColorFilter(primaryColor);
 			TextView phoneView = (TextView) rootView.findViewById(R.id.phone);
 			phoneView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.PHONE_NUMBERS));
             if (extension != null) {
@@ -195,6 +197,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 
 		if (!TextUtils.isEmpty(email)) {
 			rootView.findViewById(R.id.emailLayout).setVisibility(View.VISIBLE);
+            ((ImageView)rootView.findViewById(R.id.numbers_email_image)).setColorFilter(primaryColor);
 			TextView emailView = (TextView) rootView.findViewById(R.id.email);
 			emailView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.EMAIL_ADDRESSES));
 			emailView.setText(email);
@@ -209,14 +212,15 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 		}
 		if (!TextUtils.isEmpty(fullAddressString)) {
 			rootView.findViewById(R.id.addressLayout).setVisibility(View.VISIBLE);
-			TextView addressView = (TextView) rootView.findViewById(R.id.address);
+            ((ImageView)rootView.findViewById(R.id.numbers_location_image)).setColorFilter(primaryColor);
+            TextView addressView = (TextView) rootView.findViewById(R.id.address);
 			addressView.setAutoLinkMask(Utils.getAvailableLinkMasks(context, Linkify.MAP_ADDRESSES));
 			addressView.setText(fullAddressString);
 		}
 		
 		if (latitude != null && longitude != null && !(latitude == 0.0 && longitude == 0.0) 
 				&& Utils.isGoogleMapsInstalled(context)) {
-			ImageView mapButton = (ImageView) rootView.findViewById(R.id.showMap);
+			ImageView mapButton = (ImageView) rootView.findViewById(R.id.numbers_location_image);
 			mapButton.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View arg0) {
 					startActivity(MapUtils.buildMapPinIntent(getActivity(),
@@ -226,7 +230,8 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 
 			View directionsRow = rootView.findViewById(R.id.directionsLayout);
             directionsRow.setVisibility(View.VISIBLE);
-			directionsRow.setOnClickListener(new View.OnClickListener() {
+            ((ImageView)rootView.findViewById(R.id.numbers_directions_image)).setColorFilter(primaryColor);
+            directionsRow.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     NumbersDetailFragment.this.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION, GoogleAnalyticsConstants.ACTION_INVOKE_NATIVE, "Get Directions", null, getEllucianActivity().moduleName);
                     startActivity(MapUtils.buildDirectionsIntent(latitude,
@@ -236,6 +241,7 @@ public class NumbersDetailFragment extends EllucianDefaultDetailFragment {
 
 		} else if (!TextUtils.isEmpty(address)) {
             View directionsRow = rootView.findViewById(R.id.directionsLayout);
+            ((ImageView)rootView.findViewById(R.id.numbers_directions_image)).setColorFilter(primaryColor);
             directionsRow.setVisibility(View.VISIBLE);
             directionsRow.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {

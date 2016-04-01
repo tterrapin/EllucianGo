@@ -4,10 +4,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent" >
+    android:background="@color/main_content_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
      <ListView android:id="@id/android:list"
                android:layout_width="match_parent"
@@ -18,8 +18,8 @@
      <TextView android:id="@id/android:empty"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:paddingLeft="6dp"
-               android:paddingStart="6dp"
-               android:text="@string/grades_no_grades"
-         tools:ignore="NewApi,RtlSymmetry" />
+               android:textAppearance="?android:attr/textAppearanceListItemSmall"
+               android:textColor="@color/list_title_text_color"
+               android:padding="@dimen/section_header_padding"
+               android:text="@string/grades_no_grades"/>
  </LinearLayout>

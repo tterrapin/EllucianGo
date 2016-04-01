@@ -45,7 +45,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
 
         @Override
         public void onClick(View v) {
-            int currentPosition = getPosition();
+            int currentPosition = getLayoutPosition();
 
             if (parentAdapter.isClickable(currentPosition)) {
                 parentAdapter.itemSelected(v, currentPosition);
@@ -86,7 +86,7 @@ public abstract class EllucianRecyclerAdapter extends RecyclerView.Adapter<Recyc
         itemSelected(null, -1);
     }
 
-    void checkViewForSelection(View v, int position) {
+    public void checkViewForSelection(View v, int position) {
         if (position == selectedIndex) {
             itemSelected(v, position);
         } else {

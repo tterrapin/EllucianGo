@@ -4,8 +4,14 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "1CK-Rx-Vwf"; */
 "1CK-Rx-Vwf.text" = "Rótulo";
 
+/* Class = "UILabel"; text = "Available Seats:"; ObjectID = "1oH-hb-pyb"; */
+"1oH-hb-pyb.text" = "Vagas disponíveis:";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "3xX-L2-fn3"; */
 "3xX-L2-fn3.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "3zm-ep-Nxd"; */
+"3zm-ep-Nxd.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "4Rh-O0-Xs9"; */
 "4Rh-O0-Xs9.text" = "Rótulo";
@@ -13,14 +19,29 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "4TW-bx-cDi"; */
 "4TW-bx-cDi.text" = "Rótulo";
 
+/* Class = "UILabel"; text = "Section ID:"; ObjectID = "4ap-F7-Vmy"; */
+"4ap-F7-Vmy.text" = "ID turma:";
+
+/* Class = "UILabel"; text = "Grading:"; ObjectID = "5TQ-qa-ymN"; */
+"5TQ-qa-ymN.text" = "Avaliação:";
+
 /* Class = "UILabel"; text = "Description"; ObjectID = "8tp-s3-oyy"; */
 "8tp-s3-oyy.text" = "Descrição";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "9Mc-6a-gDc"; */
 "9Mc-6a-gDc.text" = "Rótulo";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "9QN-MZ-0sg"; */
+"9QN-MZ-0sg.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "35t-l8-2LF"; */
+"35t-l8-2LF.text" = "Rótulo";
+
 /* Class = "UILabel"; text = "Faculty"; ObjectID = "39M-Ib-Gvn"; */
 "39M-Ib-Gvn.text" = "Docente";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "58f-3E-CTN"; */
+"58f-3E-CTN.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "696-Bg-Vla"; */
 "696-Bg-Vla.text" = "Rótulo";
@@ -48,6 +69,18 @@
 
 /* Class = "UILabel"; text = "We're Sorry."; ObjectID = "I2k-R4-900"; */
 "I2k-R4-900.text" = "Desculpe!";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "IFn-Py-Hfb"; */
+"IFn-Py-Hfb.text" = "Título";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Ikn-we-XIr"; */
+"Ikn-we-XIr.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "JAM-Iq-W2d"; */
+"JAM-Iq-W2d.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "KQd-l2-uy3"; */
+"KQd-l2-uy3.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "LQ3-h3-xmh"; */
 "LQ3-h3-xmh.text" = "Rótulo";
@@ -81,6 +114,12 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "VCg-7o-fHG"; */
 "VCg-7o-fHG.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Credits:"; ObjectID = "VRh-Kl-CwZ"; */
+"VRh-Kl-CwZ.text" = "Créditos:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Vee-IV-xWF"; */
+"Vee-IV-xWF.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "VlD-Nw-eqe"; */
 "VlD-Nw-eqe.text" = "Rótulo";
@@ -124,6 +163,9 @@
 /* Class = "UILabel"; text = "Credits:"; ObjectID = "ZfQ-sd-jYJ"; */
 "ZfQ-sd-jYJ.text" = "Créditos:";
 
+/* Class = "UILabel"; text = "Meeting Information"; ObjectID = "b4s-TH-tKU"; */
+"b4s-TH-tKU.text" = "Informações sobre a aula";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "bAc-JY-i3p"; */
 "bAc-JY-i3p.text" = "Rótulo";
 
@@ -144,6 +186,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "dYu-hL-EX5"; */
 "dYu-hL-EX5.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "e32-y5-dm4"; */
+"e32-y5-dm4.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "eE2-jT-lyc"; */
 "eE2-jT-lyc.text" = "Rótulo";
@@ -172,6 +217,9 @@
 /* Class = "UILabel"; text = "Grading:"; ObjectID = "hNt-7T-nt9"; */
 "hNt-7T-nt9.text" = "Avaliação:";
 
+/* Class = "UILabel"; text = "Academic Levels:"; ObjectID = "jGx-5p-sqy"; */
+"jGx-5p-sqy.text" = "Níveis acadêmicos:";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "jmp-kD-D9o"; */
 "jmp-kD-D9o.text" = "Título";
 
@@ -187,6 +235,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "mbv-lp-170"; */
 "mbv-lp-170.text" = "Rótulo";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "nTv-Ed-8sB"; */
+"nTv-Ed-8sB.text" = "Rótulo";
+
 /* Class = "UILabel"; text = "Ineligible for Registration"; ObjectID = "nbc-20-7dD"; */
 "nbc-20-7dD.text" = "Matrícula não autorizada";
 
@@ -199,11 +250,23 @@
 /* Class = "UITabBarItem"; title = "Registered"; ObjectID = "qJA-E1-sjv"; */
 "qJA-E1-sjv.title" = "Matriculado";
 
+/* Class = "UILabel"; text = "Section Number"; ObjectID = "t0t-I7-XAE"; */
+"t0t-I7-XAE.text" = "Número da turma";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ual-Va-pzd"; */
+"ual-Va-pzd.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "unE-sH-fqi"; */
+"unE-sH-fqi.text" = "Rótulo";
+
 /* Class = "UILabel"; text = "Section Number"; ObjectID = "uuL-aq-TgN"; */
 "uuL-aq-TgN.text" = "Número da turma";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "v5u-C0-Eye"; */
 "v5u-C0-Eye.text" = "Rótulo";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vba-cV-Yff"; */
+"vba-cV-Yff.text" = "Rótulo";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "vqy-w5-kCI"; */
 "vqy-w5-kCI.text" = "Rótulo";
@@ -223,8 +286,14 @@
 /* Class = "UIBarButtonItem"; title = "Item"; ObjectID = "wv6-JC-xRR"; */
 "wv6-JC-xRR.title" = "Item";
 
+/* Class = "UILabel"; text = "Faculty"; ObjectID = "yPh-fT-0zm"; */
+"yPh-fT-0zm.text" = "Docente";
+
 /* Class = "UILabel"; text = "Section Number"; ObjectID = "yTP-rU-pYP"; */
 "yTP-rU-pYP.text" = "Número da turma";
+
+/* Class = "UILabel"; text = "Description"; ObjectID = "yYF-P4-pNh"; */
+"yYF-P4-pNh.text" = "Descrição";
 
 /* Class = "UILabel"; text = "Meeting Information"; ObjectID = "yzp-Qf-Uhg"; */
 "yzp-Qf-Uhg.text" = "Informações sobre a aula";

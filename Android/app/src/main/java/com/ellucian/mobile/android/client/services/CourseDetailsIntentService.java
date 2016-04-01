@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.client.services;
 
-import java.util.ArrayList;
-
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.Intent;
@@ -20,11 +18,13 @@ import com.ellucian.mobile.android.client.courses.overview.CourseDetailsBuilder;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 
+import java.util.ArrayList;
+
 public class CourseDetailsIntentService extends IntentService {
 	private final String TAG = getClass().getSimpleName();
 	
-	private static final String PARAM_OUT_DATABASE_UPDATED = "updated";
-	private static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseDetailsIntentService.action.updated";
+	public static final String PARAM_OUT_DATABASE_UPDATED = "updated";
+	public static final String ACTION_FINISHED = "com.ellucian.mobile.android.client.services.CourseDetailsIntentService.action.updated";
 	public CourseDetailsIntentService() {
 		super("CourseDetailsIntentService");
 	}

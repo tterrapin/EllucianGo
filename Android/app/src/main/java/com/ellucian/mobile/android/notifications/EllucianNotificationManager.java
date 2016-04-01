@@ -4,8 +4,6 @@
 
 package com.ellucian.mobile.android.notifications;
 
-import java.io.IOException;
-
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -16,9 +14,12 @@ import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.util.Utils;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 
 public class EllucianNotificationManager {
 	private static final String TAG = EllucianNotificationManager.class.getSimpleName();
@@ -38,7 +39,7 @@ public class EllucianNotificationManager {
 	}
 	
 	private boolean isPlayServicesAvailable() {
-		int code = GooglePlayServicesUtil.isGooglePlayServicesAvailable(ellucianApplication.getApplicationContext());
+        int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(ellucianApplication.getApplicationContext());
 		
 		if (code != ConnectionResult.SUCCESS) {
 			Log.d(TAG, "Google Play Services are not available");
@@ -107,10 +108,12 @@ public class EllucianNotificationManager {
 	
 	        	boolean registeredWithMobileServer = false;
 	            try {
-	    			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(ellucianApplication.getApplicationContext());
-	    			
-	                deviceId = gcm.register(GCM_SENDER_ID);
-	                Log.d(TAG, "GCM deviceId: " + deviceId);
+//	    			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(ellucianApplication.getApplicationContext());
+//                    deviceId = gcm.register(GCM_SENDER_ID);
+//                    Log.d(TAG, "GCM deviceId: " + deviceId);
+	    			InstanceID instanceID = InstanceID.getInstance(ellucianApplication.getApplicationContext());
+                    deviceId = instanceID.getToken(GCM_SENDER_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE);
+	                Log.d(TAG, "GCM token: " + deviceId);
 	                
 	                registeredWithMobileServer = registerWithMobileServer(deviceId);
 	            } catch (IOException e) {
@@ -196,7 +199,6 @@ public class EllucianNotificationManager {
     	}
 	}
 
-	@SuppressWarnings("unused")
 	private class DeviceRegister {
 		public String devicePushId;
 		public String platform;
@@ -206,7 +208,6 @@ public class EllucianNotificationManager {
 		// public String email; not available yet
 	}
 
-	@SuppressWarnings("unused")
 	private class DeviceRegisterResponse {
 		public String status;
 		public String error;

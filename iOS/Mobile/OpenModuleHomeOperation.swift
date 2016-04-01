@@ -16,7 +16,6 @@ class OpenModuleHomeOperation: OpenModuleAbstractOperation {
             let storyboard = UIStoryboard(name: "HomeStoryboard", bundle: nil)
             let navController = storyboard.instantiateViewControllerWithIdentifier("LandingPage") as! UINavigationController
             let controller = navController.childViewControllers[0] as! HomeViewController
-            controller.title = NSLocalizedString("Home", comment: "Home menu item")
             self.showViewController(controller)
         })
 

@@ -3,58 +3,75 @@
   ~ Copyright 2015 Ellucian Company L.P. and its affiliates.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
+<LinearLayout
+    android:id="@+id/course_details_meetings_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/rounded_rectangle_overlay"
-    android:padding="4dp" >
-    
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/content_padding"
+        android:paddingRight="@dimen/content_padding"
+        android:src="@drawable/top_line_1dp"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="horizontal" >
-    
-	    <TextView
-	        android:id="@+id/course_details_meeting_row_days"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textStyle="bold" />
-	    
-	    <TextView 
-	        android:id="@+id/course_details_meeting_row_times"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-	    
-	    <TextView
-		        android:id="@+id/course_details_meeting_row_type_separator"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:singleLine="true"
-	    		android:ellipsize="end"
-        		android:maxLines="1"
-		        android:text="@string/line_separator"
-		        android:textStyle="bold"		   
-		        android:paddingLeft="4dp"
-	            android:paddingStart="4dp" 
-		        android:paddingRight="4dp"
-	            android:paddingEnd="4dp"
-			tools:ignore="NewApi" />
-	    
-	    <TextView 
-	        android:id="@+id/course_details_meeting_row_type"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:singleLine="true"
-	    	android:ellipsize="end"
-        	android:maxLines="1"  />
-    
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/content_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/course_details_meeting_row_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/course_details_meeting_row_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/course_details_meeting_row_type_separator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingEnd="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingStart="4dp"
+                android:singleLine="true"
+                android:text="@string/line_separator"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/course_details_meeting_row_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/course_details_meeting_row_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_place_24dp"
+            android:drawableRight="@drawable/ic_place_24dp"/>
+
     </LinearLayout>
-    
-    <TextView 
-        android:id="@+id/course_details_meeting_row_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    
 </LinearLayout>
+

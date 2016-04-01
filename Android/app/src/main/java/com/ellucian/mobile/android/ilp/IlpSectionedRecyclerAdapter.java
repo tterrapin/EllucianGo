@@ -40,8 +40,7 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
         v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ilp_header_row, parent, false);
 
-        ItemViewHolder vh = new ItemViewHolder(this, v, null);
-        return vh;
+        return new ItemViewHolder(this, v, null);
     }
 
     @SuppressLint("NewApi")
@@ -49,10 +48,8 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
         IlpHeaderHolder headerHolder = (IlpHeaderHolder) getItem(position);
 
         View headerContainer = ((ItemViewHolder)holder).itemView.findViewById(R.id.header_container);
-        headerContainer.setBackgroundColor(Utils.getAccentColor(context));
 
         TextView dayView = (TextView) headerContainer.findViewById(R.id.day);
-        dayView.setTextColor(Utils.getSubheaderTextColor(context));
         dayView.setText(headerHolder.day);
         int build = Build.VERSION.SDK_INT;
 
@@ -78,7 +75,6 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
         }
 
         TextView dateView = (TextView) headerContainer.findViewById(R.id.date);
-        dateView.setTextColor(Utils.getSubheaderTextColor(context));
         dateView.setText(headerHolder.date);
     }
 
@@ -90,8 +86,7 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
     	v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ilp_item_row, parent, false);
 
-    	ItemViewHolder vh = new ItemViewHolder(this, v, onItemClickListener);
-        return vh;
+        return new ItemViewHolder(this, v, onItemClickListener);
 	}
 	
 	// Replace the contents of a view (invoked by the layout manager)
@@ -116,7 +111,7 @@ public class IlpSectionedRecyclerAdapter extends SectionedItemHolderRecyclerAdap
                 Date now = new Date();
                 if (dueDate.before(now)) {
                     displayDate = CalendarUtils.getDefaultDateTimeString(context, dueDate);
-                    titleView.setTextColor(context.getResources().getColor(R.color.warning_text_color));
+                    titleView.setTextColor(Utils.getColorHelper(context, R.color.warning_text_color));
                 } else {
                     displayDate = CalendarUtils.getDefaultTimeString(context, dueDate);
                     // reset the color in case recycled

@@ -421,7 +421,11 @@ class EventsViewController : UITableViewController, UISearchResultsUpdating , NS
         
         categoryLabel.text = categories
         locationLabel.text = event.location
-        descriptionLabel.text = event.description_
+        if let description = event.description_ {
+            descriptionLabel.text = description.stringByConvertingHTMLToPlainText()
+        } else {
+            descriptionLabel.text = ""
+        }
         
         cell.layoutIfNeeded()
         

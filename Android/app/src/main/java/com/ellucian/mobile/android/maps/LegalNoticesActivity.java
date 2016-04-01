@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class LegalNoticesActivity extends EllucianActivity {
 	@Override
@@ -19,7 +19,6 @@ public class LegalNoticesActivity extends EllucianActivity {
 
 		TextView legal = (TextView) findViewById(R.id.legal);
 
-		legal.setText(GooglePlayServicesUtil
-				.getOpenSourceSoftwareLicenseInfo(this));
+        legal.setText(GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(this));
 	}
 }

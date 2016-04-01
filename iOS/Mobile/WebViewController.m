@@ -8,7 +8,6 @@
 
 #import "WebViewController.h"
 #import "CurrentUser.h"
-#import "AppDelegate.h"
 #import "LoginExecutor.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "LoginViewController.h"
@@ -145,6 +144,8 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    //As soon as we can, get a reference to JSContext from the UIWebView and create the javascript EllucianMobileDevice object
+    [self observeJSContext];
     self.loadingUrl = [request.mainDocumentURL copy];
     self.backButton.enabled = [self.webView canGoBack];
     self.forwardButton.enabled = [self.webView canGoForward];
@@ -173,14 +174,10 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
     
-    self.context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    self.context[@"EllucianMobileDevice"] = [WebViewJavascriptInterface class];
-    self.context[@"console"][@"log"] = ^(NSString *message) {
-        NSLog(@"%@", message);
-    };
+    //Once the page is loaded, call the EllucianMobile method _ellucianMobileInternalReady so its queue can start calling the functions.
     JSValue *jsFunction = self.context[@"EllucianMobile"][@"_ellucianMobileInternalReady"];
     [jsFunction callWithArguments:nil];
-
+    
     self.loadingUrl = nil;
     //self.title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -264,5 +261,37 @@
 {
     [self.webView endEditing:YES];
 }
+
+//https://gist.github.com/shuoshi/f1757a7aa7ab8ec67483
+-(void)observeJSContext
+{
+    CFRunLoopRef runLoop = CFRunLoopGetCurrent();
+    
+    // This is a idle mode of RunLoop, when UIScrollView scrolls, it jumps into "UITrackingRunLoopMode"
+    // and won't perform any cache task to keep a smooth scroll.
+    CFStringRef runLoopMode = kCFRunLoopDefaultMode;
+    
+    CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler
+    (kCFAllocatorDefault, kCFRunLoopBeforeWaiting, true, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity _) {
+        JSContext *context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+        if (![_context isEqual:context]) {
+            CFRunLoopRemoveObserver(runLoop, observer, runLoopMode);
+            _context = context;
+            
+            //Once the JSContext was established, define the EllucianMobileDevice object, and send console.log to the native log.
+            self.context[@"EllucianMobileDevice"] = [WebViewJavascriptInterface class];
+            self.context[@"console"][@"log"] = ^(NSString *message) {
+                NSLog(@"%@", message);
+            };
+            //once page loads call EllucianMobile._ellucianMobileInternalReady in webViewDidFinishLoad
+            //calling here too in case the javascript is ready to receive this call
+            NSString * js = @"typeof EllucianMobile != 'undefined' && EllucianMobile._ellucianMobileInternalReady()";
+            [self.webView stringByEvaluatingJavaScriptFromString:js];
+        }
+    });
+    
+    CFRunLoopAddObserver(runLoop, observer, runLoopMode);
+}
+
 
 @end

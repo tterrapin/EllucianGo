@@ -34,6 +34,9 @@
     <dimen name="multimedia_text_padding_bottom">22dp</dimen>
     <dimen name="multimedia_text_line_spacing_size">8sp</dimen>
     <dimen name="card_margin">16dp</dimen>
-    <dimen name="card_padding">24dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
+    <dimen name="section_header_padding">10dp</dimen>
+
+    <dimen name="shortcut_item_width_tablet">154dp</dimen>
 
 </resources>

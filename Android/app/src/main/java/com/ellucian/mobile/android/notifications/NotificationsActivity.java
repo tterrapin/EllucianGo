@@ -62,11 +62,15 @@ public class NotificationsActivity extends EllucianActivity implements LoaderMan
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_default_dual_pane);
-		
-		if(!TextUtils.isEmpty(moduleName)) {
-			setTitle(moduleName);
-		}
-		
+
+        if (TextUtils.isEmpty(moduleName)) {
+            // When tapping on a device Notification, moduleName is not known.
+            String title = Utils.getStringFromPreferences(getApplicationContext(), Utils.CONFIGURATION, Utils.NOTIFICATION_MODULE_NAME, null);
+            setTitle(title);
+        } else {
+            setTitle(moduleName);
+        }
+
 		EllucianApplication app = getEllucianApp();
 		if(!app.isUserAuthenticated()) {
 			Log.e(TAG, "User not authenticated, sending to home.");

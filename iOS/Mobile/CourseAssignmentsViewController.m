@@ -201,8 +201,8 @@
         
         NSError *error;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        AuthenticatedRequest *authenticatedRequet = [AuthenticatedRequest new];
-        NSData *responseData = [authenticatedRequet requestURL:[NSURL URLWithString:urlString] fromView:self];
+        AuthenticatedRequest *authenticatedRequest = [AuthenticatedRequest new];
+        NSData *responseData = [authenticatedRequest requestURL:[NSURL URLWithString:urlString] fromView:self];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         if(responseData) {

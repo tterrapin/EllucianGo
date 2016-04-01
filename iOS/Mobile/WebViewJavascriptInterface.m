@@ -8,7 +8,6 @@
 
 #import "WebViewJavascriptInterface.h"
 #import "LoginExecutor.h"
-#import "AppDelegate.h"
 #import "Module.h"
 #import "WebViewController.h"
 #import "Ellucian_GO-Swift.h"
@@ -37,29 +36,6 @@
 {
     OpenModuleOperation* operation = [[OpenModuleOperation alloc] initWithName:name type:type];
     [[NSOperationQueue mainQueue] addOperation:operation];
-
-//    Module* module = nil;
-//    for(Module* tempModule in definedModules ) {
-//        if([self.slidingViewController.menuViewController isSupportedModule:tempModule]) {
-//            module = tempModule;
-//            break;
-//        }
-//        
-//    }
-//    
-//    if(module) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.slidingViewController.menuViewController showModule:module];
-//        });
-//    } else {
-//        NSLog(@"Could not launch menu item: '%@' type: '%@'", name, type);
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Denied", nil)
-//                                                        message:NSLocalizedString(@"You do not have permission to use this feature.", nil)
-//                                                       delegate:nil
-//                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-//                                              otherButtonTitles:nil];
-//        [alert show];
-//    }
 }
 
 + (void) reloadWebModule
@@ -96,5 +72,27 @@
     }
     return nil;
 }
+
+//Ellucian Mobile 4.5
++ (NSString *) primaryColor
+{
+    return [[UIColor primaryColor] toHexString];
+}
+
++ (NSString *) headerTextColor
+{
+    return [[UIColor headerTextColor] toHexString];
+}
+
++ (NSString *) accentColor
+{
+    return [[UIColor accentColor] toHexString];
+}
+
++ (NSString *) subheaderTextColor
+{
+    return [[UIColor subheaderTextColor] toHexString];
+}
+
 
 @end

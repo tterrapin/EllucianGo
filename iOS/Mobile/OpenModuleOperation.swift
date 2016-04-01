@@ -13,25 +13,39 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
     private var module : Module?
     private var moduleName : String?
     private var moduleType : String?
+    private var moduleId : String?
     var properties = [String : AnyObject]() //not using optionals for interop with objc
     
     init (module: Module?) {
         self.module = module
     }
     
-    init(name: String, type: String) {
+    init(name: String?, type: String?, id: String?) {
         self.moduleName = name
         self.moduleType = type
+        self.moduleId = id
      }
     
-    init(type: String) {
-        self.moduleName = nil
-        self.moduleType = type
+    convenience init(name: String, type: String) {
+        self.init(name: name, type: type, id: nil)
+    }
+    
+    convenience init(type: String) {
+        self.init(name: nil, type: type, id: nil)
+    }
+    
+    
+    convenience init(id: String) {
+        self.init(name: nil, type: nil, id: id)
     }
     
     override func main() {
         if module == nil {
-            findModuleFromNameAndType()
+            if let moduleId = moduleId {
+                findModule(moduleId)
+            } else {
+                findModule(name: moduleName, type: moduleType)
+            }
         }
         if let module = module {
 
@@ -129,7 +143,7 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
         }
     }
     
-    private func findModuleFromNameAndType() {
+    private func findModule(name moduleName: String?, type moduleType: String?) {
         let request = NSFetchRequest(entityName: "Module")
         request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
         
@@ -141,6 +155,17 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
                 break
             }
         }
+    }
+    
+    private func findModule(id: String) {
+        let request = NSFetchRequest(entityName: "Module")
+        request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+        
+        let modules = OpenModuleAbstractOperation.findUserModules()
+        
+        self.module = modules.filter {
+            $0.internalKey == id
+        }.first
     }
     
     private func openModule(module: Module) {
@@ -176,8 +201,9 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
             return
         }
 
-        
-        if module.type == "web" {
+        if module.type == "header" {
+            return
+        } else if module.type == "web" {
             if let property = module.propertyForKey("external") where property == "true" {
                 dispatch_async(dispatch_get_main_queue(), {
                     if let url = NSURL(string: module.propertyForKey("url")) {
@@ -186,24 +212,63 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
                 })
             } else {
                 let storyboard = UIStoryboard(name: "WebStoryboard", bundle: nil)
-                let webController = storyboard.instantiateViewControllerWithIdentifier("Web") as! WebViewController
-                let controller = UINavigationController(rootViewController: webController)
-                if let url = NSURL(string: module.propertyForKey("url")) {
-                    webController.loadRequest = NSURLRequest(URL: url)
-                    webController.title = module.name
-                    var secure = false
-                    if let secureProperty = module.propertyForKey("secure") {
-                        secure = secureProperty == "true"
+                if let webController = storyboard.instantiateViewControllerWithIdentifier("Web") as? WebViewController {
+                    let controller = UINavigationController(rootViewController: webController)
+                    if let url = NSURL(string: module.propertyForKey("url")) {
+                        webController.loadRequest = NSURLRequest(URL: url)
+                        webController.title = module.name
+                        var secure = false
+                        if let secureProperty = module.propertyForKey("secure") {
+                            secure = secureProperty == "true"
+                        }
+                        
+                        webController.secure = secure
+                        webController.analyticsLabel = module.name
+                        
+                        showViewController(controller)
                     }
-                    
-                    webController.secure = secure
-                    webController.analyticsLabel = module.name
-                    
-                    showViewController(controller)
                 }
             }
-        } else {
-            if module.type == "custom" {
+        } else if module.type == "appLauncher" {
+            if let urlString = module.propertyForKey("appUrl") {
+                let success = UIApplication.sharedApplication().openURL(NSURL(string: urlString)!)
+                if !success {
+                    if let urlString = module.propertyForKey("storeUrl") {
+                        
+                        let alertController = UIAlertController(title: NSLocalizedString("Install App", comment: "Install App title"), message: NSLocalizedString("You do not have the required app. Would you like to install it?", comment: "You do not have the required app. Would you like to install it? message"), preferredStyle: .Alert)
+                        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Default) { (action) in
+                            UIApplication.sharedApplication().openURL(NSURL(string: urlString)!)
+                        }
+                        alertController.addAction(okAction)
+                        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil)
+                        alertController.addAction(cancelAction)
+
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let slidingViewController = self.findSlidingViewController()
+                            slidingViewController.underLeftViewController.showViewController(alertController, sender: nil)
+                        })
+                        
+                        
+                    } else {
+                        let alertController = UIAlertController(title: NSLocalizedString("Unsupported", comment: "Unsupported alert title"), message: NSLocalizedString("There are no installed applications available to respond to this request.", comment: "Targeted app not installed alert message"), preferredStyle: .Alert)
+                        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Cancel, handler: nil)
+                        alertController.addAction(okAction)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            let slidingViewController = self.findSlidingViewController()
+                            slidingViewController.underLeftViewController.showViewController(alertController, sender: nil)
+                        })
+                    }
+                }
+            } else {
+                let alertController = UIAlertController(title: NSLocalizedString("Unavailable Application", comment: "Unavailable Application alert title"), message: NSLocalizedString("This application is not available on iOS.", comment: "Unsupported feature alert message"), preferredStyle: .Alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .Cancel, handler: nil)
+                alertController.addAction(okAction)
+                dispatch_async(dispatch_get_main_queue(), {
+                    let slidingViewController = self.findSlidingViewController()
+                    slidingViewController.underLeftViewController.showViewController(alertController, sender: nil)
+                })
+            }
+        } else if module.type == "custom" {
                 let customModuleType = module.propertyForKey("custom-type")
                 
                 if let customizationsPath = NSBundle.mainBundle().pathForResource("Customizations", ofType: "plist"), let customizationsDictionary = NSDictionary(contentsOfFile: customizationsPath) as? Dictionary<String, AnyObject> {
@@ -213,25 +278,33 @@ class OpenModuleOperation: OpenModuleAbstractOperation {
                     
                     findAndShowController(moduleDefinition, isEllucian: false)
                 }
+        } else {
+            if let ellucianPath = NSBundle.mainBundle().pathForResource("EllucianModules", ofType: "plist"), let ellucianDictionary = NSDictionary(contentsOfFile: ellucianPath) as? Dictionary<String, AnyObject> {
                 
-            } else {
-                if let ellucianPath = NSBundle.mainBundle().pathForResource("EllucianModules", ofType: "plist"), let ellucianDictionary = NSDictionary(contentsOfFile: ellucianPath) as? Dictionary<String, AnyObject> {
-                    
-                    let moduleDefinitions = ellucianDictionary
-                    let moduleDefinition = moduleDefinitions[module.type] as! Dictionary<String, AnyObject>
-                    findAndShowController(moduleDefinition, isEllucian: true)
-                }
+                let moduleDefinitions = ellucianDictionary
+                let moduleDefinition = moduleDefinitions[module.type] as! Dictionary<String, AnyObject>
+                findAndShowController(moduleDefinition, isEllucian: true)
             }
         }
 
     }
     
     private func showAccessDeniedAlert() {
-        let alertController = UIAlertController(title: NSLocalizedString("Access Denied", comment:"access denied error message"), message: NSLocalizedString("You do not have permission to use this feature.", comment:"permission access error message"), preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        alertController.addAction(cancelAction)
         let slidingViewController = self.findSlidingViewController()
         let topController = slidingViewController.topViewController
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Access Denied", comment:"access denied error message"), message: NSLocalizedString("You do not have permission to use this feature.", comment:"permission access error message"), preferredStyle: .Alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .Default)  { (action) in
+            if let topController = topController as? UINavigationController {
+                let childController = topController.childViewControllers[0]
+                if childController is HomeViewController {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        NSOperationQueue.mainQueue().addOperation(OpenModuleHomeOperation())
+                    })
+                }
+            }
+        }
+        alertController.addAction(cancelAction)
         topController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

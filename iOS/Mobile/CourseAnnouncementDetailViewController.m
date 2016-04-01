@@ -7,7 +7,6 @@
 //
 
 #import "CourseAnnouncementDetailViewController.h"
-#import "WebViewController.h"
 #import "UIViewController+GoogleAnalyticsTrackerSupport.h"
 #import "AppearanceChanger.h"
 #import "Ellucian_GO-Swift.h"

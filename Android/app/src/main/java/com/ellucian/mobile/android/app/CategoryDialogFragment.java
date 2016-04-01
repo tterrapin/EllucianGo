@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.ellucian.elluciango.R;
@@ -20,6 +21,8 @@ import java.util.List;
 public class CategoryDialogFragment extends EllucianDialogFragment {
 	private CategoryDialogListener listener;
 	private String[] startingFilteredCategories;
+    private Fragment callingFragment;
+    public static final String DIALOG_TITLE = "dialog_title";
 
 	public interface CategoryDialogListener {
 		String FILTERED_CATEGORIES = "filtered_categories";
@@ -28,14 +31,26 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 		String[] getFilteredCategories();
 		void updateFilteredCategories(String[] filteredCategories);
 	}
-	
-	public void onAttach(Activity activity) {
+
+    public void setCallingFragment(Fragment callingFragment) {
+        this.callingFragment = callingFragment;
+    }
+
+    public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		
-		try {
+
+        try {
 			listener = (CategoryDialogListener) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement CategoryDialogListener");
+            if (callingFragment != null) {
+                try {
+                    listener = (CategoryDialogListener) callingFragment;
+                } catch (ClassCastException ee) {
+                    throw new ClassCastException(callingFragment.toString() + " must implement CategoryDialogListener");
+                }
+            } else {
+                throw new ClassCastException(activity.toString() + " must implement CategoryDialogListener");
+            }
 		}
 	}
 		
@@ -67,10 +82,16 @@ public class CategoryDialogFragment extends EllucianDialogFragment {
 				selectedPositions.add(i);
 			}
 		}
-		
+        // Default dialog title can be overridden by setting argument
+        String dialogTitle = getString(R.string.dialog_select_categories);
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(DIALOG_TITLE)) {
+            dialogTitle = args.getString(DIALOG_TITLE);
+        }
+
 		// Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-        builder.setTitle(R.string.dialog_select_categories)       		
+        builder.setTitle(dialogTitle)
         		.setMultiChoiceItems(currentCategories, checkedItems,
                       new DialogInterface.OnMultiChoiceClickListener() {
 			               @Override

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.webkit.CookieManager;
 
 import com.ellucian.mobile.android.EllucianApplication;
+import com.ellucian.mobile.android.client.configuration.LastUpdatedResponse;
 import com.ellucian.mobile.android.client.configurationlist.ConfigurationListResponse;
 import com.ellucian.mobile.android.client.courses.CoursesResponse;
 import com.ellucian.mobile.android.client.courses.announcements.CourseAnnouncementsResponse;
@@ -376,6 +377,11 @@ public class MobileClient {
 	}
 	
 	/** Default requests */
+
+    public LastUpdatedResponse getLastUpdated(String requestUrl) {
+        Log.d(TAG, "Retrieving last updated date");
+        return getResponseObject(LastUpdatedResponse.class, requestUrl,  true);
+    }
 
     @SuppressWarnings("unused")
 	public JSONObject makeDefaultJsonRequest(String requestUrl) {

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MapPOI.h"
-#import "AsynchronousImageView.h"
 #import <MapKit/MapKit.h>
 #import "Module.h"
 #import "PseudoButtonView.h"
@@ -33,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet PseudoButtonView *addressView;
 @property (weak, nonatomic) IBOutlet PseudoButtonView *directionsView;
-@property (weak, nonatomic) IBOutlet AsynchronousImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *directionsLabel;
 
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;

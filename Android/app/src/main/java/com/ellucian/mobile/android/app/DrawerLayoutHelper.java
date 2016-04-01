@@ -4,10 +4,12 @@
 
 package com.ellucian.mobile.android.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -20,6 +22,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -59,7 +62,6 @@ public class DrawerLayoutHelper {
 	private final ExpandableListView drawerList;
 	public ActionBarDrawerToggle drawerToggle;
 	
-	private BackgroundAuthenticationReceiver backgroundAuthenticationReceiver;
 	private DrawerLayoutHelper.DrawerListener listener;
 	private static NotificationsContentObserver contentObserver;
 	
@@ -189,12 +191,53 @@ public class DrawerLayoutHelper {
 
 	
 
-	private void showLoginDialog() {
+	private static void showLoginDialog(AppCompatActivity activity) {
 		LoginDialogFragment loginFragment = new LoginDialogFragment();
 		loginFragment.show(activity.getSupportFragmentManager(),
 				LoginDialogFragment.LOGIN_DIALOG);
 
 	}
+
+    private static void showInstallAppDialog(final String appStoreUrl, final AppCompatActivity activity) {
+        int title;
+        int message;
+        boolean showCancelButton;
+        final boolean launchStore;
+        // No url specified to download app. Display unsupported
+        if (TextUtils.isEmpty(appStoreUrl)) {
+            title = R.string.app_launcher_unsupported_title;
+            message = R.string.app_launcher_unsupported_text;
+            showCancelButton = false;
+            launchStore = false;
+        } else {
+            title = R.string.app_launcher_install_title;
+            message = R.string.app_launcher_install_text;
+            showCancelButton = true;
+            launchStore = true;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(message)
+                .setTitle(title);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                if (launchStore) {
+                    Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(appStoreUrl));
+                    activity.startActivity(launchIntent);
+                }
+            }
+        });
+        if (showCancelButton) {
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 	
 	public void setDrawerListener(DrawerLayoutHelper.DrawerListener listener) {
 		this.listener = listener;
@@ -282,6 +325,143 @@ public class DrawerLayoutHelper {
 		}
 	}
 	
+    public static void menuItemClickListener(AppCompatActivity activity, String moduleId, String type,
+                String secureString, String subType, String label) {
+        EllucianApplication ellucianApp = (EllucianApplication) activity
+                .getApplication();
+
+        boolean secure = false;
+
+        List<String> roles = null;
+        if(moduleId != null) {
+            roles = ModuleMenuAdapter.getModuleRoles(activity.getContentResolver(), moduleId);
+        }
+        if (roles != null && roles.size() > 0 && !(roles.size() == 1 && roles.get(0).equals(ModuleMenuAdapter.MODULE_ROLE_EVERYONE))) {
+            secure = true;
+        } else if (type.equals(ModuleType.WEB) && secureString != null) {
+            secure = Boolean.parseBoolean(secureString);
+        } else if (type.equals(ModuleType.CUSTOM)) {
+            secure = Utils.isAuthenticationNeededForSubType(activity, subType);
+        } else if (type.equals(ModuleType.DIRECTORY)) {
+            secure = Utils.isAuthenticationNeededForDirectory(activity.getContentResolver(), moduleId);
+        } else {
+            secure = Utils.isAuthenticationNeededForType(type);
+        }
+
+        if (secure) {
+
+            Intent intent = ModuleMenuAdapter.getIntent(activity, type, subType,
+                    label, moduleId);
+
+            if (!ellucianApp.isUserAuthenticated()) {
+
+
+                LoginDialogFragment loginFragment = new LoginDialogFragment();
+                loginFragment.queueIntent(intent, roles);
+                loginFragment.show(activity.getSupportFragmentManager(),
+                        LoginDialogFragment.LOGIN_DIALOG);
+            } else if (type.equals(ModuleType.WEB)) {
+
+                //do if basic authentication only; web login will be handled by cookies
+                String loginType = Utils.getStringFromPreferences(activity, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
+                if (loginType.equals(Utils.NATIVE_LOGIN_TYPE) && System.currentTimeMillis() > (ellucianApp
+                        .getLastAuthRefresh() + AUTH_REFRESH_TIME)) {
+                    LocalBroadcastManager lbm = LocalBroadcastManager
+                            .getInstance(activity);
+                    BackgroundAuthenticationReceiver backgroundAuthenticationReceiver = new BackgroundAuthenticationReceiver(activity);
+                    backgroundAuthenticationReceiver.setQueuedIntent(intent);
+                    backgroundAuthenticationReceiver.setBackgroundAuthenticationReceiver(backgroundAuthenticationReceiver);
+                    lbm.registerReceiver(backgroundAuthenticationReceiver,
+                            new IntentFilter(AuthenticateUserIntentService.ACTION_BACKGROUND_AUTH));
+
+                    ((EllucianActivity) activity).sendEvent(
+                                    GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION,
+                                    GoogleAnalyticsConstants.ACTION_LOGIN,
+                                    "Background re-authenticate", null,
+                                    null);
+
+                    Toast signInMessage = Toast.makeText(activity,
+                            R.string.dialog_re_authenticate,
+                            Toast.LENGTH_LONG);
+                    signInMessage.setGravity(Gravity.CENTER, 0, 0);
+                    signInMessage.show();
+
+                    Intent loginIntent = new Intent(activity,
+                            AuthenticateUserIntentService.class);
+                    loginIntent.putExtra(Extra.LOGIN_USERNAME,
+                            ellucianApp.getAppUserName());
+                    loginIntent.putExtra(Extra.LOGIN_PASSWORD,
+                            ellucianApp.getAppUserPassword());
+                    loginIntent.putExtra(Extra.LOGIN_BACKGROUND, true);
+                    activity.startService(loginIntent);
+                } else {
+                    activity.startActivity(intent);
+                }
+            } else {
+                activity.startActivity(intent);
+            }
+        } else if (type.equals(ModuleType._SIGN_IN)) {
+
+            if (ellucianApp.isUserAuthenticated()) {
+                ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+                        GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
+                        "Menu-Click Sign Out", null, null);
+            } else {
+                ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
+                        GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
+                        "Menu-Click Sign In", null, null);
+            }
+
+            if (ellucianApp.isUserAuthenticated()) {
+                // Sign Out
+
+                // This also removes saved users
+                ellucianApp.removeAppUser(true);
+
+                Toast signOutMessage = Toast.makeText(activity,
+                        R.string.dialog_signed_out, Toast.LENGTH_LONG);
+                signOutMessage.setGravity(Gravity.CENTER, 0, 0);
+                signOutMessage.show();
+
+                Intent intent = ModuleMenuAdapter.getIntent(activity,
+                        ModuleType._HOME, null,
+                        activity.getString(R.string.menu_home), null);
+                if (intent != null) {
+                    // Make sure to reset the menu adapter so the navigation drawer will
+                    // display correctly for a non-authenticated user
+                    ellucianApp.resetModuleMenuAdapter();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    activity.startActivity(intent);
+                }
+
+            } else {
+                // Sign In
+                showLoginDialog(activity);
+            }
+
+        } else {
+
+            Intent intent = ModuleMenuAdapter.getIntent(activity, type, subType,
+                    label, moduleId);
+            if (intent != null) {
+                try {
+                    activity.startActivity(intent);
+                } catch (Exception e) {
+                    Log.e(TAG, "Unable to launch intent. " + e);
+                    // For failed app launcher intents, display a dialog to download app
+                    if (TextUtils.equals(type, ModuleType.APP_LAUNCHER)) {
+                        String appStoreUrl = null;
+                        if (intent.hasExtra(Extra.APP_LAUNCHER_STORE_URL)) {
+                            appStoreUrl = intent.getStringExtra(Extra.APP_LAUNCHER_STORE_URL);
+                            intent.removeExtra(Extra.APP_LAUNCHER_STORE_URL);
+                        }
+                        showInstallAppDialog(appStoreUrl, activity);
+                    }
+                }
+            }
+        }
+    }
+
 	private class MenuChildClickListener implements OnChildClickListener {
 		
 		@Override
@@ -309,137 +489,28 @@ public class DrawerLayoutHelper {
 
 			String secureString = modulesCursor.getString(modulesCursor
 					.getColumnIndex(Modules.MODULE_SECURE));
-			
-			EllucianApplication ellucianApp = (EllucianApplication) activity
-					.getApplication();
 
-			boolean secure = false;
-			
-			List<String> roles = null;
-			if(moduleId != null) {
-				 roles = ModuleMenuAdapter.getModuleRoles(activity.getContentResolver(), moduleId);
-			}
-			if (roles != null && roles.size() > 0 && !(roles.size() == 1 && roles.get(0).equals(ModuleMenuAdapter.MODULE_ROLE_EVERYONE))) {
-				secure = true;
-			} else if (type.equals(ModuleType.WEB) && secureString != null) {
-				secure = Boolean.parseBoolean(secureString);
-			} else if (type.equals(ModuleType.CUSTOM)) {
-				secure = Utils.isAuthenticationNeededForSubType(activity, subType);
-			} else {
-				secure = Utils.isAuthenticationNeededForType(type);
-			}
+            menuItemClickListener(activity, moduleId, type, secureString, subType, label);
 
-			if (secure) {
-				
-				Intent intent = ModuleMenuAdapter.getIntent(activity, type, subType,
-						label, moduleId);
-
-				if (!ellucianApp.isUserAuthenticated()) {
-
-					
-					LoginDialogFragment loginFragment = new LoginDialogFragment();
-					loginFragment.queueIntent(intent, roles);
-					loginFragment.show(activity.getSupportFragmentManager(),
-							LoginDialogFragment.LOGIN_DIALOG);
-				} else if (type.equals(ModuleType.WEB)) {
-					
-					//do if basic authentication only; web login will be handled by cookies
-					String loginType = Utils.getStringFromPreferences(activity, Utils.SECURITY, Utils.LOGIN_TYPE, Utils.NATIVE_LOGIN_TYPE);
-					if (loginType.equals(Utils.NATIVE_LOGIN_TYPE) && System.currentTimeMillis() > (ellucianApp
-							.getLastAuthRefresh() + AUTH_REFRESH_TIME)) {
-						LocalBroadcastManager lbm = LocalBroadcastManager
-								.getInstance(activity);
-						backgroundAuthenticationReceiver = new BackgroundAuthenticationReceiver();
-						backgroundAuthenticationReceiver
-								.setQueuedIntent(intent);
-						lbm.registerReceiver(
-								backgroundAuthenticationReceiver,
-								new IntentFilter(
-										AuthenticateUserIntentService.ACTION_BACKGROUND_AUTH));
-
-						((EllucianActivity) activity)
-								.sendEvent(
-										GoogleAnalyticsConstants.CATEGORY_AUTHENTICATION,
-										GoogleAnalyticsConstants.ACTION_LOGIN,
-										"Background re-authenticate", null,
-										null);
-
-						Toast signInMessage = Toast.makeText(activity,
-								R.string.dialog_re_authenticate,
-								Toast.LENGTH_LONG);
-						signInMessage.setGravity(Gravity.CENTER, 0, 0);
-						signInMessage.show();
-
-						Intent loginIntent = new Intent(activity,
-								AuthenticateUserIntentService.class);
-						loginIntent.putExtra(Extra.LOGIN_USERNAME,
-								ellucianApp.getAppUserName());
-						loginIntent.putExtra(Extra.LOGIN_PASSWORD,
-								ellucianApp.getAppUserPassword());
-						loginIntent.putExtra(Extra.LOGIN_BACKGROUND, true);
-						activity.startService(loginIntent);
-					} else {
-						activity.startActivity(intent);
-					}
-				} else {
-					activity.startActivity(intent);
-				}
-			} else if (type.equals(ModuleType._SIGN_IN)) {
-
-				if (ellucianApp.isUserAuthenticated()) {
-					ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
-								GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
-								"Menu-Click Sign Out", null, null);
-				} else {
-					ellucianApp.sendEventToTracker1(GoogleAnalyticsConstants.CATEGORY_UI_ACTION,
-							GoogleAnalyticsConstants.ACTION_MENU_SELECTION,
-							"Menu-Click Sign In", null, null);
-				}
-
-				if (ellucianApp.isUserAuthenticated()) {
-					// Sign Out
-
-					// This also removes saved users
-					ellucianApp.removeAppUser(true);
-
-					Toast signOutMessage = Toast.makeText(activity,
-							R.string.dialog_signed_out, Toast.LENGTH_LONG);
-					signOutMessage.setGravity(Gravity.CENTER, 0, 0);
-					signOutMessage.show();
-
-					Intent intent = ModuleMenuAdapter.getIntent(activity,
-							ModuleType._HOME, null,
-							activity.getString(R.string.menu_home), null);
-					if (intent != null) {
-						// Make sure to reset the menu adapter so the navigation drawer will 
-						// display correctly for a non-authenticated user
-						ellucianApp.resetModuleMenuAdapter();
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-						activity.startActivity(intent);
-					}
-
-				} else {
-					// Sign In
-					showLoginDialog();
-				}
-
-			} else {
-
-				Intent intent = ModuleMenuAdapter.getIntent(activity, type, subType,
-						label, moduleId);
-				if (intent != null) {
-					activity.startActivity(intent);
-				}
-			}					
 			return true;
 		}																	
 	}
 	
-	public class BackgroundAuthenticationReceiver extends BroadcastReceiver {
+	public static class BackgroundAuthenticationReceiver extends BroadcastReceiver {
 
 		private Intent queuedIntent;
+        private Activity activity;
+        private BackgroundAuthenticationReceiver backgroundAuthenticationReceiver;
 
-		@Override
+        public BackgroundAuthenticationReceiver(Activity activity) {
+            this.activity = activity;
+        }
+
+        public void setBackgroundAuthenticationReceiver(BackgroundAuthenticationReceiver backgroundAuthenticationReceiver) {
+            this.backgroundAuthenticationReceiver = backgroundAuthenticationReceiver;
+        }
+
+        @Override
 		public void onReceive(Context context, Intent incomingIntent) {
 			String result = incomingIntent.getStringExtra(Extra.LOGIN_SUCCESS);
 

@@ -6,7 +6,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:drawable="@drawable/default_home_icon"
+        android:drawable="@mipmap/ic_launcher"
+        android:width="32dp"
+        android:height="32dp"
         android:right="4dp"/>
 
 </layer-list>

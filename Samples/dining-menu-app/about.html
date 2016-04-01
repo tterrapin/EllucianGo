@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Campus Dining - About</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script>
+		// note if this conditional block is set to true a desktop browser can be used
+		// to simulate the web app being embedded the device
+		if (false) {
+			window.EllucianMobile = {
+				isEmbeddedInEllucianGO: true,
+			}
+			window.EllucianMobileDevice = {
+				primaryColor: function() {
+					return "#331640"
+				},
+				accentColor: function() {
+					return "#e8d6a2"
+				},
+				headerTextColor: function() {
+					return "#ffffff"
+				},
+				subheaderTextColor: function() {
+					return "#000000"
+				}
+			}
+		}
+	</script>
+	<!-- add ellucian-mobile-4.5.js early to ensure EllucianMobile JS Object is available as soon as needed -->
+	<script src="https://mobile.elluciancloud.com/sharedlibraries/js/ellucian-mobile-4.5.js"></script>
+	<script src="js/style.js"></script>
+
+</head>
+
+<body>
+<!-- left nav -->
+<nav id="left-nav">
+	<ul>
+		<li><a href="hours.html" class="ln-hours">Hours</a></li>
+		<li><a href="meal-plans.html" class="ln-plans">Meal Plans</a></li>
+		<li><a href="index.html" class="ln-options">Dining Options</a></li>
+		<li><a href="about.html" class="ln-about">About</a></li>
+	</ul>
+</nav>
+
+<div id="about-content-container">
+
+<header id="page-header">
+	<div class="menu"><span></span></div>
+	<div class="school-name">ellucian University</div>
+	<div class="config"></div>
+</header>
+
+
+<article>
+
+	<div class="int-page-title">
+		<div class="menu-bar">
+			<a href="javascript:void(0);" class="embedded-menu-arrow"></a>
+		</div>
+		<div>
+			<h1>About</h1>
+		</div>
+	</div>
+
+	<section class="int-page-content">
+
+	<p>Ellucian Campus Dining est lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin non nisl. Sed tempus laoreet orci. Donec accumsan, lacus et scelerisque convallis, pede diam fringilla orci, sed eleifend mauris tortor ut lorem. Praesent mi. Aliquam erat volutpat. Proin tristique, erat consectetuer aliquet ornare, sem sapien rutrum orci, sed pellentesque mi lorem nec ante. Proin mollis pede eu nulla. Integer malesuada ultricies risus. Donec ornare nisi nec purus. Phasellus eget arcu. Quisque ornare adipiscing dolor. </p>
+	<p>Pellentesque non dolor ut tellus viverra varius. Nunc non tortor quis neque accumsan porta. Vestibulum nunc purus, vestibulum quis, tempor ut, imperdiet vel, enim. Integer eget ante. In consectetuer vulputate magna. Maecenas nibh. Duis in elit et turpis laoreet feugiat. Mauris ullamcorper lorem nec turpis. Fusce gravida lacus ut magna. Maecenas convallis. Fusce dolor arcu, rhoncus eu, viverra auctor, auctor non, odio.</p>
+</section>
+</article>
+
+
+<footer>&copy; 2016 Ellucian Company L.P. and its affiliates.</footer>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

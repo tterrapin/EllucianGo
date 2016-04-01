@@ -47,6 +47,7 @@ import com.ellucian.mobile.android.provider.EllucianDatabase.Tables;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.PermissionUtil;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -338,15 +339,14 @@ public class MapsActivity extends EllucianActivity implements
     }
 
 	private boolean readyToGo() {
-		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
 
 		if (status == ConnectionResult.SUCCESS) {
 			return (true);
-		} else if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
 			// http://stackoverflow.com/questions/13932474/googleplayservicesutil-geterrordialog-is-null
 			//https://code.google.com/p/gmaps-api-issues/issues/detail?id=4720&q=store&colspec=ID%20Type%20Status%20Introduced%20Fixed%20Summary%20Stars%20ApiType%20Internal
-			Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, 
-				      0);
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(this, status, 0);
 			if(dialog != null)
 	        {
 	            dialog.show();                

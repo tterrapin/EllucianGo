@@ -22,8 +22,10 @@ import android.util.Log;
 import com.ellucian.mobile.android.EllucianApplication;
 import com.ellucian.mobile.android.ModuleType;
 import com.ellucian.mobile.android.about.AboutActivity;
+import com.ellucian.mobile.android.app.HomescreenBackground;
 import com.ellucian.mobile.android.client.MobileClient;
 import com.ellucian.mobile.android.client.configuration.ConfigurationBuilder;
+import com.ellucian.mobile.android.client.configuration.MobileServerConfigurationBuilder;
 import com.ellucian.mobile.android.provider.EllucianContract;
 import com.ellucian.mobile.android.util.Extra;
 import com.ellucian.mobile.android.util.Utils;
@@ -46,6 +48,7 @@ public class ConfigurationUpdateService extends IntentService {
 	public static final String ACTION_SEND_TO_SELECTION = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.reselect";
 	public static final String ACTION_OUTDATED = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.outdated";
 	public static final String ACTION_UNABLE_TO_DOWNLOAD = "com.ellucian.mobile.android.client.services.ConfigurationUpdateService.action.unableToDownload";
+    public static final String REFRESH_MOBILESERVER_ONLY = "refreshMobileServerOnly";
 	private static final String TAG = ConfigurationUpdateService.class
 			.getSimpleName();
 	private boolean imagesDone;
@@ -58,6 +61,11 @@ public class ConfigurationUpdateService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+        if (intent.getBooleanExtra(REFRESH_MOBILESERVER_ONLY, false)) {
+            refreshMobileServerConfig();
+            return;
+        }
+
 		EllucianApplication ellucianApp = (EllucianApplication) getApplicationContext();
 		// Setting fields from the configuration file. See res/xml/configuration_properties.xml
 		checkVersion = ellucianApp.getConfigurationProperties().enableVersionChecking;
@@ -214,7 +222,13 @@ public class ConfigurationUpdateService extends IntentService {
 							String key = (String) moduleIds.next();
 							JSONObject moduleObject = jsonModules
 									.getJSONObject(key);
-							String type = moduleObject.getString("type");
+							String type = "";
+                            try {
+                                type = moduleObject.getString("type");
+                            } catch (JSONException e) {
+                                // Type not found. Corrupt mapp.
+                                Log.e(TAG, "JSONException:", e);
+                            }
 
 							// Set if Directory are present
 							if (type.equals(ModuleType.DIRECTORY)) {
@@ -274,6 +288,8 @@ public class ConfigurationUpdateService extends IntentService {
 			Log.e(TAG, "RemoteException:", e);
 		}
 
+        refreshMobileServerConfig();
+
 		// Make sure the home images are downloaded for display before sending
 		// out broadcast to start MainActivity
 		while (success && !imagesDone) {
@@ -285,10 +301,10 @@ public class ConfigurationUpdateService extends IntentService {
 		}
 
 		if (success) {
-			long updateTime = System.currentTimeMillis();
-			Utils.addLongToPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_LAST_UPDATE,
-					updateTime);
-			Log.d(TAG, "Configuration update time: " + updateTime);
+            long updateCheckedTime = System.currentTimeMillis();
+            Utils.addLongToPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_LAST_CHECKED,
+                    updateCheckedTime);
+			Log.d(TAG, "Configuration update time: " + updateCheckedTime);
 		}
 
 		if (outdated) {
@@ -396,7 +412,12 @@ public class ConfigurationUpdateService extends IntentService {
 	private void addConfigurationItemsToPreferences(JSONObject jsonConfiguration)
 			throws JSONException {
 
-		SharedPreferences preferences = this.getSharedPreferences(
+        /** Adding lastUpdated info **/
+        if (jsonConfiguration.has("lastUpdated")) {
+            Utils.addStringToPreferences(this, Utils.CONFIGURATION, Utils.CONFIGURATION_LAST_UPDATED, jsonConfiguration.getString("lastUpdated"));
+        }
+
+        SharedPreferences preferences = this.getSharedPreferences(
 				Utils.APPEARANCE, MODE_PRIVATE);
 		preferences.edit().clear().commit();
 		SharedPreferences.Editor editor = preferences.edit();
@@ -640,6 +661,11 @@ public class ConfigurationUpdateService extends IntentService {
 						Utils.DIRECTORY_STUDENT_SEARCH_URL,
 						directory.getString("studentSearch"));
 			}
+            if (directory.has("baseSearch")) {
+                Utils.addStringToPreferences(this, Utils.CONFIGURATION,
+                        Utils.DIRECTORY_BASE_SEARCH_URL,
+                        directory.getString("baseSearch"));
+            }
 		}
 
 		/** Adding google analytics */
@@ -651,6 +677,31 @@ public class ConfigurationUpdateService extends IntentService {
 			Utils.addStringToPreferences(this, Utils.GOOGLE_ANALYTICS, Utils.GOOGLE_ANALYTICS_TRACKER2, trackerId2);
 
 		}
+
+        /** Adding Mobile Server Configuration url */
+        Utils.removeValuesFromPreferences(this, Utils.CONFIGURATION, Utils.MOBILESERVER_CONFIG_URL, Utils.MOBILESERVER_CONFIG_LAST_UPDATE, Utils.MOBILESERVER_CODEBASE_VERSION);
+
+        if (jsonConfiguration.has("mobileServerConfig")) {
+            JSONObject mobileServerConfig = jsonConfiguration.getJSONObject("mobileServerConfig");
+            if (mobileServerConfig.has("url")) {
+                Utils.addStringToPreferences(this, Utils.CONFIGURATION, Utils.MOBILESERVER_CONFIG_URL, mobileServerConfig.getString("url"));
+            }
+        }
+
+        /** Adding Home Screen Shortcuts */
+        Utils.removeValuesFromPreferences(this, Utils.CONFIGURATION, Utils.HOME_SCREEN_ICONS, Utils.HOME_SCREEN_OVERLAY);
+
+        if (jsonConfiguration.has("home")) {
+            JSONObject homeScreenConfig = jsonConfiguration.getJSONObject("home");
+            if (homeScreenConfig.has("icons")) {
+                Utils.addStringToPreferences(this, Utils.CONFIGURATION, Utils.HOME_SCREEN_ICONS, homeScreenConfig.getString("icons"));
+            }
+            if (homeScreenConfig.has("overlay")) {
+                Utils.addStringToPreferences(this, Utils.CONFIGURATION, Utils.HOME_SCREEN_OVERLAY, homeScreenConfig.getString("overlay"));
+            }
+        }
+
+
 	}
 
 	private class ImageLoaderReceiver extends BroadcastReceiver {
@@ -658,9 +709,49 @@ public class ConfigurationUpdateService extends IntentService {
 		@Override
 		public void onReceive(Context context, Intent incomingIntent) {
 			imagesDone = true;
+            HomescreenBackground.refresh(context);
 
 		}
 
 	}
+
+    private void refreshMobileServerConfig() {
+        String mobileServerConfigUrl = Utils.getStringFromPreferences(this, Utils.CONFIGURATION, Utils.MOBILESERVER_CONFIG_URL, null);
+        if (!TextUtils.isEmpty(mobileServerConfigUrl)) {
+            MobileClient client = new MobileClient(this);
+            String configurationString = client.getConfiguration(mobileServerConfigUrl);
+
+            JSONObject jsonConfiguration;
+            try {
+                if (configurationString == null) {
+                    Log.e(TAG, "MobileServer Configuration not downloaded: " + mobileServerConfigUrl);
+                } else if (configurationString.equals("401")
+                        || configurationString.equals("403")
+                        || configurationString.equals("404")) {
+                    Log.e(TAG, "Return server error: " + configurationString);
+                } else {
+                    jsonConfiguration = new JSONObject(configurationString);
+                    Log.d(TAG, "response: " + configurationString);
+
+                    MobileServerConfigurationBuilder builder = new MobileServerConfigurationBuilder(this);
+                    Log.d(TAG, "Building content provider operations");
+                    ArrayList<ContentProviderOperation> ops = builder.buildOperations(jsonConfiguration);
+
+                    if (ops.size() > 0) {
+                        this.getContentResolver().applyBatch(
+                                EllucianContract.CONTENT_AUTHORITY,ops);
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException:", e);
+            } catch (OperationApplicationException e) {
+                Log.e(TAG, "OperationApplicationException:", e);
+            } catch (RemoteException e) {
+                Log.e(TAG, "RemoteException:", e);
+            }
+        } else {
+            Log.d(TAG, "No mobileServer configuration url");
+        }
+    }
 
 }

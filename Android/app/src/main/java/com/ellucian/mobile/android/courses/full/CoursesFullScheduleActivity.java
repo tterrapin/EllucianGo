@@ -4,9 +4,12 @@
 
 package com.ellucian.mobile.android.courses.full;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,32 +18,48 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
 import com.ellucian.mobile.android.client.services.CoursesFullScheduleIntentService;
-import com.ellucian.mobile.android.courses.daily.CoursesDailyScheduleActivity;
+import com.ellucian.mobile.android.courses.CoursesTabListener;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseTerms;
+import com.ellucian.mobile.android.util.Utils;
 
 import java.util.ArrayList;
 
 public class CoursesFullScheduleActivity extends EllucianActivity {
 
-	private ViewPager viewPager;
+	private static final String TAG = CoursesFullScheduleActivity.class.getSimpleName();
+    private Activity activity = this;
+    private ViewPager viewPager;
 	private OnPageChangeListener pageChangeListener;
+    private FullScheduleReceiver fullScheduleReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_courses_full_schedule);
 
-		viewPager = (ViewPager) findViewById(R.id.courses_full_schedule_pager);
+        // Setup 2 tabs for Full and Detail view
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setSelectedTabIndicatorColor(Utils.getColorHelper(this, R.color.tab_indicator_color));
+
+        TabLayout.Tab dailyView =  tabLayout.newTab().setText(R.string.courses_menu_daily_schedule);
+        TabLayout.Tab fullView =  tabLayout.newTab().setText(R.string.courses_menu_full_schedule);
+        tabLayout.addTab(dailyView, CoursesTabListener.DAILY_VIEW_TAB_INDEX, false);
+        tabLayout.addTab(fullView, CoursesTabListener.FULL_VIEW_TAB_INDEX, true);
+        tabLayout.setOnTabSelectedListener(new CoursesTabListener(this, getIntent()));
+
+        viewPager = (ViewPager) findViewById(R.id.courses_full_schedule_pager);
 
 		TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
 		viewPager.setAdapter(tabAdapter);
@@ -62,37 +81,24 @@ public class CoursesFullScheduleActivity extends EllucianActivity {
 		};
 		viewPager.addOnPageChangeListener(pageChangeListener);
 
-		Intent outgoingIntent = new Intent(this, CoursesFullScheduleIntentService.class);
+        Utils.showProgressIndicator(this);
+        registerFullScheduleReceiver();
+
+        Intent outgoingIntent = new Intent(this, CoursesFullScheduleIntentService.class);
 		// Pass Extras on to the Service
-		outgoingIntent.putExtras(getIntent().getExtras());
+        outgoingIntent.putExtras(getIntent().getExtras());
 
 		startService(outgoingIntent);
 
 	}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerFullScheduleReceiver();
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.courses_full_schedule, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int itemId = item.getItemId();
-
-		if (itemId == R.id.courses_daily_menu_daily_schedule) {
-			Intent intent = new Intent(this, CoursesDailyScheduleActivity.class);
-			// Pass Extras on to next Activity
-			intent.putExtras(getIntent().getExtras());
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	private class TabAdapter extends FragmentPagerAdapter implements
+    private class TabAdapter extends FragmentPagerAdapter implements
             LoaderManager.LoaderCallbacks<Cursor> {
 		ArrayList<String> lists = new ArrayList<>();
 		ArrayList<Fragment> fragments = new ArrayList<>();
@@ -148,11 +154,11 @@ public class CoursesFullScheduleActivity extends EllucianActivity {
 			notifyDataSetChanged();
 			viewPager.invalidate();
             // Setup the Sliding Tabs
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.termTabs);
             tabLayout.setVisibility(View.VISIBLE);
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-            tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+            tabLayout.setSelectedTabIndicatorColor(Utils.getColorHelper(CoursesFullScheduleActivity.this, R.color.transparent));
 
         }
 
@@ -162,10 +168,45 @@ public class CoursesFullScheduleActivity extends EllucianActivity {
 		}
 	}
 
-	@Override
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterFullScheduleReceiver();
+    }
+
+    @Override
 	protected void onDestroy() {
 		super.onDestroy();
 		viewPager.removeOnPageChangeListener(pageChangeListener);
 	}
+
+    private void registerFullScheduleReceiver() {
+        if (fullScheduleReceiver == null) {
+            Log.d(TAG, "Registering new service receiver");
+            fullScheduleReceiver = new FullScheduleReceiver();
+            IntentFilter filter = new IntentFilter(CoursesFullScheduleIntentService.ACTION_FINISHED);
+            LocalBroadcastManager.getInstance(this).registerReceiver(fullScheduleReceiver, filter);
+        }
+    }
+
+    private void unregisterFullScheduleReceiver() {
+        if (fullScheduleReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(fullScheduleReceiver);
+        }
+    }
+
+    private class FullScheduleReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean updated = intent.getBooleanExtra(CoursesFullScheduleIntentService.PARAM_OUT_DATABASE_UPDATED, false);
+            Log.d("FullScheduleReceiver", "onReceive: database updated = " + updated);
+            if(updated) {
+                Log.d("FullScheduleReceiver.onReceive", "Courses retrieved and database updated");
+                Utils.hideProgressIndicator(activity);
+            }
+        }
+
+    }
 
 }

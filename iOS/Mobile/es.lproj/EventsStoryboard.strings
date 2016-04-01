@@ -10,6 +10,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "QDk-e4-sea"; */
 "QDk-e4-sea.text" = "Etiqueta";
 
+/* Class = "UILabel"; text = "Label"; ObjectID = "S9z-en-YRW"; */
+"S9z-en-YRW.text" = "Etiqueta";
+
 /* Class = "UILabel"; text = "Label"; ObjectID = "VT2-PR-xvS"; */
 "VT2-PR-xvS.text" = "Etiqueta";
 
@@ -21,6 +24,9 @@
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "nAk-hS-pQL"; */
 "nAk-hS-pQL.text" = "Etiqueta";
+
+/* Class = "UILabel"; text = "•"; ObjectID = "ok6-k6-8tj"; */
+"ok6-k6-8tj.text" = "•";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "uYE-gp-c8N"; */
 "uYE-gp-c8N.text" = "Etiqueta";

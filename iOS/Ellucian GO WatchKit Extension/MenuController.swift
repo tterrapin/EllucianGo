@@ -172,23 +172,41 @@ class MenuController: WKInterfaceController {
         // configuration is loaded - build menu
         let context = CoreDataManager.shared.managedObjectContext
         
-        let modulesdReqeust = NSFetchRequest(entityName: "Module")
-        var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "roles.@count == 0"))
-        predicates.append(NSPredicate(format: "ANY roles.role like %@", "Everyone"))
+        let modulesRequest = NSFetchRequest(entityName: "Module")
+        modulesRequest.sortDescriptors = [NSSortDescriptor(key: "index" , ascending: true)]
+        
+        var rolePredicates = [NSPredicate]()
+        rolePredicates.append(NSPredicate(format: "roles.@count == 0"))
+        rolePredicates.append(NSPredicate(format: "ANY roles.role like %@", "Everyone"))
         
         if let user = WatchConnectivityManager.instance.currentUser() {
             if let roles = user["roles"] as! [String]? {
                 for role in roles {
-                    predicates.append(NSPredicate(format: "ANY roles.role like %@", role))
+                    rolePredicates.append(NSPredicate(format: "ANY roles.role like %@", role))
                 }
             }
         }
         
-        let compondPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-        modulesdReqeust.predicate = compondPredicate
+        let joinOnRolesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: rolePredicates)
+        
+        var typePredicates = [NSPredicate]()
+        for supportedType in supportedModuleTypes {
+            typePredicates.append(NSPredicate(format: "type == %@", supportedType))
+        }
+        let joinOnTypesPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: typePredicates)
+
+        var andPredicates = [NSPredicate]()
+        andPredicates.append(joinOnRolesPredicate)
+        andPredicates.append(joinOnTypesPredicate)
+        
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: andPredicates)
+        
         do {
-            let modules = try context.executeFetchRequest(modulesdReqeust)
+            let allModules = try context.executeFetchRequest(modulesRequest)
+            
+            // filter after Core Data fetch to avoid bug when there are >= about 10 predicates
+            let modules = allModules.filter{ compoundPredicate.evaluateWithObject($0) }
+            
             var modulesAsDictionaries = [Dictionary<String, AnyObject>]()
             
             for module in modules as! [Module] {
@@ -274,7 +292,7 @@ class MenuController: WKInterfaceController {
                     })
                 }
             }
-            i++
+            i += 1
         }
         let row = self.menuTable.rowControllerAtIndex(modules.count) as! MenuTableRowController
         row.nameLabel.setText(NSLocalizedString("About", comment: "About menu item"))
@@ -308,7 +326,7 @@ class MenuController: WKInterfaceController {
                     })
                 }
             }
-            i++
+            i += 1
         }
     }
     

@@ -7,9 +7,9 @@
 //
 
 #import "CalendarViewDayEventView.h"
+#import "CalendarViewDayGridView.h"
 #import <QuartzCore/QuartzCore.h>
 
-static const CGFloat kAlpha        = 0.8;
 static const CGFloat kCornerRadius = 6.0;
 
 @implementation CalendarViewDayEventView
@@ -22,7 +22,6 @@ static const CGFloat kCornerRadius = 6.0;
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    #ifndef __clang_analyzer__
     if (self = [super initWithFrame:frame]) {
         NSArray *theView =  [[NSBundle mainBundle] loadNibNamed:@"CalendarViewDayEventView" owner:self options:nil];
         UIView *nv = [theView objectAtIndex:0];
@@ -32,30 +31,15 @@ static const CGFloat kCornerRadius = 6.0;
         [[UITapGestureRecognizer alloc] initWithTarget: self
                                                 action: @selector(eventTapped:)];
         [self addGestureRecognizer: tap];
-        
-        self.alpha = kAlpha;
+
         CALayer *layer = [self layer];
         layer.masksToBounds = YES;
         [layer setCornerRadius:kCornerRadius];
+        
+        self.isAccessibilityElement = YES;
+        self.accessibilityTraits |= UIAccessibilityTraitButton;
     }
-    #endif
     return self;
-}
-
-- (id)initWithCoder:(NSCoder *)decoder {
-	if (self = [super initWithCoder:decoder]) {
-	}
-	return self;
-}
-
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-}
-
-- (UIColor *)backgroundColor
-{
-    return [super backgroundColor];
 }
 
 - (void)setFontColor:(UIColor *)fontColor
@@ -65,7 +49,14 @@ static const CGFloat kCornerRadius = 6.0;
     self.label3.textColor = fontColor;
 }
 
+-(NSString *) accessibilityLabel {
+    return [NSString stringWithFormat:@"%@, %@, %@", self.label3.text, self.label1.text, self.label2.text];
+}
 
-
+- (void)accessibilityElementDidBecomeFocused
+{
+    [self.dayView.gridView scrollToEvent:self];
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
+}
 
 @end

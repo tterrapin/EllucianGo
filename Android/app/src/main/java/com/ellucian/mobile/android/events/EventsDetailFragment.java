@@ -5,6 +5,7 @@
 package com.ellucian.mobile.android.events;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -39,9 +40,9 @@ public class EventsDetailFragment extends EllucianDefaultDetailFragment {
 	}
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = getActivity();
 	}
 	
 	@Override

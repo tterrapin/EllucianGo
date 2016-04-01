@@ -4,7 +4,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,6 +18,7 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/newsEventsListTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,6 +29,7 @@
 
         <TextView
             android:id="@+id/section_name"
+            style="@style/listDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -37,8 +38,7 @@
             android:clickable="true"
             android:paddingLeft="3dp"
             android:paddingStart="3dp"
-            android:paddingTop="3dp"
-            tools:ignore="NewApi,RtlSymmetry" />
+            android:paddingTop="3dp"/>
 
 
         </LinearLayout>
@@ -50,6 +50,7 @@
 
         <TextView
             android:id="@+id/date"
+            style="@style/listDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,8 +74,7 @@
             android:clickable="true"
             android:drawableRight="@drawable/icon_reminder"
             android:drawableEnd="@drawable/icon_reminder"
-            android:drawablePadding="4dp"
-            tools:ignore="NewApi" />
+            android:drawablePadding="4dp"/>
 
 
     </LinearLayout>

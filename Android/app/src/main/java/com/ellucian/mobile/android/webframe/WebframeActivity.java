@@ -42,7 +42,6 @@ public class WebframeActivity extends EllucianActivity {
 	private SslErrorHandler handler;
 	
 	@SuppressLint("SetJavaScriptEnabled")
-	@SuppressWarnings("deprecation")
 	@TargetApi(19)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -107,10 +106,7 @@ public class WebframeActivity extends EllucianActivity {
 			String databasePath = webView.getContext()
 					.getDir("databases", Context.MODE_PRIVATE).getPath();
 			webSettings.setDatabaseEnabled(true);
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-				webSettings.setDatabasePath(databasePath); // deprecated, but needed
-				// for earlier than API 19
-			}
+            Utils.setDatabasePath(webSettings, databasePath);
 			webSettings.setDomStorageEnabled(true);
 
 			Log.d("WebframeActivity", "Making request at: " + requestUrl);
@@ -118,7 +114,6 @@ public class WebframeActivity extends EllucianActivity {
 			webView.loadUrl(requestUrl);
 		}
 	}
-
 
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

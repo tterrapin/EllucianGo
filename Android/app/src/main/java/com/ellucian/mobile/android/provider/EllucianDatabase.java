@@ -19,6 +19,7 @@ import com.ellucian.mobile.android.provider.EllucianContract.CourseMeetingsColum
 import com.ellucian.mobile.android.provider.EllucianContract.CoursePatternsColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseRosterColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.CourseTermsColumns;
+import com.ellucian.mobile.android.provider.EllucianContract.DirectoriesColumns;
 import com.ellucian.mobile.android.provider.EllucianContract.Events;
 import com.ellucian.mobile.android.provider.EllucianContract.EventsCategories;
 import com.ellucian.mobile.android.provider.EllucianContract.EventsCategoriesColumns;
@@ -54,7 +55,9 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 	// 8 = Ellucian Mobile 3.6
 	// 9 = Ellucian Mobile 3.8
     // 10 = Ellucian Mobile 4.0
-	private static final int DB_VERSION = 10;
+    // 11 - Ellucian Mobile 4.5.0_a
+    // 12 = Ellucian Mobile 4.5
+	private static final int DB_VERSION = 12;
 	private static final String DB_NAME = "ellucian_mobile.db";
 
 	public interface Tables {
@@ -124,6 +127,7 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 						+ EventsCategories.EVENTS_CATEGORY_ID;
 		String REGISTRATION_LOCATIONS = "registration_locations";
 		String REGISTRATION_LEVELS = "registration_levels";
+        String DIRECTORIES = "directories";
 		
 	}
 
@@ -187,7 +191,8 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ ModulesColumns.MODULES_ID + " TEXT NOT NULL, "
 				+ ModulesColumns.MODULES_ICON_URL + " TEXT NOT NULL, "
 				+ ModulesColumns.MODULE_ORDER + " INTEGER NOT NULL, "
-				+ ModulesColumns.MODULE_NAME + " TEXT NOT NULL, "
+                + ModulesColumns.MODULE_HOME_SCREEN_ORDER + " INTEGER, "
+                + ModulesColumns.MODULE_NAME + " TEXT NOT NULL, "
 				+ ModulesColumns.MODULE_SECURE + " TEXT, " 
 				+ ModulesColumns.MODULE_SHOW_FOR_GUEST + " INTEGER NOT NULL DEFAULT 0, " 
 				+ ModulesColumns.MODULE_TYPE + " TEXT NOT NULL, "
@@ -513,6 +518,14 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 				+ RegistrationLevelsColumns.REGISTRATION_LEVELS_NAME + " TEXT NOT NULL, " 
 				+ RegistrationLevelsColumns.REGISTRATION_LEVELS_CODE + " TEXT NOT NULL "
 				+ ")");
+
+        db.execSQL("CREATE TABLE " + Tables.DIRECTORIES + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DirectoriesColumns.DIRECTORY_KEY + " TEXT, "
+                + DirectoriesColumns.DIRECTORY_INTERNAL_NAME + " TEXT, "
+                + DirectoriesColumns.DIRECTORY_DISPLAY_NAME + " TEXT, "
+                + DirectoriesColumns.DIRECTORY_AUTHENTICATED_ONLY + " TEXT "
+                + ")");
 				
 		createNewsSearch(db);
 		createEventsSearch(db);
@@ -574,14 +587,13 @@ public class EllucianDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-		int version = oldVersion;
 		Log.d(this.getClass().getSimpleName(), "onUpdate() from " + oldVersion
 				+ " to " + newVersion);
 		// here do anything that needs to be done to get the database scheme to
 		// the current structure (alter columns, add tables).
 		// Do not use break, fall through for each version.
 		// Then set version to be the version of the scheme it upgraded to be
-		switch (version) {
+		switch (oldVersion) {
 		case 1:
 			db.execSQL("ALTER TABLE " + Tables.NUMBERS
 					+ " ADD COLUMN "
@@ -703,14 +715,23 @@ public class EllucianDatabase extends SQLiteOpenHelper {
                     + " ADD COLUMN " + CourseAnnouncementsColumns.ANNOUNCEMENT_SECTION_NAME + " TEXT ");
             db.execSQL("ALTER TABLE " + Tables.COURSE_EVENTS
                     + " ADD COLUMN " + CourseEventsColumns.EVENT_SECTION_NAME + " TEXT ");
+        case 10: //4.0
+            db.execSQL("CREATE TABLE " + Tables.DIRECTORIES + " ("
+                    + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + DirectoriesColumns.DIRECTORY_KEY + " TEXT, "
+                    + DirectoriesColumns.DIRECTORY_INTERNAL_NAME + " TEXT, "
+                    + DirectoriesColumns.DIRECTORY_DISPLAY_NAME + " TEXT, "
+                    + DirectoriesColumns.DIRECTORY_AUTHENTICATED_ONLY + " TEXT "
+                    + ")");
+        case 11: // 4.5.0 - pre-release
+            db.execSQL("ALTER TABLE " + Tables.MODULES
+                    + " ADD COLUMN " + ModulesColumns.MODULE_HOME_SCREEN_ORDER + " INTEGER "
+            );
 
 		}
 
 		Log.d(this.getClass().getSimpleName(),
-				"after upgrade logic, at version " + version);
-		if (version != DB_VERSION) {
-
-		}
+				"after upgrade logic, at version " + newVersion);
 
 	}
 

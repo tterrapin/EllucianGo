@@ -11,9 +11,10 @@ import UIKit
 class OpenModuleFindModulesOperation: OpenModuleAbstractOperation {
 
     var modules = [Module]()
+    var limitToHomeScreen = false
     
     override func main() {
-        self.modules = OpenModuleAbstractOperation.findUserModules()
+        self.modules = OpenModuleAbstractOperation.findUserModules(limitToHomeScreen)
     }
     
 }

@@ -44,6 +44,8 @@
 		        android:layout_alignParentLeft="true"
 		        android:layout_alignParentStart="true"
 		        android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/academic_level_and_location"
+                android:layout_toStartOf="@+id/academic_level_and_location"
 		        android:maxLines="1"
 		        android:ellipsize="end"
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -52,19 +54,18 @@
                 android:id="@+id/academic_level_and_location"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_alignParentRight="true"
-		        android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
 		        android:layout_alignParentTop="true"
-		        android:layout_toRightOf="@+id/course_name"
-		        android:layout_toEndOf="@+id/course_name"
-		        android:gravity="end|center_vertical"
 		        android:maxLines="1"
+                android:layout_toLeftOf="@+id/seats_available_box"
+                android:layout_toStartOf="@+id/seats_available_box"
 	            android:ellipsize="end"
-	            android:paddingLeft="3sp"
-        		android:paddingStart="3sp"
-        		android:paddingTop="3sp"
-				tools:ignore="NewApi,RtlSymmetry" />
-            
+	            android:paddingLeft="3dp"
+        		android:paddingStart="3dp"
+                android:paddingTop="3sp" />
+
+            <include layout="@layout/seats_meter_item"/>
+
         </RelativeLayout>
         
         

@@ -6,29 +6,30 @@ package com.ellucian.mobile.android.schoolselector;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.Menu;
-import android.view.View;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnCloseListener;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.view.Menu;
+import android.view.View;
 
 import com.ellucian.elluciango.R;
 import com.ellucian.mobile.android.app.EllucianActivity;
 import com.ellucian.mobile.android.app.GoogleAnalyticsConstants;
+import com.ellucian.mobile.android.util.Utils;
 
 public class SchoolSelectionActivity extends EllucianActivity implements OnQueryTextListener {
 	private SchoolSelectionFragment fragment = null;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// activity_school_selection layout invokes SchoolSelectionFragment
 		setContentView(R.layout.activity_school_selection);
 		fragment = (SchoolSelectionFragment) getSupportFragmentManager().findFragmentById(R.id.school_list_fragment);
 
 		// set the colors directly, not going through preferences
-		int primaryColor = getResources().getColor(R.color.ellucian_primary_color);
-		int headerTextColor = getResources().getColor(R.color.ellucian_header_text_color);
+        int primaryColor = Utils.getColorHelper(this, R.color.ellucian_primary_color);
+        int headerTextColor = Utils.getColorHelper(this, R.color.ellucian_header_text_color);
 		configureActionBarDirect(primaryColor, headerTextColor);
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(false);

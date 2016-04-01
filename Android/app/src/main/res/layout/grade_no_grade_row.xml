@@ -18,8 +18,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="6sp"
-        android:paddingStart="6sp"
+        android:paddingLeft="@dimen/section_header_padding"
+        android:paddingStart="@dimen/section_header_padding"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textIsSelectable="true"
         tools:ignore="NewApi,RtlSymmetry">

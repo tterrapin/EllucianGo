@@ -89,7 +89,7 @@
 		<key>Storyboard Name</key>
 		<string>DirectoryStoryboard</string>
 		<key>Needs Authentication</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>audio</key>
 	<dict>
@@ -131,5 +131,10 @@
 		<key>Needs Authentication</key>
 		<true/>
 	</dict>
+    <key>appLauncher</key>
+    <dict>
+        <key>Needs Authentication</key>
+        <false/>
+    </dict>
 </dict>
 </plist>

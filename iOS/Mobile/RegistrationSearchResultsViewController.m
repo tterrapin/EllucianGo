@@ -76,7 +76,13 @@
 {
     RegistrationPlannedSection *plannedSection = [self.courses objectAtIndex:indexPath.row];
     
-    static NSString *CellIdentifier = @"Registration Course Cell";
+    NSString *CellIdentifier = @"Registration Course Cell";
+    if( plannedSection.available && plannedSection.capacity && plannedSection.capacity > 0 ) {
+        CellIdentifier = @"Registration Course Seats Cell";
+    } else {
+        CellIdentifier = @"Registration Course Cell";
+    }
+
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -163,7 +169,7 @@
     }
     
     //    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-    //        cell.accessoryType = UITableViewCellAccessoryDetailButton;
+
     //    } else {
     //        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     //    }
@@ -183,6 +189,44 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    if( plannedSection.available && plannedSection.capacity) {
+        UIView *background = (UIView *)[cell viewWithTag:11];
+        background.layer.cornerRadius = 3.0f;
+        background.layer.borderColor = [UIColor colorWithRed:0.80 green:0.80 blue:0.80 alpha:1.0].CGColor;
+        background.layer.borderWidth = 1.0f;
+        
+        
+        NSNumber *available = plannedSection.available;
+        NSNumber *capacity = plannedSection.capacity;
+        
+        UIImageView *meterImage = (UIImageView *)[cell viewWithTag:12];
+        float z = [available floatValue] / [capacity floatValue];
+        float delta = 1.0f / 6.0f;
+        if ([available intValue] <= 0) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-full"];
+        } else if(z <= delta) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-5-full"];
+        } else if(z <= delta*2) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-4-full"];
+        } else if(z <= delta*3) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-3-full"];
+        } else if(z <= delta*4) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-2-full"];
+        } else if(z <= delta*5) {
+            meterImage.image = [UIImage imageNamed:@"seats-available-1-full"];
+        } else {
+            meterImage.image = [UIImage imageNamed:@"seats-available-default"];
+        }
+    
+        if ([meterImage.image respondsToSelector:@selector(imageFlippedForRightToLeftLayoutDirection)]) {
+            if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:meterImage.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+                meterImage.image = meterImage.image.imageFlippedForRightToLeftLayoutDirection;
+            }
+        }
+
+        UILabel *seatsLabel = (UILabel *)[cell viewWithTag:13];
+        seatsLabel.text = [NSString stringWithFormat:NSLocalizedStringWithDefaultValue(@"available seats/capacity", @"Localizable", [NSBundle mainBundle], @"%@/%@", @"available seats/capacity"), available, capacity];
+    }
     return cell;
 
 }
@@ -309,15 +353,19 @@
         }
     }
     else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+        if( plannedSection.available && plannedSection.capacity && plannedSection.capacity > 0 ) {
+            [self performSegueWithIdentifier:@"Show Section Detail Seats" sender:plannedSection];
+        } else {
+            [self performSegueWithIdentifier:@"Show Section Detail" sender:plannedSection];
+        }
     }
-    
+
     
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"Show Section Detail"]) {
+    if ([[segue identifier] isEqualToString:@"Show Section Detail"] || [[segue identifier] isEqualToString:@"Show Section Detail Seats"]) {
         RegistrationPlannedSection *courseSection = sender;
         RegistrationPlannedSectionDetailViewController *detailController = [segue destinationViewController];
         detailController.registrationPlannedSection = courseSection;
