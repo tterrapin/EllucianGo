@@ -297,7 +297,6 @@ class ConfigurationManager: NSObject {
                         if aboutIcon != nil {
                             ImageCache.sharedCache().getImage(aboutIcon!)
                         }
-                        defaults.setObject(about["contact"], forKey: "about-contact")
                         let aboutLogoUrlPhone = about["logoUrlPhone"] as! String?
                         defaults.setObject(aboutLogoUrlPhone, forKey: "about-logoUrlPhone")
                         if aboutLogoUrlPhone != nil {
@@ -309,14 +308,14 @@ class ConfigurationManager: NSObject {
                         }
                         if let privacy = about["privacy"] as! NSDictionary? {
                             defaults.setObject(privacy["display"], forKey: "about-privacy-display")
-                            defaults.setObject(privacy["number"], forKey: "about-privacy-number")
+                            defaults.setObject(privacy["url"], forKey: "about-privacy-url")
                         }
                         if let version = about["version"] as! NSDictionary? {
                             defaults.setObject(version["url"], forKey: "about-version-url")
                         }
                         if let website = about["website"] as! NSDictionary? {
                             defaults.setObject(website["display"], forKey: "about-website-display")
-                            defaults.setObject(website["url"], forKey: "about-privwebsiteacy-url")
+                            defaults.setObject(website["url"], forKey: "about-website-url")
                         }
                     }
                     

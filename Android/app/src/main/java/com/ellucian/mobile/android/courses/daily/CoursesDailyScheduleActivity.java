@@ -65,6 +65,7 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
     private static final String CACHED_SCHEDULE = "cachedSchedule";
     // create a formatter that always returns a certain date-only format
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private RetrieveDailyScheduleTask scheduleTask;
 
     private SimpleDateFormat getMeetingPatternDateFormat() {
 		if(meetingPatternFormat == null) {
@@ -189,13 +190,19 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 	private void refreshSchedule() {
 
         Log.d(TAG, "Get courses for " + sdf.format(calendar.getTime()));
-        Day[] calDateSchedule = parseCachedSchedule();
+        Day[] calDateSchedule = parseCachedSchedule(cachedSchedule);
 
         if (calDateSchedule == null) {
             String modifiedRequestUrl = createRequestUrl();
 
             // Start retrieval of daily schedule
-            new RetrieveDailyScheduleTask().execute(modifiedRequestUrl);
+            // If there is a current running query, cancel it and then create a new one.
+            if (scheduleTask != null) {
+                scheduleTask.cancel(true);
+            }
+
+            scheduleTask = new RetrieveDailyScheduleTask();
+            scheduleTask.execute(modifiedRequestUrl);
         } else {
             displaySchedule(calDateSchedule);
         }
@@ -404,7 +411,10 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 				if (dailySchedule.coursesDays.length > 0) {
 
                     cachedSchedule = dailySchedule;
-                    displaySchedule(parseCachedSchedule());
+                    Day[] displayDate = parseCachedSchedule(cachedSchedule);
+                    if (displayDate != null) {
+                        displaySchedule(displayDate);
+                    }
 
 				} else {
 					Log.d("RetrieveDailyScheduleTask", "No meetings scheduled for this day.");
@@ -417,18 +427,18 @@ public class CoursesDailyScheduleActivity extends EllucianActivity {
 
     // Parse the cached schedule data for just the user's selected calendar date (+/- 1 day)
     // and return that as an array.
-    private Day[] parseCachedSchedule() {
+    private Day[] parseCachedSchedule(DailyScheduleResponse dailyScheduleResponse) {
         String targetDateStr = sdf.format(calendar.getTime());
 
-        if (cachedSchedule != null) {
+        if (dailyScheduleResponse != null) {
 
             // Start at 1. End at length-1 b/c we need 1 day before and after.
-            for (int i = 1; i < cachedSchedule.coursesDays.length-1; i++) {
-                if (cachedSchedule.coursesDays[i].date.equals(targetDateStr)){
+            for (int i = 1; i < dailyScheduleResponse.coursesDays.length-1; i++) {
+                if (dailyScheduleResponse.coursesDays[i].date.equals(targetDateStr)){
                     Day[] calDateSchedule = new Day[3];
-                    calDateSchedule[0] = cachedSchedule.coursesDays[i - 1];
-                    calDateSchedule[1] = cachedSchedule.coursesDays[i];
-                    calDateSchedule[2] = cachedSchedule.coursesDays[i + 1];
+                    calDateSchedule[0] = dailyScheduleResponse.coursesDays[i - 1];
+                    calDateSchedule[1] = dailyScheduleResponse.coursesDays[i];
+                    calDateSchedule[2] = dailyScheduleResponse.coursesDays[i + 1];
                     return calDateSchedule;
                 }
             }

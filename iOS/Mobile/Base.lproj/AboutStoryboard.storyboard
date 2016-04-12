@@ -8,7 +8,7 @@
         <!--Web View Controller-->
         <scene sceneID="MyY-kk-Fp6">
             <objects>
-                <viewController storyboardIdentifier="Web" id="MxD-XS-qCU" customClass="WebViewController" customModule="Ellucian_GO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Web" id="MxD-XS-qCU" customClass="WebViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WQa-eL-EUG"/>
                         <viewControllerLayoutGuide type="bottom" id="KR7-dd-Vfb"/>

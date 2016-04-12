@@ -219,9 +219,11 @@ class CourseDetailViewController: UITableViewController {
         let request: NSFetchRequest = NSFetchRequest(entityName: "CourseDetail")
         request.predicate = NSPredicate(format: "termId == %@ && sectionId == %@", self.termId!, self.sectionId!)
         
-        self.courseDetail = try! self.module?.managedObjectContext?.executeFetchRequest(request).last as! CourseDetail!
-        self.instructors = self.courseDetail!.instructors.array as? [CourseDetailInstructor]
-        self.meetingPatterns = self.courseDetail!.meetingPatterns.array as? [CourseMeetingPattern]
+        self.courseDetail = try! self.module?.managedObjectContext?.executeFetchRequest(request).last as? CourseDetail
+        if let courseDetail = self.courseDetail {
+            self.instructors = courseDetail.instructors.array as? [CourseDetailInstructor]
+            self.meetingPatterns = courseDetail.meetingPatterns.array as? [CourseMeetingPattern]
+        }
         self.tableView.reloadData()
     }
     

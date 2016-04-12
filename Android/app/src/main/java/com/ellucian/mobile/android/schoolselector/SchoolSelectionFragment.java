@@ -198,7 +198,7 @@ public class SchoolSelectionFragment extends EllucianFragment {
 			super.onPostExecute(configurationList);
 			
 			//Google Analytics - need to wait for the tracker id to use before logging, which is why its here and not onStart
-            getEllucianActivity().sendViewToTracker1("Show Institution List", null);
+            activity.sendViewToTracker1("Show Institution List", null);
 
 			if (configurationList != null && !configurationList.isEmpty()) {
 				adapter = getAdapter(activity, android.R.layout.simple_list_item_1, configurationList);
