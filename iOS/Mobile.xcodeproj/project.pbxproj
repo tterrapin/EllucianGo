@@ -311,6 +311,8 @@
 		A9E9F7BE1A852477000639D0 /* AnnouncementTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9568DE21A6EE344002BB592 /* AnnouncementTableViewDelegate.swift */; };
 		A9E9F7BF1A852477000639D0 /* EventTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9568DE41A6EE358002BB592 /* EventTableViewDelegate.swift */; };
 		A9F498041A93923600E71CC1 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F498021A93923600E71CC1 /* SwiftyJSON.swift */; };
+		F1ECF0551CC2E12C00EC709F /* AppIcon-1.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = F1ECF0541CC2E12C00EC709F /* AppIcon-1.appiconset */; };
+		F1ECF0561CC2E87800EC709F /* Customizations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 549336541810413A00B6FDEF /* Customizations.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -930,6 +932,7 @@
 		A9ADAEBB1A811D3C008869C9 /* AllAnnouncementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllAnnouncementsViewController.swift; sourceTree = "<group>"; };
 		A9E6A3EA1680BE9500AAEBBF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		A9F498021A93923600E71CC1 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		F1ECF0541CC2E12C00EC709F /* AppIcon-1.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "AppIcon-1.appiconset"; path = "../../../Desktop/Mobile Files/MobIntSvr411P-1635/iOS/Ellucian Mobile/Images.xcassets/AppIcon-1.appiconset"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1469,6 +1472,7 @@
 				84279DA515C8136800DCBC7E /* Home */,
 				A92D4EA41A1E419B00F60F7B /* ILP */,
 				5491340B17B16A7A0001CE29 /* Images.xcassets */,
+				F1ECF0541CC2E12C00EC709F /* AppIcon-1.appiconset */,
 				84F392041614F06C003B3EE4 /* Important Numbers */,
 				542C81B51B7BDBB2000D6B56 /* Launch Screen.storyboard */,
 				A9C1221315FE6A3100BA2412 /* Login */,
@@ -1902,7 +1906,7 @@
 				TargetAttributes = {
 					544E64961A715CBD00220746 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = CU629ZRRW3;
+						DevelopmentTeam = 87SRT662M4;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1917,7 +1921,7 @@
 					};
 					5494D80B1AEAD8E20030EE4A = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = CU629ZRRW3;
+						DevelopmentTeam = 87SRT662M4;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1932,10 +1936,10 @@
 					};
 					5494D81A1AEAD8E20030EE4A = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = CU629ZRRW3;
+						DevelopmentTeam = 87SRT662M4;
 					};
 					54E40B3A1728552E00F661A5 = {
-						DevelopmentTeam = CU629ZRRW3;
+						DevelopmentTeam = 87SRT662M4;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -2011,6 +2015,7 @@
 			files = (
 				54946DB61AEB577400D23287 /* Images.xcassets in Resources */,
 				5494D8241AEAD8E20030EE4A /* Interface.storyboard in Resources */,
+				F1ECF0561CC2E87800EC709F /* Customizations.plist in Resources */,
 				5494D8261AEAD8E20030EE4A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2031,6 +2036,7 @@
 				54B2AC4B1B6BF30B00FCDC67 /* NSDateTimeAgo.strings in Resources */,
 				5419C6301B7937B900827DF2 /* EventsStoryboard.storyboard in Resources */,
 				54C2BE731AC987D9004C3736 /* Settings.bundle in Resources */,
+				F1ECF0551CC2E12C00EC709F /* AppIcon-1.appiconset in Resources */,
 				542C81931B7BD10C000D6B56 /* WebStoryboard.storyboard in Resources */,
 				54750BDF1B5DA2B40043443F /* LoginStoryboard.storyboard in Resources */,
 				542C81861B7BD0DE000D6B56 /* StudentFinancialsStoryboard.storyboard in Resources */,
@@ -2722,7 +2728,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ellucian.elluciango.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.fanshawe.mobileapp.Assignments-Today";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
@@ -2744,8 +2750,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "Assignments Today/Assignments Today.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2758,9 +2764,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ellucian.elluciango.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "edu.fanshawe.mobileapp.Assignments-Today";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "$(ASSIGNMENTS_TODAY_UDID)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Assignments Today/Assignments Today-Bridging-Header.h";
@@ -2799,7 +2805,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -2824,9 +2830,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = "Ellucian GO WatchKit Extension/Ellucian GO WatchKit Extension.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2842,7 +2848,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango.watchkitapp.watchkitextension;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE = "$(WATCHKIT_EXTENSION_UDID)";
 				"PROVISIONING_PROFILE[sdk=*]" = "";
@@ -2886,7 +2892,7 @@
 				IBSC_MODULE = Ellucian_GO_WatchKit_Extension;
 				INFOPLIST_FILE = "Ellucian GO WatchKit App/Info.plist";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
@@ -2908,8 +2914,8 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -2924,7 +2930,7 @@
 				IBSC_MODULE = Ellucian_GO_WatchKit_Extension;
 				INFOPLIST_FILE = "Ellucian GO WatchKit App/Info.plist";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "$(WATCHKIT_APP_UDID)";
 				SDKROOT = watchos;
@@ -2958,7 +2964,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2976,8 +2982,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Mobile/Ellucian GO.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Ellucian Inc. (CU629ZRRW3)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 4.1.1.6;
 				DEFINES_MODULE = YES;
@@ -2994,9 +3000,9 @@
 					"$(PROJECT_DIR)/Mobile",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ellucian.elluciango;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.fanshawe.mobileapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "${PROJECT_UDID)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mobile/Ellucian Mobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
