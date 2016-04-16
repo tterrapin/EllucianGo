@@ -42,7 +42,7 @@ android {
             versionCode = getVersionCode(versionCode)
         }
         customer {
-            applicationId "edu.school.app"
+            applicationId "edu.fanshawe.mobileapp"
             buildConfigField "String", "contentProvider", '"' + applicationId + '.contentprovider"'
         }
     }

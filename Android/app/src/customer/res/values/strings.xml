@@ -5,8 +5,8 @@
 
 <resources>
 
-    <string name="app_name" translatable="false">Customer</string>
-    <string name="notifications_device_title" translatable="false">Customer</string>
+    <string name="app_name" translatable="false">Fanshawe 360</string>
+    <string name="notifications_device_title" translatable="false">Fanshawe 360</string>
     <string name="app_intent_filter_host" translatable="false">site.edu</string>
     <string name="app_intent_filter_scheme" translatable="false">ellucianmobile</string>
 
