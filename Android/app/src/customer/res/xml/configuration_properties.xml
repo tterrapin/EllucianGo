@@ -6,15 +6,15 @@
 
 <configuration-properties>
 
-	<configuration-list-url>https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations</configuration-list-url> 
+	<configuration-list-url></configuration-list-url>
     
-    <use-default-configuration>false</use-default-configuration>
+    <use-default-configuration>true</use-default-configuration>
     
-    <default-configuration-url></default-configuration-url>
+    <default-configuration-url>https://mobile.elluciancloud.com/mobilecloud/api/applicationConfigurationByName/237/Fanshawe_test</default-configuration-url>
     
-    <enable-version-checking>true</enable-version-checking>
+    <enable-version-checking>false</enable-version-checking>
     
-    <allow-switch-school>true</allow-switch-school>
+    <allow-switch-school>false</allow-switch-school>
     
     <gcm-sender-id>170166633464</gcm-sender-id>
     

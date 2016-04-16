@@ -5,22 +5,22 @@
 	<key>Live Configurations URL</key>
 	<string>https://mobile.elluciancloud.com/mobilecloud/api/liveConfigurations</string>
 	<key>Use Default Configuration</key>
-	<false/>
+	<true/>
 	<key>Enable Version Checking</key>
-	<true/>
+	<false/>
 	<key>Default Configuration URL</key>
-	<string>https://mobile.elluciancloud.com/mobilecloud/api/applicationConfigurationByName</string>
+	<string>https://mobile.elluciancloud.com/mobilecloud/api/applicationConfigurationByName/237/Fanshawe_test</string>
 	<key>Allow Switch School</key>
-	<true/>
+	<false/>
 	<key>App Group</key>
-	<string></string>
+	<string>group.edu.fanshawe.mobileapp</string>
 	<key>URL Scheme</key>
-	<string></string>
+	<string>fanmobile</string>
 	<key>Custom Modules</key>
 	<dict/>
 	<key>Watch Menu Title</key>
-	<string>Ellucian GO</string>
+	<string>Fanshawe</string>
 	<key>iOS Application Name</key>
-	<string>Ellucian GO</string>
+	<string>Fanshawe 360</string>
 </dict>
 </plist>
